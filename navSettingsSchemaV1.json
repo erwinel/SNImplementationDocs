@@ -24,6 +24,12 @@
                 "type": "string",
                 "title": "Page Heading",
                 "default": ""
+              },
+              "description": {
+                "$id": "#/definitions/navItem/properties/description",
+                "type": "string",
+                "title": "Page Description",
+                "default": ""
               }
             }
         },
