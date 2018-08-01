@@ -7,6 +7,12 @@
             "type": "object",
             "required": [ "title" ],
             "properties": {
+              "id": {
+                "$id": "#/definitions/navItem/properties/id",
+                "type": "string",
+                "title": "Programmatic Identifier",
+                "default": ""
+              },
               "title": {
                 "$id": "#/definitions/navItem/properties/title",
                 "type": "string",
