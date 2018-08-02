@@ -84,11 +84,24 @@ declare module menuControllers {
         static import(source: navSettingsJSON.NavItem[], parent: NavItem | ITopLevelScope): NavItem[];
         static isNavItem(node: NavItem | ITopLevelScope): node is NavItem;
     }
-    function initializeTopLevelScope(scope: ITopLevelScope, http: ng.IHttpService): void;
+    function initializeTopLevelScope(scope: ITopLevelScope, http: angular.IHttpService): void;
 }
 interface IMainAppScope extends menuControllers.ITopLevelScope {
+    scrollToAnchor: {
+        (name: string): void;
+    };
+    setPage: {
+        (id: string, ...subId: string[]): void;
+    };
+    getPageHeading: {
+        (id: string, ...subId: string[]): string;
+    };
+    getPageTitle: {
+        (id: string, ...subId: string[]): string;
+    };
 }
 declare class mainController {
-    constructor($scope: IMainAppScope, $http: ng.IHttpService);
+    constructor($scope: IMainAppScope, $http: angular.IHttpService, $location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService);
+    static getNavItem($scope: IMainAppScope, id: string, subId: string[] | undefined): menuControllers.NavItem | undefined;
 }
 //# sourceMappingURL=mainApp.d.ts.map

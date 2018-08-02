@@ -168,10 +168,42 @@ var menuControllers;
     menuControllers.initializeTopLevelScope = initializeTopLevelScope;
 })(menuControllers || (menuControllers = {}));
 class mainController {
-    constructor($scope, $http) {
+    constructor($scope, $http, $location, $anchorScroll) {
         menuControllers.initializeTopLevelScope($scope, $http);
+        $scope.scrollToAnchor = function (name) {
+            $location.hash(name);
+            $anchorScroll(name);
+        };
+        $scope.setPage = function (id, ...subId) {
+            let item = mainController.getNavItem($scope, id, subId);
+            if (typeof (item) != "undefined")
+                item.isActive = true;
+        };
+        $scope.getPageHeading = function (id, ...subId) {
+            let item = mainController.getNavItem($scope, id, subId);
+            return (typeof (item) != "undefined") ? ((item.heading.length == 0) ? item.title : item.heading) : ((typeof (subId) != "undefined" && subId.length > 0) ? id + "/" + subId.join("/") : id);
+        };
+        $scope.getPageTitle = function (id, ...subId) {
+            let item = mainController.getNavItem($scope, id, subId);
+            return (typeof (item) != "undefined") ? item.title : ((typeof (subId) != "undefined" && subId.length > 0) ? id + "/" + subId.join("/") : id);
+        };
         return this;
+    }
+    static getNavItem($scope, id, subId) {
+        let matches = $scope.navItems.filter(function (item) { return typeof (item.controller.id) == "string" && item.controller.id == id; });
+        if (matches.length > 0) {
+            if (typeof (subId) != "undefined") {
+                matches = subId.reduce(function (previousValue, currentValue) {
+                    if (previousValue.length == 0)
+                        return previousValue;
+                    return previousValue[0].navItems.filter(function (item) { return typeof (item.controller.id) == "string" && item.controller.id == currentValue; });
+                }, matches);
+                if (matches.length == 0)
+                    return;
+            }
+            return matches[0].controller;
+        }
     }
 }
 angular.module("main", [])
-    .controller("mainController", mainController);
+    .controller("mainController", ['$scope', '$http', '$location', '$anchorScroll', mainController]);
