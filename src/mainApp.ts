@@ -29,7 +29,6 @@ module menuControllers {
     }
     export interface IContainerScope extends angular.IScope {
         navItems: INavScope[];
-        itemsById: { [index: string]: INavScope }
         current?: INavScope;
     }
     export interface ITopLevelScope extends IContainerScope, IParentItem {
@@ -168,13 +167,7 @@ module menuControllers {
                 this._scope.url = (navSettingsJSON.isLinkItem(source)) ? source.linkUrl : "";
             }
             this._navItems = (navSettingsJSON.isContainer(source)) ? NavItem.import(source.navItems, this) : [];
-            this._scope.itemsById = { };
             this._scope.navItems = this._navItems.map(function(value: NavItem): INavScope { return value._scope; });
-            for (var i = 0; i < this._scope.navItems.length; i++) {
-                let id: string|undefined = this._scope.navItems[i].controller.id;
-                if (typeof(id) == "string" && id.length > 0)
-                    this._scope.itemsById[id] = this._scope.navItems[i];
-            }
             this._precedingNode = precedingNode;
             if (typeof(precedingNode) != "undefined") {
                 this._followingNode = precedingNode.followingNode;
@@ -191,25 +184,73 @@ module menuControllers {
             });
         }
         static isNavItem(node: NavItem|ITopLevelScope): node is NavItem { return typeof((<{ [key: string]: any }>node).__NavItem__uniqueId) == "symbol"; }
+
+        static getNavItemById(parent: IContainerScope|NavItem|NavItem[], idValue: string|string[], ...idValues: string[]): NavItem|undefined {
+            idValues = (typeof(idValues) != "undefined" && idValues.length > 0) ? ((typeof(idValue) == "string") ? [idValue] : idValue).concat(idValues) : (typeof(idValue) == "string") ? [idValue] : idValue;
+            if ((idValues = idValues.map(function(v: string): string { return v.trim(); }).filter(function(v: string): boolean { return v.length > 0; })).length > 0) {
+                let initialId: string = <string>(idValues.shift());
+                let matches: NavItem[] = ((parent instanceof NavItem) ? parent._navItems : ((!Array.isArray(parent)) ? parent.navItems.map(function(v: INavScope): NavItem { return v.controller; }) : parent))
+                    .filter(function(v: NavItem): boolean { return v._id === initialId; });
+                if (matches.length > 0) {
+                    if (idValues.length > 0) {
+                        matches = idValues.reduce(function(pv: NavItem[], cv: string): NavItem[] {
+                            if (pv.length > 0)
+                                return (pv[0]._navItems.length == 0) ? pv[0]._navItems : pv[0]._navItems.filter(function(v: NavItem): boolean { return v.id === cv });
+                            return pv;
+                        }, matches);
+                        if (matches.length == 0)
+                            return;
+                    }
+                    return matches[0];
+                }
+            }
+        }
     }
     export function initializeTopLevelScope(scope: ITopLevelScope, http: angular.IHttpService) {
         scope.navItems = [];
         scope.sideNavNodes = [];
         scope.titleText = "";
         scope.descriptionText = "";
-        scope.itemsById = { };
         http.get<{ navItems: navSettingsJSON.NavItem[]; }>("navSettings.json").then(function(response: angular.IHttpResponse<{ navItems: navSettingsJSON.NavItem[]; }>): void {
             scope.navItems = NavItem.import(response.data.navItems, scope).map(function(item: NavItem): INavScope { return item.scope;  });
-            if (scope.navItems.length > 0) {
+            if (scope.navItems.length > 0)
                 scope.navItems[0].controller.isActive = true;
-                for (var i = 0; i < scope.navItems.length; i++) {
-                    let id: string|undefined = scope.navItems[i].controller.id;
-                    if (typeof(id) == "string" && id.length > 0)
-                        scope.itemsById[id] = scope.navItems[i];
-                }
-            }
         });
     }
+    export function isContainerScope(scope: angular.IScope): scope is IContainerScope {
+        return typeof((<{ [key: string]: any }>scope).navItems) == "object" && (<{ [key: string]: any }>scope).navItems !== null && Array.isArray((<{ [key: string]: any }>scope).navItems);
+    }
+    export function isNavScope(scope: angular.IScope): scope is INavScope {
+        return typeof((<{ [key: string]: any }>scope).title) == "string" && typeof((<{ [key: string]: any }>scope).heading) == "string" &&
+            typeof((<{ [key: string]: any }>scope).description) == "string" && typeof((<{ [key: string]: any }>scope).url) == "string" &&
+            typeof((<{ [key: string]: any }>scope).isPage) == "boolean" && typeof((<{ [key: string]: any }>scope).isActive) == "boolean" &&
+            typeof((<{ [key: string]: any }>scope).isSelected) == "boolean" && typeof((<{ [key: string]: any }>scope).level) == "number" &&
+            typeof((<{ [key: string]: any }>scope).itemClass) == "string" && typeof((<{ [key: string]: any }>scope).linkClass) == "string" &&
+            typeof((<{ [key: string]: any }>scope).controller) == "object" && (<{ [key: string]: any }>scope).controller !== null &&
+            (<{ [key: string]: any }>scope).controller instanceof NavItem;
+    }
+    export function isParentItem(value: object): value is IParentItem {
+        return typeof((<{ [key: string]: any }>value).activeNavItem) == "object" && (<{ [key: string]: any }>value).activeNavItem !== null &&
+            isScopeObject((<{ [key: string]: any }>value).activeNavItem) && isNavScope((<{ [key: string]: any }>value).activeNavItem);
+    }
+    export function isTopLevelScope(scope: angular.IScope): scope is ITopLevelScope {
+        return isContainerScope(scope) && isParentItem(scope) && typeof((<{ [key: string]: any }>scope).includeUrl) == "string" && typeof((<{ [key: string]: any }>scope).titleText) == "string" &&
+            typeof((<{ [key: string]: any }>scope).descriptionText) == "string" && typeof((<{ [key: string]: any }>scope).sideNavNodes) == "object" && 
+            (<{ [key: string]: any }>scope).sideNavNodes !== null && Array.isArray((<{ [key: string]: any }>scope).sideNavNodes);
+    }
+}
+
+function isScopeObject(value: object): value is angular.IScope {
+    return typeof((<{ [key: string]: any }>value).$apply) == "function" && typeof((<{ [key: string]: any }>value).$applyAsync) == "function" &&
+    typeof((<{ [key: string]: any }>value).$broadcast) == "function" && typeof((<{ [key: string]: any }>value).$destroy) == "function" &&
+    typeof((<{ [key: string]: any }>value).$digest) == "function" && typeof((<{ [key: string]: any }>value).$suspend) == "function" &&
+    typeof((<{ [key: string]: any }>value).$isSuspended) == "function" && typeof((<{ [key: string]: any }>value).$resume) == "function" &&
+    typeof((<{ [key: string]: any }>value).$emit) == "function" && typeof((<{ [key: string]: any }>value).$eval) == "function" &&
+    typeof((<{ [key: string]: any }>value).$evalAsync) == "function" && typeof((<{ [key: string]: any }>value).$new) == "function" &&
+    typeof((<{ [key: string]: any }>value).$on) == "function" && typeof((<{ [key: string]: any }>value).$watch) == "function" &&
+    typeof((<{ [key: string]: any }>value).$watchCollection) == "function" && typeof((<{ [key: string]: any }>value).$watchGroup) == "function" &&
+    typeof((<{ [key: string]: any }>value).$parent) == "object" && typeof((<{ [key: string]: any }>value).$root) == "object" &&
+    typeof((<{ [key: string]: any }>value).$id) == "number";
 }
 
 interface IMainAppScope extends menuControllers.ITopLevelScope {
@@ -220,6 +261,10 @@ interface IMainAppScope extends menuControllers.ITopLevelScope {
 }
 
 class mainController {
+    static isMainAppScope(scope: angular.IScope): scope is IMainAppScope {
+        return menuControllers.isTopLevelScope(scope) && typeof((<{ [key: string]: any }>scope).scrollToAnchor) == "function";
+    }
+
     constructor($scope: IMainAppScope, $http: angular.IHttpService, $location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService) {
         menuControllers.initializeTopLevelScope($scope, $http);
         $scope.scrollToAnchor = function(name: string): void {
@@ -242,21 +287,272 @@ class mainController {
         return this;
     }
     static getNavItem($scope: IMainAppScope, id:string, subId: string[]|undefined):  menuControllers.NavItem|undefined {
-        let matches: menuControllers.INavScope[] = $scope.navItems.filter(function(item: menuControllers.INavScope): boolean { return typeof(item.controller.id) == "string" && item.controller.id == id; });
-        if (matches.length > 0) {
-            if (typeof(subId) != "undefined") {
-                matches = subId.reduce(function(previousValue: menuControllers.INavScope[], currentValue: string): menuControllers.INavScope[] {
-                    if (previousValue.length == 0)
-                        return previousValue;
-                    return previousValue[0].navItems.filter(function(item: menuControllers.INavScope): boolean { return typeof(item.controller.id) == "string" && item.controller.id == currentValue; });
-                }, matches);
-                if (matches.length == 0)
-                    return;
-            }
-            return matches[0].controller;
-        }
+        throw "getNavItem is obsolete. Use pageRefLink, pageRefHeadingText or pageRefTitleText directive, instead";
     }
 }
 
+function ensureUniqueId(defaultId: string, id?: any) {
+    if ((defaultId = defaultId.trim()).length == 0)
+        defaultId = "_node";
+    if (typeof(id) != "string" || (id = id.trim().length) == 0)
+        id = defaultId;
+        
+    let element: JQuery = $('#' + id);
+    if (element.length > 0) {
+        let idx: number = 0;
+        do {
+            id = defaultId + idx;
+            element = $('#' + id);
+            idx++;
+        } while (element.length > 0);
+    }
+    return id;
+}
+
 angular.module("main", [])
-.controller("mainController", ['$scope', '$http', '$location', '$anchorScroll', mainController]);
+.controller("mainController", ['$scope', '$http', '$location', '$anchorScroll', mainController])
+.directive('hashScrollLink', ['$location', '$anchorScroll', function($location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService): angular.IDirective<angular.IScope> {
+    return {
+        link: function(
+            scope: angular.IScope,
+            instanceElement: JQLite,
+            instanceAttributes: angular.IAttributes
+        ): void {
+            let text: any = instanceAttributes.text;
+            let id: any = instanceAttributes.refId;
+            if (typeof(id) == "string" && (id = id.trim()).length > 0) {
+                let element: JQuery = $('<a />');
+                let contentHtml: string|undefined;
+                if (instanceAttributes.encapsulateContents === "true" && (contentHtml = instanceElement.html()).trim().length == 0)
+                    contentHtml = undefined;
+                if (typeof(contentHtml) == "string") {
+                    element.append(contentHtml);
+                    instanceElement.empty();
+                }
+                instanceElement.append(element);
+                element.attr("href", "javascript:noop()");
+                if (typeof(instanceAttributes.class) == "string" && instanceAttributes.class.trim().length > 0)
+                    element.addClass(instanceAttributes.class);
+                element.click(function() {
+                    $location.hash(id);
+                    $anchorScroll(id);
+                });
+                if (typeof(text) == "string" && (text = text.trim()).length > 0)
+                    element.text(text);
+                else if (typeof(contentHtml) != "string") {
+                    let target: JQuery = $('#' + id);
+                    if (target.length > 0)
+                        element.text(target.text());
+                    else
+                        element.text(id);
+                }
+            } else if (typeof(text) == "string" && (text = text.trim()).length > 0)
+                instanceElement.text(text);
+        }
+    };
+}])
+.directive('pageRefLink', [function(): angular.IDirective<angular.IScope> {
+    return {
+        link: function(
+            scope: angular.IScope,
+            instanceElement: JQLite,
+            instanceAttributes: angular.IAttributes
+        ): void {
+            if (typeof(instanceAttributes.menuPath) == "string" && mainController.isMainAppScope(scope)) {
+                let id: string[] = instanceAttributes.menuPath.split("/").map(function(v: string): string { return v.trim(); }).filter(function(v: string) { return v.length > 0; });
+                if (id.length > 0) {
+                    let item: menuControllers.NavItem|undefined = menuControllers.NavItem.getNavItemById(scope, id);
+                    if (typeof(item) != "undefined") {
+                        let element: JQuery;
+                        if (item.isActive)
+                            element = $('<samp />');
+                        else {
+                            element = $('<a href="javascript:noop()" />');
+                            element.click(function(this: HTMLButtonElement) {
+                                (<menuControllers.NavItem>item).isActive = true;
+                            });
+                        }
+                        if (typeof(instanceAttributes.class) == "string" && instanceAttributes.class.trim().length > 0)
+                            element.addClass(instanceAttributes.class);
+                        if (typeof(instanceAttributes.text) != "string" || instanceAttributes.text === "heading")
+                            element.text(item.heading);
+                        else if (instanceAttributes.text === "title")
+                            element.text(item.title);
+                        else if (instanceAttributes.text === "description")
+                            element.text(item.description);
+                        else
+                            element.text(item.url);
+                        instanceElement.append(element);
+                        if (instanceAttributes.appendDescription === "true" && instanceAttributes.text !== "description" && item.description.length > 0)
+                            instanceElement.text(" - " + item.description);
+                        return;
+                    }
+                }
+            }
+            instanceElement.text("");
+        }
+    };
+}])
+.directive('pageRefHeadingText', [function(): angular.IDirective<angular.IScope> {
+    return {
+        link: function(
+            scope: angular.IScope,
+            instanceElement: JQLite,
+            instanceAttributes: angular.IAttributes
+        ): void {
+            let element: JQuery;
+            if (typeof(instanceAttributes.tagName) == "string" && instanceAttributes.tagName.trim().length > 0) {
+                element = $('<' + instanceAttributes.tagName + ' />');
+                instanceElement.append(element);
+            } else 
+                element = instanceElement;
+            if (typeof(instanceAttributes.class) == "string" && instanceAttributes.class.trim().length > 0)
+                element.addClass(instanceAttributes.class);
+            if (typeof(instanceAttributes.menuPath) == "string" && mainController.isMainAppScope(scope)) {
+                let id: string[] = instanceAttributes.menuPath.split("/").map(function(v: string): string { return v.trim(); }).filter(function(v: string) { return v.length > 0; });
+                if (id.length > 0) {
+                    let item: menuControllers.NavItem|undefined = menuControllers.NavItem.getNavItemById(scope, id);
+                    if (typeof(item) != "undefined") {
+                        element.text((item.heading.length > 0) ? item.heading : item.title);
+                        return;
+                    }
+                }
+            }
+            element.text("");
+        }
+    };
+}])
+.directive('pageRefTitleText', [function(): angular.IDirective<angular.IScope> {
+    return {
+        link: function(
+            scope: angular.IScope,
+            instanceElement: JQLite,
+            instanceAttributes: angular.IAttributes
+        ): void {
+            let element: JQuery;
+            if (typeof(instanceAttributes.tagName) == "string" && instanceAttributes.tagName.trim().length > 0) {
+                element = $('<' + instanceAttributes.tagName + ' />');
+                instanceElement.append(element);
+            } else 
+                element = instanceElement;
+            if (typeof(instanceAttributes.class) == "string" && instanceAttributes.class.trim().length > 0)
+                element.addClass(instanceAttributes.class);
+            if (typeof(instanceAttributes.menuPath) == "string" && mainController.isMainAppScope(scope)) {
+                let id: string[] = instanceAttributes.menuPath.split("/").map(function(v: string): string { return v.trim(); }).filter(function(v: string) { return v.length > 0; });
+                if (id.length > 0) {
+                    let item: menuControllers.NavItem|undefined = menuControllers.NavItem.getNavItemById(scope, id);
+                    if (typeof(item) != "undefined") {
+                        element.text(item.title);
+                        return;
+                    }
+                }
+            }
+            element.text("");
+        }
+    };
+}])
+.directive('modalPopupDialogCentered', [function(): angular.IDirective<angular.IScope> {
+    return {
+        link: function(
+            scope: angular.IScope,
+            instanceElement: JQLite,
+            instanceAttributes: angular.IAttributes
+        ): void {
+            let id: string = ensureUniqueId("modalPopupDialogCentered", instanceAttributes.id);
+            let modalPopupButtonElement: JQuery = instanceElement.children('modal-popup-dialog-button:first');
+            let buttonElement: JQuery = ((modalPopupButtonElement.length == 0) ? instanceElement : modalPopupButtonElement).children('button[type="button"][data-toggle="modal"]:first');
+            if (buttonElement.length == 0) {
+                buttonElement = $('<button type="button" class="btn d-inline-flex align-top btn-outline-info mb-1 bg-light" data-toggle="modal" />');
+                ((modalPopupButtonElement.length == 0) ? instanceElement : modalPopupButtonElement).append(buttonElement);
+            }
+            buttonElement.attr("data-target", "#" + id);
+            let modalOuterElement: JQuery = $('<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" />');
+            modalOuterElement.insertAfter(instanceElement);
+            modalOuterElement.attr("id", id);
+            let modalDialogElement: JQuery = $('<div class="modal-dialog modal-dialog-centered" role="document" />');
+            modalOuterElement.append(modalDialogElement);
+            let modalContentElement: JQuery = $('<div class="modal-content" />');
+            modalDialogElement.append(modalContentElement);
+            let modalHeaderElement: JQuery = instanceElement.children('.modal-header:first');
+            let modalBodyElement: JQuery = instanceElement.children('.modal-body:first');
+            let modalFooterElement: JQuery = instanceElement.children('.modal-footer:first');
+            let modalTitleElement: JQuery;
+            let modalCloseElement: JQuery;
+            if (modalHeaderElement.length == 0) {
+                modalHeaderElement = $('<div class="modal-header" />');
+                modalTitleElement = $('<h5 class="modal-title" />');
+                modalHeaderElement.append(modalTitleElement);
+                modalCloseElement = $('<button type="button" class="close" data-dismiss="modal" aria-label="Close" />');
+                modalHeaderElement.append(modalCloseElement);
+                modalCloseElement.append('<span aria-hidden="true">&times;</span>');
+            } else {
+                modalHeaderElement.detach();
+                modalTitleElement = modalHeaderElement.children('.modal-title:first');
+                modalCloseElement = modalHeaderElement.children('button[type="button"][data-dismiss="modal"]:first');
+                if (modalCloseElement.length == 0) {
+                    modalCloseElement = $('<button type="button" class="close" data-dismiss="modal" aria-label="Close" />');
+                    modalHeaderElement.append(modalCloseElement);
+                    modalCloseElement.append('<span aria-hidden="true">&times;</span>');
+                }
+                if (modalTitleElement.length == 0) {
+                    modalTitleElement = $('<h5 class="modal-title" />');
+                    modalTitleElement.insertBefore(modalCloseElement);
+                }
+            }
+            modalContentElement.append(modalHeaderElement);
+            if (modalBodyElement.length == 0) {
+                modalBodyElement = $('<div class="modal-footer" />');
+                modalBodyElement.append('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+            } else
+                modalBodyElement.detach();
+            modalContentElement.append(modalBodyElement);
+            if (modalFooterElement.length == 0) {
+                modalFooterElement = $('<div class="modal-footer" />');
+                modalFooterElement.append('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+            } else
+                modalFooterElement.detach();
+            modalContentElement.append(modalFooterElement);
+            let element: JQuery;
+            if (typeof(instanceAttributes.text) == "string" && instanceAttributes.text.trim().length > 0)
+                modalBodyElement.text(instanceAttributes.text);
+            if (typeof(instanceAttributes.title) == "string" && instanceAttributes.title.trim().length > 0) {
+                modalTitleElement.text(instanceAttributes.title);
+                buttonElement.attr("title", instanceAttributes.title);
+            }
+        }
+    };
+}])
+.directive('modalPopupDialogButton', [function(): angular.IDirective<angular.IScope> {
+    return {
+        link: function(
+            scope: angular.IScope,
+            instanceElement: JQLite,
+            instanceAttributes: angular.IAttributes
+        ): void {
+            let element: JQuery = $('<button type="button" class="btn d-inline-flex align-top btn-outline-info mb-1 bg-light" data-toggle="modal" />');
+            instanceElement.append(element);
+            if (typeof(instanceAttributes.class) == "string" && instanceAttributes.class.trim().length > 0)
+                element.addClass(instanceAttributes.class);
+            if (typeof(instanceAttributes.dataTarget) == "string" && instanceAttributes.dataTarget.trim().length > 0)
+                element.attr('data-target', instanceAttributes.dataTarget);
+            if (typeof(instanceAttributes.title) == "string" && instanceAttributes.title.trim().length > 0)
+                element.attr('title', instanceAttributes.title);
+            let contentHtml: string|undefined;
+            if (instanceAttributes.encapsulateContents === "true" && (contentHtml = instanceElement.html()).trim().length == 0)
+                contentHtml = undefined;
+            if (typeof(contentHtml) == "string") {
+                element.append(contentHtml);
+                instanceElement.empty();
+            }
+            if (typeof(instanceAttributes.src) == "string" && instanceAttributes.src.trim().length > 0) {
+                let img: JQuery = $('<img class="figure-img img-fluid rounded" />');
+                element.append(img);
+                img.attr('src', instanceAttributes.src);
+                if (typeof(instanceAttributes.alt) == "string" && instanceAttributes.alt.trim().length > 0)
+                    element.attr('alt', instanceAttributes.alt);
+            }
+            if (typeof(instanceAttributes.text) == "string" && instanceAttributes.text.trim().length > 0)
+                element.text(instanceAttributes.text);
+        }
+    };
+}]);

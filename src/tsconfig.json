@@ -8,15 +8,16 @@
         "preserveConstEnums": true,
         "sourceMap": true,
         "declaration": true,
-        "outDir": "../dist/script",
+        "outDir": "..\\dist\\script",
         "strict": true,
         "declarationMap": true,
         "importHelpers": true,
+        "isolatedModules": false,
         "lib": [
             "es6", "dom"
         ]
     },
     "include": [
-        "./**/*.ts"
+        ".\\**\\*.ts"
     ]
 }
