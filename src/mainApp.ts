@@ -317,25 +317,15 @@ interface IAppLoggerInfo {
     code?: number;
     detail?: any;
 };
-interface IAppLoggerEntry {
-    message: string;
-    type: string;
-    code: number;
-    detail: string;
-    id: number;
-};
 
 interface IAppLogger {
-    getLogEntries: { (): IAppLoggerEntry[]; };
     log: { (message: string|IAppLoggerInfo|Error): void; };
 }
 
 class AppLoggerService {
-    private _logEntries: IAppLoggerEntry[] = [];
-    getLogEntries() { return this._logEntries; }
     log(message: string|IAppLoggerInfo|Error): void {
         if (typeof(message) == "string")
-            this._logEntries.push({ message: message, type: "Message", code: 0, detail: "", id: this._logEntries.length });
+            console.log(message);
         else {
             let detailStr: string;
             if (typeof((<{ [index: string]: any }>message).detail) == "string")
@@ -376,13 +366,12 @@ class AppLoggerService {
             else
                 detailStr = (<{ [index: string]: any }>message).detail.ToString();
 
-                this._logEntries.push({
-                message: message.message,
-                type: ((<{ [index: string]: any }>message).type == "string") ? (<{ [index: string]: any }>message).type : (((<{ [index: string]: any }>message).name == "string") ? (<{ [index: string]: any }>message).name : ((message instanceof Error) ? "Error" : "Message")),
-                code: ((<{ [index: string]: any }>message).code == "number") ? (<{ [index: string]: any }>message).code : (((<{ [index: string]: any }>message).number == "number") ? (<{ [index: string]: any }>message).number : ((message instanceof Error) ? -1 : 0)),
-                detail: detailStr,
-                id: this._logEntries.length
-            });
+                console.log(JSON.stringify({
+                    message: message.message,
+                    type: ((<{ [index: string]: any }>message).type == "string") ? (<{ [index: string]: any }>message).type : (((<{ [index: string]: any }>message).name == "string") ? (<{ [index: string]: any }>message).name : ((message instanceof Error) ? "Error" : "Message")),
+                    code: ((<{ [index: string]: any }>message).code == "number") ? (<{ [index: string]: any }>message).code : (((<{ [index: string]: any }>message).number == "number") ? (<{ [index: string]: any }>message).number : ((message instanceof Error) ? -1 : 0)),
+                    detail: detailStr
+                }));
         }
     }
 }
