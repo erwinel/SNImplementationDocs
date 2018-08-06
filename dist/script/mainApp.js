@@ -215,7 +215,8 @@ class mainController {
     static isMainAppScope(scope) {
         return menuControllers.isTopLevelScope(scope) && typeof (scope.scrollToAnchor) == "function";
     }
-    constructor($scope, $http, $location, $anchorScroll) {
+    constructor($scope, $http, $location, $anchorScroll, logger) {
+        $scope.logMessages = logger.getLogEntries();
         menuControllers.initializeTopLevelScope($scope, $http);
         $scope.scrollToAnchor = function (name) {
             $location.hash(name);
@@ -256,9 +257,70 @@ function ensureUniqueId(defaultId, id) {
     }
     return id;
 }
+;
+;
+class AppLoggerService {
+    constructor() {
+        this._logEntries = [];
+    }
+    getLogEntries() { return this._logEntries; }
+    log(message) {
+        if (typeof (message) == "string")
+            this._logEntries.push({ message: message, type: "Message", code: 0, detail: "", id: this._logEntries.length });
+        else {
+            let detailStr;
+            if (typeof (message.detail) == "string")
+                detailStr = message.detail;
+            else if (typeof (message.detail) == "undefined" || message.detail === null) {
+                let detailObj = {};
+                let count = 0;
+                detailStr = "";
+                if (typeof (message.description) == "string") {
+                    count++;
+                    detailStr = message.description;
+                    detailObj.description = detailStr;
+                }
+                if (typeof (message.fileName) == "string") {
+                    count++;
+                    detailStr = message.fileName;
+                    detailObj.fileName = detailStr;
+                }
+                if (typeof (message.lineNumber) == "number") {
+                    count++;
+                    detailObj.lineNumber = message.lineNumber;
+                    detailStr = detailObj.lineNumber.toString();
+                }
+                if (typeof (message.columnNumber) == "number") {
+                    count++;
+                    detailObj.columnNumber = message.columnNumber;
+                    detailStr = detailObj.columnNumber.toString();
+                }
+                if (typeof (message.stack) == "string") {
+                    count++;
+                    detailStr = message.stack;
+                    detailObj.stack = detailStr;
+                }
+                if (count > 1)
+                    detailStr = JSON.stringify(detailObj);
+            }
+            else if (typeof (message.detail) != "function")
+                detailStr = JSON.stringify(message.detail);
+            else
+                detailStr = message.detail.ToString();
+            this._logEntries.push({
+                message: message.message,
+                type: (message.type == "string") ? message.type : ((message.name == "string") ? message.name : ((message instanceof Error) ? "Error" : "Message")),
+                code: (message.code == "number") ? message.code : ((message.number == "number") ? message.number : ((message instanceof Error) ? -1 : 0)),
+                detail: detailStr,
+                id: this._logEntries.length
+            });
+        }
+    }
+}
 angular.module("main", [])
-    .controller("mainController", ['$scope', '$http', '$location', '$anchorScroll', mainController])
-    .directive('hashScrollLink', ['$location', '$anchorScroll', function ($location, $anchorScroll) {
+    .service('appLogger', AppLoggerService)
+    .controller("mainController", ['$scope', '$http', '$location', '$anchorScroll', 'appLogger', mainController])
+    .directive('hashScrollLink', ['$location', '$anchorScroll', 'appLogger', function ($location, $anchorScroll, logger) {
         return {
             link: function (scope, instanceElement, instanceAttributes) {
                 let text = instanceAttributes.text;
@@ -295,14 +357,16 @@ angular.module("main", [])
             }
         };
     }])
-    .directive('pageRefLink', [function () {
+    .directive('pageRefLink', ['appLogger', function (logger) {
         return {
             link: function (scope, instanceElement, instanceAttributes) {
                 if (typeof (instanceAttributes.menuPath) == "string" && mainController.isMainAppScope(scope)) {
                     let id = instanceAttributes.menuPath.split("/").map(function (v) { return v.trim(); }).filter(function (v) { return v.length > 0; });
                     if (id.length > 0) {
+                        logger.log("Looking up pageRefLink " + instanceAttributes.menuPath);
                         let item = menuControllers.NavItem.getNavItemById(scope, id);
                         if (typeof (item) != "undefined") {
+                            logger.log("Found pageRefLink url " + item.url);
                             let element;
                             if (item.isActive)
                                 element = $('<samp />');
@@ -333,7 +397,7 @@ angular.module("main", [])
             }
         };
     }])
-    .directive('pageRefHeadingText', [function () {
+    .directive('pageRefHeadingText', ['appLogger', function (logger) {
         return {
             link: function (scope, instanceElement, instanceAttributes) {
                 let element;
@@ -359,7 +423,7 @@ angular.module("main", [])
             }
         };
     }])
-    .directive('pageRefTitleText', [function () {
+    .directive('pageRefTitleText', ['appLogger', function (logger) {
         return {
             link: function (scope, instanceElement, instanceAttributes) {
                 let element;
@@ -385,7 +449,7 @@ angular.module("main", [])
             }
         };
     }])
-    .directive('modalPopupDialogCentered', [function () {
+    .directive('modalPopupDialogCentered', ['appLogger', function (logger) {
         return {
             link: function (scope, instanceElement, instanceAttributes) {
                 let id = ensureUniqueId("modalPopupDialogCentered", instanceAttributes.id);
@@ -455,7 +519,7 @@ angular.module("main", [])
             }
         };
     }])
-    .directive('modalPopupDialogButton', [function () {
+    .directive('modalPopupDialogButton', ['appLogger', function (logger) {
         return {
             link: function (scope, instanceElement, instanceAttributes) {
                 let element = $('<button type="button" class="btn d-inline-flex align-top btn-outline-info mb-1 bg-light" data-toggle="modal" />');
@@ -482,59 +546,6 @@ angular.module("main", [])
                 }
                 if (typeof (instanceAttributes.text) == "string" && instanceAttributes.text.trim().length > 0)
                     element.text(instanceAttributes.text);
-            }
-        };
-    }])
-    .directive('nestingBootstrapCard', [function () {
-        return {
-            link: function (scope, instanceElement, instanceAttributes) {
-                let cardElement = instanceElement.parent();
-                let level = 2;
-                while (cardElement.length > 0) {
-                    if (cardElement[0].tagName == 'nesting-bootstrap-card' && (cardElement[0].namespaceURI === null || (cardElement[0].namespaceURI).length == 0))
-                        level++;
-                    if (level > 5)
-                        break;
-                }
-                let isCollapsible = (instanceAttributes.collapsible == "true" || typeof (instanceAttributes.collapsed) == "string");
-                let html = instanceElement.html();
-                instanceElement.empty();
-                cardElement = $('<div class="card" />');
-                instanceElement.append(cardElement);
-                let cardHeaderElement = $('<div class="card-header" />');
-                cardElement.append(cardHeaderElement);
-                let cardBodyElement = $('<div class="card-body" />');
-                if (typeof (html) == "string" && html.trim().length > 0)
-                    cardBodyElement.append(html);
-                if (isCollapsible) {
-                    let headingElement = $('<h' + level + ' />');
-                    let cardHeaderId = ensureUniqueId("nestingBootstrapCard", instanceAttributes.id);
-                    cardHeaderElement.attr("id", cardHeaderId);
-                    let toggleId = ensureUniqueId(cardHeaderId + "_");
-                    let toggleButtonElement = $('<button type="button" class="btn d-inline-flex align-top btn-outline-info mb-1 bg-light" data-toggle="collapse" />');
-                    cardHeaderElement.append(toggleButtonElement);
-                    toggleButtonElement.attr("aria-controls", toggleId);
-                    toggleButtonElement.attr("data-target", "#" + toggleId);
-                    toggleButtonElement.attr("aria-expanded", (instanceAttributes.collapsed === "true") ? "true" : "false");
-                    toggleButtonElement.append(headingElement);
-                    let toggleElement = $('<div />');
-                    cardElement.append(toggleElement);
-                    toggleElement.attr("id", toggleId);
-                    toggleElement.attr("aria-labelledby", cardHeaderId);
-                    toggleElement.addClass((instanceAttributes.collapsed === "true") ? "collapse" : "collapse show");
-                    toggleElement.append(cardBodyElement);
-                    if (typeof (instanceAttributes.heading) == "string" && instanceAttributes.heading.trim().length > 0)
-                        headingElement.text(instanceAttributes.heading);
-                    else
-                        headingElement.append('<span aria-hidden="true">&rArr;</span>');
-                }
-                else {
-                    if (typeof (instanceAttributes.heading) == "string" && instanceAttributes.heading.trim().length > 0) {
-                        let headingElement = $('<h' + level + ' />');
-                        cardHeaderElement.append(headingElement);
-                    }
-                    cardElement.append(cardBodyElement);
-                }
             }
         };
     }]);

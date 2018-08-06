@@ -102,11 +102,38 @@ interface IMainAppScope extends menuControllers.ITopLevelScope {
     getPageTitle: {
         (id: string, ...subId: string[]): string;
     };
+    logMessages: IAppLoggerEntry[];
 }
 declare class mainController {
     static isMainAppScope(scope: angular.IScope): scope is IMainAppScope;
-    constructor($scope: IMainAppScope, $http: angular.IHttpService, $location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService);
+    constructor($scope: IMainAppScope, $http: angular.IHttpService, $location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService, logger: AppLoggerService);
     static getNavItem($scope: IMainAppScope, id: string, subId: string[] | undefined): menuControllers.NavItem | undefined;
 }
 declare function ensureUniqueId(defaultId: string, id?: any): any;
+interface IAppLoggerInfo {
+    message: string;
+    type?: string;
+    code?: number;
+    detail?: any;
+}
+interface IAppLoggerEntry {
+    message: string;
+    type: string;
+    code: number;
+    detail: string;
+    id: number;
+}
+interface IAppLogger {
+    getLogEntries: {
+        (): IAppLoggerEntry[];
+    };
+    log: {
+        (message: string | IAppLoggerInfo | Error): void;
+    };
+}
+declare class AppLoggerService {
+    private _logEntries;
+    getLogEntries(): IAppLoggerEntry[];
+    log(message: string | IAppLoggerInfo | Error): void;
+}
 //# sourceMappingURL=mainApp.d.ts.map

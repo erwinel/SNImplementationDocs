@@ -258,6 +258,7 @@ interface IMainAppScope extends menuControllers.ITopLevelScope {
     setPage: { (id: string, ...subId: string[]): void; };
     getPageHeading: { (id: string, ...subId: string[]): string; };
     getPageTitle: { (id: string, ...subId: string[]): string; };
+    logMessages: IAppLoggerEntry[];
 }
 
 class mainController {
@@ -265,7 +266,8 @@ class mainController {
         return menuControllers.isTopLevelScope(scope) && typeof((<{ [key: string]: any }>scope).scrollToAnchor) == "function";
     }
 
-    constructor($scope: IMainAppScope, $http: angular.IHttpService, $location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService) {
+    constructor($scope: IMainAppScope, $http: angular.IHttpService, $location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService, logger: AppLoggerService) {
+        $scope.logMessages = logger.getLogEntries();
         menuControllers.initializeTopLevelScope($scope, $http);
         $scope.scrollToAnchor = function(name: string): void {
             $location.hash(name);
@@ -309,9 +311,85 @@ function ensureUniqueId(defaultId: string, id?: any) {
     return id;
 }
 
+interface IAppLoggerInfo {
+    message: string;
+    type?: string;
+    code?: number;
+    detail?: any;
+};
+interface IAppLoggerEntry {
+    message: string;
+    type: string;
+    code: number;
+    detail: string;
+    id: number;
+};
+
+interface IAppLogger {
+    getLogEntries: { (): IAppLoggerEntry[]; };
+    log: { (message: string|IAppLoggerInfo|Error): void; };
+}
+
+class AppLoggerService {
+    private _logEntries: IAppLoggerEntry[] = [];
+    getLogEntries() { return this._logEntries; }
+    log(message: string|IAppLoggerInfo|Error): void {
+        if (typeof(message) == "string")
+            this._logEntries.push({ message: message, type: "Message", code: 0, detail: "", id: this._logEntries.length });
+        else {
+            let detailStr: string;
+            if (typeof((<{ [index: string]: any }>message).detail) == "string")
+                detailStr = (<{ [index: string]: any }>message).detail;
+            else if (typeof((<{ [index: string]: any }>message).detail) == "undefined" || (<{ [index: string]: any }>message).detail === null) {
+                let detailObj: { [index: string]: any } = { };
+                let count: number = 0;
+                detailStr = "";
+                if (typeof((<{ [index: string]: any }>message).description) == "string") {
+                    count++;
+                    detailStr = (<{ [index: string]: any }>message).description;
+                    detailObj.description = detailStr;
+                }
+                if (typeof((<{ [index: string]: any }>message).fileName) == "string") {
+                    count++;
+                    detailStr = (<{ [index: string]: any }>message).fileName;
+                    detailObj.fileName = detailStr;
+                }
+                if (typeof((<{ [index: string]: any }>message).lineNumber) == "number") {
+                    count++;
+                    detailObj.lineNumber = (<{ [index: string]: any }>message).lineNumber;
+                    detailStr = detailObj.lineNumber.toString();
+                }
+                if (typeof((<{ [index: string]: any }>message).columnNumber) == "number") {
+                    count++;
+                    detailObj.columnNumber = (<{ [index: string]: any }>message).columnNumber;
+                    detailStr = detailObj.columnNumber.toString();
+                }
+                if (typeof((<{ [index: string]: any }>message).stack) == "string") {
+                    count++;
+                    detailStr = (<{ [index: string]: any }>message).stack;
+                    detailObj.stack = detailStr;
+                }
+                if (count > 1)
+                    detailStr = JSON.stringify(detailObj);
+            } else if (typeof((<{ [index: string]: any }>message).detail) != "function")
+                detailStr = JSON.stringify((<{ [index: string]: any }>message).detail);
+            else
+                detailStr = (<{ [index: string]: any }>message).detail.ToString();
+
+                this._logEntries.push({
+                message: message.message,
+                type: ((<{ [index: string]: any }>message).type == "string") ? (<{ [index: string]: any }>message).type : (((<{ [index: string]: any }>message).name == "string") ? (<{ [index: string]: any }>message).name : ((message instanceof Error) ? "Error" : "Message")),
+                code: ((<{ [index: string]: any }>message).code == "number") ? (<{ [index: string]: any }>message).code : (((<{ [index: string]: any }>message).number == "number") ? (<{ [index: string]: any }>message).number : ((message instanceof Error) ? -1 : 0)),
+                detail: detailStr,
+                id: this._logEntries.length
+            });
+        }
+    }
+}
 angular.module("main", [])
-.controller("mainController", ['$scope', '$http', '$location', '$anchorScroll', mainController])
-.directive('hashScrollLink', ['$location', '$anchorScroll', function($location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService): angular.IDirective<angular.IScope> {
+.service('appLogger', AppLoggerService)
+.controller("mainController", ['$scope', '$http', '$location', '$anchorScroll', 'appLogger', mainController])
+.directive('hashScrollLink', ['$location', '$anchorScroll', 'appLogger', function($location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService, logger: AppLoggerService): angular.IDirective<angular.IScope> {
     return {
         link: function(
             scope: angular.IScope,
@@ -351,7 +429,7 @@ angular.module("main", [])
         }
     };
 }])
-.directive('pageRefLink', [function(): angular.IDirective<angular.IScope> {
+.directive('pageRefLink', ['appLogger', function(logger: AppLoggerService): angular.IDirective<angular.IScope> {
     return {
         link: function(
             scope: angular.IScope,
@@ -361,8 +439,10 @@ angular.module("main", [])
             if (typeof(instanceAttributes.menuPath) == "string" && mainController.isMainAppScope(scope)) {
                 let id: string[] = instanceAttributes.menuPath.split("/").map(function(v: string): string { return v.trim(); }).filter(function(v: string) { return v.length > 0; });
                 if (id.length > 0) {
+                    logger.log("Looking up pageRefLink " + instanceAttributes.menuPath);
                     let item: menuControllers.NavItem|undefined = menuControllers.NavItem.getNavItemById(scope, id);
                     if (typeof(item) != "undefined") {
+                        logger.log("Found pageRefLink url " + item.url);
                         let element: JQuery;
                         if (item.isActive)
                             element = $('<samp />');
@@ -393,7 +473,7 @@ angular.module("main", [])
         }
     };
 }])
-.directive('pageRefHeadingText', [function(): angular.IDirective<angular.IScope> {
+.directive('pageRefHeadingText', ['appLogger', function(logger: AppLoggerService): angular.IDirective<angular.IScope> {
     return {
         link: function(
             scope: angular.IScope,
@@ -422,7 +502,7 @@ angular.module("main", [])
         }
     };
 }])
-.directive('pageRefTitleText', [function(): angular.IDirective<angular.IScope> {
+.directive('pageRefTitleText', ['appLogger', function(logger: AppLoggerService): angular.IDirective<angular.IScope> {
     return {
         link: function(
             scope: angular.IScope,
@@ -451,7 +531,7 @@ angular.module("main", [])
         }
     };
 }])
-.directive('modalPopupDialogCentered', [function(): angular.IDirective<angular.IScope> {
+.directive('modalPopupDialogCentered', ['appLogger', function(logger: AppLoggerService): angular.IDirective<angular.IScope> {
     return {
         link: function(
             scope: angular.IScope,
@@ -522,7 +602,7 @@ angular.module("main", [])
         }
     };
 }])
-.directive('modalPopupDialogButton', [function(): angular.IDirective<angular.IScope> {
+.directive('modalPopupDialogButton', ['appLogger', function(logger: AppLoggerService): angular.IDirective<angular.IScope> {
     return {
         link: function(
             scope: angular.IScope,
