@@ -102,7 +102,6 @@ interface IMainAppScope extends menuControllers.ITopLevelScope {
     getPageTitle: {
         (id: string, ...subId: string[]): string;
     };
-    logMessages: IAppLoggerEntry[];
 }
 declare class mainController {
     static isMainAppScope(scope: angular.IScope): scope is IMainAppScope;
@@ -116,24 +115,12 @@ interface IAppLoggerInfo {
     code?: number;
     detail?: any;
 }
-interface IAppLoggerEntry {
-    message: string;
-    type: string;
-    code: number;
-    detail: string;
-    id: number;
-}
 interface IAppLogger {
-    getLogEntries: {
-        (): IAppLoggerEntry[];
-    };
     log: {
         (message: string | IAppLoggerInfo | Error): void;
     };
 }
 declare class AppLoggerService {
-    private _logEntries;
-    getLogEntries(): IAppLoggerEntry[];
     log(message: string | IAppLoggerInfo | Error): void;
 }
 //# sourceMappingURL=mainApp.d.ts.map

@@ -1,71 +1,29 @@
 {
     "$schema": "./navSettingsSchema.json",
-    "navItems": [
-        {
-            "title": "Home",
-            "pageUrl": "Home.htm"
-        },
-        {
-            "id": "InitialConfig",
-            "title": "Initial Config",
-            "heading": "Initial ServiceNow Configuration",
-            "pageUrl": "InitialConfig.htm"
-        },
-        {
-            "id": "UpdateSets",
-            "title": "Update Sets",
-            "heading": "Global Update Sets",
-            "pageUrl": "GlobalUpdateSets.htm"
-        },
-        {
-            "title": "Applications",
-            "heading": "Custom Applications",
-            "pageUrl": "Applications.htm",
-            "navItems": [
-                {
-                    "title": "Utilities Application",
-                    "pageUrl": "x_44813_util.htm"
-                },
-                {
-                    "title": "Group Name Registry",
-                    "pageUrl": "x_44813_grpnamereg.htm"
-                },
-                {
-                    "title": "Security Classification",
-                    "pageUrl": "x_44813_sec_clsif.htm"
-                }
-            ]
-        },
-        {
-            "id": "Scripting",
-            "title": "Scripting",
-            "pageUrl": "Scripting.htm",
-            "navItems": [
-                {
-                    "id": "DevEnvSetup",
-                    "title": "Environment Setup",
-                    "heading": "Development Environment Setup",
-                    "pageUrl": "DevEnvSetup.htm"
-                },
-                {
-                    "id": "Snippets",
-                    "title": "Snippets",
-                    "heading": "Code Snippets",
-                    "pageUrl": "Snippets.htm"
-                },
-                {
-                    "id": "ServiceNowServerDev",
-                    "title": "Server-Side",
-                    "heading": "Server-Side Development Repository",
-                    "pageUrl": "ServiceNowServerDev.htm"
-                },
-                {
-                    "id": "ServiceNowClientDev",
-                    "title": "Client-Side",
-                    "heading": "Client-Side Development Repository",
-                    "pageUrl": "ServiceNowClientDev.htm"
-                }
-            ]
-        }
-    ]
+    "navBar": [
+        { "type": "page", "name": "Home", "path": "index.html" },
+        { "type": "page", "id": "InitialConfig", "name": "Initial Config", "heading": "Initial ServiceNow Configuration", "path": "index.html" },
+        { "type": "page", "id": "UpdateSets", "name": "Update Sets", "heading": "Global Update Sets", "path": "GlobalUpdateSets.html" },
+        { "type": "page", "name": "Applications", "heading": "Custom Applications", "path": "Applications.html", "sideBar": [
+            { "type": "page", 
+                "name": "Utilities Application",
+                "path": "x_44813_util.html"
+            },
+            { "type": "page", 
+                "name": "Group Name Registry",
+                "path": "x_44813_grpnamereg.html"
+            },
+            { "type": "page", 
+                "name": "Security Classification",
+                "path": "x_44813_sec_clsif.html"
+            }
+        ]},
+        { "type": "page", "id": "Scripting", "name": "Scripting", "path": "Scripting.html", "sideBar": [
+            { "type": "page", "id": "DevEnvSetup", "name": "Environment Setup", "heading": "Development Environment Setup", "path": "DevEnvSetup.html" },
+            { "type": "page",  "id": "Snippets", "name": "Snippets", "heading": "Code Snippets", "path": "Snippets.html" },
+            { "type": "page",  "id": "ServiceNowServerDev", "name": "Server-Side", "heading": "Server-Side Development Repository", "path": "ServiceNowServerDev.html" },
+            { "type": "page",  "id": "ServiceNowClientDev", "name": "Client-Side", "heading": "Client-Side Development Repository", "path": "ServiceNowClientDev.html" }
+        ]}
+    ],
+    "sideBar": []
 }

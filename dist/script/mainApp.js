@@ -93,7 +93,7 @@ var menuControllers;
                     current = parent;
                     parent = parent._parent;
                 }
-                if (!NavItem.isNavItem(parent))
+                if (!NavItem.isNavItem(parent) && typeof (parent.current) != "undefined" && parent.current.controller.__NavItem__uniqueId === current.__NavItem__uniqueId)
                     parent.current = undefined;
             }
             this._scope.isActive = value;
@@ -216,7 +216,6 @@ class mainController {
         return menuControllers.isTopLevelScope(scope) && typeof (scope.scrollToAnchor) == "function";
     }
     constructor($scope, $http, $location, $anchorScroll, logger) {
-        $scope.logMessages = logger.getLogEntries();
         menuControllers.initializeTopLevelScope($scope, $http);
         $scope.scrollToAnchor = function (name) {
             $location.hash(name);
@@ -258,15 +257,10 @@ function ensureUniqueId(defaultId, id) {
     return id;
 }
 ;
-;
 class AppLoggerService {
-    constructor() {
-        this._logEntries = [];
-    }
-    getLogEntries() { return this._logEntries; }
     log(message) {
         if (typeof (message) == "string")
-            this._logEntries.push({ message: message, type: "Message", code: 0, detail: "", id: this._logEntries.length });
+            console.log(message);
         else {
             let detailStr;
             if (typeof (message.detail) == "string")
@@ -307,13 +301,12 @@ class AppLoggerService {
                 detailStr = JSON.stringify(message.detail);
             else
                 detailStr = message.detail.ToString();
-            this._logEntries.push({
+            console.log(JSON.stringify({
                 message: message.message,
                 type: (message.type == "string") ? message.type : ((message.name == "string") ? message.name : ((message instanceof Error) ? "Error" : "Message")),
                 code: (message.code == "number") ? message.code : ((message.number == "number") ? message.number : ((message instanceof Error) ? -1 : 0)),
-                detail: detailStr,
-                id: this._logEntries.length
-            });
+                detail: detailStr
+            }));
         }
     }
 }
@@ -335,12 +328,13 @@ angular.module("main", [])
                         instanceElement.empty();
                     }
                     instanceElement.append(element);
-                    element.attr("href", "javascript:noop()");
+                    element.attr("href", "#");
                     if (typeof (instanceAttributes.class) == "string" && instanceAttributes.class.trim().length > 0)
                         element.addClass(instanceAttributes.class);
                     element.click(function () {
                         $location.hash(id);
                         $anchorScroll(id);
+                        return false;
                     });
                     if (typeof (text) == "string" && (text = text.trim()).length > 0)
                         element.text(text);
@@ -357,23 +351,51 @@ angular.module("main", [])
             }
         };
     }])
+    .directive('pageHeadingAndNav', [function (logger) {
+        return {
+            template: `
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <header class="container-fluid border border-secondary p-sm-1 defaultHeader">
+        <h1>{{titleText}}</h1>{{descriptionText}}
+    </header>
+    <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
+        <ul class="navbar-nav mr-auto">
+            <li ng-repeat="m in navItems" class="{{m.itemClass}}">
+                <a href="#" ng-if="m.isPage" class="{{m.linkClass}}" ng-click="m.controller.raiseActivate()">{{m.title}}</a>
+                <a href="{{m.url}}" ng-if="!m.isPage" class="{{m.linkClass}}" target="_blank">{{m.title}}</a>
+            </li>
+        </ul>
+    </nav>
+    <aside ng-if="sideNavNodes.length > 0" class="float-right d-inline-flex">
+        <ul class="nav flex-column">
+            <li ng-repeat="m in sideNavNodes" class="nav-item {{m.itemClass}}">
+                <a href="#" ng-if="m.isPage" class="{{m.linkClass}}" ng-click="m.controller.raiseActivate()">{{m.title}}</a>
+                <a href="{{m.url}}" ng-if="!m.isPage" class="{{m.linkClass}}" target="_blank">{{m.title}}</a>
+            </li>
+        </ul>
+    </aside>
+`
+        };
+    }])
     .directive('pageRefLink', ['appLogger', function (logger) {
         return {
             link: function (scope, instanceElement, instanceAttributes) {
                 if (typeof (instanceAttributes.menuPath) == "string" && mainController.isMainAppScope(scope)) {
                     let id = instanceAttributes.menuPath.split("/").map(function (v) { return v.trim(); }).filter(function (v) { return v.length > 0; });
                     if (id.length > 0) {
-                        console.log("Looking up pageRefLink " + instanceAttributes.menuPath);
+                        logger.log("Looking up pageRefLink " + instanceAttributes.menuPath);
                         let item = menuControllers.NavItem.getNavItemById(scope, id);
                         if (typeof (item) != "undefined") {
-                            console.log("Found pageRefLink url " + item.url);
+                            logger.log("Found pageRefLink url " + item.url);
                             let element;
                             if (item.isActive)
                                 element = $('<samp />');
                             else {
-                                element = $('<a href="javascript:noop()" />');
+                                element = $('<a href="#" />');
                                 element.click(function () {
-                                    item.isActive = true;
+                                    item.raiseActivate();
                                 });
                             }
                             if (typeof (instanceAttributes.class) == "string" && instanceAttributes.class.trim().length > 0)

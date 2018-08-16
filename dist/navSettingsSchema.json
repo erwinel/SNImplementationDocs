@@ -2,122 +2,139 @@
     "$id": "https://github.com/erwinel/SNImplementationDocs/blob/navSettingsSchemaV1.json",
     "type": "object",
     "definitions": {
-        "navItem": {
-            "$id": "#/definitions/navItem",
-            "type": "object",
-            "required": [ "title" ],
-            "properties": {
-              "id": {
-                "$id": "#/definitions/navItem/properties/id",
-                "type": "string",
-                "title": "Programmatic Identifier",
-                "default": ""
-              },
-              "title": {
-                "$id": "#/definitions/navItem/properties/title",
-                "type": "string",
-                "title": "Link Title",
-                "default": ""
-              },
-              "heading": {
-                "$id": "#/definitions/navItem/properties/heading",
-                "type": "string",
-                "title": "Page Heading",
-                "default": ""
-              },
-              "description": {
-                "$id": "#/definitions/navItem/properties/description",
-                "type": "string",
-                "title": "Page Description",
-                "default": ""
-              }
-            }
-        },
-        "navList": {
-            "$id": "#/definitions/navList",
-            "type": "array",
-            "minItems": 1,
-            "items": [
-                   {
-                       "anyOf": [
-                            { "$ref": "#/definitions/leafPage" },
-                            { "$ref": "#/definitions/leafLink" },
-                            { "$ref": "#/definitions/containerWithPage" },
-                            { "$ref": "#/definitions/containerWithLink" }
-                       ]
-                   }
+        "INavConfigNamedNode": {
+            "$id": "#/definitions/INavConfigNamedNode",
+            "oneOf": [
+                { "$ref": "#/definitions/INavConfigPageRef" },
+                { "$ref": "#/definitions/INavConfigLink" }
             ]
         },
-        "leafPage": {
-            "$id": "#/definitions/leafPage",
-            "$ref": "#/definitions/navItem",
-            "required": [ "pageUrl" ],
-            "properties": {
-                "pageUrl": {
-                  "$id": "#/definitions/leafPage/properties/pageUrl",
-                  "type": "string",
-                  "title": "Relative page URL",
-                  "default": ""
-                }
-            }
+        "INavConfigNode": {
+            "$id": "#/definitions/INavConfigNode",
+            "oneOf": [
+                { "$ref": "#/definitions/INavConfigNamedNode" },
+                { "$ref": "#/definitions/INavConfigSeparator" }
+            ]
         },
-        "leafLink": {
-            "$id": "#/definitions/leafLink",
-            "$ref": "#/definitions/navItem",
-            "required": [ "linkUrl" ],
-            "properties": {
-                "linkUrl": {
-                  "$id": "#/definitions/leafLink/properties/linkUrl",
-                  "type": "string",
-                  "title": "External link",
-                  "default": ""
-                }
-            }
+        "INavConfigNodeList": {
+            "$id": "#/definitions/INavConfigNodeList",
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#/definitions/INavConfigNode" }
         },
-        "container": {
-            "$id": "#/definitions/container",
-            "$ref": "#/definitions/navItem",
-            "required": [ "navItems" ],
+        "INavConfigPageRef": {
+            "$id": "#/definitions/INavConfigPageRef",
+            "required": [ "type", "name", "path" ],
             "properties": {
-                "navItems": {
-                    "$id": "#/definitions/container/navItems",
-                    "$ref": "#/definitions/navList"
-                }
-            }
-        },
-        "containerWithPage": {
-            "$id": "#/definitions/containerWithPage",
-            "$ref": "#/definitions/container",
-            "required": [ "pageUrl" ],
-            "properties": {
-                "pageUrl": {
-                  "$id": "#/definitions/containerWithPage/properties/pageUrl",
+              "type": {
+                "$id": "#/definitions/INavConfigPageRef/properties/type",
+                "const": "page",
+                "title": "Node type designation"
+              },
+              "id": {
+                "$id": "#/definitions/INavConfigPageRef/properties/id",
+                "type": "string",
+                "title": "Programmatic Identifier"
+              },
+              "tooltip": {
+                "$id": "#/definitions/INavConfigPageRef/properties/tooltip",
+                "type": "string",
+                "title": "Link Tooltip"
+              },
+              "name": {
+                "$id": "#/definitions/INavConfigPageRef/properties/name",
                   "type": "string",
-                  "title": "Relative page URL",
-                  "default": ""
-                }
-            }
-        },
-        "containerWithLink": {
-            "$id": "#/definitions/containerWithLink",
-            "$ref": "#/definitions/container",
-            "required": [ "linkUrl" ],
-            "properties": {
-                "linkUrl": {
-                  "$id": "#/definitions/containerWithLink/properties/linkUrl",
+                  "minLength": 1,
+                  "title": "Relative path to page"
+              },
+              "path": {
+                "$id": "#/definitions/INavConfigPageRef/properties/path",
                   "type": "string",
-                  "title": "External link",
-                  "default": ""
+                  "uri-reference": true,
+                  "title": "Relative path to page"
+              },
+              "heading": {
+                "$id": "#/definitions/INavConfigPageRef/properties/heading",
+                "type": "string",
+                "title": "Page Heading"
+              },
+              "subHeading": {
+                "$id": "#/definitions/INavConfigPageRef/properties/subHeading",
+                "type": "string",
+                "title": "Page Sub-heading"
+              },
+              "hiddenIds": {
+                "$id": "#/definitions/INavConfigPageRef/properties/hiddenIds",
+                "type": "array",
+                "items": { "type": "string" },
+                "title": "IDs of parent navigation items to be hidden when this represents the active page"
+              },
+              "navBar": {
+                "$id": "#/definitions/INavConfigPageRef/properties/navBar",
+                  "$ref": "#/definitions/INavConfigNodeList",
+                  "title": "Navigation items to append to the top navigation bar when this represents the active page"
+              },
+              "sideBar": {
+                "$id": "#/definitions/INavConfigPageRef/properties/sideBar",
+                  "$ref": "#/definitions/INavConfigNodeList",
+                  "title": "Navigation items to append to the side navigation bar when this represents the active page"
+              }
+            },
+            "additionalProperties": false
+        },
+        "INavConfigLink": {
+            "$id": "#/definitions/INavConfigLink",
+            "required": [ "type", "name", "url" ],
+            "properties": {
+                "type": {
+                    "$id": "#/definitions/INavConfigLink/properties/type",
+                    "const": "link",
+                    "title": "Node type designation"
+                },
+                "name": {
+                  "$id": "#/definitions/INavConfigLink/properties/name",
+                    "type": "string",
+                    "minLength": 1,
+                    "title": "Relative path to page"
+                },
+                "id": {
+                    "$id": "#/definitions/INavConfigLink/properties/id",
+                  "type": "string",
+                  "title": "Programmatic Identifier"
+                },
+                "tooltip": {
+                    "$id": "#/definitions/INavConfigLink/properties/tooltip",
+                  "type": "string",
+                  "title": "Link Tooltip"
+                },
+                "url": {
+                    "$id": "#/definitions/INavConfigLink/properties/url",
+                    "type": "string",
+                    "uri": true,
+                    "title": "Menu item url"
                 }
-            }
+            },
+            "additionalProperties": false
+        },
+        "INavConfigSeparator": {
+            "$id": "#/definitions/INavConfigSeparator",
+            "type": "object",
+            "required": [ "type" ],
+            "properties": {
+              "type": { "$id": "#/definitions/INavConfigSeparator/properties/type", "const": "separator", "title": "Node type designation" }
+            },
+            "additionalProperties": false
         }
     },
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "required": [ "navItems" ],
-    "properties": {
-      "navItems": {
-        "$id": "#/properties/navigation",
-        "$ref": "#/definitions/navList"
-      }
+    "navBar": {
+      "$id": "#/navBar",
+        "$ref": "#/definitions/INavConfigNodeList",
+        "title": "Global navigation items for the top navigation bar"
+    },
+    "sideBar": {
+      "$id": "#/sideBar",
+        "$ref": "#/definitions/INavConfigNodeList",
+        "title": "Global navigation items for the side navigation bar"
     }
   }
