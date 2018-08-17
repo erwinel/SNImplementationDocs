@@ -1,51 +1,58 @@
 {
-  "name": "erwinel.github.io",
+  "name": "sn-implementation-docs",
   "version": "1.0.0",
   "description": "Documentation for ServiceNow repositories",
   "main": "dist/index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/erwinel/erwinel.github.io.git"
+    "url": "git+https://github.com/erwinel/SnImplementationDocs.git"
   },
   "author": "Leonard T. Erwine",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/erwinel/erwinel.github.io/issues"
+    "url": "https://github.com/erwinel/SnImplementationDocs/issues"
   },
-  "homepage": "https://github.com/erwinel/erwinel.github.io#readme",
+  "homepage": "https://github.com/erwinel/SnImplementationDocs#readme",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --prod",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
   "dependencies": {
-    "angular": "^1.7.2",
-    "bootstrap": "^4.1.2",
-    "bootstrap-table": "^1.12.1",
-    "jquery": "^3.3.1",
-    "popper.js": "^1.14.3"
+    "@angular/animations": "^5.2.0",
+    "@angular/common": "^5.2.0",
+    "@angular/compiler": "^5.2.0",
+    "@angular/core": "^5.2.0",
+    "@angular/forms": "^5.2.0",
+    "@angular/http": "^5.2.0",
+    "@angular/platform-browser": "^5.2.0",
+    "@angular/platform-browser-dynamic": "^5.2.0",
+    "@angular/router": "^5.2.0",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.5.6",
+    "zone.js": "^0.8.19"
   },
   "devDependencies": {
-    "@types/angular": "^1.6.49",
-    "@types/chai": "^4.1.4",
-    "@types/glob": "^5.0.35",
-    "@types/gulp-mocha": "0.0.32",
-    "@types/jquery": "^3.3.5",
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.5.2",
-    "@types/tmp": "0.0.33",
-    "chai": "^4.1.2",
-    "del": "^3.0.0",
-    "glob": "^7.1.2",
-    "gulp": "^3.9.1",
-    "gulp-changed": "^3.2.0",
-    "gulp-mocha": "^6.0.0",
-    "gulp-typescript": "^5.0.0-alpha.3",
-    "gulp-webserver": "^0.9.1",
-    "http": "0.0.0",
-    "mocha": "^5.2.0",
-    "path": "^0.12.7",
-    "run-sequence": "^2.2.1",
-    "simple-git": "^1.96.0",
-    "tmp": "0.0.33",
-    "typescript": "^2.9.2"
+    "@angular/cli": "~1.7.4",
+    "@angular/compiler-cli": "^5.2.0",
+    "@angular/language-service": "^5.2.0",
+    "@types/jasmine": "~2.8.3",
+    "@types/jasminewd2": "~2.0.2",
+    "@types/node": "~6.0.60",
+    "codelyzer": "^4.0.1",
+    "jasmine-core": "~2.8.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~2.0.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "^1.2.1",
+    "karma-jasmine": "~1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "protractor": "~5.1.2",
+    "ts-node": "~4.1.0",
+    "tslint": "~5.9.1",
+    "typescript": "~2.5.3"
   }
 }
