@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  static readonly DefaultTitleText = 'ServiceNow Implementation, Dev and Maintenance';
+  titleText = AppComponent.DefaultTitleText;
+  descriptionText = '';
 }
