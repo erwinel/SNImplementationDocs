@@ -11,6 +11,7 @@ import { UpdateSetsComponent } from './update-sets/update-sets.component';
 import { SnDevInfoComponent } from './sn-dev-info/sn-dev-info.component';
 import { UpdateSetDetailComponent } from './update-set-detail/update-set-detail.component';
 import { SnApplicationDetailComponent } from './sn-application-detail/sn-application-detail.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { SnApplicationDetailComponent } from './sn-application-detail/sn-applica
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
