@@ -12,6 +12,7 @@ import { SnDevInfoComponent } from './sn-dev-info/sn-dev-info.component';
 import { UpdateSetDetailComponent } from './update-set-detail/update-set-detail.component';
 import { SnApplicationDetailComponent } from './sn-application-detail/sn-application-detail.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LargeModalComponent } from './large-modal/large-modal.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     UpdateSetsComponent,
     SnDevInfoComponent,
     UpdateSetDetailComponent,
-    SnApplicationDetailComponent
+    SnApplicationDetailComponent,
+    LargeModalComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +33,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule.forRoot()
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [LargeModalComponent]
 })
 export class AppModule { }

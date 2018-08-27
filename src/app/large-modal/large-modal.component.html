@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{titleText}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ng-template ngFor let-item [ngForOf]="content">
+    <strong *ngIf="item.type=='text' &amp;&amp; item.bold">{{item.text}}</strong>
+    <ng-template [ngIf]="item.type=='text' &amp;&amp; !item.bold">{{item.text}}</ng-template>
+    <img *ngIf="item.type=='figure'" class="figure-img img-fluid rounded" src="{{item.src}}" alt="{{item.alt}}" />
+    <p *ngIf="item.type=='p'">
+        <ng-template ngFor let-item [ngForOf]="content">
+          <strong *ngIf="item.type=='text' &amp;&amp; item.bold">{{item.text}}</strong>
+          <ng-template [ngIf]="item.type=='text' &amp;&amp; !item.bold">{{item.text}}</ng-template>
+          <img *ngIf="item.type=='figure'" class="figure-img img-fluid rounded" src="{{item.src}}" alt="{{item.alt}}" />
+        </ng-template>
+    </p>
+  </ng-template>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
