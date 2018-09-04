@@ -1,6 +1,7 @@
 ﻿# Use this script to build the downloadable logo images.
 
-# These colors should be the same as the definitions for the css.$navpage-header-bg defined in the "Initial Army Config" fix script included in the "Initial Update Set" update set.
+# These colors should be the same as the definitions for the css.$navpage-header-bg defined in the "Initial Army Config" fix script
+# included in the "Initial Update Set" update set.
 $ColorBackgrounds = @(
     @{ Suffix = 'sb'; BG = '9681d5'},
     @{ Suffix = 'dev'; BG = '2a5b1a'},
@@ -43,36 +44,3 @@ $ColorBackgrounds | ForEach-Object {
     $NormalSizeBitmap.Dispose();
 }
 $ResizedClaymoreBitmap.Dispose();
-
-<#
-# Get source image
-
-# Square image containing claymore l
-$LogoImage = [System.Drawing.Bitmap]::new($SNImage.Height, $SNImage.Height, $SNImage.PixelFormat);
-$ClaymoreImage = [System.Drawing.Image]::FromFile(($PSScriptRoot | Join-Path -ChildPath 'CLAYMORE LOGO.jpg'));
-$Graphics = [System.Drawing.Graphics]::FromImage($LogoImage);
-$Graphics.DrawImage($ClaymoreImage, [System.Drawing.Rectangle]::new(1, 1, $LogoImage.Width - 2, $LogoImage.Height - 2), [System.Drawing.Rectangle]::new(0, 0, $ClaymoreImage.Width - 10, $ClaymoreImage.Height - 10), [System.Drawing.GraphicsUnit]::Pixel);
-$Graphics.Flush();
-$Graphics.Dispose();
-#@(@{ Suffix = 'dev'; BG = '2a5b1a'}, @{ Suffix = 'test'; BG = '1a2a5b' }, @{ Suffix = 'prod'; BG = '5b1a1a' }) | ForEach-Object {
-$ColorBackgrounds | ForEach-Object {
-    $c = [System.Drawing.Color]::FromArgb([int]::Parse($_.BG.Substring(0, 2), [System.Globalization.NumberStyles]::HexNumber), [int]::Parse($_.BG.Substring(2, 2), [System.Globalization.NumberStyles]::HexNumber), [int]::Parse($_.BG.Substring(4, 2), [System.Globalization.NumberStyles]::HexNumber));
-    $Brush = [System.Drawing.SolidBrush]::new($c);
-    $Bitmap = [System.Drawing.Bitmap]::new($SNImage.Width + $SNImage.Height + 20, $SNImage.Height, $SNImage.PixelFormat);
-    $Graphics = [System.Drawing.Graphics]::FromImage($Bitmap);
-    $Graphics.FillRectangle($Brush, 0, 0, $Bitmap.Width, $Bitmap.Height);
-    $TextureBrush = [System.Drawing.TextureBrush]::new($LogoImage, [System.Drawing.Drawing2D.WrapMode]::Clamp);
-    $Graphics.DrawImage($SNImage, $Bitmap.Width - $SNImage.Width, 0);
-    #$LogoImage = [System.Drawing.Image]::FromFile("C:\Users\leonarde\Documents\ClaymoreLogo$($_.Suffix).jpg");
-    #$Graphics.DrawImage($LogoImage, 0, 0, 100, 100);
-    $Graphics.FillEllipse($TextureBrush, 0, 0, $LogoImage.Width, $LogoImage.Height);
-    $Graphics.Flush();
-    
-    $Bitmap.Save(($OutputFolder | Join-Path -ChildPath "logo_army_$($_.Suffix).png"), [System.Drawing.Imaging.ImageFormat]::Png);
-    $Graphics.Dispose();
-    $Bitmap.Dispose();
-}
-
-$SNImage.Dispose();
-$LogoImage.Dispose();
-#>
