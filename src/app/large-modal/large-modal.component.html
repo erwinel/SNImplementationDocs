@@ -1,21 +1,26 @@
-<div class="modal-header">
+<div class="modal-header" *ngIf="titleText !== null &amp;&amp; titleText.trim().length > 0">
   <h4 class="modal-title">{{titleText}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <ng-template ngFor let-item [ngForOf]="content">
-    <strong *ngIf="item.type=='text' &amp;&amp; item.bold">{{item.text}}</strong>
-    <ng-template [ngIf]="item.type=='text' &amp;&amp; !item.bold">{{item.text}}</ng-template>
-    <img *ngIf="item.type=='figure'" class="figure-img img-fluid rounded" src="{{item.src}}" alt="{{item.alt}}" />
-    <p *ngIf="item.type=='p'">
-        <ng-template ngFor let-item [ngForOf]="content">
-          <strong *ngIf="item.type=='text' &amp;&amp; item.bold">{{item.text}}</strong>
-          <ng-template [ngIf]="item.type=='text' &amp;&amp; !item.bold">{{item.text}}</ng-template>
-          <img *ngIf="item.type=='figure'" class="figure-img img-fluid rounded" src="{{item.src}}" alt="{{item.alt}}" />
-        </ng-template>
-    </p>
+  <ng-template ngFor let-item [ngForOf]="templateContent">
+    <ng-container [ngSwitch]="item.type">
+      <p *ngSwitchCase="'p'">
+          <ng-template ngFor let-item [ngForOf]="content">
+            <img *ngIf="item.type=='figure'; else notFigureTemplate" class="figure-img img-fluid rounded" src="{{item.src}}" alt="{{item.alt}}" />
+            <ng-template #notFigureTemplate>
+                <strong *ngIf="item.bold; else textNotBoldTemplate">{{item.text}}</strong>
+            </ng-template>
+          </ng-template>
+      </p>
+      <img *ngSwitchCase="'figure'" class="figure-img img-fluid rounded" src="{{item.src}}" alt="{{item.alt}}" />
+      <ng-container *ngSwitchDefault>
+          <strong *ngIf="item.bold; else textNotBoldTemplate">{{item.text}}</strong>
+      </ng-container>
+    </ng-container>
+    <ng-template #textNotBoldTemplate>{{item.text}}</ng-template>
   </ng-template>
 </div>
 <div class="modal-footer">

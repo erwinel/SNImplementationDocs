@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from '../app.component';
-import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { LargeModalComponent, ILargeModalBodyFigure } from '../large-modal/large-modal.component';
+import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { LargeModalComponent, IInputFigure } from '../large-modal/large-modal.component';
 
 export class ModalVisiblity {
   private _isVisible = false;
@@ -36,17 +36,7 @@ export class InitialSnConfigComponent implements OnInit {
   openFigure(modalTitleText: string, modalImageUrl: string) {
     const modalRef = this._modalService.open(LargeModalComponent, { size: 'lg' });
     modalRef.componentInstance.titleText = modalTitleText;
-    modalRef.componentInstance.content = <ILargeModalBodyFigure>{ type: 'figure', src: modalImageUrl, alt: modalTitleText };
-  }
-
-  openLg(content) {
-    this._modalTitleText = 'My Modal';
-    this._modalService.open(content, { size: 'lg' });
-  }
-
-  openLg2(content) {
-    this._modalTitleText = 'My Modal 2';
-    this._modalService.open(content, { size: 'lg' });
+    modalRef.componentInstance.content = <IInputFigure>{ src: modalImageUrl, alt: modalTitleText };
   }
 
   ngOnInit() {
