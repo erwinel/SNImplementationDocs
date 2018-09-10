@@ -13,7 +13,10 @@ import { UpdateSetDetailComponent } from './update-set-detail/update-set-detail.
 import { SnApplicationDetailComponent } from './sn-application-detail/sn-application-detail.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LargeModalComponent } from './large-modal/large-modal.component';
-
+import { PopupModalComponent } from './popup-modal/popup-modal.component';
+import { HowtoImportUpdateSetComponent } from './howto-import-update-set/howto-import-update-set.component';
+import { HowtoImportApplicationComponent } from './howto-import-application/howto-import-application.component';
+import { HttpClientModule, HttpClient, HttpResponse } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,15 +28,19 @@ import { LargeModalComponent } from './large-modal/large-modal.component';
     SnDevInfoComponent,
     UpdateSetDetailComponent,
     SnApplicationDetailComponent,
-    LargeModalComponent
+    LargeModalComponent,
+    PopupModalComponent,
+    HowtoImportUpdateSetComponent,
+    HowtoImportApplicationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [LargeModalComponent]
+  entryComponents: [LargeModalComponent, PopupModalComponent, HowtoImportUpdateSetComponent, HowtoImportApplicationComponent]
 })
 export class AppModule { }

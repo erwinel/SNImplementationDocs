@@ -3,50 +3,9 @@
     <h2 id="loadInitialGlobalUpdate">1. Initial Global Update Set</h2>
   </div>
   <div class="card-body">
-    <div class="detail">Load and apply the initial global update set to prepare the instance.</div>
-    <ol>
-      <li class="align-text-top">
-        Navigate to
-        <samp>System Update Sets</samp> &rArr;
-        <samp>Retrieved Update Sets</samp>
-        <button (click)="openFigure('Navigation and related links example', 'assets/images/initialConfig/relatedLinks_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/relatedLinks_sm.png" alt="View navigation and related links example" class="figure-img img-fluid rounded"
-          />
-        </button>
-      </li>
-      <li class="align-text-top">Click on
-        <samp>Import Update Set from XML</samp> under
-        <em>Related Links</em>
-      </li>
-      <li class="align-text-top">Click on the
-        <samp>Choose File</samp> button and upload the
-        <a href="downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
-        <var>downloads</var> folder of this documentation.
-        <button (click)="openFigure('Example of file upload dialog', 'assets/images/initialConfig/chooseFile_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/chooseFile_sm.png" alt="Click to view example of file upload dialog" class="figure-img img-fluid rounded"
-          />
-        </button>
-      </li>
-      <li class="align-text-top">Once it is loaded, open the update set and click the
-        <samp>Preview Update Set</samp> button.
-        <button (click)="openFigure('Example of uploaded upset set', 'assets/images/initialConfig/uploaded_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/uploaded_sm.png" alt="Click to view example of uploaded upset set" class="figure-img img-fluid rounded"
-          />
-        </button>
-        &rArr;
-        <button (click)="openFigure('Example of preview success popup', 'assets/images/initialConfig/previewSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/previewSuccess_sm.png" alt="View example of preview success popup" class="figure-img img-fluid rounded"
-          />
-        </button>
-      </li>
-      <li class="align-text-top">After it is validated, click the
-        <samp>Commit Update Set</samp> to apply it.
-        <button (click)="openFigure('Example of commit success popup', 'assets/images/initialConfig/commitSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/commitSuccess_sm.png" alt="View example of commit success popup" class="figure-img img-fluid rounded"
-          />
-        </button>
-      </li>
-    </ol>
+    <div class="detail">Load and apply the <a href="{{howtoImportUpdateSetFolder}}/{{howtoImportUpdateSetFileName}}" target="_blank">{{howtoImportUpdateSetFileName}}</a> File in the
+      <var>downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.</div>
+      <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div>
   </div>
 </div>
 
@@ -59,61 +18,11 @@
       other scripts. This will also create a custom system property which can be used by automated processes to determine
       whether the current instance is for production, UAT, Testing, Development or if it is a sandbox instance.</div>
     <ol>
-      <li class="align-text-top">
-        Navigate to
-        <samp>System Applications</samp> &rArr;
-        <samp>Studio</samp>. Once you click on
-        <samp>Studio</samp>, the application studio will open in separate browser tab.
-        <button (click)="openFigure('Example of navigation', 'assets/images/initialConfig/systemApplicationsStudio_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/systemApplicationsStudio_sm.png" alt="Click to view example of navigation" class="figure-img img-fluid rounded"
-          />
-        </button>
+      <li>Import the util application from <kbd>{{utilRepositoryUrl}}</kbd>.
+        <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for importing applications from source countrol.</div>
       </li>
-      <li class="align-text-top">
-        Click on the
-        <samp>Import from Source Control</samp> button in the popup dialog.
-        <button (click)="openFigure('Example of Select Application dialog', 'assets/images/initialConfig/importFromSourceControl_lg.png')"
-          class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/importFromSourceControl_sm.png" alt="Click to view example of Select Application dialog"
-            class="figure-img img-fluid rounded" />
-        </button>
-      </li>
-      <li class="align-text-top">Enter credentials for connecting to the associated Git repository.
-        <button (click)="openFigure('Example of git credentials dialog', 'assets/images/initialConfig/importApplicationDialog_lg.png')"
-          class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/importApplicationDialog_sm.png" alt="Click to view example of git credentials dialog"
-            class="figure-img img-fluid rounded" />
-        </button>
-      </li>
-      <li class="align-text-top">Progress will be indicated as it imports the application. Once it is finished, click the
-        <samp>Select Application</samp> button.
-        <button (click)="openFigure('Example of application import progress', 'assets/images/initialConfig/gitImportProgress_lg.png')"
-          class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/gitImportProgress_sm.png" alt="Click to view example of application import progress"
-            class="figure-img img-fluid rounded" />
-        </button>
-        &rArr;
-        <button (click)="openFigure('Example of application import success', 'assets/images/initialConfig/gitImportSuccess_lg.png')"
-          class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/gitImportSuccess_sm.png" alt="Click to view example of application import success"
-            class="figure-img img-fluid rounded" />
-        </button>
-      </li>
-      <li class="align-text-top">You should now see the imported application listed. Select the application in order to put your session in the correct
-        scope, and then close out the
-        <samp>Application Studio</samp> browser tab.
-        <button (click)="openFigure('Example of application selections', 'assets/images/initialConfig/selectApplicationDialog_lg.png')"
-          class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/selectApplicationDialog_sm.png" alt="Click to view example of application selections"
-            class="figure-img img-fluid rounded" />
-        </button>
-        &rArr;
-        <button (click)="openFigure('Example of selected application', 'assets/images/initialConfig/importApplicationComplete_lg.png')"
-          class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/importApplicationComplete_sm.png" alt="Click to view example of selected application"
-            class="figure-img img-fluid rounded" />
-        </button>
-      </li>
+      <li>Once the appplication is imported, select that application in order to put your session in the correct
+        scope, and then close out the <samp>Application Studio</samp> browser tab.</li>
     </ol>
   </div>
 </div>
@@ -252,10 +161,32 @@
 
 <div class="card">
   <div class="card-header">
-    <h2 id="importGrpNameReg">6. Import Group Names Registry Application</h2>
+    <h2 id="importAdImport">6. Configure Active Directory Import</h2>
+  </div>
+  <div class="card-body">
+    <div class="detail"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h2 id="importGrpNameReg">7. Import Group Names Registry Application</h2>
   </div>
   <div class="card-body">
     <div class="detail">The Group Names Registry applications provides a way of synchronizing User Group references between ServiceNow instances,
       such as Dev, Test and Production.</div>
+    <ol>
+      <li>Import the GroupNameRegistry application from <kbd>{{grpnameregRepositoryUrl}}</kbd>.
+        <div><button (click)="openHowtoImportApplication('grpnamereg')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for importing applications from source countrol.</div>
+        Once the application is imported, select the GroupNameRegistry application and close the Application Studio tab.
+      </li>
+      <li>Refresh the browser page in order to reload the navigation menu on the left-hand side.</li>
+      <li>Navigate to <samp>Group Name Registry</samp> &rArr; <samp>Interop Group Names</samp>.
+        <button (click)="openFigure('Example of changed navigation', 'assets/images/initialConfig/GroupNameRegiestryNavItem_lg.png')"
+          class="btn btn-outline-primary mb-2 mr-2">
+          <img src="assets/images/initialConfig/GroupNameRegiestryNavItem_sm.png" alt="Click to view example of changed navigation" class="figure-img img-fluid rounded"
+          />
+        </button></li>
+    </ol>
   </div>
 </div>

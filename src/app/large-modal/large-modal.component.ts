@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 interface IStringKeyedObject { [key: string]: any; }
 
@@ -57,6 +57,80 @@ export interface ITemplateTextContent {
    * @memberof ITemplateTextContent
    */
   bold: boolean;
+}
+
+/**
+ * Represents an embedded modal popup.
+ *
+ * @export
+ * @interface IInputNestedPopup
+ */
+export interface IInputNestedPopup {
+  /**
+   * Text for modal popup title.
+   *
+   * @type {string}
+   * @memberof IInputNestedPopup
+   */
+  titleText: string;
+
+  /**
+   * Content to display within the nested modal popup.
+   *
+   * @type {(InputContent|InputContent[])}
+   * @memberof IInputNestedPopup
+   */
+  content: InputContent|InputContent[];
+
+  /**
+   * Display text for modal popup activation link.
+   *
+   * @description If this property is not defined (or is empty) then the [titleText property]{@link IInputNestedPopup#titleText}
+   * will be used as the display text for the modal popup activation link.
+   * @type {string}
+   * @memberof IInputNestedPopup
+   */
+  displayText?: string;
+}
+
+/**
+ * Represents an embedded modal popup.
+ *
+ * @export
+ * @interface ITemplateNestedPopup
+ */
+export interface ITemplateNestedPopup {
+  /**
+   * Indicates that this object represents an embedded modal popup.
+   *
+   * @type {'popup'}
+   * @memberof ITemplateNestedPopup
+   */
+  type: 'popup';
+
+  /**
+   * Text for modal popup title.
+   *
+   * @type {string}
+   * @memberof ITemplateNestedPopup
+   */
+  titleText: string;
+
+  /**
+   * Content to display within the nested modal popup.
+   *
+   * @type {(InputContent|InputContent[])}
+   * @memberof IInputNestedPopup
+   */
+  content: InputContent|InputContent[];
+
+  /**
+   * Display text for modal popup activation link.
+   *
+   * @type {string}
+   * @memberof ITemplateNestedPopup
+   */
+  displayText: string;
 }
 
 /**
@@ -123,7 +197,7 @@ export interface ITemplateFigure {
  * @description Paragraph content is to be included in the [input paragraph object's content property]{@link IInputParagraph#content}.
  * @typedef {(string|ITextContent|IFigureGraphic)} InputParagraphContent
  */
-export type InputParagraphContent = string|IInputTextContent|IInputFigure;
+export type InputParagraphContent = string|IInputTextContent|IInputFigure|IInputNestedPopup;
 
 /**
  * Intersection of object types used by this component's template which can be nested within a paragraph tags.
@@ -185,27 +259,43 @@ export interface ITemplateParagraph {
  * Intersection of object types which can be provided as the content input of this component to specify modal dialog content.
  * @typedef {(string|ITextContent|IInputParagraph|IFigureGraphic)} InputContent
  */
-export type InputContent = string|IInputTextContent|IInputParagraph|IInputFigure;
+export type InputContent = string|IInputTextContent|IInputParagraph|IInputFigure|IInputNestedPopup;
 
 /**
  * Intersection of object types which can represent modal dialog content.
  * @typedef {(ITextContent|ITemplateParagraph|IFigureGraphic)} TemplateContent
  */
-export type TemplateContent = ITemplateTextContent|ITemplateParagraph|ITemplateFigure;
+export type TemplateContent = ITemplateTextContent|ITemplateParagraph|ITemplateFigure|ITemplateNestedPopup;
 
 /**
- * Determines whether an object represents a set of paragraph tags with nested content.
+ * Determines whether a value is an object represents a set of paragraph tags with nested content.
  *
- * @param {InputContent} value Object to test.
- * @returns {value is IInputParagraph} True if value represents a set of paragraph tags with nested content.
+ * @param {InputContent} value - Object to test.
+ * @returns {value is IInputParagraph} True if the value represents a set of paragraph tags with nested content.
  */
 function isInputParagraph(value: InputContent): value is IInputParagraph {
   return typeof(value) === 'object' && typeof((<IStringKeyedObject>value).type) === 'string' && (<IStringKeyedObject>value).type === 'p';
 }
 
+/**
+ * Determines whether a value is an object that represents an image to be displayed as a figure.
+ *
+ * @param {InputContent} value - Value to test.
+ * @returns {value is IInputFigure} True if the value represents an image to be displayed as a figure.
+ */
 function isInputFigure(value: InputContent): value is IInputFigure {
   return typeof(value) === 'object' && typeof((<IStringKeyedObject>value).src) === 'string' &&
     typeof((<IStringKeyedObject>value).alt) === 'string';
+}
+
+/**
+ * Determines whether a value is an object that represents an embedded modal popup.
+ *
+ * @param {InputContent} value - Value to test.
+ * @returns {value is IInputNestedPopup} True if the value represents an embedded modal popup.
+ */
+function isInputNestedPopup(value: InputContent): value is IInputNestedPopup {
+  return typeof(value) === 'object' && typeof((<IStringKeyedObject>value).titleText) === 'string';
 }
 
 /**
@@ -225,6 +315,13 @@ function importModalContent(value: InputContent): TemplateContent {
       type: 'figure',
       src: value.src,
       alt: value.alt
+    };
+  if (isInputNestedPopup(value))
+    return <ITemplateNestedPopup> {
+      type: 'popup',
+      titleText: value.titleText,
+      displayText: (typeof(value.displayText) === 'string' && value.displayText.trim().length > 0) ? value.displayText : value.titleText,
+      content: value.content
     };
   if (typeof(value) === 'string')
     return <ITemplateTextContent>{ type: 'text', text: value, bold: false };
@@ -271,7 +368,13 @@ export class LargeModalComponent {
    */
   get templateContent(): TemplateContent[] { return this._templateContent; }
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal, private _modalService: NgbModal) { }
+
   closeResult: string;
 
+  openNestedPopup(item: ITemplateNestedPopup) {
+    const modalRef = this._modalService.open(LargeModalComponent, { size: 'lg' });
+    modalRef.componentInstance.titleText = item.titleText;
+    modalRef.componentInstance.content = item.content;
+  }
 }

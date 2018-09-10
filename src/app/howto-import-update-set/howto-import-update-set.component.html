@@ -1,0 +1,63 @@
+<ng-template #instructions>
+  <ol>
+    <li class="align-text-top">
+      Navigate to
+      <samp>System Update Sets</samp> &rArr;
+      <samp>Retrieved Update Sets</samp>
+      <button (click)="openFigure('Navigation and related links example', 'assets/images/initialConfig/relatedLinks_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
+        <img src="assets/images/initialConfig/relatedLinks_sm.png" alt="View navigation and related links example" class="figure-img img-fluid rounded"
+        />
+      </button>
+    </li>
+    <li class="align-text-top">Click on
+      <samp>Import Update Set from XML</samp> under
+      <em>Related Links</em>
+    </li>
+    <li class="align-text-top">Click on the
+      <samp>Choose File</samp> button and upload
+      <a *ngIf="showDownloadLink; else elseTemplate" href="{{downloadLinkUrl}}" target="_blank">{{updateSetFileNameDisplayText}}</a>
+      <ng-template #elseTemplate>{{updateSetFileNameDisplayText}}</ng-template>
+      <button (click)="openFigure('Example of file upload dialog', 'assets/images/initialConfig/chooseFile_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
+        <img src="assets/images/initialConfig/chooseFile_sm.png" alt="Click to view example of file upload dialog" class="figure-img img-fluid rounded"
+        />
+      </button>
+    </li>
+    <li class="align-text-top">Once it is loaded, open the update set and click the
+      <samp>Preview Update Set</samp> button.
+      <button (click)="openFigure('Example of uploaded upset set', 'assets/images/initialConfig/uploaded_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
+        <img src="assets/images/initialConfig/uploaded_sm.png" alt="Click to view example of uploaded upset set" class="figure-img img-fluid rounded"
+        />
+      </button>
+      &rArr;
+      <button (click)="openFigure('Example of preview success popup', 'assets/images/initialConfig/previewSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
+        <img src="assets/images/initialConfig/previewSuccess_sm.png" alt="View example of preview success popup" class="figure-img img-fluid rounded"
+        />
+      </button>
+    </li>
+    <li class="align-text-top">After it is validated, click the
+      <samp>Commit Update Set</samp> to apply it.
+      <button (click)="openFigure('Example of commit success popup', 'assets/images/initialConfig/commitSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
+        <img src="assets/images/initialConfig/commitSuccess_sm.png" alt="View example of commit success popup" class="figure-img img-fluid rounded"
+        />
+      </button>
+    </li>
+  </ol>
+</ng-template>
+<ng-container *ngIf="activeModal; else notModal">
+  <div class="modal-header" *ngIf="nestedPopupOpen === false &amp;&amp; titleText !== null &amp;&amp; titleText.trim().length > 0">
+    <h4 class="modal-title">{{titleText}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="nestedPopupOpen === false">
+    <ng-container *ngTemplateOutlet="instructions"></ng-container>
+  </div>
+  <div class="modal-footer" *ngIf="nestedPopupOpen === false">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  </div>
+</ng-container>
+<ng-template #notModal>
+  <h2 *ngIf="titleText !== null &amp;&amp; titleText.trim().length > 0">{{titleText}}</h2>
+  <ng-container *ngTemplateOutlet="instructions"></ng-container>
+</ng-template>

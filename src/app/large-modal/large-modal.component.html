@@ -15,6 +15,7 @@
             </ng-template>
           </ng-template>
       </p>
+      <button *ngSwitchCase="'popup'" (click)="openNestedPopup(item)" class="btn btn-outline-primary mb- mr-0 pt-0 pb-0">{{item.displayText}}</button>
       <img *ngSwitchCase="'figure'" class="figure-img img-fluid rounded" src="{{item.src}}" alt="{{item.alt}}" />
       <ng-container *ngSwitchDefault>
           <strong *ngIf="item.bold; else textNotBoldTemplate">{{item.text}}</strong>
