@@ -356,7 +356,7 @@ Function Get-VsixManifestInfo {
         if ($TempDir | Test-Path) { Remove-Item -LiteralPath $TempDir -Recurse -Force }
     }
 }
-
+VsixManifest.
 Add-Type -TypeDefinition @'
 namespace VsixManifest {
     using System;
@@ -367,27 +367,7 @@ namespace VsixManifest {
     using System.Xml;
     public sealed class VsixManifestData : ISerializable {
         private DataSet _dataSet;
-        private string _path = null;
-        private string _lastSavedPath = null;
         private bool _hasChanges = false;
-        public string Path {
-            get {
-                if (_path == null)
-                    _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), DefaultFileName);
-                return _path;
-            }
-            set {
-                if (String.IsNullOrWhiteSpace(value))
-                    _path = null;
-                else {
-                    string path = Path.GetFullPath(value);
-                    if (_path != null &&  path == _path)
-                        return;
-                    _path = path;
-                }
-                _areChangesSaved = false;
-            }
-        }
         public bool HasChanges { get { return _hasChanges; } }
         public VsixManifestDataSet(SerializationInfo info, StreamingContext context) : base(info, context) {
             _path = (string)(info.GetValue("Path", typeof(string));
@@ -412,21 +392,88 @@ namespace VsixManifest {
             throw new NotImplementedException();
         }
     }
+
     public class VsixManifestData : DataSet
     {
         public const string Default_DataSetName = "VsixManifestInfo";
-        
+        private string _currentPath = null;
+        private string _lastSpecifiedPath = null;
+        private string _lastSavedPath = '';
         private ProductDataTable _products;
         private VersionDataTable _versions;
         private FileDataTable _files;
         private DataRelation _fk_ProductVersion;
         private DataRelation _fk_VersionFile;
+        private bool? _changesSaved = null;
+        
+        public string CurrentPath
+        {
+            get
+            {
+                string path = _currentPath;
+                if (path != null)
+                    return path;
 
+                _lastSpecifiedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), Default_DataSetName + ".xml");
+                return _lastSpecifiedPath;
+            }
+            set
+            {
+                if (String.IsNullOrWhiteSpace(value))
+                {
+                    _lastSpecifiedPath = '';
+                    _currentPath = null;
+                }
+                else
+                {
+                    string path = Path.GetFullPath(value);
+                    _lastSpecifiedPath = path;
+                    if (_currentPath != null &&  path == _currentPath)
+                        return;
+                    _currentPath = path;
+                }
+                CheckChanges();
+            }
+        }
         public ProductDataTable Products { get { return _products; } }
         public VersionDataTable Versions { get { return _versions; } }
         public FileDataTable Files { get { return _files; } }
         public DataRelation FK_ProductVersion { get { return _fk_ProductVersion; } }
         public DataRelation FK_VersionFile { get { return _fk_VersionFile; } }
+        public bool ChangesSaved { get { return CheckChanges(); } }
+
+        internal bool CheckChanges()
+        {
+            if (HasChanges())
+            {
+                _changesSaved = false;
+                return false;
+            }
+            bool? changesSaved = _changesSaved;
+            if (!changesSaved.HasValue)
+            {
+                if (_currentPath == null && _lastSavedPath.Length == 0)
+                {
+                    _changesSaved = trrue;
+                    return true;
+                }
+            }
+            changesSaved = (!HasChanges() && _lastSavedPath == CurrentPath);
+            _changesSaved = changesSaved;
+            return changesSaved.Value;
+        }
+
+        public VsixManifestData(bool readDefault) : this()
+        {
+            if (readDefault)
+                TryReadXml();
+        }
+        public VsixManifestData(string path) : this()
+        {
+            CurrentPath = path;
+            if (!String.IsNullOrWhiteSpace(path))
+                TryReadXml();
+        }
 
 	    public VsixManifestData() : base(Default_DataSetName)
         {
@@ -439,11 +486,13 @@ namespace VsixManifest {
             _fk_ProductVersion = Relations.Add("FK_" + ProductDataTable.Default_DataTableName + FileDataTable.Default_DataTableName, _products.IDDataColumn, _versions.ProductIDDataColumn, true);
             _fk_VersionFile = Relations.Add("FK_" + VersionDataTable.Default_DataTableName + FileDataTable.Default_DataTableName, _versions.IDDataColumn, _files.VersionIDColumn, true);
         }
+
 	    protected VsixManifestData(SerializationInfo info, StreamingContext context)
 		    : base(info, context)
 	    {
             this.InitializeFromSerializationInfo(info);
 	    }
+
 	    protected VsixManifestData(SerializationInfo info, StreamingContext context, bool ConstructSchema)
 		    : base(info, context, ConstructSchema)
 	    {
@@ -454,26 +503,89 @@ namespace VsixManifest {
         {
             _path = (string)(info.GetValue("Path", typeof(string));
             _lastSavedPath = (_lastSavedPath)(info.GetValue("LastSavedPath", typeof(string));
-            _hasChanges = info.GetBoolean("HasChanges");
+            _hasChanges = (bool?)(info.GetValue("HasChanges", typeof(bool?)));
             _products = Tables[ProductDataTable.Default_DataTableName];
             _versions = Tables[VersionDataTable.Default_DataTableName];
             _files = Tables[FileDataTable.Default_DataTableName];;
 	    }
-	    public override DataSet Clone()
-	    {
-	    	return base.Clone();
-	    }
+
+        public bool TryReadXml(string path)
+        {
+            if (!String.IsNullOrWhiteSpace(path))
+                CurrentPath = path;
+            path = CurrentPath;
+
+            if (!File.Exists(path))
+            {
+                if (!Directory.Exists(path))
+                    return false;
+                path = Path.Combine(path, Default_DataSetName + ".xml");
+                if (Directory.Exists(path))
+                    return false;
+                if (!File.Exists(path))
+                    return false;
+                CurrentPath = path;
+            }
+
+            try
+            {
+                ReadXml(path, XmlReadMode.IgnoreSchema);
+            }
+            catch { return false; }
+            return true;
+        }
+
+        public bool TryReadXml() { return TryReadXml(null); }
+
+        public bool TryWriteXml(string path)
+        {
+            if (!String.IsNullOrWhiteSpace(path))
+                CurrentPath = path;
+            path = CurrentPath;
+
+            if (!File.Exists(path))
+            {
+                if (!Directory.Exists(path))
+                    return false;
+                path = Path.Combine(path, Default_DataSetName + ".xml");
+                if (Directory.Exists(path))
+                    return false;
+                if (!File.Exists(path))
+                    return false;
+                CurrentPath = path;
+            }
+
+            try
+            {
+                WriteXml(path, XmlWriteMode.IgnoreSchema);
+                _changesSaved = null;
+            }
+            catch { return false; }
+            return true;
+        }
+
+        public bool TryWriteXml() { return TryWriteXml(null); }
+
+	    // public override DataSet Clone()
+	    // {
+	    // 	return base.Clone();
+	    // }
+
 	    public override void GetObjectData(SerializationInfo info, StreamingContext context)
 	    {
 	    	base.GetObjectData(info, context);
             info.AddValue("Path", _path, typeof(string));
             info.AddValue("LastSavedPath", _lastSavedPath, typeof(string));
-            info.AddValue("HasChanges", _hasChanges);
+            info.GetValue("HasChanges", _hasChanges, typeof(bool?));
 	    }
+
 	    protected override void OnRemoveRelation(DataRelation relation) { throw new NotSupportedException(); }
+
 	    protected override bool ShouldSerializeRelations() { return true; }
+
 	    protected override bool ShouldSerializeTables() { return true; }
     }
+
     public class ProductDataTable : DataTable
     {
         public const string Default_DataTableName = "Product";
@@ -505,17 +617,17 @@ namespace VsixManifest {
             _nameDataColumn = Columns[ColumnName_Name];
 	    }
 
-	    public override DataTable Clone()
-	    {
-	    	throw new NotImplementedException();
-	    }
+	    // public override DataTable Clone()
+	    // {
+	    // 	throw new NotImplementedException();
+	    // }
 
 	    protected override DataTable CreateInstance() { return new ProductDataTable(); }
 
-	    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-	    {
-	    	base.GetObjectData(info, context);
-	    }
+	    // public override void GetObjectData(SerializationInfo info, StreamingContext context)
+	    // {
+	    // 	base.GetObjectData(info, context);
+	    // }
 
 	    protected override Type GetRowType() { return typeof(ProductDataRow); }
 
@@ -630,17 +742,17 @@ namespace VsixManifest {
             _isInstalledDataColumn = Columns[ColumnName_IsInstalled];
 	    }
 
-	    public override DataTable Clone()
-	    {
-	    	throw new NotImplementedException();
-	    }
+	    // public override DataTable Clone()
+	    // {
+	    // 	throw new NotImplementedException();
+	    // }
 
 	    protected override DataTable CreateInstance() { return new VersionDataTable(); }
 
-	    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-	    {
-	    	base.GetObjectData(info, context);
-	    }
+	    // public override void GetObjectData(SerializationInfo info, StreamingContext context)
+	    // {
+	    // 	base.GetObjectData(info, context);
+	    // }
 
 	    protected override Type GetRowType() { return typeof(VersionDataRow); }
 
@@ -731,10 +843,10 @@ namespace VsixManifest {
             _versionIDDataColumn = Columns[ColumnName_VersionID];
 	    }
 
-	    public override DataTable Clone()
-	    {
-	    	throw new NotImplementedException();
-	    }
+	    // public override DataTable Clone()
+	    // {
+	    // 	throw new NotImplementedException();
+	    // }
 
 	    protected override DataTable CreateInstance() { return new FileDataTable(); }
 
