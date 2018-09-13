@@ -222,6 +222,7 @@ Function ConvertTo-CodeTypeName {
                     $FullName.Substring(1, $FullName.Length - 2) | Write-Output;
                 } else {
                     switch ($FullName) {
+                        'System.Boolean' { 'bool' | Write-Output; break; }
                         'System.String' { 'string' | Write-Output; break; }
                         'System.Byte' { 'byte' | Write-Output; break; }
                         'System.SByte' { 'sbyte' | Write-Output; break; }

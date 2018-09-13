@@ -412,126 +412,579 @@ namespace VsixManifest {
             throw new NotImplementedException();
         }
     }
-    public class VsixManifestData : System.Data.DataSet
+    public class VsixManifestData : DataSet
     {
-	    public VsixManifestData() : base("VsixManifestInfo")
-	    {
-	    }
-	    protected VsixManifestData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        public const string Default_DataSetName = "VsixManifestInfo";
+        
+        private ProductDataTable _products;
+        private VersionDataTable _versions;
+        private FileDataTable _files;
+        private DataRelation _fk_ProductVersion;
+        private DataRelation _fk_VersionFile;
+
+        public ProductDataTable Products { get { return _products; } }
+        public VersionDataTable Versions { get { return _versions; } }
+        public FileDataTable Files { get { return _files; } }
+        public DataRelation FK_ProductVersion { get { return _fk_ProductVersion; } }
+        public DataRelation FK_VersionFile { get { return _fk_VersionFile; } }
+
+	    public VsixManifestData() : base(Default_DataSetName)
+        {
+            _products = new ProductDataTable();
+            _versions = new VersionDataTable();
+            _files = new FileDataTable();
+            Tables.Add(_products);
+            Tables.Add(_versions);
+            Tables.Add(_files);
+            _fk_ProductVersion = Relations.Add("FK_" + ProductDataTable.Default_DataTableName + FileDataTable.Default_DataTableName, _products.IDDataColumn, _versions.ProductIDDataColumn, true);
+            _fk_VersionFile = Relations.Add("FK_" + VersionDataTable.Default_DataTableName + FileDataTable.Default_DataTableName, _versions.IDDataColumn, _files.VersionIDColumn, true);
+        }
+	    protected VsixManifestData(SerializationInfo info, StreamingContext context)
 		    : base(info, context)
 	    {
-            _path = (string)(info.GetValue("Path", typeof(string));
-            _lastSavedPath = (_lastSavedPath)(info.GetValue("LastSavedPath", typeof(string));
-            _hasChanges = info.GetBoolean("HasChanges");
+            this.InitializeFromSerializationInfo(info);
 	    }
-	    protected VsixManifestData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context, System.Boolean ConstructSchema)
+	    protected VsixManifestData(SerializationInfo info, StreamingContext context, bool ConstructSchema)
 		    : base(info, context, ConstructSchema)
 	    {
+            this.InitializeFromSerializationInfo(info);
+        }
+        
+        private void InitializeFromSerializationInfo(SerializationInfo info)
+        {
             _path = (string)(info.GetValue("Path", typeof(string));
             _lastSavedPath = (_lastSavedPath)(info.GetValue("LastSavedPath", typeof(string));
             _hasChanges = info.GetBoolean("HasChanges");
+            _products = Tables[ProductDataTable.Default_DataTableName];
+            _versions = Tables[VersionDataTable.Default_DataTableName];
+            _files = Tables[FileDataTable.Default_DataTableName];;
 	    }
-	    public override System.Data.DataSet Clone()
+	    public override DataSet Clone()
 	    {
 	    	return base.Clone();
 	    }
-	    public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+	    public override void GetObjectData(SerializationInfo info, StreamingContext context)
 	    {
 	    	base.GetObjectData(info, context);
             info.AddValue("Path", _path, typeof(string));
             info.AddValue("LastSavedPath", _lastSavedPath, typeof(string));
             info.AddValue("HasChanges", _hasChanges);
 	    }
-	    protected override void OnRemoveRelation(System.Data.DataRelation relation) { throw new NotSupportedException(); }
-	    protected override System.Boolean ShouldSerializeRelations() { return true; }
-	    protected override System.Boolean ShouldSerializeTables() { return true; }
+	    protected override void OnRemoveRelation(DataRelation relation) { throw new NotSupportedException(); }
+	    protected override bool ShouldSerializeRelations() { return true; }
+	    protected override bool ShouldSerializeTables() { return true; }
     }
-    public class ProductDataTable : System.Data.DataTable
+    public class ProductDataTable : DataTable
     {
-	    public ProductDataTable() { }
-	    public ProductDataTable(string tableName)
-		    : base(tableName)
-	    {
-	    }
-	    public ProductDataTable(string tableName, string tableNamespace)
-		    : base(tableName, tableNamespace)
-	    {
-	    }
-	    protected ProductDataTable(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        public const string Default_DataTableName = "Product";
+        public const string ColumnName_ID = "ID";
+        public const string ColumnName_Name = "Name";
+        
+        private _idDataColumn;
+        private _nameDataColumn;
+
+        public IDDataColumn { get { return _idDataColumn; } }
+        public NameDataColumn { get { return _nameDataColumn; } }
+
+	    public ProductDataTable() : base(Default_DataTableName)
+        {
+            _idDataColumn = new DataColumn(ColumnName_ID, typeof(long));
+            _nameDataColumn = new DataColumn(ColumnName_Name, typeof(bool));
+            Columns.Add(_idDataColumn);
+            _idDataColumn.AutoIncrement = true;
+            _idDataColumn.AllowDBNull = false;
+            Columns.Add(_nameDataColumn);
+            _nameDataColumn.AllowDBNull = false;
+            Constraints.Add('PK_ProductID', _idDataColumn, true);
+        }
+
+	    protected ProductDataTable(SerializationInfo info, StreamingContext context)
 		    : base(info, context)
 	    {
+            _idDataColumn = Columns[ColumnName_ID];
+            _nameDataColumn = Columns[ColumnName_Name];
 	    }
-	    public override System.Data.DataTable Clone()
+
+	    public override DataTable Clone()
 	    {
-	    	return base.Clone();
+	    	throw new NotImplementedException();
 	    }
-	    protected override System.Data.DataTable CreateInstance()
-	    {
-	    	return base.CreateInstance();
-	    }
-	    public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+
+	    protected override DataTable CreateInstance() { return new ProductDataTable(); }
+
+	    public override void GetObjectData(SerializationInfo info, StreamingContext context)
 	    {
 	    	base.GetObjectData(info, context);
 	    }
-	    protected override System.Type GetRowType()
-	    {
-	    	return base.GetRowType();
-	    }
-	    protected override System.Data.DataRow NewRowFromBuilder(System.Data.DataRowBuilder builder)
-	    {
-	    	return base.NewRowFromBuilder(builder);
-	    }
-	    protected override void OnRemoveColumn(System.Data.DataColumn column)
-	    {
-	    	base.OnRemoveColumn(column);
-	    }
-	    protected override void OnRowChanged(System.Data.DataRowChangeEventArgs e)
+
+	    protected override Type GetRowType() { return typeof(ProductDataRow); }
+
+	    // protected override DataRow NewRowFromBuilder(DataRowBuilder builder)
+	    // {
+	    // 	return base.NewRowFromBuilder(builder);
+	    // }
+
+	    protected override void OnRemoveColumn(DataColumn column) { throw new NotSupportedException(); }
+
+	    protected override void OnRowChanged(DataRowChangeEventArgs e)
 	    {
 	    	base.OnRowChanged(e);
 	    }
-	    protected override void OnRowChanging(System.Data.DataRowChangeEventArgs e)
+
+	    protected override void OnRowChanging(DataRowChangeEventArgs e)
 	    {
 	    	base.OnRowChanging(e);
 	    }
-	    protected override void OnRowDeleted(System.Data.DataRowChangeEventArgs e)
+
+	    protected override void OnRowDeleted(DataRowChangeEventArgs e)
 	    {
 	    	base.OnRowDeleted(e);
 	    }
-	    protected override void OnRowDeleting(System.Data.DataRowChangeEventArgs e)
+
+	    protected override void OnRowDeleting(DataRowChangeEventArgs e)
 	    {
 	    	base.OnRowDeleting(e);
 	    }
-	    protected override void OnTableCleared(System.Data.DataTableClearEventArgs e)
+
+	    protected override void OnTableCleared(DataTableClearEventArgs e)
 	    {
 	    	base.OnTableCleared(e);
 	    }
-	    protected override void OnTableClearing(System.Data.DataTableClearEventArgs e)
+
+	    protected override void OnTableClearing(DataTableClearEventArgs e)
 	    {
 	    	base.OnTableClearing(e);
 	    }
-	    protected override void OnTableNewRow(System.Data.DataTableNewRowEventArgs e)
+
+	    protected override void OnTableNewRow(DataTableNewRowEventArgs e)
 	    {
 	    	base.OnTableNewRow(e);
 	    }
     }
-    public class ProductDataRow : System.Data.DataRow, IEquatable<ProductDataRow>
+    public class VersionDataTable : DataTable
     {
-        protected ProductDataRow(System.Data.DataRowBuilder builder)
+        public const string Default_DataTableName = "Version";
+        public const string ColumnName_ID = "ID";
+        public const string ColumnName_ProductID = "ProductID";
+        public const string ColumnName_Major = "Major";
+        public const string ColumnName_Minor = "Minor";
+        public const string ColumnName_Build = "Build";
+        public const string ColumnName_Revision = "Revision";
+        public const string ColumnName_IsInstalled = "IsInstalled";
+        
+        private _idDataColumn;
+        private _productIDDataColumn;
+        private _majorDataColumn;
+        private _minorDataColumn;
+        private _buildDataColumn;
+        private _revisionDataColumn;
+        private _isInstalledDataColumn;
+
+        public IDDataColumn { get { return _idDataColumn; } }
+        public ProductIDDataColumn { get { return _productIDDataColumn; } }
+        public MajorDataColumn { get { return _majorDataColumn; } }
+        public MinorDataColumn { get { return _minorDataColumn; } }
+        public BuildDataColumn { get { return _buildDataColumn; } }
+        public RevisionDataColumn { get { return _revisionDataColumn; } }
+        public IsInstalledDataColumn { get { return _isInstalledDataColumn; } }
+
+	    public VersionDataTable() : base(Default_DataTableName)
+        {
+            _idDataColumn = new DataColumn(ColumnName_ID, typeof(long));
+            _productIDDataColumn = new DataColumn(ColumnName_ProductID, typeof(long));
+            _majorDataColumn = new DataColumn(ColumnName_Major, typeof(int));
+            _minorDataColumn = new DataColumn(ColumnName_Minor, typeof(int));
+            _buildDataColumn = new DataColumn(ColumnName_Build, typeof(int));
+            _revisionDataColumn = new DataColumn(ColumnName_Revision, typeof(int));
+            _isInstalledDataColumn = new DataColumn(ColumnName_IsInstalled, typeof(bool));
+            Columns.Add(_idDataColumn);
+            _idDataColumn.AutoIncrement = true;
+            _idDataColumn.AllowDBNull = false;
+            Columns.Add(_majorDataColumn);
+            _nameDataColumn.AllowDBNull = false;
+             _nameDataColumn.DefaultValue = 0;
+            Columns.Add(_minorDataColumn);
+            _nameDataColumn.AllowDBNull = false;
+             _nameDataColumn.DefaultValue = 0;
+            Columns.Add(_buildDataColumn);
+            _nameDataColumn.AllowDBNull = false;
+             _nameDataColumn.DefaultValue = -1;
+            Columns.Add(_revisionDataColumn);
+            _nameDataColumn.AllowDBNull = false;
+             _nameDataColumn.DefaultValue = -1;
+            Columns.Add(_isInstalledDataColumn);
+            _nameDataColumn.AllowDBNull = false;
+             _nameDataColumn.DefaultValue = false;
+            Constraints.Add('PK_VersionID', _idDataColumn, true);
+        }
+
+	    protected VersionDataTable(SerializationInfo info, StreamingContext context)
+		    : base(info, context)
+	    {
+            _idDataColumn = Columns[ColumnName_ID];
+            _productIDDataColumn = Columns[ColumnName_ProductID];
+            _majorDataColumn = Columns[ColumnName_Major];
+            _minorDataColumn = Columns[ColumnName_Minor];
+            _buildDataColumn = Columns[ColumnName_Build];
+            _revisionDataColumn = Columns[ColumnName_Revision];
+            _isInstalledDataColumn = Columns[ColumnName_IsInstalled];
+	    }
+
+	    public override DataTable Clone()
+	    {
+	    	throw new NotImplementedException();
+	    }
+
+	    protected override DataTable CreateInstance() { return new VersionDataTable(); }
+
+	    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+	    {
+	    	base.GetObjectData(info, context);
+	    }
+
+	    protected override Type GetRowType() { return typeof(VersionDataRow); }
+
+	    // protected override DataRow NewRowFromBuilder(DataRowBuilder builder)
+	    // {
+	    // 	return base.NewRowFromBuilder(builder);
+	    // }
+
+	    protected override void OnRemoveColumn(DataColumn column) { throw new NotSupportedException(); }
+
+	    protected override void OnRowChanged(DataRowChangeEventArgs e)
+	    {
+	    	base.OnRowChanged(e);
+	    }
+
+	    protected override void OnRowChanging(DataRowChangeEventArgs e)
+	    {
+	    	base.OnRowChanging(e);
+	    }
+
+	    protected override void OnRowDeleted(DataRowChangeEventArgs e)
+	    {
+	    	base.OnRowDeleted(e);
+	    }
+
+	    protected override void OnRowDeleting(DataRowChangeEventArgs e)
+	    {
+	    	base.OnRowDeleting(e);
+	    }
+
+	    protected override void OnTableCleared(DataTableClearEventArgs e)
+	    {
+	    	base.OnTableCleared(e);
+	    }
+
+	    protected override void OnTableClearing(DataTableClearEventArgs e)
+	    {
+	    	base.OnTableClearing(e);
+	    }
+
+	    protected override void OnTableNewRow(DataTableNewRowEventArgs e)
+	    {
+	    	base.OnTableNewRow(e);
+	    }
+    }
+    public class FileDataTable : DataTable
+    {
+        public const string Default_DataTableName = "File";
+        public const string ColumnName_ID = "ID";
+        public const string ColumnName_Name = "Name";
+        public const string ColumnName_Path = "Path";
+        public const string ColumnName_VersionID = "VersionID";
+        
+        private _idDataColumn;
+        private _nameDataColumn;
+        private _pathDataColumn;
+        private _versionIDDataColumn;
+        
+        public IDDataColumn { get { return _idDataColumn; } }
+        public NameDataColumn { get { return _nameDataColumn; } }
+        public PathDataColumn { get { return _pathDataColumn; } }
+        public VersionIDColumn { get { return _versionIDDataColumn; } }
+
+	    public FileDataTable() : base(Default_DataTableName)
+        {
+            _idDataColumn = new DataColumn(ColumnName_ID, typeof(long));
+            _nameDataColumn = new DataColumn(ColumnName_Name, typeof(string));
+            _pathDataColumn = new DataColumn(ColumnName_Path, typeof(string));
+            _versionIDDataColumn = new DataColumn(ColumnName_VersionID, typeof(long));
+            Columns.Add(_idDataColumn);
+            _idDataColumn.AutoIncrement = true;
+            _idDataColumn.AllowDBNull = false;
+            Columns.Add(_nameDataColumn);
+            _nameDataColumn.AllowDBNull = false;
+            Columns.Add(_pathDataColumn);
+            _nameDataColumn.AllowDBNull = false;
+            Columns.Add(_versionIDDataColumn);
+            _nameDataColumn.AllowDBNull = false;
+            Constraints.Add('PK_FileID', _idDataColumn, true);
+        }
+
+	    protected FileDataTable(SerializationInfo info, StreamingContext context)
+		    : base(info, context)
+	    {
+            _idDataColumn = Columns[ColumnName_ID];
+            _nameDataColumn = Columns[ColumnName_Name];
+            _pathDataColumn = Columns[ColumnName_Path];
+            _versionIDDataColumn = Columns[ColumnName_VersionID];
+	    }
+
+	    public override DataTable Clone()
+	    {
+	    	throw new NotImplementedException();
+	    }
+
+	    protected override DataTable CreateInstance() { return new FileDataTable(); }
+
+	    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+	    {
+	    	base.GetObjectData(info, context);
+	    }
+
+	    protected override Type GetRowType() { return typeof(FileDataRow); }
+
+	    // protected override DataRow NewRowFromBuilder(DataRowBuilder builder)
+	    // {
+	    // 	return base.NewRowFromBuilder(builder);
+	    // }
+
+	    protected override void OnRemoveColumn(DataColumn column) { throw new NotSupportedException(); }
+
+	    protected override void OnRowChanged(DataRowChangeEventArgs e)
+	    {
+	    	base.OnRowChanged(e);
+	    }
+
+	    protected override void OnRowChanging(DataRowChangeEventArgs e)
+	    {
+	    	base.OnRowChanging(e);
+	    }
+
+	    protected override void OnRowDeleted(DataRowChangeEventArgs e)
+	    {
+	    	base.OnRowDeleted(e);
+	    }
+
+	    protected override void OnRowDeleting(DataRowChangeEventArgs e)
+	    {
+	    	base.OnRowDeleting(e);
+	    }
+
+	    protected override void OnTableCleared(DataTableClearEventArgs e)
+	    {
+	    	base.OnTableCleared(e);
+	    }
+
+	    protected override void OnTableClearing(DataTableClearEventArgs e)
+	    {
+	    	base.OnTableClearing(e);
+	    }
+
+	    protected override void OnTableNewRow(DataTableNewRowEventArgs e)
+	    {
+	    	base.OnTableNewRow(e);
+	    }
+    }
+    public class ProductDataRow : DataRow, IEquatable<ProductDataRow>
+    {
+        public long ID
+        {
+            get
+            {
+                if (IsNUll(Product.ColumnName_ID))
+                    return -1;
+                return (long)(this[Product.ColumnName_ID]);
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                if (IsNUll(Product.ColumnName_Name))
+                    return "";
+                return (long)(this[Product.ColumnName_Name]);
+            }
+        }
+        protected ProductDataRow(DataRowBuilder builder)
             : base(builder)
         {
         }
-	    public override System.Boolean Equals(object obj)
+	    public override bool Equals(object obj)
 	    {
-	    	return base.Equals(obj);
+	    	return obj != null && obj is ProductDataRow && Equals((ProductDataRow)obj);
 	    }
-	    public override int GetHashCode()
+	    public bool Equals(ProductDataRow other)
 	    {
-	    	return base.GetHashCode();
+	    	return other != null && ReferenceEquals(this, other);
 	    }
+	    public override int GetHashCode() { return ID.GetHashCode(); }
+	    public override string ToString() { return Name; }
+    }
+    public class VersionDataRow : DataRow, IEquatable<VersionDataRow>
+    {
+        private Version _value = null;
+        public Version Value
+        {
+            get
+            {
+                Version value = _value;
+                if (value == null)
+                {
+                    int build = Build;
+                    if (build < 0)
+                        value = new Version(Major, Minor);
+                    else
+                    {
+                        int revision = Revision;
+                        if (revision < 0)
+                            value = new Version(Major, Minor, build);
+                        else
+                            value = new Version(Major, Minor, build, revision);
+                    }
+                    _value = value;
+                }
+
+                return value;
+            }
+        }
+        public void ResetValue() { this._value = null; }
+        public long ID
+        {
+            get
+            {
+                if (IsNUll(VersionDataTable.ColumnName_ID))
+                    return -1;
+                return (long)(this[VersionDataTable.ColumnName_ID]);
+            }
+        }
+        public long ProductID
+        {
+            get
+            {
+                if (IsNUll(VersionDataTable.ColumnName_ProductID))
+                    return -1L;
+                return (long)(this[VersionDataTable.ColumnName_ProductID]);
+            }
+            set { this[VersionDataTable.ColumnName_ProductID] = value; }
+        }
+        public int Major
+        {
+            get
+            {
+                if (IsNUll(FileDataTable.ColumnName_Major))
+                    return 0;
+                return (int)(this[VersionDataTable.ColumnName_Major]);
+            }
+        }
+        public int Minor
+        {
+            get
+            {
+                if (IsNUll(VersionDataTable.ColumnName_Minor))
+                    return 0;
+                return (int)(this[VersionDataTable.ColumnName_Minor]);
+            }
+        }
+        public int Build
+        {
+            get
+            {
+                if (IsNUll(VersionDataTable.ColumnName_Build))
+                    return -1;
+                return (int)(this[VersionDataTable.ColumnName_Build]);
+            }
+        }
+        public int Revision
+        {
+            get
+            {
+                if (IsNUll(VersionDataTable.ColumnName_Revision))
+                    return -1;
+                return (int)(this[VersionDataTable.ColumnName_Revision]);
+            }
+        }
+        public bool IsInstalled
+        {
+            get { return (!IsNUll(FileDataTable.ColumnName_IsInstalled) && (bool)(this[VersionDataTable.ColumnName_IsInstalled])); }
+            set { this[VersionDataTable.ColumnName_IsInstalled] = value; }
+        }
+
+        protected VersionDataRow(DataRowBuilder builder)
+            : base(builder)
+        {
+        }
+	    public override bool Equals(object obj)
+	    {
+	    	return obj != null && obj is VersionDataRow && Equals((VersionDataRow)obj);
+	    }
+	    public bool Equals(VersionDataRow other)
+	    {
+	    	return other != null && ReferenceEquals(this, other);
+	    }
+	    public override int GetHashCode() { return ID.GetHashCode(); }
 	    public override string ToString()
 	    {
-	    	return base.ToString();
+            if (IsInstalled)
+	    	    return Value.ToString() + " (installed)";
+            return Value.ToString();
 	    }
+    }
+    public class FileDataRow : DataRow, IEquatable<FileDataRow>
+    {
+        public long ID
+        {
+            get
+            {
+                if (IsNUll(FileDataTable.ColumnName_ID))
+                    return -1;
+                return (long)(this[FileDataTable.ColumnName_ID]);
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                if (IsNUll(FileDataTable.ColumnName_Name))
+                    return "";
+                return (long)(this[FileDataTable.ColumnName_Name]);
+            }
+        }
+        public string Path
+        {
+            get
+            {
+                if (IsNUll(FileDataTable.ColumnName_Path))
+                    return "";
+                return (long)(this[FileDataTable.ColumnName_Path]);
+            }
+        }
+        public long VersionID
+        {
+            get
+            {
+                if (IsNUll(FileDataTable.ColumnName_VersionID))
+                    return -1L;
+                return (long)(this[FileDataTable.ColumnName_VersionID]);
+            }
+            set { this[FileDataTable.ColumnName_VersionID] = value; }
+        }
+
+        protected FileDataRow(DataRowBuilder builder)
+            : base(builder)
+        {
+        }
+	    public override bool Equals(object obj)
+	    {
+	    	return obj != null && obj is FileDataRow && Equals((FileDataRow)obj);
+	    }
+	    public bool Equals(FileDataRow other)
+	    {
+	    	return other != null && ReferenceEquals(this, other);
+	    }
+	    public override int GetHashCode() { return ID.GetHashCode(); }
+	    public override string ToString() { return Path; }
     }
 }
 '@ -ReferencedAssemblies 'System.Data', 'System.Xml';
@@ -597,7 +1050,8 @@ if ($null -eq $Script:DataSet) {
     <#try { $OutputLines = @(code --list-extensions --show-versions); } catch {
       Write-Warning -Message 'Failed to execute Visual Studio Code';
     }#>
-                                                                                                                                                            $OutputLines = @(@"
+                                   
+$OutputLines = @(@"
 abusaidm.html-snippets@0.2.1
 Angular.ng-template@0.1.10
 christian-kohler.npm-intellisense@1.3.0
