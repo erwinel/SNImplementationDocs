@@ -4,7 +4,7 @@
   </div>
   <div class="card-body">
     <div class="detail">Load and apply the <a href="{{howtoImportUpdateSetFolder}}/{{howtoImportUpdateSetFileName}}" target="_blank">{{howtoImportUpdateSetFileName}}</a> File in the
-      <var>downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.</div>
+      <var>{{howtoImportUpdateSetFolder}}</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.</div>
       <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div>
   </div>
 </div>
@@ -19,7 +19,8 @@
       whether the current instance is for production, UAT, Testing, Development or if it is a sandbox instance.</div>
     <ol>
       <li>Import the util application from <kbd>{{utilRepositoryUrl}}</kbd>.
-        <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for importing applications from source countrol.</div>
+        <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
+          to view instructions for importing applications from source countrol.</div>
       </li>
       <li>Once the appplication is imported, select that application in order to put your session in the correct
         scope, and then close out the <samp>Application Studio</samp> browser tab.</li>
@@ -39,8 +40,8 @@
       <li>Navigate to
         <samp>System Properties</samp> &rArr;
         <samp>Basic Configuration</samp>. If you are in the &quot;Util&quot; application scope, you will see the following message:
-        <img src="assets/images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded"
-        /> This is intentional. It is important to ensure you are in the &quot;Util&quot; application scope, otherwise the
+        <img src="assets/images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded" />
+        This is intentional. It is important to ensure you are in the &quot;Util&quot; application scope, otherwise the
         next change will not be saved.
       </li>
       <li>Set SDLC Config Stage to the ServiceNow SDLC stage for the current server.</li>
@@ -58,10 +59,8 @@
         you chose to let it run in the foreground, the logged output that occurred during script execution will be displayed
         when it is finished. At the bottom of the output, you should see a line that indicates it has succeeded.
         <br />
-        <button (click)="openFigure('Example of completed fix script', 'assets/images/initialConfig/initialArmyConfigSuccess_lg.png')"
-          class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script"
-            class="figure-img img-fluid rounded" />
+        <button (click)="openFigure('Example of completed fix script', 'assets/images/initialConfig/initialArmyConfigSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
+          <img src="assets/images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
         </button> Refresh the browser page to see the applied color scheme.
       </li>
     </ol>
@@ -85,8 +84,7 @@
         <samp>+</samp> icon to upload the banner image.
         <button (click)="openFigure('Example of banner image setting', 'assets/images/initialConfig/bannerImageSetting_lg.png')"
           class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded"
-          />
+          <img src="assets/images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
         </button>
       </li>
       <li>Upload the logo image corresponding to the SDLC stage you previously configured. You can download an image from one
@@ -94,38 +92,32 @@
         <ul>
           <li>
             <a href="assets/downloads/Logo/logo_army_prod.png">
-              <img src="assets/downloads/Logo/logo_army_prod.png" alt="Production Banner Logo" class="figure-img img-fluid rounded"
-              /> Production
+              <img src="assets/downloads/Logo/logo_army_prod.png" alt="Production Banner Logo" class="figure-img img-fluid rounded" /> Production
             </a>
           </li>
           <li>
             <a href="assets/downloads/Logo/logo_army_uat.png">
-              <img src="assets/downloads/Logo/logo_army_uat.png" alt="UAT Banner Logo" class="figure-img img-fluid rounded"
-              /> UAT
+              <img src="assets/downloads/Logo/logo_army_uat.png" alt="UAT Banner Logo" class="figure-img img-fluid rounded" /> UAT
             </a>
           </li>
           <li>
             <a href="assets/downloads/Logo/logo_army_test.png">
-              <img src="assets/downloads/Logo/logo_army_test.png" alt="Test Banner Logo" class="figure-img img-fluid rounded"
-              /> Test
+              <img src="assets/downloads/Logo/logo_army_test.png" alt="Test Banner Logo" class="figure-img img-fluid rounded" /> Test
             </a>
           </li>
           <li>
             <a href="assets/downloads/Logo/logo_army_dev.png">
-              <img src="assets/downloads/Logo/logo_army_dev.png" alt="Dev Banner Logo" class="figure-img img-fluid rounded"
-              /> Dev
+              <img src="assets/downloads/Logo/logo_army_dev.png" alt="Dev Banner Logo" class="figure-img img-fluid rounded" /> Dev
             </a>
           </li>
           <li>
             <a href="assets/downloads/Logo/logo_army_sb.png">
-              <img src="assets/downloads/Logo/logo_army_sb.png" alt="Sandbox Banner Logo" class="figure-img img-fluid rounded"
-              /> Sandbox
+              <img src="assets/downloads/Logo/logo_army_sb.png" alt="Sandbox Banner Logo" class="figure-img img-fluid rounded" /> Sandbox
             </a>
           </li>
           <li>
             <a href="assets/downloads/Logo/logo_service-now.png">
-              <img src="assets/downloads/Logo/logo_service-now.png" alt="OOTB Banner Logo" class="figure-img img-fluid rounded"
-              /> Out-of-the-box
+              <img src="assets/downloads/Logo/logo_service-now.png" alt="OOTB Banner Logo" class="figure-img img-fluid rounded" /> Out-of-the-box
             </a>
           </li>
         </ul>
@@ -177,15 +169,15 @@
       such as Dev, Test and Production.</div>
     <ol>
       <li>Import the GroupNameRegistry application from <kbd>{{grpnameregRepositoryUrl}}</kbd>.
-        <div><button (click)="openHowtoImportApplication('grpnamereg')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for importing applications from source countrol.</div>
+        <div><button (click)="openHowtoImportApplication('grpnamereg')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for importing
+          applications from source countrol.</div>
         Once the application is imported, select the GroupNameRegistry application and close the Application Studio tab.
       </li>
       <li>Refresh the browser page in order to reload the navigation menu on the left-hand side.</li>
       <li>Navigate to <samp>Group Name Registry</samp> &rArr; <samp>Interop Group Names</samp>.
         <button (click)="openFigure('Example of changed navigation', 'assets/images/initialConfig/GroupNameRegiestryNavItem_lg.png')"
           class="btn btn-outline-primary mb-2 mr-2">
-          <img src="assets/images/initialConfig/GroupNameRegiestryNavItem_sm.png" alt="Click to view example of changed navigation" class="figure-img img-fluid rounded"
-          />
+          <img src="assets/images/initialConfig/GroupNameRegiestryNavItem_sm.png" alt="Click to view example of changed navigation" class="figure-img img-fluid rounded" />
         </button></li>
     </ol>
   </div>

@@ -15,7 +15,7 @@
     </li>
     <li class="align-text-top">Click on the
       <samp>Choose File</samp> button and upload
-      <a *ngIf="showDownloadLink; else elseTemplate" href="assets/downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">{{updateSetFileNameDisplayText}}</a>.
+      <a *ngIf="showDownloadLink; else elseTemplate" href="{{downloadLinkUrl}}" target="_blank">{{updateSetFileNameDisplayText}}</a>
       <ng-template #elseTemplate>{{updateSetFileNameDisplayText}}</ng-template>
       <button (click)="openFigure('Example of file upload dialog', 'assets/images/initialConfig/chooseFile_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
         <img src="assets/images/initialConfig/chooseFile_sm.png" alt="Click to view example of file upload dialog" class="figure-img img-fluid rounded"

@@ -38,7 +38,7 @@ export class InitialSnConfigComponent implements OnInit {
   closeResult: string;
   private _modalTitleText = '';
   private _modalImageUrl = '';
-  private _howtoImportUpdateSetFolder = 'downloads';
+  private _howtoImportUpdateSetFolder = 'assets/downloads';
   private _howtoImportUpdateSetFileName = 'sys_remote_update_set_Initial_Setup.xml';
   private _repositoryUrlSettings: Observable<IRepositoryUrlSettings>;
   private _utilRepositoryUrl = '';
