@@ -181,7 +181,200 @@
     <h2 id="importAdImport">7. Configure Active Directory Import</h2>
   </div>
   <div class="card-body">
-    <div class="detail"></div>
+    <div class="detail">
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3>Update / Create LDAP Server</h3>
+      </div>
+      <div class="card-body">
+        <div class="detail">
+          <ol>
+            <li>Navigate to
+              <samp>System LDAP</samp> &rArr; <samp>LDAP Servers</samp> and open the pre-defined LDAP server if one exists; otherwise, click &quot;New&quot; to create a new record.</li>
+            <li>Provide the following information in the form, and save changes (insert and stay):
+              <ul>
+                <li><var>Name</var> - This is the display name, not the server name.</li>
+                <li><var>Active</var> - <em>checked</em></li>
+                <li><var>Login distinguished name</var> - The login name, which should be in the format <samp>account@domain.name</samp>.</li>
+                <li><var>Password</var> - The authentication password.</li>
+                <li><var>Starting search directory</var> - This is the DN of the root of the directory search.</li>
+                <li><var>MID Server</var> - This can initially be left blank.</li>
+              </ul>
+            </li>
+            <li>Under LDAP Server URLs, use <samp>Insert a new row...</samp> to add the LDAP URL for each of the LDAP servers.
+              <var>Active</var> and <var>Operational Status</var> should both be set to true.</li>
+            <li>In the <samp>Advanced Options</samp> section, check the following fields nd save changes:
+              <ul>
+                <li>Listener</li>
+                <li>Paging</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3>Create LDAP OU Definitions</h3>
+      </div>
+      <div class="card-body">
+        <div class="card">
+          <div class="card-header">
+            <h4>Enterprise Users Active Directory Import</h4>
+          </div>
+          <div class="card-body">
+            <div class="detail">Navigate to
+              <samp>System LDAP</samp> &rArr; <samp>LDAP Servers</samp> and open the LDAP server that was just created/updated in the previous section.
+              <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
+              <ol>
+                <li>Under <samp>LDAP OU Definitions</samp> at the bottom of the page, add an entry for Enterprise Users:
+                  <ul>
+                    <li><var>Name</var> - <samp>Enterprise User Import</samp></li>
+                    <li><var>RDN</var> - The canonical name of the LDAP folder to import from (ie. <samp>OU=Enterprise Users</samp>).</li>
+                    <li><var>Query Field</var> - <samp>sAMAccountName</samp>.
+                      <div class="alert-warning">This specification was taken from existing documentation.
+                        We may need to test whether it would work if we used userPincipalName, instead.</div>
+                    </li>
+                    <li><var>Active</var> - checked</li>
+                    <li><var>Server</var> - This should be the same as the parent record we started from.</li>
+                    <li><var>Table</var> - <samp>User [sys_user]</samp></li>
+                    <li><var>Filter</var> - <samp>(&(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</samp>
+                      <div class="alert-info">Utilize the <samp>Test connection</samp> link under <samp>Related Links</samp> to verify there are no errors in the filter.</div></li>
+                  </ul>
+                </li>
+                <li>Under <samp>Data Sources</samp>, add a new entry:
+                  <ul>
+                    <li><var>Name</var> - <samp>Enterprise LDAP users</samp></li>
+                    <li><var>Import set table label</var> - <samp>Enterprise User Import</samp>.</li>
+                    <li><var>Import set table name</var> - This should be automatically generated as <samp>u_enterprise_user_import</samp>.</li>
+                    <li><var>Type</var> - <samp>LDAP</samp></li>
+                    <li><var>LDAP Target</var> - <samp>Enterprise User Import</samp>.</li>
+                  </ul>
+                </li>
+                <li>Create Transform Map
+                  <ol>
+                    <li>Under <samp>Related Links</samp>, click <samp>Test Load 20 records</samp>.</li>
+                    <li>Select <samp>Create Transform Map</samp> and provide the following values:
+                      <ul>
+                        <li><var>Name</var> - <samp>Enterprise Enterprise User Import</samp></li>
+                        <li><var>Source table</var> - <samp>Enterprise User Import [u_enterprise_user_import]</samp>.</li>
+                        <li><var>Target Table</var> - <samp>User [sys_user]</samp></li>
+                        <li><var>Active</var> - checked</li>
+                        <li><var>Run business rules</var> - checked</li>
+                        <li><var>Enforce mandatory fields</var> - No</li>
+                        <li><var>Copy empty fields</var> - unchecked</li>
+                        <li><var>Run script</var> - unchecked</li>
+                      </ul>
+                    </li>
+                  </ol>
+                </li>
+                <li>Map LDAP fields
+                  <ol>
+                    <li>Under <samp>Related Links</samp>, click <samp>Auto Map Matching Fields</samp>.</li>
+                    <li>Under <samp>Related Links</samp>, click <samp>Mapping assist</samp> to ensure all fields are mapped appropriately.</li>
+                  </ol>
+                </li>
+                <li>Coalesce Enterprise User Imports
+                  <ol>
+                    <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Transform Maps</samp> &rArr; <samp>Enterprise User Import</samp>.</li>
+                    <li>Under the <samp>Field Maps</samp> tab, double-click the <samp>Coalesce</samp> value for the <samp>u_samaccountname</samp> source field and change it to <samp>true</samp>.
+                      <div class="alert-warning">This specification was taken from existing documentation.
+                        If we used userPincipalName instead of samAccountName, then we will coalesce using the <samp>u_userprincipalname</samp> field, instead.</div></li>
+                  </ol>
+                </li>
+                <li>Under <samp>Related Links</samp>, click <samp>Transform</samp>, and in the resulting page, click the <samp>Transform</samp> button to apply the transform map.</li>
+                <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Data Sources</samp> and open the <samp>Enterprise LDAP users</samp> data source.</li>
+                <li>Under <samp>Related Links</samp>, click <samp>Load all records</samp>.</li>
+                <li>Once all users are loaded, click <samp>Run Transform</samp>, and then in the resulting page, click the <samp>Transform</samp> button.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h4>Admin Users Active Directory Import</h4>
+          </div>
+          <div class="card-body">
+            <div class="detail">Navigate to
+              <samp>System LDAP</samp> &rArr; <samp>LDAP Servers</samp> and open the LDAP server that was just created/updated in the previous section.
+              <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
+              <ol>
+                <li>Under <samp>LDAP OU Definitions</samp> at the bottom of the page, add an entry for Admin Users:
+                  <ul>
+                    <li><var>Name</var> - <samp>Admin User Import</samp></li>
+                    <li><var>RDN</var> - The canonical name of the LDAP folder to import from (ie. <samp>OU=Administration</samp>).</li>
+                    <li><var>Query Field</var> - <samp>sAMAccountName</samp>.
+                      <div class="alert-warning">This specification was taken from existing documentation.
+                        We may need to test whether it would work if we used userPincipalName, instead.</div>
+                    </li>
+                    <li><var>Active</var> - checked</li>
+                    <li><var>Server</var> - This should be the same as the parent record we started from.</li>
+                    <li><var>Table</var> - <samp>User [sys_user]</samp></li>
+                    <li><var>Filter</var> - <samp>(&(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</samp>
+                      <div class="alert-info">Utilize the <samp>Test connection</samp> link under <samp>Related Links</samp> to verify there are no errors in the filter.</div></li>
+                  </ul>
+                </li>
+                <li>Under <samp>Data Sources</samp>, add a new entry:
+                  <ul>
+                    <li><var>Name</var> - <samp>Admin LDAP users</samp></li>
+                    <li><var>Import set table label</var> - <samp>Admin User Import</samp>.</li>
+                    <li><var>Import set table name</var> - This should be automatically generated as <samp>u_admin_user_import</samp>.</li>
+                    <li><var>Type</var> - <samp>LDAP</samp></li>
+                    <li><var>LDAP Target</var> - <samp>Admin User Import</samp>.</li>
+                  </ul>
+                </li>
+                <li>Create Transform Map
+                  <ol>
+                    <li>Under <samp>Related Links</samp>, click <samp>Test Load 20 records</samp>.</li>
+                    <li>Select <samp>Create Transform Map</samp> and provide the following values:
+                      <ul>
+                        <li><var>Name</var> - <samp>Admin User Import</samp></li>
+                        <li><var>Source table</var> - <samp>Admin User Import [u_admin_user_import]</samp>.</li>
+                        <li><var>Target Table</var> - <samp>User [sys_user]</samp></li>
+                        <li><var>Active</var> - checked</li>
+                        <li><var>Run business rules</var> - checked</li>
+                        <li><var>Enforce mandatory fields</var> - No</li>
+                        <li><var>Copy empty fields</var> - unchecked</li>
+                        <li><var>Run script</var> - unchecked</li>
+                      </ul>
+                    </li>
+                  </ol>
+                </li>
+                <li>Map LDAP fields
+                  <ol>
+                    <li>Under <samp>Related Links</samp>, click <samp>Auto Map Matching Fields</samp>.</li>
+                    <li>Under <samp>Related Links</samp>, click <samp>Mapping assist</samp> to ensure all fields are mapped appropriately.</li>
+                  </ol>
+                </li>
+                <li>Coalesce Admin User Imports
+                  <ol>
+                    <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Transform Maps</samp> &rArr; <samp>Admin User Import</samp>.</li>
+                    <li>Under the <samp>Field Maps</samp> tab, double-click the <samp>Coalesce</samp> value for the <samp>u_samaccountname</samp> source field and change it to <samp>true</samp>.
+                      <div class="alert-warning">This specification was taken from existing documentation.
+                        If we used userPincipalName instead of samAccountName, then we will coalesce using the <samp>u_userprincipalname</samp> field, instead.</div></li>
+                  </ol>
+                </li>
+                <li>Under <samp>Related Links</samp>, click <samp>Transform</samp>, and in the resulting page, click the <samp>Transform</samp> button to apply the transform map.</li>
+                <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Data Sources</samp> and open the <samp>Admin LDAP users</samp> data source.</li>
+                <li>Under <samp>Related Links</samp>, click <samp>Load all records</samp>.</li>
+                <li>Once all users are loaded, click <samp>Run Transform</samp>, and then in the resulting page, click the <samp>Transform</samp> button.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h4>Active Directory Group Import</h4>
+          </div>
+          <div class="card-body">
+            <div class="detail">
+              <em>Not yet documented...</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
