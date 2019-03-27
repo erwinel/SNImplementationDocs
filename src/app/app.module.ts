@@ -17,6 +17,7 @@ import { PopupModalComponent } from './popup-modal/popup-modal.component';
 import { HowtoImportUpdateSetComponent } from './howto-import-update-set/howto-import-update-set.component';
 import { HowtoImportApplicationComponent } from './howto-import-application/howto-import-application.component';
 import { HttpClientModule, HttpClient, HttpResponse } from '@angular/common/http';
+import { ServerCodeSnippetsComponent } from './server-code-snippets/server-code-snippets.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { HttpClientModule, HttpClient, HttpResponse } from '@angular/common/http
     LargeModalComponent,
     PopupModalComponent,
     HowtoImportUpdateSetComponent,
-    HowtoImportApplicationComponent
+    HowtoImportApplicationComponent,
+    ServerCodeSnippetsComponent
   ],
   imports: [
     BrowserModule,
