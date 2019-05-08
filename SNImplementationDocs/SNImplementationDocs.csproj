@@ -1,0 +1,522 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DB4A4410-A52B-4213-9FB6-176AD4476340}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SNImplementationDocs</RootNamespace>
+    <AssemblyName>SNImplementationDocs</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES2015</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir>C:\Users\lerwi\source\repos\SNImplementationDocs\SNImplementationDocs\App</TypeScriptOutDir>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App\ColorInfo.js" />
+    <Content Include="App\CommonJsUtility.js" />
+    <Content Include="App\IncidentManagement.js" />
+    <Content Include="App\InitialConfig.js" />
+    <Content Include="App\Test.js" />
+    <Content Include="App\UriBuilder.js" />
+    <Content Include="ColorEditor.html" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="DevResources.html" />
+    <Content Include="downloads\PowerShell\pagetemplate.xml" />
+    <Content Include="downloads\PowerShell\sys_properties_config.html" />
+    <Content Include="downloads\PowerShell\sys_properties_list.xml" />
+    <Content Include="downloads\sys_remote_update_set_Incident_Management.xml" />
+    <Content Include="downloads\sys_remote_update_set_Initial_Setup.xml" />
+    <Content Include="downloads\sys_remote_update_set_Service_Catalog.xml" />
+    <Content Include="downloads\sys_remote_update_set_Test_Org_setup.xml" />
+    <Content Include="images\adminSetup\DeveloperSettings.png" />
+    <Content Include="images\adminSetup\SelectScope.png" />
+    <Content Include="images\adminSetup\SettingsGear.PNG" />
+    <Content Include="images\collapse.svg" />
+    <Content Include="images\ElevateRoles1.PNG" />
+    <Content Include="images\expand.svg" />
+    <Content Include="images\initialConfig\bannerImageSetting_lg.png" />
+    <Content Include="images\initialConfig\bannerImageSetting_sm.png" />
+    <Content Include="images\initialConfig\chooseFile_lg.png" />
+    <Content Include="images\initialConfig\chooseFile_sm.png" />
+    <Content Include="images\initialConfig\commitSuccess_lg.png" />
+    <Content Include="images\initialConfig\commitSuccess_sm.png" />
+    <Content Include="images\initialConfig\ExampleProgressWorkerSuccess.PNG" />
+    <Content Include="images\initialConfig\gitImportProgress_lg.png" />
+    <Content Include="images\initialConfig\gitImportProgress_sm.png" />
+    <Content Include="images\initialConfig\gitImportSuccess_lg.png" />
+    <Content Include="images\initialConfig\gitImportSuccess_sm.png" />
+    <Content Include="images\initialConfig\globalApplicationWarning.png" />
+    <Content Include="images\initialConfig\GroupNameRegiestryNavItem_lg.png" />
+    <Content Include="images\initialConfig\GroupNameRegiestryNavItem_sm.png" />
+    <Content Include="images\initialConfig\importApplicationComplete_lg.png" />
+    <Content Include="images\initialConfig\importApplicationComplete_sm.png" />
+    <Content Include="images\initialConfig\importApplicationDialog_lg.png" />
+    <Content Include="images\initialConfig\importApplicationDialog_sm.png" />
+    <Content Include="images\initialConfig\importFromSourceControl_lg.png" />
+    <Content Include="images\initialConfig\importFromSourceControl_sm.png" />
+    <Content Include="images\initialConfig\initialArmyConfigSuccess_lg.png" />
+    <Content Include="images\initialConfig\initialArmyConfigSuccess_sm.png" />
+    <Content Include="images\initialConfig\previewSuccess_lg.png" />
+    <Content Include="images\initialConfig\previewSuccess_sm.png" />
+    <Content Include="images\initialConfig\relatedLinks_lg.png" />
+    <Content Include="images\initialConfig\relatedLinks_sm.png" />
+    <Content Include="images\initialConfig\selectApplicationDialog_lg.png" />
+    <Content Include="images\initialConfig\selectApplicationDialog_sm.png" />
+    <Content Include="images\initialConfig\systemApplicationsStudio_lg.png" />
+    <Content Include="images\initialConfig\systemApplicationsStudio_sm.png" />
+    <Content Include="images\initialConfig\uploaded_lg.png" />
+    <Content Include="images\initialConfig\uploaded_sm.png" />
+    <Content Include="images\moreInfo.svg" />
+    <Content Include="images\open-iconic\account-login.svg" />
+    <Content Include="images\open-iconic\account-logout.svg" />
+    <Content Include="images\open-iconic\action-redo.svg" />
+    <Content Include="images\open-iconic\action-undo.svg" />
+    <Content Include="images\open-iconic\align-center.svg" />
+    <Content Include="images\open-iconic\align-left.svg" />
+    <Content Include="images\open-iconic\align-right.svg" />
+    <Content Include="images\open-iconic\aperture.svg" />
+    <Content Include="images\open-iconic\arrow-bottom.svg" />
+    <Content Include="images\open-iconic\arrow-circle-bottom.svg" />
+    <Content Include="images\open-iconic\arrow-circle-left.svg" />
+    <Content Include="images\open-iconic\arrow-circle-right.svg" />
+    <Content Include="images\open-iconic\arrow-circle-top.svg" />
+    <Content Include="images\open-iconic\arrow-left.svg" />
+    <Content Include="images\open-iconic\arrow-right.svg" />
+    <Content Include="images\open-iconic\arrow-thick-bottom.svg" />
+    <Content Include="images\open-iconic\arrow-thick-left.svg" />
+    <Content Include="images\open-iconic\arrow-thick-right.svg" />
+    <Content Include="images\open-iconic\arrow-thick-top.svg" />
+    <Content Include="images\open-iconic\arrow-top.svg" />
+    <Content Include="images\open-iconic\audio-spectrum.svg" />
+    <Content Include="images\open-iconic\audio.svg" />
+    <Content Include="images\open-iconic\badge.svg" />
+    <Content Include="images\open-iconic\ban.svg" />
+    <Content Include="images\open-iconic\bar-chart.svg" />
+    <Content Include="images\open-iconic\basket.svg" />
+    <Content Include="images\open-iconic\battery-empty.svg" />
+    <Content Include="images\open-iconic\battery-full.svg" />
+    <Content Include="images\open-iconic\beaker.svg" />
+    <Content Include="images\open-iconic\bell.svg" />
+    <Content Include="images\open-iconic\bluetooth.svg" />
+    <Content Include="images\open-iconic\bold.svg" />
+    <Content Include="images\open-iconic\bolt.svg" />
+    <Content Include="images\open-iconic\book.svg" />
+    <Content Include="images\open-iconic\bookmark.svg" />
+    <Content Include="images\open-iconic\box.svg" />
+    <Content Include="images\open-iconic\briefcase.svg" />
+    <Content Include="images\open-iconic\british-pound.svg" />
+    <Content Include="images\open-iconic\browser.svg" />
+    <Content Include="images\open-iconic\brush.svg" />
+    <Content Include="images\open-iconic\bug.svg" />
+    <Content Include="images\open-iconic\bullhorn.svg" />
+    <Content Include="images\open-iconic\calculator.svg" />
+    <Content Include="images\open-iconic\calendar.svg" />
+    <Content Include="images\open-iconic\camera-slr.svg" />
+    <Content Include="images\open-iconic\caret-bottom.svg" />
+    <Content Include="images\open-iconic\caret-left.svg" />
+    <Content Include="images\open-iconic\caret-right.svg" />
+    <Content Include="images\open-iconic\caret-top.svg" />
+    <Content Include="images\open-iconic\cart.svg" />
+    <Content Include="images\open-iconic\chat.svg" />
+    <Content Include="images\open-iconic\check.svg" />
+    <Content Include="images\open-iconic\chevron-bottom.svg" />
+    <Content Include="images\open-iconic\chevron-left.svg" />
+    <Content Include="images\open-iconic\chevron-right.svg" />
+    <Content Include="images\open-iconic\chevron-top.svg" />
+    <Content Include="images\open-iconic\circle-check.svg" />
+    <Content Include="images\open-iconic\circle-x.svg" />
+    <Content Include="images\open-iconic\clipboard.svg" />
+    <Content Include="images\open-iconic\clock.svg" />
+    <Content Include="images\open-iconic\cloud-download.svg" />
+    <Content Include="images\open-iconic\cloud-upload.svg" />
+    <Content Include="images\open-iconic\cloud.svg" />
+    <Content Include="images\open-iconic\cloudy.svg" />
+    <Content Include="images\open-iconic\code.svg" />
+    <Content Include="images\open-iconic\cog.svg" />
+    <Content Include="images\open-iconic\collapse-down.svg" />
+    <Content Include="images\open-iconic\collapse-left.svg" />
+    <Content Include="images\open-iconic\collapse-right.svg" />
+    <Content Include="images\open-iconic\collapse-up.svg" />
+    <Content Include="images\open-iconic\command.svg" />
+    <Content Include="images\open-iconic\comment-square.svg" />
+    <Content Include="images\open-iconic\compass.svg" />
+    <Content Include="images\open-iconic\contrast.svg" />
+    <Content Include="images\open-iconic\copywriting.svg" />
+    <Content Include="images\open-iconic\credit-card.svg" />
+    <Content Include="images\open-iconic\crop.svg" />
+    <Content Include="images\open-iconic\dashboard.svg" />
+    <Content Include="images\open-iconic\data-transfer-download.svg" />
+    <Content Include="images\open-iconic\data-transfer-upload.svg" />
+    <Content Include="images\open-iconic\delete.svg" />
+    <Content Include="images\open-iconic\dial.svg" />
+    <Content Include="images\open-iconic\document.svg" />
+    <Content Include="images\open-iconic\dollar.svg" />
+    <Content Include="images\open-iconic\double-quote-sans-left.svg" />
+    <Content Include="images\open-iconic\double-quote-sans-right.svg" />
+    <Content Include="images\open-iconic\double-quote-serif-left.svg" />
+    <Content Include="images\open-iconic\double-quote-serif-right.svg" />
+    <Content Include="images\open-iconic\droplet.svg" />
+    <Content Include="images\open-iconic\eject.svg" />
+    <Content Include="images\open-iconic\elevator.svg" />
+    <Content Include="images\open-iconic\ellipses.svg" />
+    <Content Include="images\open-iconic\envelope-closed.svg" />
+    <Content Include="images\open-iconic\envelope-open.svg" />
+    <Content Include="images\open-iconic\euro.svg" />
+    <Content Include="images\open-iconic\excerpt.svg" />
+    <Content Include="images\open-iconic\expand-down.svg" />
+    <Content Include="images\open-iconic\expand-left.svg" />
+    <Content Include="images\open-iconic\expand-right.svg" />
+    <Content Include="images\open-iconic\expand-up.svg" />
+    <Content Include="images\open-iconic\external-link.svg" />
+    <Content Include="images\open-iconic\eye.svg" />
+    <Content Include="images\open-iconic\eyedropper.svg" />
+    <Content Include="images\open-iconic\file.svg" />
+    <Content Include="images\open-iconic\fire.svg" />
+    <Content Include="images\open-iconic\flag.svg" />
+    <Content Include="images\open-iconic\flash.svg" />
+    <Content Include="images\open-iconic\folder.svg" />
+    <Content Include="images\open-iconic\fork.svg" />
+    <Content Include="images\open-iconic\fullscreen-enter.svg" />
+    <Content Include="images\open-iconic\fullscreen-exit.svg" />
+    <Content Include="images\open-iconic\globe.svg" />
+    <Content Include="images\open-iconic\graph.svg" />
+    <Content Include="images\open-iconic\grid-four-up.svg" />
+    <Content Include="images\open-iconic\grid-three-up.svg" />
+    <Content Include="images\open-iconic\grid-two-up.svg" />
+    <Content Include="images\open-iconic\hard-drive.svg" />
+    <Content Include="images\open-iconic\header.svg" />
+    <Content Include="images\open-iconic\headphones.svg" />
+    <Content Include="images\open-iconic\heart.svg" />
+    <Content Include="images\open-iconic\home.svg" />
+    <Content Include="images\open-iconic\image.svg" />
+    <Content Include="images\open-iconic\inbox.svg" />
+    <Content Include="images\open-iconic\infinity.svg" />
+    <Content Include="images\open-iconic\info.svg" />
+    <Content Include="images\open-iconic\italic.svg" />
+    <Content Include="images\open-iconic\justify-center.svg" />
+    <Content Include="images\open-iconic\justify-left.svg" />
+    <Content Include="images\open-iconic\justify-right.svg" />
+    <Content Include="images\open-iconic\key.svg" />
+    <Content Include="images\open-iconic\laptop.svg" />
+    <Content Include="images\open-iconic\layers.svg" />
+    <Content Include="images\open-iconic\lightbulb.svg" />
+    <Content Include="images\open-iconic\link-broken.svg" />
+    <Content Include="images\open-iconic\link-intact.svg" />
+    <Content Include="images\open-iconic\list-rich.svg" />
+    <Content Include="images\open-iconic\list.svg" />
+    <Content Include="images\open-iconic\location.svg" />
+    <Content Include="images\open-iconic\lock-locked.svg" />
+    <Content Include="images\open-iconic\lock-unlocked.svg" />
+    <Content Include="images\open-iconic\loop-circular.svg" />
+    <Content Include="images\open-iconic\loop-square.svg" />
+    <Content Include="images\open-iconic\loop.svg" />
+    <Content Include="images\open-iconic\magnifying-glass.svg" />
+    <Content Include="images\open-iconic\map-marker.svg" />
+    <Content Include="images\open-iconic\map.svg" />
+    <Content Include="images\open-iconic\media-pause.svg" />
+    <Content Include="images\open-iconic\media-play.svg" />
+    <Content Include="images\open-iconic\media-record.svg" />
+    <Content Include="images\open-iconic\media-skip-backward.svg" />
+    <Content Include="images\open-iconic\media-skip-forward.svg" />
+    <Content Include="images\open-iconic\media-step-backward.svg" />
+    <Content Include="images\open-iconic\media-step-forward.svg" />
+    <Content Include="images\open-iconic\media-stop.svg" />
+    <Content Include="images\open-iconic\medical-cross.svg" />
+    <Content Include="images\open-iconic\menu.svg" />
+    <Content Include="images\open-iconic\microphone.svg" />
+    <Content Include="images\open-iconic\minus.svg" />
+    <Content Include="images\open-iconic\monitor.svg" />
+    <Content Include="images\open-iconic\moon.svg" />
+    <Content Include="images\open-iconic\move.svg" />
+    <Content Include="images\open-iconic\musical-note.svg" />
+    <Content Include="images\open-iconic\paperclip.svg" />
+    <Content Include="images\open-iconic\pencil.svg" />
+    <Content Include="images\open-iconic\people.svg" />
+    <Content Include="images\open-iconic\person.svg" />
+    <Content Include="images\open-iconic\phone.svg" />
+    <Content Include="images\open-iconic\pie-chart.svg" />
+    <Content Include="images\open-iconic\pin.svg" />
+    <Content Include="images\open-iconic\play-circle.svg" />
+    <Content Include="images\open-iconic\plus.svg" />
+    <Content Include="images\open-iconic\power-standby.svg" />
+    <Content Include="images\open-iconic\print.svg" />
+    <Content Include="images\open-iconic\project.svg" />
+    <Content Include="images\open-iconic\pulse.svg" />
+    <Content Include="images\open-iconic\puzzle-piece.svg" />
+    <Content Include="images\open-iconic\question-mark.svg" />
+    <Content Include="images\open-iconic\rain.svg" />
+    <Content Include="images\open-iconic\random.svg" />
+    <Content Include="images\open-iconic\reload.svg" />
+    <Content Include="images\open-iconic\resize-both.svg" />
+    <Content Include="images\open-iconic\resize-height.svg" />
+    <Content Include="images\open-iconic\resize-width.svg" />
+    <Content Include="images\open-iconic\rss-alt.svg" />
+    <Content Include="images\open-iconic\rss.svg" />
+    <Content Include="images\open-iconic\script.svg" />
+    <Content Include="images\open-iconic\share-boxed.svg" />
+    <Content Include="images\open-iconic\share.svg" />
+    <Content Include="images\open-iconic\shield.svg" />
+    <Content Include="images\open-iconic\signal.svg" />
+    <Content Include="images\open-iconic\signpost.svg" />
+    <Content Include="images\open-iconic\sort-ascending.svg" />
+    <Content Include="images\open-iconic\sort-descending.svg" />
+    <Content Include="images\open-iconic\spreadsheet.svg" />
+    <Content Include="images\open-iconic\star.svg" />
+    <Content Include="images\open-iconic\sun.svg" />
+    <Content Include="images\open-iconic\tablet.svg" />
+    <Content Include="images\open-iconic\tag.svg" />
+    <Content Include="images\open-iconic\tags.svg" />
+    <Content Include="images\open-iconic\target.svg" />
+    <Content Include="images\open-iconic\task.svg" />
+    <Content Include="images\open-iconic\terminal.svg" />
+    <Content Include="images\open-iconic\text.svg" />
+    <Content Include="images\open-iconic\thumb-down.svg" />
+    <Content Include="images\open-iconic\thumb-up.svg" />
+    <Content Include="images\open-iconic\timer.svg" />
+    <Content Include="images\open-iconic\transfer.svg" />
+    <Content Include="images\open-iconic\trash.svg" />
+    <Content Include="images\open-iconic\underline.svg" />
+    <Content Include="images\open-iconic\vertical-align-bottom.svg" />
+    <Content Include="images\open-iconic\vertical-align-center.svg" />
+    <Content Include="images\open-iconic\vertical-align-top.svg" />
+    <Content Include="images\open-iconic\video.svg" />
+    <Content Include="images\open-iconic\volume-high.svg" />
+    <Content Include="images\open-iconic\volume-low.svg" />
+    <Content Include="images\open-iconic\volume-off.svg" />
+    <Content Include="images\open-iconic\warning.svg" />
+    <Content Include="images\open-iconic\wifi.svg" />
+    <Content Include="images\open-iconic\wrench.svg" />
+    <Content Include="images\open-iconic\x.svg" />
+    <Content Include="images\open-iconic\yen.svg" />
+    <Content Include="images\open-iconic\zoom-in.svg" />
+    <Content Include="images\open-iconic\zoom-out.svg" />
+    <Content Include="images\snippets\form_menu.png" />
+    <Content Include="images\snippets\new_ui_action.png" />
+    <Content Include="images\snippets\ui_action_form.png" />
+    <Content Include="images\subnav.svg" />
+    <Content Include="ImplementationNotes.html" />
+    <Content Include="IncidentManagement.html" />
+    <Content Include="index.html" />
+    <Content Include="InitialConfig.html" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="libman.json" />
+    <Content Include="images\open-iconic\ICON-LICENSE" />
+    <Content Include="images\open-iconic\README.md" />
+    <Content Include="downloads\PowerShell\GZip.ps1" />
+    <Content Include="downloads\PowerShell\html.dtd" />
+    <Content Include="downloads\PowerShell\MaintainPages.ps1" />
+    <Content Include="downloads\PowerShell\ManagePropertiesJSON.ps1" />
+    <Content Include="downloads\PowerShell\sys_properties_config.json" />
+    <Content Include="App\ColorInfo.js.map" />
+    <Content Include="App\CommonJsUtility.js.map" />
+    <Content Include="App\IncidentManagement.js.map" />
+    <Content Include="App\InitialConfig.js.map" />
+    <Content Include="App\Test.js.map" />
+    <Content Include="App\UriBuilder.js.map" />
+    <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
+    <Content Include="Scripts\jquery-3.0.0.js" />
+    <Content Include="Scripts\jquery-3.0.0.min.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.min.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="ServiceCatalog.html" />
+    <Content Include="Snippets.html" />
+    <Content Include="Test.html" />
+    <Content Include="theme.css" />
+    <Content Include="UriParser.html" />
+    <Content Include="Web.config" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="downloads\PowerShell\XmlUtil.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
+    <Content Include="Scripts\jquery-3.0.0.min.map" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="src\ColorInfo.ts" />
+    <TypeScriptCompile Include="src\CommonJsUtility.ts" />
+    <TypeScriptCompile Include="src\IncidentManagement.ts" />
+    <TypeScriptCompile Include="src\InitialConfig.ts" />
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-component-router.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\bootstrap\index.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\popper.js\popper.d.ts" />
+    <TypeScriptCompile Include="src\Test.ts" />
+    <TypeScriptCompile Include="src\UriBuilder.ts" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>58915</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:58915/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
