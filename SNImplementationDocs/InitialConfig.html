@@ -28,8 +28,8 @@
     </nav>
     <section class="container-fluid" ng-app="mainModule" ng-controller="mainController">
         <form id="setupOverviewTasksForm" action="initialConfig.html">
-            <div class="bg-secondary" ng-hide="definitions.show">
-                <button class="btn btn-light" ng-click="showDefinitionFields()" onclick="return false;">Change setup definitions</button>
+            <div class="bg-secondary" ng-hide="definitions.isVisible">
+                <button class="btn btn-light" ng-click="definitions.show()" onclick="return false;">Change setup definitions</button>
             </div>
 
             <div class="card">
@@ -618,24 +618,24 @@
                 </div>
             </div>
 
-            <div class="modal fade" tabindex="-1" role="dialog" ng-show="definitions.show">
+            <div class="modal fade" tabindex="-1" role="dialog" ng-show="definitions.isVisible">
                 <div class="modal-dialog modal-dialog-centered modal" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Setup definitions</h5>
-                            <button type="button" class="close" ng-click="definitions.closeDefinitionFields(()" onclick="return false;">
+                            <button type="button" class="close" ng-click="definitions.hide()" onclick="return false;">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body container-fluid">
-                            <div class="form-row">
+                            <div class="form-row" ng-controller="serviceNowUrlFieldEditController">
                                 <div class="form-group col-12">
                                     <label for="serviceNowUrl">{{ definitions.serviceNowUrl.label }}</label>
                                     <input type="url" class="form-control" id="serviceNowUrl" ng-required="true" ng-model="definitions.serviceNowUrl.userInput" />
                                     <div ng-show="definitions.serviceNowUrl.notValid" class="alert alert-warning" ng-bind-html="definitions.serviceNowUrl.errorMessageHTML"></div>
                                 </div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row" ng-controller="gitRepositoryBaseUrlFieldEditController">
                                 <div class="form-group col-12">
                                     <label for="gitRepositoryBaseUrl">{{ definitions.gitRepositoryBaseUrl.label }}</label>
                                     <input type="url" class="form-control" id="gitRepositoryBaseUrl" ng-required="true" ng-model="definitions.gitRepositoryBaseUrl.userInput" />
@@ -650,18 +650,18 @@
                 </div>
             </div>
 
-            <div class="modal fade" tabindex="-1" role="dialog" ng-show="dialogInfo.visible">
+            <div class="modal fade" tabindex="-1" role="dialog" ng-show="popupDialog.isVisible">
                 <div class="modal-dialog modal-dialog-centered modal" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">{{dialogInfo.title}}</h5>
-                            <button type="button" class="close" ng-click="closeDialog()" onclick="return false;">
+                            <h5 class="modal-title">{{popupDialog.title}}</h5>
+                            <button type="button" class="close" ng-click="popupDialog.close()" onclick="return false;">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="{{dialogInfo.bodyClass}}">{{dialogInfo.message}}</div>
+                        <div class="{{popupDialog.bodyClass}}">{{popupDialog.message}}</div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" ng-click="closeDialog()" onclick="return false;">OK</button>
+                            <button type="button" class="btn btn-secondary" ng-click="popupDialog.close()" onclick="return false;">OK</button>
                         </div>
                     </div>
                 </div>

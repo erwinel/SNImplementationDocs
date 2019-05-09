@@ -39,4 +39,3 @@ module.controller("nestedController", function ($scope) {
     $scope.manual.$watch('baseValue', () => alert('nestedController.manual.baseValue'));
     $scope.manual.$watch('manualValue', () => alert('nestedController.manual.manualValue'));
 });
-//# sourceMappingURL=Test.js.map

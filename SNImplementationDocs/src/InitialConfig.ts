@@ -221,146 +221,352 @@ class UrlFieldInput extends FieldInput {
     }
 }
 
-interface ICardState extends ng.IScope {
+
+// #region Cards
+
+interface ICardParentScope extends ng.IScope {
+    cardNames: string[];
+    selectedCard?: string
+
+}
+interface ICardScope extends ng.IScope {
+    name: string,
     cardNumber: number,
     headingText: string,
     iconUrl: 'images/collapse.svg' | 'images/expand.svg',
     actionVerb: 'Collapse' | 'Expand',
-    visible: boolean
+    visible: boolean,
+    $parent: ICardParentScope,
+    select(): void,
+    deselect(): void,
+    toggleSelect(): boolean
 }
-type TopLevelCardNames = 'adminLogins' | 'importInitiaUpdateSet' | 'importUtilityApp' | 'initialConfig' | 'uploadLogoImage' | 'bulkPluginActivation' | 'activeDirectoryImport' | 'importPhysNetworks' | 'serviceCatalogConfig';
-interface IFieldInput extends ng.IScope {
+abstract class cardController implements ng.IController {
+    $doCheck() {
+        if (this.$scope.$parent.selectedCard === this.$scope.name) {
+            if (!this.$scope.visible)
+                this.select();
+        } else if (this.$scope.visible)
+            this.deselect();
+    }
+    select(): void {
+        this.$scope.iconUrl = 'images/collapse.svg';
+        this.$scope.actionVerb = 'Collapse';
+        this.$scope.visible = true;
+        this.$scope.$parent.selectedCard = this.$scope.name;
+    }
+    deselect(): void {
+        this.$scope.iconUrl = 'images/expand.svg';
+        this.$scope.actionVerb = 'Expand';
+        this.$scope.visible = false;
+        if (this.$scope.$parent.selectedCard === this.$scope.name)
+            this.$scope.$parent.selectedCard = undefined;
+    }
+    toggleSelect(): boolean {
+        if (this.$scope.$parent.selectedCard === this.$scope.name) {
+            this.deselect();
+            return false;
+        }
+        this.select();
+        return true;
+    }
+    constructor(protected $scope: ICardScope, name: string, headingText: string) {
+        $scope.name = name;
+        $scope.headingText = headingText;
+        let i: number = $scope.$parent.cardNames.indexOf(name);
+        if (i < 0) {
+            $scope.cardNumber = $scope.$parent.cardNames.length + 1;
+            $scope.$parent.cardNames.push(name);
+        }
+        else
+            $scope.cardNumber = i + 1;
+        $scope.select = this.select;
+        $scope.deselect = this.deselect;
+        $scope.toggleSelect = this.toggleSelect;
+        if ($scope.$parent.selectedCard === name || (i < 1 && typeof($scope.$parent.selectedCard) === 'undefined'))
+            this.select();
+        else
+            this.deselect();
+    }
+}
+
+// #region Top Level Cards
+
+type TopLevelCardName = 'adminLogins' | 'importInitiaUpdateSet' | 'importUtilityApp' | 'initialConfig' | 'uploadLogoImage' | 'bulkPluginActivation' | 'activeDirectoryImport' | 'importPhysNetworks' | 'serviceCatalogConfig';
+
+interface ITopLevelCardState extends ICardScope, IMainControllerScope {
+    name: TopLevelCardName;
+    $parent: IMainControllerScope;
+}
+
+abstract class topLevelCardController extends cardController {
+    constructor(protected $scope: ITopLevelCardState, name: TopLevelCardName, headingText: string) {
+        super($scope, name, headingText);
+    }
+}
+
+class adminLoginsController extends topLevelCardController {
+    static cardName: TopLevelCardName = 'adminLogins';
+    constructor($scope: ITopLevelCardState) { super($scope, adminLoginsController.cardName, 'Add Administrative Logins'); }
+}
+module.controller("adminLoginsController", ['$scope', adminLoginsController]);
+
+class importInitiaUpdateSetController extends topLevelCardController {
+    static cardName: TopLevelCardName = 'importInitiaUpdateSet';
+    constructor($scope: ITopLevelCardState) { super($scope, importInitiaUpdateSetController.cardName, 'Import Initial Update Set'); }
+}
+module.controller("importInitiaUpdateSetController", ['$scope', importInitiaUpdateSetController]);
+
+class importUtilityAppController extends topLevelCardController {
+    static cardName: TopLevelCardName = 'importUtilityApp';
+    constructor($scope: ITopLevelCardState) { super($scope, importUtilityAppController.cardName, 'Import Utility Application'); }
+}
+module.controller("importUtilityAppController", ['$scope', importUtilityAppController]);
+
+class initialConfigController extends topLevelCardController {
+    static cardName: TopLevelCardName = 'initialConfig';
+    constructor($scope: ITopLevelCardState) { super($scope, initialConfigController.cardName, 'Initial Config'); }
+}
+module.controller("initialConfigController", ['$scope', initialConfigController]);
+
+class uploadLogoImageController extends topLevelCardController {
+    static cardName: TopLevelCardName = 'uploadLogoImage';
+    constructor($scope: ITopLevelCardState) { super($scope, uploadLogoImageController.cardName, 'Upload logo image'); }
+}
+module.controller("uploadLogoImageController", ['$scope', uploadLogoImageController]);
+
+class bulkPluginActivationController extends topLevelCardController {
+    static cardName: TopLevelCardName = 'bulkPluginActivation';
+    constructor($scope: ITopLevelCardState) { super($scope, bulkPluginActivationController.cardName, 'Bulk Plugin Activation'); }
+}
+module.controller("bulkPluginActivationController", ['$scope', bulkPluginActivationController]);
+
+class activeDirectoryImportController extends topLevelCardController {
+    static cardName: TopLevelCardName = 'activeDirectoryImport';
+    constructor($scope: ITopLevelCardState) { super($scope, activeDirectoryImportController.cardName, 'Configure Active Directory Import'); }
+}
+module.controller("activeDirectoryImportController", ['$scope', activeDirectoryImportController]);
+
+class importPhysNetworksController extends topLevelCardController {
+    static cardName: TopLevelCardName = 'importPhysNetworks';
+    constructor($scope: ITopLevelCardState) { super($scope, importPhysNetworksController.cardName, 'Import Physical Networks Application'); }
+}
+module.controller("importPhysNetworksController", ['$scope', importPhysNetworksController]);
+
+class serviceCatalogConfigController extends topLevelCardController {
+    static cardName: TopLevelCardName = 'serviceCatalogConfig';
+    constructor($scope: ITopLevelCardState) { super($scope, serviceCatalogConfigController.cardName, 'Import Service Catalog Update Set'); }
+}
+module.controller("serviceCatalogConfigController", ['$scope', serviceCatalogConfigController]);
+
+// #endregion
+
+// #endregion
+
+// #region Field Edit
+
+interface IFieldInputParentScope extends ng.IScope {
+    inputFieldValueChanged(name: string, value: any | undefined);
+    getInputFieldValue(name: string): any | undefined;
+}
+interface IFieldInputScope extends ng.IScope {
+    name: string;
     label: string;
-    userInput: string;
     text: string;
+    value: any;
     isRequired: boolean;
     isValid: boolean;
+    $parent: IFieldInputParentScope;
     errorMessages: { label?: string, message: string, details?: string }[];
 }
-interface IUrlFieldInput extends IFieldInput {
-    url?: URL;
+abstract class fieldEditController implements ng.IController {
+    private _name: string;
+    private _text: string = '';
+    private _value?: any = undefined;
+    private _isRequired: boolean = false;
+
+    get name(): string { return this._name; }
+
+    get text(): string { return this._text; }
+    set text(value: string) {
+        value = CJS.asStringOrDefault(value, '');
+        if (value === this._text)
+            return;
+        this._isRequired = this.$scope.isRequired == true;
+        this.$scope.errorMessages = [];
+        this._text = this.$scope.text = value;
+        this.validateText();
+        this.$scope.isValid = (this.$scope.errorMessages.length == 0);
+        if (this.$scope.isValid)
+            this.$scope.value = this._value = this.convertToValue(this._text, this._value);
+    }
+
+    private ensureText(): boolean {
+        if (this.$scope.text !== this._text) {
+            this.text = this.$scope.text;
+            return true;
+        }
+        return false;
+    }
+
+    $doCheck() {
+        if (!(this.ensureText() && this._isRequired == this.$scope.isRequired)) {
+            this._isRequired = this.$scope.isRequired == true;
+            if (this._isRequired) {
+                this.$scope.errorMessages = [];
+                if (this._value !== this.$scope.value) {
+                    this._value = this.$scope.value;
+                    this.$scope.text = this._text = this.convertToString(this._value);
+                }
+                this.validateText();
+                return;
+            }
+        }
+
+        if (this._value !== this.$scope.value) {
+            this.$scope.errorMessages = [];
+            this._value = this.$scope.value;
+            this.$scope.text = this._text = this.convertToString(this._value);
+            this.$scope.isValid = true;
+        }
+    }
+
+    constructor(protected $scope: IFieldInputScope, name: string, label?: string) {
+        $scope.errorMessages = [];
+        $scope.name = this._name = name;
+        $scope.label = (CJS.isStringAndNotWhiteSpace(label)) ? label : name;
+        $scope.value = this._value = this.coerceValue($scope.$parent.getInputFieldValue(name));
+        $scope.text = this._text = this.convertToString(this._value);
+        this.validateText();
+        $scope.isValid = ($scope.errorMessages.length == 0);
+    }
+
+    protected coerceValue(value: any | null | undefined): any | null | undefined { return value; }
+    protected convertToString(value: any | null | undefined): string { return CJS.asStringOrDefault(value, ''); }
+    protected convertToValue(text: string, currentValue: any | null | undefined): any | null | undefined { return text; }
+    protected validateText() {
+        if (this.$scope.isRequired && CJS.isWhiteSpaceOrNotString(this._text))
+            this.$scope.errorMessages.push({ message: 'Value is required.' });
+    }
 }
-interface IFieldDefinitions extends ng.IScope {
-    serviceNowUrl: IUrlFieldInput;
-    gitRepositoryBaseUrl: IUrlFieldInput;
-    show: boolean;
+
+// #region URL Field Edit
+
+interface IUrlFieldInputScope extends IFieldInputScope { url?: URL; }
+abstract class urlFieldEditController extends fieldEditController {
+    constructor($scope: IUrlFieldInputScope, name: string, label?: string) { super($scope, name); }
+    protected validateText() {
+        if (this.$scope.isRequired && CJS.isWhiteSpaceOrNotString(this.text))
+            this.$scope.errorMessages.push({ message: 'Value is required.' });
+    }
 }
-interface IDialogInfo extends ng.IScope {
-    visible: boolean;
+
+class serviceNowUrlFieldEditController extends urlFieldEditController {
+    static readonly fieldName: string = 'serviceNowUrl';
+    constructor($scope: IUrlFieldInputScope) { super($scope, serviceNowUrlFieldEditController.fieldName, 'ServiceNow URL'); }
+}
+module.controller("serviceNowUrlFieldEditController", ['$scope', serviceNowUrlFieldEditController]);
+
+class gitRepositoryBaseUrlFieldEditController extends urlFieldEditController {
+    static readonly fieldName: string = 'gitRepositoryBaseUrl';
+    constructor($scope: IUrlFieldInputScope) { super($scope, gitRepositoryBaseUrlFieldEditController.fieldName, 'Git Repository Base URL'); }
+}
+module.controller("gitRepositoryBaseUrlFieldEditController", ['$scope', gitRepositoryBaseUrlFieldEditController]);
+
+// #endregion
+
+// #endregion
+
+// #region mainController
+
+interface IFieldDefinitionsScope extends ng.IScope {
+    serviceNowUrl: string;
+    gitRepositoryBaseUrl: string;
+    isVisible: boolean;
+    show(): void;
+    hide(): void;
+}
+interface IDialogScope extends ng.IScope {
+    isVisible: boolean;
     title: string;
     message: string;
     bodyClass: string;
+    show(message: string, type?: DialogMessageType, title?: string);
+    close();
 }
-interface ITopLevelCards extends ng.IScope {
-    adminLogins: ICardState;
-    importInitiaUpdateSet: ICardState;
-    importUtilityApp: ICardState;
-    initialConfig: ICardState;
-    uploadLogoImage: ICardState;
-    bulkPluginActivation: ICardState;
-    activeDirectoryImport: ICardState;
-    importPhysNetworks: ICardState;
-    serviceCatalogConfig: ICardState;
+type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
+
+interface IMainControllerScope extends ng.IScope, ICardParentScope, IFieldInputParentScope {
+    definitions: IFieldDefinitionsScope;
+    cardNames: TopLevelCardName[];
+    selectedCard?: TopLevelCardName
+    popupDialog: IDialogScope;
 }
-interface IMainControllerScope extends ng.IScope {
-    definitions: IFieldDefinitions;
-    showDefinitionFields: Function;
-    closeDefinitionFields: Function;
-    cards: ITopLevelCards;
-    selectedCard?: TopLevelCardNames
-    toggleCardVisibility: { (name: TopLevelCardNames): void; };
-    dialogInfo: IDialogInfo;
-    showDialog(message: string, type?: 'info' | 'warn' | 'danger' | 'primary' | 'success', title?: string);
-    closeDialog();
-}
-
-function newDefinition(parent: IFieldDefinitions, label: string, url: string): IUrlFieldInput {
-    let result: IUrlFieldInput = <IUrlFieldInput>parent.$new(true);
-    result.label = label;
-    result.url = new URL(url);
-    result.userInput = result.text = url;
-    result.isRequired = true;
-    result.isValid = true;
-    result.errorMessages = [];
-    return result;
-}
-
-function makeTopLevelCardScope(this: ITopLevelCards, value: { name: TopLevelCardNames, headingText: string }, index: number): void {
-    let card: ICardState = <ICardState>this.$new(true);
-    card.cardNumber = index + 1;
-    card.headingText = value.headingText;
-    card.iconUrl = 'images/expand.svg';
-    card.actionVerb = 'Expand';
-    card.visible = false;
-    this[value.name] = card;
-}
-module.controller("mainController", function ($scope: IMainControllerScope) {
-    $scope.cards = <ITopLevelCards>$scope.$new(true);
-    let orderedTopLevelCards: { name: TopLevelCardNames, headingText: string }[] = [
-        { name: 'adminLogins', headingText: 'Add Administrative Logins' },
-        { name: 'importInitiaUpdateSet', headingText: 'Import Initial Update Set' },
-        { name: 'importUtilityApp', headingText: 'Import Utility Application' },
-        { name: 'initialConfig', headingText: 'Initial Config' },
-        { name: 'uploadLogoImage', headingText: 'Upload logo image' },
-        { name: 'bulkPluginActivation', headingText: 'Bulk Plugin Activation' },
-        { name: 'activeDirectoryImport', headingText: 'Configure Active Directory Import' },
-        { name: 'importPhysNetworks', headingText: 'Import Physical Networks Application' },
-        { name: 'serviceCatalogConfig', headingText: 'Import Service Catalog Update Set' }
-    ];
-    orderedTopLevelCards.forEach(makeTopLevelCardScope, $scope.cards);
-
-    $scope.cards.toggleVisibility = function (name: TopLevelCardNames) {
-        let card: ICardState;
-        if (typeof ($scope.selectedCard) !== 'undefined') {
-            card = $scope.cards[$scope.selectedCard];
-            card.iconUrl = 'images/collapse.svg';
-            card.actionVerb = 'Collapse';
-            card.visible = true;
-        }
-        card = $scope.cards[name];
-        if (name === $scope.selectedCard)
-            $scope.selectedCard = undefined;
-        else {
-            card.iconUrl = 'images/collapse.svg';
-            card.actionVerb = 'Collapse';
-            card.visible = true;
-            $scope.selectedCard = name;
-        }
-    };
-    $scope.toggleCardVisibility(orderedTopLevelCards[0].name);
-
-    $scope.definitions = <IFieldDefinitions>$scope.$new(true);
-    $scope.definitions.serviceNowUrl = newDefinition($scope.definitions, 'ServiceNow URL', 'https://inscomscd.service-now.com');
-    $scope.definitions.gitRepositoryBaseUrl = newDefinition($scope.definitions, 'GIT Repository Base URL', 'https://github.com/erwinel');
-
-    $scope.definitions.show = true;
-    $scope.showDefinitionFields = function () { $scope.definitions.show = true; };
-    $scope.closeDefinitionFields = function () { $scope.definitions.show = false; };
-    $scope.dialogInfo = <IDialogInfo>$scope.$new();
-    $scope.dialogInfo.visible = false;
-    $scope.dialogInfo.title = '';
-    $scope.dialogInfo.message = '';
-    $scope.dialogInfo.bodyClass = '';
-    $scope.showDialog = function (message: string, type: 'info' | 'warn' | 'danger' | 'primary' | 'success' = 'info', title?: string) {
+class mainController implements ng.IController {
+    $doCheck() { }
+    showFieldDefinitions() { this.$scope.definitions.isVisible = true; }
+    hideFieldDefinitions() { this.$scope.definitions.isVisible = false; }
+    showDialog(message: string, type: DialogMessageType = 'info', title?: string) {
         if (CJS.isWhiteSpaceOrNotString(title)) {
             switch (type) {
-                case 'warn':
-                    $scope.dialogInfo.title = 'Warning';
+                case 'warning':
+                    this.$scope.popupDialog.title = 'Warning';
                     break;
                 case 'danger':
-                    $scope.dialogInfo.title = 'Critical';
+                    this.$scope.popupDialog.title = 'Critical';
                     break;
                 case 'success':
-                    $scope.dialogInfo.title = 'Success';
+                    this.$scope.popupDialog.title = 'Success';
                     break;
                 default:
-                    $scope.dialogInfo.title = 'Notice';
+                    this.$scope.popupDialog.title = 'Notice';
             }
         } else
-            $scope.dialogInfo.title = title;
-        $scope.dialogInfo.bodyClass = 'modal-body alert alert-' + type;
-        $scope.dialogInfo.message = (CJS.isNil(message)) ? '' : message;
-        $scope.dialogInfo.visible = true;
-    };
-    $scope.closeDialog = function () { $scope.dialogInfo.visible = false; };
-});
+            this.$scope.popupDialog.title = title;
+        this.$scope.popupDialog.bodyClass = 'modal-body alert alert-' + type;
+        this.$scope.popupDialog.message = (CJS.isNil(message)) ? '' : message;
+        this.$scope.popupDialog.isVisible = true;
+    }
+    closeDialog() { this.$scope.popupDialog.isVisible = false; }
+    inputFieldValueChanged(name: string, value: any | undefined) {
+        switch (name) {
+            case 'serviceNowUrl':
+                this.$scope.definitions.serviceNowUrl = <string>value;
+                break;
+            case 'gitRepositoryBaseUrl':
+                this.$scope.definitions.gitRepositoryBaseUrl = <string>value;
+                break;
+        }
+    }
+    getInputFieldValue(name: string): any | undefined {
+        switch (name) {
+            case 'serviceNowUrl':
+                return this.$scope.definitions.serviceNowUrl;
+            case 'gitRepositoryBaseUrl':
+                return this.$scope.definitions.gitRepositoryBaseUrl;
+        }
+    }
+    constructor(protected $scope: IMainControllerScope) {
+        $scope.definitions = <IFieldDefinitionsScope>($scope.$new());
+        $scope.definitions.serviceNowUrl = 'https://inscomscd.service-now.com';
+        $scope.definitions.gitRepositoryBaseUrl = 'https://github.com/erwinel';
+        $scope.definitions.isVisible = true;
+        $scope.definitions.show = this.showFieldDefinitions;
+        $scope.definitions.hide = this.hideFieldDefinitions;
+        $scope.cardNames = ['adminLogins', 'importInitiaUpdateSet', 'importUtilityApp', 'initialConfig', 'uploadLogoImage', 'bulkPluginActivation', 'activeDirectoryImport', 'importPhysNetworks', 'serviceCatalogConfig'];
+        $scope.selectedCard = 'adminLogins';
+        $scope.popupDialog = <IDialogScope>($scope.$new());
+        $scope.popupDialog.isVisible = false;
+        $scope.popupDialog.title = '';
+        $scope.popupDialog.message = '';
+        $scope.popupDialog.bodyClass = '';
+        $scope.popupDialog.show = this.showDialog;
+        $scope.popupDialog.close = this.closeDialog;
+        $scope.inputFieldValueChanged = this.inputFieldValueChanged;
+        $scope.getInputFieldValue = this.getInputFieldValue;
+    }
+}
+
+module.controller("mainController", ['$scope', mainController]);
+
+// #endregion
