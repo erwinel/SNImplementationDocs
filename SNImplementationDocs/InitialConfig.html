@@ -12,8 +12,7 @@
     <script type="text/javascript" src="Scripts/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="Scripts/bootstrap.bundle.js"></script>
     <script type="text/javascript" src="Scripts/angular.js"></script>
-    <script type="text/javascript" src="script/Utility.js"></script>
-    <!-- <script type="text/javascript" src="script/ColorInfo.js"></script> -->
+    <script type="text/javascript" src="App/CommonJsUtility.js"></script>
     <script type="text/javascript" src="App/InitialConfig.js"></script>
 </head>
 <body>
@@ -29,20 +28,20 @@
     <section class="container-fluid" ng-app="mainModule" ng-controller="mainController">
         <form id="setupOverviewTasksForm" action="initialConfig.html">
             <div class="bg-secondary" ng-hide="definitions.isVisible">
-                <button class="btn btn-light" ng-click="definitions.show()" onclick="return false;">Change setup definitions</button>
+                <button class="btn btn-light" ng-click="definitions.showEditDialog()" onclick="return false;">Change setup definitions</button>
             </div>
 
-            <div class="card">
+            <div class="card" ng-controller="adminLoginsController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="cards.toggleVisibility('adminLogins')" onclick="return false;">
-                            {{cards.adminLogins.cardNumber}}. {{cards.adminLogins.headingText}}
-                            <img ng-src="{{cards.adminLogins.iconUrl}}" width="8" height="8" alt="{{cards.adminLogins.actionVerb}} {{cards.adminLogins.headingText}}" />
+                        <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+                            {{cardNumber}}. {{headingText}}
+                            <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
                         </button>
                     </h2>
                 </div>
 
-                <div class="card-body" ng-show="cards.adminLogins.visible">
+                <div class="card-body" ng-show="isExpanded">
                     <div class="detail">
                         Create application administrative accounts in ServiceNow and assign the following roles:
                         <ul>
@@ -68,16 +67,16 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" ng-controller="importInitiaUpdateSetController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="cards.toggleVisibility('importInitiaUpdateSet')" onclick="return false;">
-                            {{cards.importInitiaUpdateSet.cardNumber}}. {{cards.importInitiaUpdateSet.headingText}}
-                            <img ng-src="{{cards.importInitiaUpdateSet.iconUrl}}" width="8" height="8" alt="{{cards.importInitiaUpdateSet.actionVerb}} {{cards.importInitiaUpdateSet.headingText}}" />
+                        <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+                            {{cardNumber}}. {{headingText}}
+                            <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
                         </button>
                     </h2>
                 </div>
-                <div class="card-body" ng-show="cards.importInitiaUpdateSet.visible">
+                <div class="card-body" ng-show="isExpanded">
                     <div class="detail">
                         Load and apply the <a href="downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
                         <var>downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
@@ -86,16 +85,16 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" ng-controller="importUtilityAppController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="cards.toggleVisibility('importUtilityApp')" onclick="return false;">
-                            {{cards.importUtilityApp.cardNumber}}. {{cards.importUtilityApp.headingText}}
-                            <img ng-src="{{cards.importUtilityApp.iconUrl}}" width="8" height="8" alt="{{cards.importUtilityApp.actionVerb}} {{cards.importUtilityApp.headingText}}" />
+                        <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+                            {{cardNumber}}. {{headingText}}
+                            <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
                         </button>
                     </h2>
                 </div>
-                <div class="card-body" ng-show="cards.importUtilityApp.visible">
+                <div class="card-body" ng-show="isExpanded">
                     <div class="detail">
                         In this step you will be importing a utility application which includes many utility framework functionality to support
                         other scripts. This will also create a custom system property which can be used by automated processes to determine
@@ -103,9 +102,9 @@
                     </div>
                     <ol>
                         <li>
-                            Import the util application from <kbd>{{gitRepositoryBaseUrl}}/x_44813_util.git</kbd>.
+                            Import the util application from <kbd>{{ definitions.gitRepositoryBaseUrl }}/x_44813_util.git</kbd>.
                             <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
-                    to view instructions for importing applications from source countrol.</div> -->
+                to view instructions for importing applications from source countrol.</div> -->
                         </li>
                         <li>
                             Once the application is imported, select that application in order to put your session in the correct
@@ -115,16 +114,16 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" ng-controller="initialConfigController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="cards.toggleVisibility('initialConfig')" onclick="return false;">
-                            {{cards.initialConfig.cardNumber}}. {{cards.initialConfig.headingText}}
-                            <img ng-src="{{cards.initialConfig.iconUrl}}" width="8" height="8" alt="{{cards.initialConfig.actionVerb}} {{cards.initialConfig.headingText}}" />
+                        <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+                            {{cardNumber}}. {{headingText}}
+                            <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
                         </button>
                     </h2>
                 </div>
-                <div class="card-body" ng-show="cards.initialConfig.visible">
+                <div class="card-body" ng-show="isExpanded">
                     <div class="detail">
                         <div class="detail">
                             In this step you will specify whether the current instance is for production, UAT, Testing, Development or if it is a
@@ -163,24 +162,24 @@
                                 when it is finished. At the bottom of the output, you should see a line that indicates it has succeeded.
                                 <br />
                                 <!-- <button (click)="openFigure('Example of completed fix script', 'images/initialConfig/initialArmyConfigSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-                            <img src="images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
-                        </button> Refresh the browser page to see the applied color scheme. -->
+                        <img src="images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
+                    </button> Refresh the browser page to see the applied color scheme. -->
                             </li>
                         </ol>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" ng-controller="uploadLogoImageController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="cards.toggleVisibility('uploadLogoImage')" onclick="return false;">
-                            {{cards.uploadLogoImage.cardNumber}}. {{cards.uploadLogoImage.headingText}}
-                            <img ng-src="{{cards.uploadLogoImage.iconUrl}}" width="8" height="8" alt="{{cards.uploadLogoImage.actionVerb}} {{cards.uploadLogoImage.headingText}}" />
+                        <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+                            {{cardNumber}}. {{headingText}}
+                            <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
                         </button>
                     </h2>
                 </div>
-                <div class="card-body" ng-show="cards.uploadLogoImage.visible">
+                <div class="card-body" ng-show="isExpanded">
                     <div class="detail">
                         To automate configuration settings for graphical images, it would require significant overhead. Therefore, the logo image
                         will need to be uploaded manually.
@@ -196,9 +195,9 @@
                             Scroll to the &quot;Banner Image&quot; property and click on the
                             <samp>+</samp> icon to upload the banner image.
                             <!-- <button (click)="openFigure('Example of banner image setting', 'images/initialConfig/bannerImageSetting_lg.png')"
-                        class="btn btn-outline-primary mb-2 mr-2">
-                        <img src="images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
-                    </button> -->
+                    class="btn btn-outline-primary mb-2 mr-2">
+                    <img src="images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
+                </button> -->
                         </li>
                         <li>
                             Upload the logo image corresponding to the SDLC stage you previously configured. You can download an image from one
@@ -240,16 +239,16 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" ng-controller="bulkPluginActivationController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="cards.toggleVisibility('bulkPluginActivation')" onclick="return false;">
-                            {{cards.bulkPluginActivation.cardNumber}}. {{cards.bulkPluginActivation.headingText}}
-                            <img ng-src="{{cards.bulkPluginActivation.iconUrl}}" width="8" height="8" alt="{{cards.bulkPluginActivation.actionVerb}} {{cards.bulkPluginActivation.headingText}}" />
+                        <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+                            {{cardNumber}}. {{headingText}}
+                            <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
                         </button>
                     </h2>
                 </div>
-                <div class="card-body" ng-show="cards.bulkPluginActivation.visible">
+                <div class="card-body" ng-show="isExpanded">
                     <div class="detail">
                         In this step you will launch a fix script which will activate plugins in the background. Plugin activation progress can
                         be monitored from the progress workers list.
@@ -282,16 +281,16 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" ng-controller="activeDirectoryImportController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="cards.toggleVisibility('activeDirectoryImport')" onclick="return false;">
-                            {{cards.activeDirectoryImport.cardNumber}}. {{cards.activeDirectoryImport.headingText}}
-                            <img ng-src="{{cards.activeDirectoryImport.iconUrl}}" width="8" height="8" alt="{{cards.activeDirectoryImport.actionVerb}} {{cards.activeDirectoryImport.headingText}}" />
+                        <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+                            {{cardNumber}}. {{headingText}}
+                            <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
                         </button>
                     </h2>
                 </div>
-                <div class="card-body" ng-show="cards.activeDirectoryImport.visible">
+                <div class="card-body" ng-show="isExpanded">
                     <div class="card">
                         <div class="card-header">
                             <h3>Update / Create LDAP Server</h3>
@@ -525,23 +524,23 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" ng-controller="importPhysNetworksController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="cards.toggleVisibility('importPhysNetworks')" onclick="return false;">
-                            {{cards.importPhysNetworks.cardNumber}}. {{cards.importPhysNetworks.headingText}}
-                            <img ng-src="{{cards.importPhysNetworks.iconUrl}}" width="8" height="8" alt="{{cards.importPhysNetworks.actionVerb}} {{cards.importPhysNetworks.headingText}}" />
+                        <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+                            {{cardNumber}}. {{headingText}}
+                            <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
                         </button>
                     </h2>
                 </div>
-                <div class="card-body" ng-show="cards.importPhysNetworks.visible">
+                <div class="card-body" ng-show="isExpanded">
                     <div class="detail">
                         <div class="detail">In this step you will be importing an application that defines a common list of physically seprated networks (as configuration items) that can be used for &quot;network&quot; pick lists.</div>
                         <ol>
                             <li>
-                                Import the util application from <kbd>{{gitRepositoryBaseUrl}}/x_44813_phys_net_network.git</kbd>.
+                                Import the util application from <kbd>{{ definitions.gitRepositoryBaseUrl }}/x_44813_phys_net_network.git</kbd>.
                                 <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
-                        to view instructions for importing applications from source countrol.</div> -->
+                    to view instructions for importing applications from source countrol.</div> -->
                             </li>
                             <li>
                                 Once the application is imported, you don't need to actually select an application.
@@ -552,16 +551,16 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" ng-controller="serviceCatalogConfigController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="cards.toggleVisibility('serviceCatalogConfig')" onclick="return false;">
-                            {{cards.serviceCatalogConfig.cardNumber}}. {{cards.serviceCatalogConfig.headingText}}
-                            <img ng-src="{{cards.serviceCatalogConfig.iconUrl}}" width="8" height="8" alt="{{cards.serviceCatalogConfig.actionVerb}} {{cards.serviceCatalogConfig.headingText}}" />
+                        <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+                            {{cardNumber}}. {{headingText}}
+                            <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
                         </button>
                     </h2>
                 </div>
-                <div class="card-body" ng-show="cards.serviceCatalogConfig.visible">
+                <div class="card-body" ng-show="isExpanded">
                     <div class="detail">
                         Load and apply the <a href="downloads/sys_remote_update_set_Service_Catalog.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
                         <var>downloads</var> folder of this documentation to apply the global update set, that sets up the service catalog.
@@ -618,21 +617,25 @@
                 </div>
             </div>
 
-            <div class="modal fade" tabindex="-1" role="dialog" ng-show="definitions.isVisible">
+            <div class="modal fade" tabindex="-1" role="dialog" ng-show="definitions.editDialogVisible">
                 <div class="modal-dialog modal-dialog-centered modal" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Setup definitions</h5>
-                            <button type="button" class="close" ng-click="definitions.hide()" onclick="return false;">
+                            <button type="button" class="close" ng-click="definitions.hideEditDialog()" onclick="return false;">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body container-fluid">
                             <div class="form-row" ng-controller="serviceNowUrlFieldEditController">
                                 <div class="form-group col-12">
-                                    <label for="serviceNowUrl">{{ definitions.serviceNowUrl.label }}</label>
-                                    <input type="url" class="form-control" id="serviceNowUrl" ng-required="true" ng-model="definitions.serviceNowUrl.userInput" />
-                                    <div ng-show="definitions.serviceNowUrl.notValid" class="alert alert-warning" ng-bind-html="definitions.serviceNowUrl.errorMessageHTML"></div>
+                                    <label for="serviceNowUrl">{{ label }}</label>
+                                    <input type="url" class="form-control" id="serviceNowUrl" ng-required="true" ng-model="text" />
+                                    <div class="invalid-feedback" ng-bind-html="definitions.serviceNowUrl.errorMessageHTML">
+                                        <div ng-repeat="for m in errorMessages">
+                                            <span ng-show="typeof(label) === 'string'" class="">{{ label }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-row" ng-controller="gitRepositoryBaseUrlFieldEditController">
@@ -644,7 +647,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" ng-click="definitions.closeDefinitionFields()" onclick="return false;">OK</button>
+                            <button type="button" class="btn btn-secondary" ng-click="definitions.hideEditDialog()" onclick="return false;">OK</button>
                         </div>
                     </div>
                 </div>

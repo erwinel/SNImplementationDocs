@@ -1,275 +1,212 @@
-﻿/// <reference path="CommonJsUtility.ts" />
+﻿/// <reference path="../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../Scripts/typings/bootstrap/index.d.ts" />
+/// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="CommonJsUtility.ts" />
+/// <reference path="UriBuilder.ts" />
 import * as CJS from './CommonJsUtility';
 
-let module: ng.IModule = angular.module("mainModule", []);
-type MessageItem = string | { label?: string; message: string; encoded?: boolean };
-class MessageCollection implements Iterable<string> {
-    private _messages: Map<string, MessageItem> = new Map<string, MessageItem>();
-
-    get size(): number { return this._messages.size; }
-
-    get isEmpty(): boolean { return this._messages.size == 0; }
-
-    get notEmpty(): boolean { return this._messages.size > 0; }
-
-    get keys(): IterableIterator<string> { return this._messages.keys(); }
-
-    entries(): string[] { 
-        return CJS.asArray(this._messages.entries()).map((value: [string, MessageItem]) => value[1]).map(v =>
-            (typeof (v) === 'string') ? v : ((CJS.isWhiteSpaceOrNotString(v.label)) ? ((v.encoded) ? v.message : escape(v.message)) :
-                ((v.encoded) ? '<strong>' + v.label + '</strong>: ' + v.message : '<strong>' + escape(v.label) + '</strong>: ' + escape(v.message))));
-    }
-
-    get(key: string): MessageItem | undefined {
-        if (this._messages.has(key))
-            return this._messages.get(key);
-    }
-
-    clear(key: string): void { this._messages.clear(); }
-
-    has(key: string): boolean { return this._messages.has(key); }
-
-    set(key: string, value?: MessageItem | null): void {
-        if (CJS.isStringAndNotWhiteSpace(value) || (CJS.notNil(value) && CJS.isStringAndNotWhiteSpace(value.message)))
-            this._messages.set(key, value);
-        else if (this._messages.has(key))
-            this._messages.delete(key);
-    }
-
-    delete(key: string): void {
-        if (this._messages.has(key))
-            this._messages.delete(key);
-    }
-
-    [Symbol.iterator](): Iterator<string> { return this.entries()[Symbol.iterator](); }
-}
-class FieldInput {
-    private _label: string = '';
-    private _requiredFieldMessage = '';
-    private _userInput: string = '';
-    private _text: string = '';
-    private _validationMessages: MessageCollection = new MessageCollection();
-
-    get label(): string { return this._label; }
-    set label(value: string) { this._label = CJS.asStringOrDefault(value, '').trim(); }
-
-    get userInput(): string { return this._userInput; }
-    set userInput(value: string) {
-        let oldValue: string = this._userInput;
-        value = CJS.asStringOrDefault(value, '');
-        if (value == oldValue)
-            return;
-        this._userInput = value;
-        this.onValueChanged(oldValue);
-        if (this._validationMessages.size == 0)
-            this._text = value;
-    }
-
-    get text(): string { return this._userInput; }
-    set text(value: string) {
-        let oldValue: string = this._text;
-        value = CJS.asStringOrDefault(value, '');
-        if (value == oldValue)
-            return;
-        this._text = value;
-        this.onTextChanged(oldValue);
-    }
-
-    get requiredFieldMessage(): string { return this._requiredFieldMessage; }
-    set requiredFieldMessage(message: string) {
-        message = CJS.asStringOrDefault(message, '').trim();
-        if (message == this._requiredFieldMessage)
-            return;
-        this._requiredFieldMessage = message;
-        this.onValueChanged(this._text);
-        if (this._validationMessages.isEmpty)
-            this._text = this._userInput;
-    }
-
-    get isRequired(): boolean { return this._requiredFieldMessage.length > 0; }
-
-    get notRequired(): boolean { return this._requiredFieldMessage.length == 0; }
-
-    get isValid(): boolean { return this._validationMessages.size == 0; }
-
-    get notValid(): boolean { return this._validationMessages.size > 0; }
-
-    get errorMessageHTML(): string {
-        let arr: string[] = this._validationMessages.entries();
-        if (arr.length == 0)
-            return "";
-        if (arr.length == 1)
-            return arr[0];
-        return "<ul><li>" + arr.join("</li><li>") + "</li></ul>";
-    }
-
-    constructor(label: string, value?: string | null, requiredFieldMessage?: string) {
-        this.label = label;
-        if (!CJS.isNil(value))
-            this.userInput = value;
-        if (!CJS.isNil(requiredFieldMessage))
-            this.requiredFieldMessage = requiredFieldMessage;
-    }
-
-    private raiseValueChanged(oldValue: string): void {
-        try {
-            this.onValueChanged(oldValue);
-            this._validationMessages.delete('error');
-        } catch (e) {
-            if (CJS.isError(e)) {
-                if (CJS.isWhiteSpaceOrNotString(e.stack)) {
-                    if (CJS.isWhiteSpaceOrNotString(e.name)) {
-                        if (CJS.isWhiteSpaceOrNotString(e.message))
-                            this._validationMessages.set('error', { message: '<pre>' + escape(JSON.stringify(e)) + '</pre>', encoded: true });
-                        else
-                            this._validationMessages.set('error', e.message);
-                    } else if (CJS.isWhiteSpaceOrNotString(e.message))
-                        this._validationMessages.set('error', e.name);
-                    else
-                        this._validationMessages.set('error', { label: e.name, message: e.message });
-                } else if (CJS.isWhiteSpaceOrNotString(e.name)) {
-                    if (CJS.isWhiteSpaceOrNotString(e.message))
-                        this._validationMessages.set('error', { message: '<pre>' + escape(JSON.stringify(e)) + '</pre>', encoded: true });
-                    else
-                        this._validationMessages.set('error', { message: escape(e.message) + '<pre>' + escape(e.stack) + '</pre>', encoded: true });
-                } else if (CJS.isWhiteSpaceOrNotString(e.message))
-                    this._validationMessages.set('error', { label: escape(e.name), message: '<pre>' + escape(e.stack) + '</pre>', encoded: true });
-                else
-                    this._validationMessages.set('error', { label: escape(e.name), message: escape(e.message) + '<pre>' + escape(e.stack) + '</pre>', encoded: true });
-            } else if (typeof (e) === 'string')
-                this._validationMessages.set('error', e);
-            else
-                this._validationMessages.set('error', { label: 'Error', message: '<pre>' + escape(JSON.stringify(e)) + '</pre>', encoded: true });
-        }
-    }
-    protected onValueChanged(oldValue: string): void {
-        if (CJS.isWhiteSpaceOrNotString(this._userInput) && this._requiredFieldMessage.length > 0)
-            this._validationMessages.set('required', this._requiredFieldMessage);
-        else
-            this._validationMessages.delete('required');
-    }
-
-    protected onTextChanged(oldValue: string): void { }
-}
-
-class UrlFieldInput extends FieldInput {
-    private _url?: URL;
-
-    get url(): URL | undefined { return this._url; }
-    set url(url: URL | undefined) {
-        let oldUrl: URL | undefined = this._url;
-        if (CJS.isNil(url)) {
-            if (typeof (this._url) === 'undefined')
-                return;
-            this._url = undefined;
-        } else {
-            if (typeof (this._url) !== 'undefined' && this._url.href === url.href)
-                return;
-            this._url = url;
-        }
-        this._url = (CJS.isNil(url)) ? undefined : url;
-        let text: string = (typeof (this._url) === 'undefined') ? '' : this._url.href;
-        if (this.text.trim() !== text)
-            this.text = (typeof (this._url) === 'undefined') ? '' : this._url.href;
-        this.onUrlChanged(oldUrl);
-    }
-
-    constructor(label: string, value?: string | URL | null, requiredFieldMessage?: string) {
-        super(label, (typeof (value) !== 'object' || value == null) ? <string | null | undefined>value : value.href, requiredFieldMessage);
-        if (typeof (value) === 'object' && value !== null)
-            this.url = value;
-    }
-
-    protected onValueChanged(oldValue: string) {
-        super.onValueChanged(oldValue);
-        if (CJS.isWhiteSpaceOrNotString(this.userInput)) {
-            if (this.isRequired)
-                return;
-        } else {
-            let url: URL = new URL(this.userInput.trim());
-            if (typeof (url) !== 'object' || url === null)
-                throw new Error('Could not parse URL');
-            this.onUrlChanging(url);
-        }
-    }
-    protected onUrlChanging(newUrl: URL) { }
-    protected onUrlChanged(oldUrl: URL) { }
-    protected onTextChanged(oldValue: string): void {
-        let oldUrl: URL | undefined = this._url;
-        if (CJS.isWhiteSpaceOrNotString(this.text)) {
-            if (typeof (oldUrl) === 'undefined')
-                return;
-            this._url = undefined;
-        } else {
-            let text: string = this.text.trim();
-            if (typeof (oldUrl) !== 'undefined' && oldUrl.href === text)
-                return;
-            let url: URL | undefined;
-            try { url = new URL(this.text.trim()); } catch { /* okay to ignore */ }
-            if (CJS.isNil(url)) {
-                if (typeof (this._url) === 'undefined')
-                    return;
-                this._url = undefined;
-            } else {
-                if (typeof (this._url) !== 'undefined' && this._url.href === url.href)
-                    return;
-                this._url = url;
-            }
-            this._url = (CJS.isNil(url)) ? undefined : url;
-        }
-        this.onUrlChanged(oldUrl);
-    }
-}
-
+/**
+ * The main module for this app.
+ * 
+ * @type {ng.IModule}
+ */
+let mainModule: ng.IModule = angular.module("mainModule", []);
 
 // #region Cards
 
+/**
+ * Defines the {@link ng.IScope.$parent} scope of {@link cardController} objects.
+ *
+ * @interface ICardParentScope
+ * @extends {ng.IScope}
+ */
 interface ICardParentScope extends ng.IScope {
+    /**
+     * The names of cards represented by child {@link cardController} objects contained in the current scope.
+     *
+     * @type {string[]}
+     * @memberof ICardParentScope
+     */
     cardNames: string[];
-    selectedCard?: string
 
+    /**
+     * The name of the currently selected {@link cardController}, taken from {@link ICardParentScope.cardNames}.
+     *
+     * @type {string}
+     * @memberof ICardParentScope
+     */
+    selectedCard?: string;
 }
+
+/**
+ * Options for the relative icon URL of collapsable items.
+ *
+ * @enum {string}
+ */
+enum CollapsableIconUrl {
+    collapse = 'images/collapse.svg',
+    expand = 'images/expand.svg'
+}
+
+/**
+ * Options for the verb name of collapsable items.
+ *
+ * @enum {string}
+ */
+enum CollapsableActionVerb {
+    collapse = 'Collapse',
+    expand = 'Expand'
+}
+
+/**
+ * Interface for the angular {@link ng.IScope} for collapsable cards using a {@link cardController}.
+ *
+ * @interface ICardScope
+ * @extends {ng.IScope}
+ */
 interface ICardScope extends ng.IScope {
+    /**
+     * The name that uniquely identifies the current {@link cardController}.
+     *
+     * @type {string}
+     * @memberof ICardScope
+     */
     name: string,
+
+    /**
+     * The 1-based number of the current {@link cardController} within the current series of cards.
+     *
+     * @type {number}
+     * @memberof ICardScope
+     */
     cardNumber: number,
+
+    /**
+     * The heading text for the current card.
+     *
+     * @type {string}
+     * @memberof ICardScope
+     */
     headingText: string,
+
+    /**
+     * The relative image icon URL for the current card's expand/collapse button.
+     *
+     * @type {CollapsableIconUrl}
+     * @memberof ICardScope
+     */
     iconUrl: 'images/collapse.svg' | 'images/expand.svg',
+
+    /**
+     * The prefix verb name for the current card's expand/collapse button.
+     *
+     * @type {CollapsableActionVerb}
+     * @memberof ICardScope
+     */
     actionVerb: 'Collapse' | 'Expand',
-    visible: boolean,
+
+    /**
+     * Indicates whether the body of the current card is visible.
+     *
+     * @type {boolean}
+     * @memberof ICardScope
+     */
+    isExpanded: boolean,
+
+    /**
+     * The assumed parent {@link ng.IScope} of the current {@link cardController}.
+     *
+     * @type {ICardParentScope}
+     * @memberof ICardScope
+     */
     $parent: ICardParentScope,
-    select(): void,
-    deselect(): void,
-    toggleSelect(): boolean
+
+    /**
+     * Calls the {@link cardController.expand} method of the current {@link cardController} to make the body of the current card visible.
+     *
+     * @memberof ICardScope
+     */
+    expand(): void,
+
+    /**
+     * Calls the {@link cardController.collapse} method of the current {@link cardController} to hide the body of the current card.
+     *
+     * @memberof ICardScope
+     */
+    collapse(): void,
+
+    /**
+     * Calls the {@link cardController.toggleExpanded} method of the current {@link cardController} to toggle the visibility of the current card's body.
+     *
+     * @returns {boolean} true if the current card was changed to being expanded; otherwise, false if the card was changed to being collapsed.
+     * @memberof ICardScope
+     */
+    toggleExpanded(): boolean
 }
+
+/**
+ * The base class for collapsable cards.
+ *
+ * @abstract
+ * @class cardController
+ * @implements {ng.IController}
+ */
 abstract class cardController implements ng.IController {
     $doCheck() {
         if (this.$scope.$parent.selectedCard === this.$scope.name) {
-            if (!this.$scope.visible)
-                this.select();
-        } else if (this.$scope.visible)
-            this.deselect();
+            if (!this.$scope.isExpanded)
+                this.expand();
+        } else if (this.$scope.isExpanded)
+            this.collapse();
     }
-    select(): void {
+
+    /**
+     * Makes the body of the current card visible.
+     *
+     * @memberof cardController
+     */
+    expand(): void {
         this.$scope.iconUrl = 'images/collapse.svg';
         this.$scope.actionVerb = 'Collapse';
-        this.$scope.visible = true;
+        this.$scope.isExpanded = true;
         this.$scope.$parent.selectedCard = this.$scope.name;
     }
-    deselect(): void {
+
+    /**
+     * Hides the body of the current card.
+     *
+     * @memberof cardController
+     */
+    collapse(): void {
         this.$scope.iconUrl = 'images/expand.svg';
         this.$scope.actionVerb = 'Expand';
-        this.$scope.visible = false;
+        this.$scope.isExpanded = false;
         if (this.$scope.$parent.selectedCard === this.$scope.name)
             this.$scope.$parent.selectedCard = undefined;
     }
-    toggleSelect(): boolean {
+
+    /**
+     * Toggles the visibility of the current card's body.
+     *
+     * @returns {boolean} true if the current card was changed to being expanded; otherwise, false if the card was changed to being collapsed.
+     * @memberof cardController
+     */
+    toggleExpanded(): boolean {
         if (this.$scope.$parent.selectedCard === this.$scope.name) {
-            this.deselect();
+            this.collapse();
             return false;
         }
-        this.select();
+        this.expand();
         return true;
     }
+
+    /**
+     * Creates an instance of cardController to represent a new collapsable card.
+     * @param {ICardScope} $scope The {@link ng.IScope} object for the new card, which implements {@link ICardScope}.
+     * @param {string} name The name which uniquely identifies the new card.
+     * @param {string} headingText The heading text for the new card.
+     * @memberof cardController
+     */
     constructor(protected $scope: ICardScope, name: string, headingText: string) {
         $scope.name = name;
         $scope.headingText = headingText;
@@ -280,84 +217,124 @@ abstract class cardController implements ng.IController {
         }
         else
             $scope.cardNumber = i + 1;
-        $scope.select = this.select;
-        $scope.deselect = this.deselect;
-        $scope.toggleSelect = this.toggleSelect;
+        $scope.expand = this.expand;
+        $scope.collapse = this.collapse;
+        $scope.toggleExpanded = this.toggleExpanded;
         if ($scope.$parent.selectedCard === name || (i < 1 && typeof($scope.$parent.selectedCard) === 'undefined'))
-            this.select();
+            this.expand();
         else
-            this.deselect();
+            this.collapse();
     }
 }
 
 // #region Top Level Cards
 
+
+/**
+ * Valid names that uniquely identify individual {@link topLevelCardController}s.
+ * 
+ * @type {'adminLogins' | 'importInitiaUpdateSet' | 'importUtilityApp' | 'initialConfig' | 'uploadLogoImage' | 'bulkPluginActivation' | 'activeDirectoryImport' | 'importPhysNetworks' | 'serviceCatalogConfig'}
+ */
 type TopLevelCardName = 'adminLogins' | 'importInitiaUpdateSet' | 'importUtilityApp' | 'initialConfig' | 'uploadLogoImage' | 'bulkPluginActivation' | 'activeDirectoryImport' | 'importPhysNetworks' | 'serviceCatalogConfig';
 
-interface ITopLevelCardState extends ICardScope, IMainControllerScope {
+/**
+ * The {@link ng.IScope} object, which implements {@link ICardScope}, for {@link topLevelCardController} objects.
+ *
+ * @interface ITopLevelCardState
+ * @extends {ICardScope}
+ * @extends {IMainControllerScope}
+ */
+interface ITopLevelCardScope extends ICardScope, IMainControllerScope {
+    /**
+     * The name that uniquely identifies the current {@link topLevelCardController}.
+     *
+     * @type {TopLevelCardName}
+     * @memberof ITopLevelCardState
+     */
     name: TopLevelCardName;
+
+    /**
+     * The assumed parent {@link ng.IScope} of the current {@link topLevelCardController}.
+     *
+     * @type {IMainControllerScope}
+     * @memberof ITopLevelCardState
+     */
     $parent: IMainControllerScope;
 }
 
+/**
+ * The base class for top-level collapsable cards.
+ *
+ * @abstract
+ * @class topLevelCardController
+ * @extends {cardController}
+ */
 abstract class topLevelCardController extends cardController {
-    constructor(protected $scope: ITopLevelCardState, name: TopLevelCardName, headingText: string) {
+    /**
+     * Creates an instance of topLevelCardController.
+     * @param {ITopLevelCardScope} $scope The {@link ng.IScope} object for the new card, which implements {@link ITopLevelCardState}.
+     * @param {TopLevelCardName} name The name that uniquely indentifies the new top-level card.
+     * @param {string} headingText The heading text for the new top-level card.
+     * @memberof topLevelCardController
+     */
+    constructor(protected $scope: ITopLevelCardScope, name: TopLevelCardName, headingText: string) {
         super($scope, name, headingText);
     }
 }
 
 class adminLoginsController extends topLevelCardController {
     static cardName: TopLevelCardName = 'adminLogins';
-    constructor($scope: ITopLevelCardState) { super($scope, adminLoginsController.cardName, 'Add Administrative Logins'); }
+    constructor($scope: ITopLevelCardScope) { super($scope, adminLoginsController.cardName, 'Add Administrative Logins'); }
 }
-module.controller("adminLoginsController", ['$scope', adminLoginsController]);
+mainModule.controller("adminLoginsController", ['$scope', adminLoginsController]);
 
 class importInitiaUpdateSetController extends topLevelCardController {
     static cardName: TopLevelCardName = 'importInitiaUpdateSet';
-    constructor($scope: ITopLevelCardState) { super($scope, importInitiaUpdateSetController.cardName, 'Import Initial Update Set'); }
+    constructor($scope: ITopLevelCardScope) { super($scope, importInitiaUpdateSetController.cardName, 'Import Initial Update Set'); }
 }
-module.controller("importInitiaUpdateSetController", ['$scope', importInitiaUpdateSetController]);
+mainModule.controller("importInitiaUpdateSetController", ['$scope', importInitiaUpdateSetController]);
 
 class importUtilityAppController extends topLevelCardController {
     static cardName: TopLevelCardName = 'importUtilityApp';
-    constructor($scope: ITopLevelCardState) { super($scope, importUtilityAppController.cardName, 'Import Utility Application'); }
+    constructor($scope: ITopLevelCardScope) { super($scope, importUtilityAppController.cardName, 'Import Utility Application'); }
 }
-module.controller("importUtilityAppController", ['$scope', importUtilityAppController]);
+mainModule.controller("importUtilityAppController", ['$scope', importUtilityAppController]);
 
 class initialConfigController extends topLevelCardController {
     static cardName: TopLevelCardName = 'initialConfig';
-    constructor($scope: ITopLevelCardState) { super($scope, initialConfigController.cardName, 'Initial Config'); }
+    constructor($scope: ITopLevelCardScope) { super($scope, initialConfigController.cardName, 'Initial Config'); }
 }
-module.controller("initialConfigController", ['$scope', initialConfigController]);
+mainModule.controller("initialConfigController", ['$scope', initialConfigController]);
 
 class uploadLogoImageController extends topLevelCardController {
     static cardName: TopLevelCardName = 'uploadLogoImage';
-    constructor($scope: ITopLevelCardState) { super($scope, uploadLogoImageController.cardName, 'Upload logo image'); }
+    constructor($scope: ITopLevelCardScope) { super($scope, uploadLogoImageController.cardName, 'Upload logo image'); }
 }
-module.controller("uploadLogoImageController", ['$scope', uploadLogoImageController]);
+mainModule.controller("uploadLogoImageController", ['$scope', uploadLogoImageController]);
 
 class bulkPluginActivationController extends topLevelCardController {
     static cardName: TopLevelCardName = 'bulkPluginActivation';
-    constructor($scope: ITopLevelCardState) { super($scope, bulkPluginActivationController.cardName, 'Bulk Plugin Activation'); }
+    constructor($scope: ITopLevelCardScope) { super($scope, bulkPluginActivationController.cardName, 'Bulk Plugin Activation'); }
 }
-module.controller("bulkPluginActivationController", ['$scope', bulkPluginActivationController]);
+mainModule.controller("bulkPluginActivationController", ['$scope', bulkPluginActivationController]);
 
 class activeDirectoryImportController extends topLevelCardController {
     static cardName: TopLevelCardName = 'activeDirectoryImport';
-    constructor($scope: ITopLevelCardState) { super($scope, activeDirectoryImportController.cardName, 'Configure Active Directory Import'); }
+    constructor($scope: ITopLevelCardScope) { super($scope, activeDirectoryImportController.cardName, 'Configure Active Directory Import'); }
 }
-module.controller("activeDirectoryImportController", ['$scope', activeDirectoryImportController]);
+mainModule.controller("activeDirectoryImportController", ['$scope', activeDirectoryImportController]);
 
 class importPhysNetworksController extends topLevelCardController {
     static cardName: TopLevelCardName = 'importPhysNetworks';
-    constructor($scope: ITopLevelCardState) { super($scope, importPhysNetworksController.cardName, 'Import Physical Networks Application'); }
+    constructor($scope: ITopLevelCardScope) { super($scope, importPhysNetworksController.cardName, 'Import Physical Networks Application'); }
 }
-module.controller("importPhysNetworksController", ['$scope', importPhysNetworksController]);
+mainModule.controller("importPhysNetworksController", ['$scope', importPhysNetworksController]);
 
 class serviceCatalogConfigController extends topLevelCardController {
     static cardName: TopLevelCardName = 'serviceCatalogConfig';
-    constructor($scope: ITopLevelCardState) { super($scope, serviceCatalogConfigController.cardName, 'Import Service Catalog Update Set'); }
+    constructor($scope: ITopLevelCardScope) { super($scope, serviceCatalogConfigController.cardName, 'Import Service Catalog Update Set'); }
 }
-module.controller("serviceCatalogConfigController", ['$scope', serviceCatalogConfigController]);
+mainModule.controller("serviceCatalogConfigController", ['$scope', serviceCatalogConfigController]);
 
 // #endregion
 
@@ -366,7 +343,7 @@ module.controller("serviceCatalogConfigController", ['$scope', serviceCatalogCon
 // #region Field Edit
 
 interface IFieldInputParentScope extends ng.IScope {
-    inputFieldValueChanged(name: string, value: any | undefined);
+    inputFieldValueChanged(name: string, value: any | undefined): void;
     getInputFieldValue(name: string): any | undefined;
 }
 interface IFieldInputScope extends ng.IScope {
@@ -377,13 +354,19 @@ interface IFieldInputScope extends ng.IScope {
     isRequired: boolean;
     isValid: boolean;
     $parent: IFieldInputParentScope;
-    errorMessages: { label?: string, message: string, details?: string }[];
+    validationMessage: string;
+    cssClassNames: string[];
+}
+enum cssValidationClass {
+    isValid = 'is-valid',
+    isInvalid = 'is-invalid'
 }
 abstract class fieldEditController implements ng.IController {
     private _name: string;
     private _text: string = '';
     private _value?: any = undefined;
     private _isRequired: boolean = false;
+    private _validationMessage: string = '';
 
     get name(): string { return this._name; }
 
@@ -393,60 +376,132 @@ abstract class fieldEditController implements ng.IController {
         if (value === this._text)
             return;
         this._isRequired = this.$scope.isRequired == true;
-        this.$scope.errorMessages = [];
+        this.$scope.validationMessage = '';
         this._text = this.$scope.text = value;
-        this.validateText();
-        this.$scope.isValid = (this.$scope.errorMessages.length == 0);
+        this.updateValidationMessage();
+        this.$scope.isValid = (this.$scope.validationMessage.length == 0);
         if (this.$scope.isValid)
             this.$scope.value = this._value = this.convertToValue(this._text, this._value);
     }
 
-    private ensureText(): boolean {
-        if (this.$scope.text !== this._text) {
-            this.text = this.$scope.text;
-            return true;
+    get isValid(): boolean {
+        if (typeof (this.$scope.isValid) !== 'boolean') {
+            this.updateValidationMessage();
+            this.$scope.isValid = (CJS.isWhiteSpaceOrNotString(this.$scope.validationMessage.length));
         }
-        return false;
+        return this.$scope.isValid;
+    }
+
+    get validationMessage(): string {
+        if (typeof (this.$scope.validationMessage) !== 'string')
+            this.$scope.validationMessage = this._validationMessage;
+        return this.$scope.validationMessage;
+    }
+    set validationMessage(message: string) {
+        message = CJS.asStringOrDefault(message, '').trim();
+        if (message === this.validationMessage)
+            return;
+        this.$scope.validationMessage = this._validationMessage = message;
+        this.onValidationChange();
+    }
+
+    abstract get cssBaseClassNames(): string[];
+
+    constructor(protected $scope: IFieldInputScope, name: string, label?: string, isRequired: boolean = false) {
+        this._name = $scope.name = name;
+        $scope.label = (CJS.isStringAndNotWhiteSpace(label)) ? label : name;
+        this._value = $scope.value = this.coerceValue($scope.$parent.getInputFieldValue(name));
+        this._text = $scope.text = this.convertToString(this._value);
+        this._isRequired = $scope.isRequired = isRequired;
+        this._validationMessage = $scope.validationMessage = '';
+        this.$scope.isValid = true;
+        this.updateValidationMessage();
+        this.onValidationChange();
     }
 
     $doCheck() {
-        if (!(this.ensureText() && this._isRequired == this.$scope.isRequired)) {
-            this._isRequired = this.$scope.isRequired == true;
-            if (this._isRequired) {
-                this.$scope.errorMessages = [];
-                if (this._value !== this.$scope.value) {
-                    this._value = this.$scope.value;
-                    this.$scope.text = this._text = this.convertToString(this._value);
-                }
-                this.validateText();
-                return;
-            }
-        }
-
-        if (this._value !== this.$scope.value) {
-            this.$scope.errorMessages = [];
-            this._value = this.$scope.value;
-            this.$scope.text = this._text = this.convertToString(this._value);
-            this.$scope.isValid = true;
-        }
+        if (this.$scope.text !== this._text || this.$scope.isRequired !== this._isRequired || typeof (this.$scope.validationMessage) !== 'string' || typeof (this.$scope.isValid) !== 'boolean')
+            this.validate();
+        else if (this._value !== this.$scope.value)
+            this.text = this.convertToString(this._value);
     }
 
-    constructor(protected $scope: IFieldInputScope, name: string, label?: string) {
-        $scope.errorMessages = [];
-        $scope.name = this._name = name;
-        $scope.label = (CJS.isStringAndNotWhiteSpace(label)) ? label : name;
-        $scope.value = this._value = this.coerceValue($scope.$parent.getInputFieldValue(name));
-        $scope.text = this._text = this.convertToString(this._value);
-        this.validateText();
-        $scope.isValid = ($scope.errorMessages.length == 0);
+    private onValidationChange(): void {
+        let cssClassNames = CJS.asArray<string>(this.cssBaseClassNames, false);
+        let i: number;
+        if (this.$scope.validationMessage.length == 0) {
+            this.$scope.isValid = true;
+            if (cssClassNames.length > 0) {
+                if ((i = cssClassNames.indexOf(cssValidationClass.isInvalid)) == 0)
+                    cssClassNames.shift();
+                else if (i == cssClassNames.length - 1)
+                    cssClassNames.pop();
+                else if (i > 0)
+                    cssClassNames.splice(i, 1);
+            }
+            if (cssClassNames.indexOf(cssValidationClass.isValid) < 0)
+                cssClassNames.push(cssValidationClass.isValid);
+        } else {
+            this.$scope.isValid = false;
+            if (cssClassNames.length > 0) {
+                if ((i = cssClassNames.indexOf(cssValidationClass.isValid)) == 0)
+                    cssClassNames.shift();
+                else if (i == cssClassNames.length - 1)
+                    cssClassNames.pop();
+                else if (i > 0)
+                    cssClassNames.splice(i, 1);
+            }
+            if (cssClassNames.indexOf(cssValidationClass.isInvalid) < 0)
+                cssClassNames.push(cssValidationClass.isInvalid);
+        }
+        this.$scope.cssClassNames = cssClassNames;
     }
 
     protected coerceValue(value: any | null | undefined): any | null | undefined { return value; }
     protected convertToString(value: any | null | undefined): string { return CJS.asStringOrDefault(value, ''); }
     protected convertToValue(text: string, currentValue: any | null | undefined): any | null | undefined { return text; }
-    protected validateText() {
-        if (this.$scope.isRequired && CJS.isWhiteSpaceOrNotString(this._text))
-            this.$scope.errorMessages.push({ message: 'Value is required.' });
+
+    /**
+     * Re-validates the {@link IFieldInputScope#text} if any changes are detected.
+     * 
+     * @returns {boolean} true if the {@link IFieldInputScope#text} is valid; otherwise, false.
+     */
+    validate(): boolean {
+        if (this.$scope.text !== this._text) {
+            if (typeof (this.$scope.text) !== 'string')
+                this.$scope.text = '';
+        } else if (this.$scope.isRequired === this._isRequired && typeof (this.$scope.validationMessage) === 'string') {
+            if (this.$scope.validationMessage !== this._validationMessage) {
+                this.$scope.isValid = (this._validationMessage = this.$scope.validationMessage.trim()).length == 0;
+                if (this._validationMessage.length != this.$scope.validationMessage.length)
+                    this.$scope.validationMessage = this._validationMessage;
+                return this.$scope.isValid;
+            } else {
+                if (typeof (this.$scope.isValid) != 'boolean')
+                    this.$scope.isValid = this._validationMessage.length == 0;
+                return this.$scope.isValid;
+            }
+        }
+        if (typeof (this.$scope.isRequired) === 'boolean')
+            this._isRequired = this.$scope.isRequired;
+        else
+            this.$scope.isRequired = this._isRequired;
+        this._validationMessage = this.$scope.validationMessage = '';
+        let wasValid: any = this.$scope.isValid;
+        this.$scope.isValid = true;
+        this.updateValidationMessage();
+        if (typeof (this.$scope.validationMessage) !== 'string')
+            this.$scope.validationMessage = this._validationMessage;
+        else if (this.$scope.validationMessage !== this._validationMessage)
+            this._validationMessage = this.$scope.validationMessage;
+        let isValid: boolean = (this._validationMessage.length == 0);
+        if (isValid !== wasValid)
+            this.onValidationChange();
+        return this.$scope.isValid;
+    }
+    protected updateValidationMessage() {
+        if (this.$scope.isRequired && this._text.trim().length == 0)
+            this.$scope.validationMessage = 'Value is required.';
     }
 }
 
@@ -455,9 +510,9 @@ abstract class fieldEditController implements ng.IController {
 interface IUrlFieldInputScope extends IFieldInputScope { url?: URL; }
 abstract class urlFieldEditController extends fieldEditController {
     constructor($scope: IUrlFieldInputScope, name: string, label?: string) { super($scope, name); }
-    protected validateText() {
+    protected updateValidationMessage() {
         if (this.$scope.isRequired && CJS.isWhiteSpaceOrNotString(this.text))
-            this.$scope.errorMessages.push({ message: 'Value is required.' });
+            this.$scope.validationMessage = 'URL is required.';
     }
 }
 
@@ -465,13 +520,13 @@ class serviceNowUrlFieldEditController extends urlFieldEditController {
     static readonly fieldName: string = 'serviceNowUrl';
     constructor($scope: IUrlFieldInputScope) { super($scope, serviceNowUrlFieldEditController.fieldName, 'ServiceNow URL'); }
 }
-module.controller("serviceNowUrlFieldEditController", ['$scope', serviceNowUrlFieldEditController]);
+mainModule.controller("serviceNowUrlFieldEditController", ['$scope', serviceNowUrlFieldEditController]);
 
 class gitRepositoryBaseUrlFieldEditController extends urlFieldEditController {
     static readonly fieldName: string = 'gitRepositoryBaseUrl';
     constructor($scope: IUrlFieldInputScope) { super($scope, gitRepositoryBaseUrlFieldEditController.fieldName, 'Git Repository Base URL'); }
 }
-module.controller("gitRepositoryBaseUrlFieldEditController", ['$scope', gitRepositoryBaseUrlFieldEditController]);
+mainModule.controller("gitRepositoryBaseUrlFieldEditController", ['$scope', gitRepositoryBaseUrlFieldEditController]);
 
 // #endregion
 
@@ -482,9 +537,9 @@ module.controller("gitRepositoryBaseUrlFieldEditController", ['$scope', gitRepos
 interface IFieldDefinitionsScope extends ng.IScope {
     serviceNowUrl: string;
     gitRepositoryBaseUrl: string;
-    isVisible: boolean;
-    show(): void;
-    hide(): void;
+    editDialogVisible: boolean;
+    showEditDialog(): void;
+    hideEditDialog(): void;
 }
 interface IDialogScope extends ng.IScope {
     isVisible: boolean;
@@ -504,8 +559,8 @@ interface IMainControllerScope extends ng.IScope, ICardParentScope, IFieldInputP
 }
 class mainController implements ng.IController {
     $doCheck() { }
-    showFieldDefinitions() { this.$scope.definitions.isVisible = true; }
-    hideFieldDefinitions() { this.$scope.definitions.isVisible = false; }
+    showFieldDefinitions() { this.$scope.definitions.editDialogVisible = true; }
+    hideFieldDefinitions() { this.$scope.definitions.editDialogVisible = false; }
     showDialog(message: string, type: DialogMessageType = 'info', title?: string) {
         if (CJS.isWhiteSpaceOrNotString(title)) {
             switch (type) {
@@ -550,9 +605,9 @@ class mainController implements ng.IController {
         $scope.definitions = <IFieldDefinitionsScope>($scope.$new());
         $scope.definitions.serviceNowUrl = 'https://inscomscd.service-now.com';
         $scope.definitions.gitRepositoryBaseUrl = 'https://github.com/erwinel';
-        $scope.definitions.isVisible = true;
-        $scope.definitions.show = this.showFieldDefinitions;
-        $scope.definitions.hide = this.hideFieldDefinitions;
+        $scope.definitions.editDialogVisible = true;
+        $scope.definitions.showEditDialog = this.showFieldDefinitions;
+        $scope.definitions.hideEditDialog = this.hideFieldDefinitions;
         $scope.cardNames = ['adminLogins', 'importInitiaUpdateSet', 'importUtilityApp', 'initialConfig', 'uploadLogoImage', 'bulkPluginActivation', 'activeDirectoryImport', 'importPhysNetworks', 'serviceCatalogConfig'];
         $scope.selectedCard = 'adminLogins';
         $scope.popupDialog = <IDialogScope>($scope.$new());
@@ -567,6 +622,6 @@ class mainController implements ng.IController {
     }
 }
 
-module.controller("mainController", ['$scope', mainController]);
+mainModule.controller("mainController", ['$scope', mainController]);
 
 // #endregion
