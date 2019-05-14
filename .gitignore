@@ -19,9 +19,9 @@
 *.sublime-workspace
 
 # IDE - Visual Studio
-/.vs/*
-/obj/*
-/bin/*
+.vs/*
+obj/*
+bin/*
 *.csproj.user
 *.suo
 
@@ -50,6 +50,4 @@ testem.log
 .DS_Store
 Thumbs.db
 /packages
-/.vs
-/SNImplementationDocs/obj
-/SNImplementationDocs/bin
+/.vscode
