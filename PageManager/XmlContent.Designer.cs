@@ -62,18 +62,10 @@ namespace PageManager {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;
-        ///    xmlns:msxsl=&quot;urn:schemas-microsoft-com:xslt&quot; exclude-result-prefixes=&quot;msxsl&quot;
-        ///&gt;
-        ///    &lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot;/&gt;
-        ///
-        ///    &lt;xsl:template match=&quot;@* | node()&quot;&gt;
-        ///        &lt;xsl:copy&gt;
-        ///            &lt;xsl:apply-templates select=&quot;@* | node()&quot;/&gt;
-        ///        &lt;/xsl:copy&gt;
-        ///    &lt;/xsl:template&gt;
-        ///&lt;/xsl:stylesheet&gt;
-        ///.
+        ///&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:msxsl=&quot;urn:schemas-microsoft-com:xslt&quot; xmlns:h=&quot;http://www.w3.org/1999/xhtml&quot; exclude-result-prefixes=&quot;msxsl&quot;&gt;
+        ///  &lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot; standalone=&quot;no&quot; cdata-section-elements=&quot;script&quot; doctype-public=&quot;HTML&quot; doctype-system=&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot; encoding=&quot;utf-8&quot; omit-xml-declaration=&quot;yes&quot;/&gt;
+        ///  &lt;xsl:template match=&quot;/&quot;&gt;
+        ///    &lt;!--&lt;xsl:text [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FromXhtmlTransform {
             get {

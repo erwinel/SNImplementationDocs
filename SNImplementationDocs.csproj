@@ -1,8 +1,7 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
-  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props" Condition="Exists('packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props')" />
+  <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -27,6 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,8 +73,8 @@
     <TypeScriptSourceRoot />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -84,10 +84,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -99,16 +95,9 @@
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
     <Content Include=".gitmodules" />
-    <Content Include="gh-pages\App\CollapsibleCardControllers.js" />
-    <Content Include="gh-pages\App\ColorInfo.js" />
-    <Content Include="gh-pages\App\IncidentManagement.js" />
-    <Content Include="gh-pages\App\InitialConfig.js" />
-    <Content Include="gh-pages\App\MainModule.js" />
-    <Content Include="gh-pages\App\Test.js" />
-    <Content Include="gh-pages\App\UriBuilder.js" />
-    <Content Include="gh-pages\App\UriBuilderController.js" />
     <Content Include="gh-pages\ColorEditor.html" />
     <Content Include="gh-pages\DevResources.html" />
+    <Content Include="gh-pages\images\open-iconic\Index.html" />
     <Content Include="gh-pages\lib\angular.js\angular-animate.js" />
     <Content Include="gh-pages\lib\angular.js\angular-animate.min.js" />
     <Content Include="gh-pages\lib\angular.js\angular-aria.js" />
@@ -900,6 +889,7 @@
     <Content Include="gh-pages\lib\twitter-bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="gh-pages\lib\twitter-bootstrap\js\bootstrap.js" />
     <Content Include="gh-pages\lib\twitter-bootstrap\js\bootstrap.min.js" />
+    <Content Include="gh-pages\Template\mainAppPageHead.htm" />
     <Content Include="index.html" />
     <Content Include="PowerShell\pagetemplate.xml" />
     <Content Include="PowerShell\sys_properties_config.html" />
@@ -1193,11 +1183,6 @@
     <Content Include="PowerShell\MaintainPages.ps1" />
     <Content Include="PowerShell\ManagePropertiesJSON.ps1" />
     <Content Include="PowerShell\sys_properties_config.json" />
-    <Content Include="gh-pages\App\ColorInfo.js.map" />
-    <Content Include="gh-pages\App\IncidentManagement.js.map" />
-    <Content Include="gh-pages\App\InitialConfig.js.map" />
-    <Content Include="gh-pages\App\Test.js.map" />
-    <Content Include="gh-pages\App\UriBuilder.js.map" />
     <Content Include="gh-pages\ServiceCatalog.html" />
     <Content Include="gh-pages\Snippets.html" />
     <Content Include="gh-pages\Test.html" />
@@ -1265,6 +1250,7 @@
     <Content Include="tsconfig-old.json" />
     <Content Include="tslint.json" />
     <Content Include="gh-pages\downloads\HTMLTypeScriptApp.vsix" />
+    <Content Include="PowerShell\RefreshImageCatalog.ps1" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1275,16 +1261,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="CollapsibleCardControllers.ts" />
     <TypeScriptCompile Include="ColorInfo.ts" />
-    <TypeScriptCompile Include="gh-pages\App\CollapsibleCardControllers.d.ts" />
-    <TypeScriptCompile Include="gh-pages\App\MainModule.d.ts" />
-    <TypeScriptCompile Include="gh-pages\App\UriBuilderController.d.ts" />
     <TypeScriptCompile Include="MainModule.ts" />
-    <Content Include="gh-pages\App\ColorInfo.d.ts" />
-    <Content Include="gh-pages\App\CommonJsUtility.d.ts" />
-    <Content Include="gh-pages\App\IncidentManagement.d.ts" />
-    <Content Include="gh-pages\App\InitialConfig.d.ts" />
-    <Content Include="gh-pages\App\Test.d.ts" />
-    <Content Include="gh-pages\App\UriBuilder.d.ts" />
     <TypeScriptCompile Include="IncidentManagement.ts" />
     <TypeScriptCompile Include="InitialConfig.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
@@ -1294,7 +1271,9 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="gh-pages\App\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -1325,12 +1304,12 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets'))" />
-    <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.props'))" />
+    <Error Condition="!Exists('packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
-  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets')" />
+  <Import Project="packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('packages\Microsoft.TypeScript.MSBuild.3.4.5\build\Microsoft.TypeScript.MSBuild.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
