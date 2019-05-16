@@ -1,4 +1,4 @@
-/// <reference path="MainModule.ts" />
+/// <reference path="app.ts" />
 
 class MyClass {
     value: number = 0;

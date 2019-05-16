@@ -889,6 +889,11 @@
     <Content Include="gh-pages\lib\twitter-bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="gh-pages\lib\twitter-bootstrap\js\bootstrap.js" />
     <Content Include="gh-pages\lib\twitter-bootstrap\js\bootstrap.min.js" />
+    <Content Include="gh-pages\RegexTester.html" />
+    <Content Include="gh-pages\Template\collapsibleCardL0.htm" />
+    <Content Include="gh-pages\Template\collapsibleCardL1.htm" />
+    <Content Include="gh-pages\Template\collapsibleCardL2.htm" />
+    <Content Include="gh-pages\Template\collapsibleCardL3.htm" />
     <Content Include="gh-pages\Template\mainAppPageHead.htm" />
     <Content Include="index.html" />
     <Content Include="PowerShell\pagetemplate.xml" />
@@ -1245,6 +1250,7 @@
     <Content Include="gh-pages\lib\angular.js\angular-touch.min.js.map" />
     <Content Include="gh-pages\lib\angular.js\angular.min.js.map" />
     <Content Include="gh-pages\pageNavigation.json" />
+    <Content Include="gh-pages\defaults.json" />
     <None Include="packages.config" />
     <Content Include="README.md" />
     <Content Include="tsconfig-old.json" />
@@ -1259,14 +1265,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="CollapsibleCardControllers.ts" />
-    <TypeScriptCompile Include="ColorInfo.ts" />
-    <TypeScriptCompile Include="MainModule.ts" />
-    <TypeScriptCompile Include="IncidentManagement.ts" />
-    <TypeScriptCompile Include="InitialConfig.ts" />
+    <TypeScriptCompile Include="cards.ts" />
+    <TypeScriptCompile Include="colorBuilder.ts" />
+    <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="incidentManagement.ts" />
+    <TypeScriptCompile Include="initialConfig.ts" />
+    <TypeScriptCompile Include="regexTester.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Test.ts" />
-    <TypeScriptCompile Include="UriBuilderController.ts" />
+    <TypeScriptCompile Include="uriBuilder.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

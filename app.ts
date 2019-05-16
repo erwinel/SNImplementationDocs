@@ -17,6 +17,15 @@ namespace app {
     let falseStringRe: RegExp = /^(f(alse)?|no?|0+(\.0+)?)([^\w-]|$)/i;
     let numberStringRe: RegExp = /^\d+(\.\d+)$/i;
 
+    export const ScopeEvent_OpenMainModalPopupDialog: string = 'OpenMainModalPopupDialog';
+    export const ScopeEvent_CloseMainModalPopupDialog: string = 'CloseMainModalPopupDialog';
+    export const ScopeEvent_ShowSetupParametersDialog: string = 'showSetupParameterDefinitionsControllerDialog';
+    export const ScopeEvent_HideSetupParametersDialog: string = 'hideSetupParameterDefinitionsControllerDialog';
+    export const ScopeEvent_SetupParameterSettingsChanged: string = "SetupParameterSettingsChanged";
+    export const StorageKey_SetupParameterSettings = "setupParameterSettings";
+    const DefaultURL_ServiceNow = "https://inscomscd.service-now.com";
+    const DefaultURL_GitRepositoryBase = "https://github.com/erwinel";
+
     // #region Utility functions
 
     /**
@@ -135,9 +144,71 @@ namespace app {
         return value;
     }
 
-    export function stringBefore(source: string, search: string): string {
-        let i: number = source.indexOf(search);
-        return (i < 0) ? source : source.substr(0, i);
+    export function subStringBefore(source: string, search: RegExp, nilIfNoMatch?: boolean): string;
+    export function subStringBefore(source: string, search: string, nilIfNoMatch?: boolean, caseSensitive?: boolean): string;
+    export function subStringBefore(source: string, search: string | RegExp, nilIfNoMatch: boolean = false, caseSensitive: boolean = false): string {
+        if (!isNilOrEmpty(source)) {
+            if (typeof (search) === "string") {
+                if (search.length > 0) {
+                    let i: number = (caseSensitive) ? source.indexOf(search) : source.toLowerCase().indexOf(search.toLowerCase());
+                    if (i > -1)
+                        return source.substr(0, i);
+                }
+            } else if (!isNil(search)) {
+                let match: RegExpExecArray = search.exec(source);
+                if (!isNilOrEmpty(match))
+                    return source.substr(0, match.index);
+            }
+        }
+        if (!nilIfNoMatch)
+            return source;
+    }
+
+    export function subStringAfter(source: string, search: RegExp, nilIfNoMatch?: boolean): string;
+    export function subStringAfter(source: string, search: string, nilIfNoMatch?: boolean, caseSensitive?: boolean): string;
+    export function subStringAfter(source: string, search: string | RegExp, nilIfNoMatch: boolean = false, caseSensitive: boolean = false): string {
+        if (!isNilOrEmpty(source)) {
+            if (typeof (search) === "string") {
+                if (search.length > 0) {
+                    let i: number = (caseSensitive) ? source.indexOf(search) : source.toLowerCase().indexOf(search.toLowerCase());
+                    if (i > -1)
+                        return source.substr(i + search.length);
+                }
+            } else if (!isNil(search)) {
+                let match: RegExpExecArray = search.exec(source);
+                if (!isNilOrEmpty(match))
+                    return source.substr(match.index + match[0].length);
+            }
+        }
+        if (!nilIfNoMatch)
+            return source;
+    }
+
+    export function splitAt(source: string, index: number): [string, string] | [string]
+    export function splitAt(source: string, search: RegExp, includeMatch?: false): [string, string] | [string]
+    export function splitAt(source: string, search: RegExp, includeMatch: true): [string, string, string] | [string]
+    export function splitAt(source: string, search: string, caseSensitive?: boolean): [string, string] | [string];
+    export function splitAt(source: string, spec: number | string | RegExp, opt: boolean = false): [string, string, string] | [string, string] | [string] {
+        if (!isNilOrEmpty(source)) {
+            if (typeof (spec) === "number") {
+                if (!isNaN(spec) && spec > -1 && spec < source.length)
+                    return [source.substr(0, spec), source.substr(spec)];
+            } else if (typeof (spec) === "string") {
+                if (spec.length > 0) {
+                    let i: number = (opt) ? source.indexOf(spec) : source.toLowerCase().indexOf(spec.toLowerCase());
+                    if (i > -1)
+                        return [source.substr(0, i), source.substr(i)];
+                }
+            } else if (!isNil(spec)) {
+                let match: RegExpExecArray = spec.exec(source);
+                if (!isNilOrEmpty(match)) {
+                    if (opt)
+                        return [source.substr(0, match.index), match[0], source.substr(match.index + match[0].length)];
+                    return [source.substr(0, match.index), source.substr(match.index + match[0].length)];
+                }
+            }
+        }
+        return [source];
     }
 
     /**
@@ -782,362 +853,102 @@ namespace app {
         return resultY.done;
     }
 
-    // #endregion
+    export const uriParseRegex_beforeQuery: RegExp = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;
 
-    // #region URIBuilder
+    export const uriParseRegex: RegExp = /^(([^\\\/@:\?#]*)(:[\\\/]{0,2})((?=[^\\\/@:\?#]*(?::[^\\\/@:\?#]*)?@)([^\\\/@:\?#]*)(:[^\\\/@:\?#]*)?@)?([^\\\/@:\?#]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?([^\?#]+)?(\?([^#]+)?)?(#(.+)?)?$/;
 
-    let schemeParseRe: RegExp = /^([^\\\/:@]*:)[\\\/]{0,2}/;
-    let originStartValidateRe: RegExp = /^[a-z][a-z\d_\-]+:(\/\/?)?[^\\]/;
-    let portValidateRe: RegExp = /^0*(6(5(5(3[0-5]?|[012]\d?|[4-9]?)|([0-4]\d?|[6-9])\d?)?|([0-4]\d?|[6-9])\d{0,2})?|([1-5]\d?|[7-9])\d{0,3})$/;
-    let userInfoParseRe: RegExp = /^([^\\\/:@]+)?(:([^\\\/:@]+)?)?@/;
-    let hostAndPortParseRe: RegExp = /^([^\\\/:]+)?(:(\d+)?)?/;
+    export enum uriParseGroup {
+        all = 0,
+        origin = 1,
+        schemeName = 2,
+        schemeSeparator = 3,
+        userInfo = 4,
+        username = 5,
+        password = 6,
+        hostname = 7,
+        portnumber = 8,
+        path = 9,
+        search = 10,
+        queryString = 11,
+        hash = 12,
+        fragment = 13
+    }
 
-    class URIBuilder implements URL {
-        private _href: string = '';
-        private _origin: string = '';
-        private _protocol: string = '';
-        private _username?: string = undefined;
-        private _password?: string = undefined;
-        private _host: string = '';
-        private _hostname: string = '';
-        private _port?: string = undefined;
-        private _pathname: string = '';
-        private _pathSegments?: string[] = undefined;
-        private _search: string = undefined;
-        private _searchParams?: URLSearchParams = undefined;
-        private _hash: string = '';
-        private _isWellFormed?: boolean = undefined;
-        private _isAbsolute: boolean = false;
+    export interface IParsedUriString {
+        source: string;
+        origin?: {
+            value: string;
+            scheme: {
+                name: string;
+                separator: string;
+            }
+            userInfo?: {
+                value: string;
+                name: string;
+                password?: string;
+            }
+            host: {
+                value: string;
+                name: string;
+                portnumber?: string;
+            }
+        };
+        path: string;
+        queryString?: string;
+        fragment?: string;
+    }
 
-        get isWellFormed(): boolean {
-            if (typeof (this._isWellFormed) === 'boolean')
-                return this._isWellFormed;
-
-            if (this._origin.length > 0) {
-                let m: RegExpExecArray = originStartValidateRe.exec(this._origin);
-                if (isNil(m) || (typeof (this._port) === 'string' && (this._port.length == 0 || this._hostname.length == 0 || !portValidateRe.test(this._port))) ||
-                    (this._hostname.length > 0 && encodeURIComponent(this._hostname) !== this._hostname)) {
-                    this._isWellFormed = false;
-                    return false;
+    export function parseUriString(source: string): IParsedUriString {
+        if (isNilOrEmpty(source))
+            return { source: source, path: source };
+        let match: RegExpExecArray = uriParseRegex.exec(source);
+        let result: IParsedUriString;
+        if (isNilOrEmpty(match)) {
+            result = { source: source, path: source };
+            let i: number = source.indexOf('#');
+            if (i > -1) {
+                result.fragment = source.substr(i + 1);
+                result.source = source = source.substr(0, i);
+            }
+            i = source.indexOf('?');
+            if (i > -1) {
+                result.queryString = source.substr(i + 1);
+                result.source = source.substr(0, i);
+            }
+        } else {
+            result = { source: source, path: (isNil(match[uriParseGroup.path])) ? '' : match[uriParseGroup.path] };
+            if (!isNil(match[uriParseGroup.origin])) {
+                let name: string = (isNil(match[uriParseGroup.hostname])) ? '' : match[uriParseGroup.hostname];
+                result.origin = {
+                    value: match[uriParseGroup.origin],
+                    scheme: {
+                        name: match[uriParseGroup.schemeName],
+                        separator: match[uriParseGroup.schemeSeparator]
+                    },
+                    host: { value: name, name: name }
+                };
+                if (!isNil(match[uriParseGroup.userInfo])) {
+                    result.origin.userInfo = { value: match[uriParseGroup.userInfo], name: (isNil(match[uriParseGroup.username])) ? '' : match[uriParseGroup.username] };
+                    if (!isNil(match[uriParseGroup.password]))
+                        result.origin.userInfo.password = match[uriParseGroup.password].substr(1);
                 }
-                if (typeof (this._username) === 'string' || typeof (this._password) === 'string') {
-                    if (this._hostname.length == 0) {
-                        this._isWellFormed = false;
-                        return false;
-                    }
-                    let i: number = this._origin.indexOf('@');
-                    let userInfo: string = this._origin.substr(m[0].length, i - m[0].length);
-                    if (typeof (this._password) === 'string') {
-                        i = userInfo.indexOf(':');
-                        let pw: string = userInfo.substr(i + 1);
-                        if (pw.length > 0 && encodeURIComponent(this._password) !== userInfo.substr(i + 1)) {
-                            this._isWellFormed = false;
-                            return false;
-                        }
-                        userInfo = userInfo.substr(0, i);
-                    }
-                    if (typeof (this._username) === 'string' && userInfo.length > 0 && encodeURIComponent(this._username) !== userInfo) {
-                        this._isWellFormed = false;
-                        return false;
-                    }
-                }
-            }
-
-            this._isWellFormed = (this._search.length == 0 || this._search.split('&').filter((s: string) => {
-                if (s.length == 0)
-                    return true;
-                let i: number = s.indexOf('=');
-                if (i == 0)
-                    return true;
-                if (i > 0) {
-                    if (i < s.length - 1) {
-                        let v = s.substr(i + 1);
-                        if (encodeURIComponent(decodeURIComponent(v)) != v)
-                            return true;
-                    }
-                    s = s.substr(0, i);
-                }
-                return encodeURIComponent(decodeURIComponent(s)) != s;
-            }).length == 0) && (this._hash.length == 0 || this._href.substr(this._href.indexOf('#') + 1) === encodeURI(this._hash.substr(1)));
-            return this._isWellFormed;
-        }
-        get href(): string { return this._href; }
-        set href(value: string) {
-            value = asNotNil(value, '');
-            if (value === this._href)
-                return;
-            this._href = value;
-            this._isWellFormed = undefined;
-            let i: number = value.indexOf('#');
-            if (i < 0)
-                this._hash = '';
-            else {
-                this._hash = decodeURI(value.substr(i));
-                value = value.substr(0, i);
-            }
-            i = value.indexOf('?');
-            if (i < 0)
-                this._search = '';
-            else {
-                this._search = value.substr(i);
-                value = value.substr(0, i);
-            }
-            let m: RegExpExecArray = schemeParseRe.exec(value);
-            if (isNil(m)) {
-                this._origin = this._protocol = this._host = this._host = '';
-                this._username = this._password = this._port = undefined;
-                this._pathname = value;
-                this._isAbsolute = false;
-                return;
-            }
-            this._isAbsolute = true;
-            this._protocol = m[1];
-            this._origin = m[0];
-            value = value.substr(m[0].length);
-            m = userInfoParseRe.exec(value);
-            if (!isNil(m)) {
-                this._username = (isNil(m[1])) ? '' : m[1];
-                this._password = (isNil(m[2])) ? undefined : ((isNil(m[3])) ? '' : m[3]);
-                value = value.substr(m[0].length);
-            } else
-                this._username = this._password = undefined;
-            m = hostAndPortParseRe.exec(value);
-            if (isNil(m)) {
-                this._host = this._hostname = '';
-                this._port = undefined;
-                this._pathname = value;
-            } else {
-                this._host = m[0];
-                this._hostname = (isNil(m[1])) ? '' : m[1];
-                this._port = (isNil(m[2])) ? undefined : ((isNil(m[3])) ? '' : m[3]);
-                this._pathname = value.substr(m[0].length);
-            }
-        }
-
-        get origin(): string { return this._origin; }
-        set origin(value: string) {
-            value = asNotNil(value, '');
-            if (value === this._origin)
-                return;
-            if (value.length == 0) {
-                this._isWellFormed = undefined;
-                this._origin = this._protocol = this._host = this._host = '';
-                this._username = this._password = this._port = undefined;
-                this._isAbsolute = false;
-                return;
-            }
-            if (value.indexOf('#') > -1)
-                throw new Error("Origin cannot contain a fragment");
-            if (value.indexOf('?') > -1)
-                throw new Error("Origin cannot contain a query");
-            let m: RegExpExecArray = schemeParseRe.exec(value);
-            if (isNil(m))
-                throw new Error("Origin must contain a scheme if it is not empty");
-            let protocol: string = m[1];
-            let origin: string = m[0];
-            value = value.substr(m[0].length);
-            m = userInfoParseRe.exec(value);
-            let username: string | undefined, password: string | undefined;
-            if (!isNil(m)) {
-                username = (isNil(m[1])) ? '' : m[1];
-                password = (isNil(m[2])) ? undefined : ((isNil(m[3])) ? '' : m[3]);
-                value = value.substr(m[0].length);
-            } else
-                username = password = undefined;
-            m = hostAndPortParseRe.exec(value);
-            if (isNil(m)) {
-                if (value.length > 0)
-                    throw new Error("Origin cannot contain path references");
-                this._host = this._hostname = '';
-                this._port = undefined;
-            } else {
-                if (value.length > m[0].length)
-                    throw new Error("Origin cannot contain path references");
-                this._host = m[0];
-                this._hostname = (isNil(m[1])) ? '' : m[1];
-                this._port = (isNil(m[2])) ? undefined : ((isNil(m[3])) ? '' : m[3]);
-            }
-            this._isWellFormed = undefined;
-            this._isAbsolute = true;
-            this._protocol = protocol;
-            this._origin = origin;
-            this._username = username;
-            this._password = password;
-        }
-
-        get protocol(): string { return this._protocol; }
-        set protocol(value: string) {
-            value = asNotNil(value, '');
-            if (value === this._protocol)
-                return;
-            let m: RegExpExecArray;
-            if (value.length > 0) {
-                if (!value.endsWith(':'))
-                    value += ':';
-                if (value === this._protocol)
-                    return;
-                if (value.length > 1) {
-                    m = schemeParseRe.exec(value);
-                    if (isNil(m) || m[1].length != value.length)
-                        throw new Error("Invalid protocol format");
+                if (!isNil(match[uriParseGroup.portnumber])) {
+                    result.origin.host.value += match[uriParseGroup.portnumber];
+                    result.origin.host.portnumber = match[uriParseGroup.portnumber].substr(1);
                 }
             }
-            this._protocol = value;
-            if (value.length === 0)
-                this._origin = '';
-            else {
-                m = schemeParseRe.exec(this._origin);
-                if (m[0].length > m[1].length)
-                    this._origin = this._protocol + m[0].substr(m[1].length);
-                else
-                    this._origin = this._protocol;
-                this._origin = this._protocol;
-                if (typeof (this._username) === 'string')
-                    this._origin += ((typeof (this._password) === 'string') ? encodeURIComponent(this._username) + ':' + encodeURIComponent(this._password) : encodeURIComponent(this._username)) + '@';
-                else if (typeof (this._password) === 'string')
-                    this._origin += ':' + encodeURIComponent(this._password) + '@';
-                this._origin += this._hostname;
-                if (typeof (this._port) === 'string')
-                    this._origin += ':' + this._port;
-            }
-            this._href = this._origin + this._pathname + this._search + this._hash;
-            this._isWellFormed = undefined;
+            result.path = (isNil(match[uriParseGroup.path])) ? '' : match[uriParseGroup.path];
+            if (!isNil(match[uriParseGroup.search]))
+                result.queryString = (isNil(match[uriParseGroup.queryString])) ? '' : match[uriParseGroup.queryString];
+            if (!isNil(match[uriParseGroup.hash]))
+                result.fragment = (isNil(match[uriParseGroup.fragment])) ? '' : match[uriParseGroup.fragment];
         }
-
-        private rebuildHref() {
-            if (this._origin.length > 0) {
-                let m: RegExpExecArray = schemeParseRe.exec(this._origin);
-                if (m[0].length > m[1].length)
-                    this._origin = this._protocol + m[0].substr(m[1].length);
-                else
-                    this._origin = this._protocol;
-                this._origin = this._protocol;
-                if (typeof (this._username) === 'string')
-                    this._origin += ((typeof (this._password) === 'string') ? encodeURIComponent(this._username) + ':' + encodeURIComponent(this._password) : encodeURIComponent(this._username)) + '@';
-                else if (typeof (this._password) === 'string')
-                    this._origin += ':' + encodeURIComponent(this._password) + '@';
-                this._origin += this._hostname;
-                if (typeof (this._port) === 'string')
-                    this._origin += ':' + this._port;
-            }
-            this._href = this._origin + this._pathname + this._search + this._hash;
-            this._isWellFormed = undefined;
-        }
-        get username(): string | undefined { return this._username; }
-        set username(value: string | undefined) {
-            if (isNil(value)) {
-                if (typeof (this._username) !== 'string')
-                    return;
-                this._username = undefined;
-            } else {
-                if (this._username === value)
-                    return;
-                this._username = value;
-            }
-            this.rebuildHref();
-        }
-
-        get password(): string { return this._password; }
-        set password(value: string | undefined) {
-            if (isNil(value)) {
-                if (typeof (this._password) !== 'string')
-                    return;
-                this._password = undefined;
-            } else {
-                if (this._password === value)
-                    return;
-                this._password = value;
-            }
-            this.rebuildHref();
-        }
-
-        get host(): string { return this._host; }
-        set host(value: string) {
-            value = asNotNil(value, '');
-            if (value === this._host)
-                return;
-            this._host = value;
-            let i: number = this._host.indexOf(':');
-
-            if (i < 0) {
-                this._hostname = this._host;
-                this._port = undefined;
-            } else {
-                this._hostname = this._host.substr(0, i);
-                this._port = this._host.substr(i + 1);
-            }
-            this.rebuildHref();
-        }
-
-        get hostname(): string { return this._hostname; }
-        set hostname(value: string) {
-            value = asNotNil(value, '');
-            if (value === this._hostname)
-                return;
-            this._hostname = value;
-            this.rebuildHref();
-        }
-
-        get port(): string { return this._port; }
-        set port(value: string) {
-            if (isNil(value)) {
-                if (typeof (this._port) !== 'string')
-                    return;
-                this._password = undefined;
-            } else {
-                if (this._port === value)
-                    return;
-                this._port = value;
-            }
-            this.rebuildHref();
-        }
-
-        get pathname(): string { return this._pathname; }
-        set pathname(value: string) {
-            value = asNotNil(value, '');
-            if (value === this._pathname)
-                return;
-            if (value.length > 0 && this._isAbsolute && !(value.startsWith(':') || value.startsWith('/') || value.startsWith('\\')))
-                value += '/' + value;
-            this._pathname = value;
-            this.rebuildHref();
-        }
-
-        get search(): string { return this._search; }
-        set search(value: string) {
-            value = asNotNil(value, '');
-            if (value === this._search)
-                return;
-            if (value.indexOf('#') > -1)
-                throw new Error("Search cannot contain a fragment");
-            if (value.length > 0 && !value.startsWith('?'))
-                value += '?' + value;
-            this._search = value;
-            this.rebuildHref();
-        }
-
-        get searchParams(): URLSearchParams { return this._searchParams; }
-
-        get hash(): string { return this._hash; }
-        set hash(value: string) {
-            value = asNotNil(value, '');
-            if (value === this._hash)
-                return;
-            if (value.length > 0 && !value.startsWith('#'))
-                value += '#' + value;
-            this._hash = value;
-            this.rebuildHref();
-        }
-
-        toJSON(): string {
-            throw new Error("Method not implemented.");
-        }
+        return result;
     }
 
     // #endregion
 
     // #region Navigation
-
 
     interface INavigationDefinition {
         url: string;
@@ -1175,7 +986,7 @@ namespace app {
         side: RootNavigationContainerScope;
     }
 
-    function initializePageNavigationScope(parentScope: IMainControllerScope, controller: MainController, location: ng.ILocationService, http: ng.IHttpService) {
+    function initializePageNavigationScope(parentScope: IMainControllerScope, location: ng.ILocationService, http: ng.IHttpService) {
         let scope: PageNavigationScope = parentScope.pageNavigation = <PageNavigationScope>(parentScope.$new());
         scope.top = <RootNavigationContainerScope>(scope.pageNavigation.$new());
         scope.top.items = [];
@@ -1271,6 +1082,8 @@ namespace app {
 
     // #endregion
 
+    // #region Directives
+
     MainModule.directive("mainAppPageHead", () => {
         return {
             restrict: "E",
@@ -1278,6 +1091,17 @@ namespace app {
             templateUrl: 'Template/mainAppPageHead.htm'
         };
     });
+
+    interface INavItemAttributes extends ng.IAttributes { href: string; }
+
+    interface INavItemScope extends INestedControllerScope<IMainControllerScope> {
+        href: string;
+        classNames: string[];
+        onClick(): boolean;
+        text: string;
+    }
+
+    // #endregion
 
     // #endregion
 
@@ -1296,24 +1120,30 @@ namespace app {
 
     class MainController implements ng.IController {
         $doCheck() { }
+
         showSetupParametersEditDialog() { setupParameterDefinitionsController.show(this.$scope); }
+
         hideSetupParametersEditDialog() { setupParameterDefinitionsController.hide(this.$scope); }
+
         showModalDialogMessage(message: string, type: DialogMessageType = 'info', title?: string) { mainModalPopupDialogController.show(this.$scope, message, type, title); }
+
         hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
-        constructor(protected $scope: IMainControllerScope, $rootScope: ng.IScope, protected $location: ng.ILocationService, protected $http: ng.IHttpService) {
-            let settings: ISetupParameterDefinitions = setupParameterDefinitionsController.getSettings();
+
+        constructor(protected $scope: IMainControllerScope, protected $location: ng.ILocationService, protected $http: ng.IHttpService, settings: setupParameterSettings) {
             $scope.serviceNowUrl = settings.serviceNowUrl;
             $scope.gitRepositoryBaseUrl = settings.gitRepositoryBaseUrl;
-            $rootScope.$on(BroadcastEvent_SetupParametersChanged, (event: ng.IAngularEvent, values: ISetupParameterDefinitions) => {
-                $scope.serviceNowUrl = values.serviceNowUrl;
-                $scope.gitRepositoryBaseUrl = values.gitRepositoryBaseUrl;
+            settings.onChanged($scope, (event: ng.IAngularEvent, value: ISetupParameterSettings) => {
+                $scope.serviceNowUrl = value.serviceNowUrl;
+                $scope.gitRepositoryBaseUrl = value.gitRepositoryBaseUrl;
             });
-            initializePageNavigationScope($scope, this, $location, $http);
-            $scope.showSetupParametersEditDialog = () => { setupParameterDefinitionsController.show($scope); }
+            initializePageNavigationScope($scope, $location, $http);
+            $scope.showSetupParametersEditDialog = () => {
+                setupParameterDefinitionsController.show($scope);
+            };
         }
     }
 
-    MainModule.controller("MainController", ['$scope', '$rootScope', "$location", "$http", MainController]);
+    MainModule.controller("MainController", ['$scope', "$location", "$http", "setupParameterSettings", MainController]);
 
     export abstract class MainControllerChild<TScope extends INestedControllerScope<IMainControllerScope>> implements ng.IController {
         $doCheck() { }
@@ -1339,15 +1169,12 @@ namespace app {
         close();
     }
 
-    export const BroadcastEvent_OpenMainModalPopupDialog: string = 'OpenMainModalPopupDialog';
-    export const BroadcastEvent_CloseMainModalPopupDialog: string = 'CloseMainModalPopupDialog';
-
     export class mainModalPopupDialogController extends MainControllerChild<IDialogScope> {
         static show($scope: ng.IScope, message: string, type?: DialogMessageType, title?: string) {
-            $scope.$emit(BroadcastEvent_OpenMainModalPopupDialog, message, type, title);
+            $scope.$broadcast(ScopeEvent_OpenMainModalPopupDialog, message, type, title);
         }
         static hide($scope: ng.IScope) {
-            $scope.$emit(BroadcastEvent_CloseMainModalPopupDialog);
+            $scope.$broadcast(ScopeEvent_CloseMainModalPopupDialog);
         }
         constructor($scope: IDialogScope, $rootScope: ng.IScope) {
             super($scope);
@@ -1355,7 +1182,7 @@ namespace app {
             $scope.message = '';
             $scope.bodyClass = '';
             $scope.close = () => { $('#mainModalPopupDialog').modal('hide'); };
-            $rootScope.$on(BroadcastEvent_OpenMainModalPopupDialog, (event: ng.IAngularEvent, message: string, type?: DialogMessageType, title?: string) => {
+            $rootScope.$on(ScopeEvent_OpenMainModalPopupDialog, (event: ng.IAngularEvent, message: string, type?: DialogMessageType, title?: string) => {
                 if (isNilOrWhiteSpace(title)) {
                     switch (type) {
                         case 'warning':
@@ -1376,7 +1203,7 @@ namespace app {
                 $scope.message = (isNil(message)) ? '' : message;
                 $('#mainModalPopupDialog').modal('show');
             });
-            $rootScope.$on(BroadcastEvent_CloseMainModalPopupDialog, (event: ng.IAngularEvent) => { $('#mainModalPopupDialog').modal('hide'); });
+            $rootScope.$on(ScopeEvent_CloseMainModalPopupDialog, (event: ng.IAngularEvent) => { $('#mainModalPopupDialog').modal('hide'); });
         }
     }
 
@@ -1384,21 +1211,212 @@ namespace app {
 
     // #endregion
 
-    // #region SetupParameters
+    // #region Session Storage Service
 
-    export const uriParseRegex: RegExp = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;
-    export enum uriParseGroup {
-        all = 0,
-        origin = 1,
-        schemeName = 2,
-        schemeSeparator = 3,
-        userInfo = 4,
-        username = 5,
-        password = 6,
-        hostname = 7,
-        portnumber = 8,
-        path = 9
+    class SessionStorageEntryEnumerator implements IterableIterator<[string, string]> {
+        private _index: number = 0;
+
+        constructor(private _window: ng.IWindowService, private _keys: string[]) { }
+
+        [Symbol.iterator](): IterableIterator<[string, string]> { return this; }
+
+        next(): IteratorResult<[string, string]> {
+            if (this._window.sessionStorage.length !== this._keys.length)
+                this._index = this._keys.length;
+            else if (this._index < this._keys.length) {
+                try {
+                    let key: string = this._keys[this._index];
+                    let value: string = this._window.sessionStorage.getItem(key);
+                    if (!isNil(value))
+                        return { done: false, value: [key, value] };
+                    this._index = this._keys.length;
+                } catch { this._index = this._keys.length; }
+            }
+            return { done: true, value: undefined };
+        }
     }
+
+    class SessionStorageValueEnumerator implements IterableIterator<string> {
+        private _index: number = 0;
+
+        constructor(private _window: ng.IWindowService, private _keys: string[]) { }
+
+        [Symbol.iterator](): IterableIterator<string> { return this; }
+
+        next(): IteratorResult<string> {
+            if (this._window.sessionStorage.length !== this._keys.length)
+                this._index = this._keys.length;
+            else if (this._index < this._keys.length) {
+                try {
+                    let value: string = this._window.sessionStorage.getItem(this._keys[this._index]);
+                    if (!isNil(value))
+                        return { done: false, value: value };
+                    this._index = this._keys.length;
+                } catch { this._index = this._keys.length; }
+            }
+            return { done: true, value: undefined };
+        }
+    }
+
+    export class SessionStorageService implements Map<string, string> {
+        private _allKeys: string[];
+        private _parsedKeys: string[];
+        private _parsedObjects: (any | null | undefined)[];
+
+        [Symbol.toStringTag]: string;
+
+        get size(): number { return this.$window.sessionStorage.length; }
+
+        constructor(private $window: ng.IWindowService) {
+            this[Symbol.toStringTag] = 'SessionStorageService';
+            this.check(true);
+        }
+
+        private check(forceRefresh: boolean = false) {
+            if (!forceRefresh && this.$window.sessionStorage.length == this._allKeys.length)
+                return;
+            this._allKeys = [];
+            this._parsedKeys = [];
+            this._parsedObjects = [];
+            for (let i: number = 0; i < this.$window.sessionStorage.length; i++)
+                this._allKeys.push(this.$window.sessionStorage.key(i));
+        }
+
+        clear(): void {
+            this.$window.sessionStorage.clear();
+            this._allKeys = [];
+            this._parsedKeys = [];
+            this._parsedObjects = [];
+        }
+
+        delete(key: string): boolean {
+            this.check();
+            this.$window.sessionStorage.removeItem(key);
+            let i: number = this._parsedKeys.indexOf(key);
+            if (i < 0)
+                return false;
+            if (i == 0) {
+                this._parsedKeys.shift();
+                this._parsedObjects.shift();
+            } else if (i == (this._parsedKeys.length - 1)) {
+                this._parsedKeys.pop();
+                this._parsedObjects.pop();
+            } else {
+                this._parsedKeys.splice(i, 1);
+                this._parsedObjects.splice(i, 1);
+            }
+        }
+
+        entries(): IterableIterator<[string, string]> { return new SessionStorageEntryEnumerator(this.$window, this._allKeys); }
+        [Symbol.iterator](): IterableIterator<[string, string]> { return this.entries(); }
+
+        forEach(callbackfn: (value: string, key: string, map: SessionStorageService) => void, thisArg?: any): void {
+            this.check();
+            if (typeof (thisArg) === "undefined")
+                this._allKeys.forEach((key: string, index: number) => {
+                    if (index < this._allKeys.length && this._allKeys[index] === key) {
+                        let value: string | undefined;
+                        try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
+                        if (!isNil(value))
+                            callbackfn(value, key, this);
+                    }
+                }, this);
+            else
+                this._allKeys.forEach((key: string, index: number) => {
+                    if (index < this._allKeys.length && this._allKeys[index] === key) {
+                        let value: string | undefined;
+                        try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
+                        if (!isNil(value))
+                            callbackfn.call(thisArg, value, key, this);
+                    }
+                }, this);
+        }
+
+        get(key: string): string | null {
+            this.check();
+            try {
+                if (this._allKeys.indexOf(key) > -1)
+                    return this.$window.sessionStorage.getItem(key);
+            } catch { /* okay to ignore */ }
+            return null;
+        }
+
+        getKeys(): string[] {
+            this.check();
+            return Array.from(this._allKeys);
+        }
+
+        getObject<T>(key: string): T | undefined {
+            this.check();
+            let i: number = this._parsedKeys.indexOf(key);
+            if (i > -1)
+                return <T>this._parsedObjects[i];
+            try {
+                let json: string = this.$window.sessionStorage.getItem(key);
+                if (!app.isNilOrEmpty(json)) {
+                    let result: T | undefined;
+                    if (json !== "undefined")
+                        result = <T>(ng.fromJson(json));
+                    this._parsedKeys.push(key);
+                    this._parsedObjects.push(result);
+                    return result;
+                }
+            } catch { }
+        }
+
+        has(key: string): boolean {
+            this.check();
+            return this._allKeys.indexOf(key) > -1;
+        }
+
+        keys(): IterableIterator<string> {
+            this.check();
+            return Array.from(this._allKeys).values();
+        }
+
+        set(key: string, value: string): any | undefined {
+            try {
+                if (isNil(value))
+                    this.$window.sessionStorage.removeItem(key);
+                else
+                    this.$window.sessionStorage.setItem(key, value);
+                let i: number = this._parsedKeys.indexOf(key);
+                if (i == 0) {
+                    this._parsedKeys.shift();
+                    this._parsedObjects.shift();
+                } else if (i == (this._parsedKeys.length - 1)) {
+                    this._parsedKeys.pop();
+                    this._parsedObjects.pop();
+                } else if (i < this._parsedKeys.length) {
+                    this._parsedKeys.splice(i, 1);
+                    this._parsedObjects.splice(i, 1);
+                }
+            } catch (e) { return e; }
+        }
+
+        setObject<T>(key: string, value: T | undefined): any | undefined {
+            try {
+                if (typeof (value) === "undefined")
+                    this.$window.sessionStorage.setItem(key, "undefined");
+                else
+                    this.$window.sessionStorage.setItem(key, ng.toJson(value, false));
+                let i: number = this._parsedKeys.indexOf(key);
+                if (i < 0) {
+                    this._parsedKeys.push(key);
+                    this._parsedObjects.push(value);
+                } else
+                    this._parsedObjects[i] = value;
+            } catch (e) { return e; }
+        }
+
+        values(): IterableIterator<string> { return new SessionStorageValueEnumerator(this.$window, this._allKeys); }
+    }
+
+    MainModule.service("SessionStorageService", ["$window", SessionStorageService]);
+
+    // #endregion
+
+    // #region SetupParameters
 
     export enum cssValidationClass {
         isValid = 'is-valid',
@@ -1410,10 +1428,8 @@ namespace app {
         isInvalid = 'is-invalid'
     }
 
-    export interface ISetupParameterDefinitions {
-        serviceNowUrl: string;
-        gitRepositoryBaseUrl: string;
-    }
+    // #region setupParameterDefinitionsController
+
     interface ISetupParameterFieldState extends INestedControllerScope<ISetupParameterDefinitionScope> {
         original: string;
         text: string;
@@ -1424,7 +1440,9 @@ namespace app {
         messageClass: string[];
     }
 
-    interface ISetupParameterDefinitionScope extends ISetupParameterDefinitions, INestedControllerScope<IMainControllerScope> {
+    interface ISetupParameterDefinitionScope extends INestedControllerScope<IMainControllerScope> {
+        serviceNowUrl: string;
+        gitRepositoryBaseUrl: string;
         cancel(): void;
         accept(): void;
         close(): void;
@@ -1432,24 +1450,19 @@ namespace app {
         gitRepositoryBaseUrlField: ISetupParameterFieldState;
     }
 
-    export const BroadcastEvent_SetupParametersChanged: string = 'setupParameterDefinitionsChanged';
-    export const BroadcastEvent_ShowSetupParametersDialog: string = 'showSetupParameterDefinitionsControllerDialog';
-    export const BroadcastEvent_HideSetupParametersDialog: string = 'hideSetupParameterDefinitionsControllerDialog';
-
     export class setupParameterDefinitionsController extends MainControllerChild<ISetupParameterDefinitionScope> {
-        constructor($scope: ISetupParameterDefinitionScope, $rootScope: ng.IScope) {
+        constructor($scope: ISetupParameterDefinitionScope, private _settings: setupParameterSettings) {
             super($scope);
 
-            let settings: ISetupParameterDefinitions = setupParameterDefinitionsController.getSettings();
             $scope.serviceNowUrlField = <ISetupParameterFieldState>($scope.$new());
-            $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = settings.serviceNowUrl;
+            $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = _settings.serviceNowUrl;
             $scope.serviceNowUrlField.validationMessage = '';
             $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
             $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
             $scope.serviceNowUrlField.isValid = true;
 
             $scope.gitRepositoryBaseUrlField = <ISetupParameterFieldState>($scope.$new());
-            $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = settings.gitRepositoryBaseUrl;
+            $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = _settings.gitRepositoryBaseUrl;
             $scope.gitRepositoryBaseUrlField.validationMessage = '';
             $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
             $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
@@ -1459,7 +1472,7 @@ namespace app {
             $scope.bodyClass = '';
             $scope.close = () => { $('#setupParametersDialog').modal('hide'); }
             $scope.cancel = () => {
-                $scope.serviceNowUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.original;
+                $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.original;
                 $scope.serviceNowUrlField.validationMessage = '';
                 $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
                 $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
@@ -1484,46 +1497,26 @@ namespace app {
                     return;
                 }
 
-                $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text = stringBefore(stringBefore($scope.serviceNowUrlField.text, '#'), '?');
+                $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text = subStringBefore(subStringBefore($scope.serviceNowUrlField.text, '#'), '?');
                 $scope.serviceNowUrlField.validationMessage = '';
                 $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
                 $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-                $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.text = stringBefore(stringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
+                $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.text = subStringBefore(subStringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
                 $scope.gitRepositoryBaseUrlField.validationMessage = '';
                 $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
                 $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
                 $('#setupParametersDialog').modal('hide');
-                setupParameterDefinitionsController._settings = { serviceNowUrl: $scope.serviceNowUrlField.original, gitRepositoryBaseUrl: $scope.gitRepositoryBaseUrlField.original };
-                localStorage.setItem("SetupParameterDefinitions", JSON.stringify(setupParameterDefinitionsController._settings));
-                $rootScope.$broadcast(BroadcastEvent_SetupParametersChanged, setupParameterDefinitionsController._settings);
+                this._settings.serviceNowUrl = $scope.serviceNowUrlField.original;
+                this._settings.gitRepositoryBaseUrl = $scope.gitRepositoryBaseUrlField.original;
             };
-            $rootScope.$on(BroadcastEvent_ShowSetupParametersDialog, (event: ng.IAngularEvent) => {
+            $scope.$on(ScopeEvent_ShowSetupParametersDialog, (event: ng.IAngularEvent) => {
                 $('#setupParametersDialog').modal('show');
             });
-            $rootScope.$on(BroadcastEvent_HideSetupParametersDialog, (event: ng.IAngularEvent) => { $('#setupParametersDialog').modal('hide'); });
-            $scope.$broadcast(BroadcastEvent_SetupParametersChanged, {
-                serviceNowUrl: $scope.serviceNowUrlField.original,
-                gitRepositoryBaseUrl: $scope.gitRepositoryBaseUrlField.original
+            $scope.$on(ScopeEvent_HideSetupParametersDialog, (event: ng.IAngularEvent) => {
+                $('#setupParametersDialog').modal('hide');
             });
         }
 
-        private static _settings: ISetupParameterDefinitions | undefined;
-        static getSettings(): ISetupParameterDefinitions {
-            let settings: ISetupParameterDefinitions | undefined = setupParameterDefinitionsController._settings;
-            if (isNil(settings)) {
-                let s: string = asString(localStorage.getItem("SetupParameterDefinitions"), true);
-                if (!isNilOrWhiteSpace(s))
-                    try { settings = <ISetupParameterDefinitions>(JSON.parse(s)); } catch { }
-                if (isNil(settings))
-                    settings = <ISetupParameterDefinitions>{};
-                if (isNilOrWhiteSpace(settings.serviceNowUrl))
-                    settings.serviceNowUrl = 'https://inscomscd.service-now.com';
-                if (isNilOrWhiteSpace(settings.gitRepositoryBaseUrl))
-                    settings.gitRepositoryBaseUrl = 'https://github.com/erwinel';
-                setupParameterDefinitionsController._settings = settings;
-            }
-            return settings;
-        }
         $doCheck() {
             super.$doCheck();
 
@@ -1573,11 +1566,304 @@ namespace app {
                 item.messageClass = ['invalid-feedback'];
             });
         }
-        static show($scope: ng.IScope) { $scope.$emit(BroadcastEvent_ShowSetupParametersDialog); }
-        static hide($scope: ng.IScope) { $scope.$emit(BroadcastEvent_HideSetupParametersDialog); }
+
+        static show($scope: ng.IScope) {
+            $scope.$broadcast(ScopeEvent_ShowSetupParametersDialog);
+        }
+
+        static hide($scope: ng.IScope) {
+            $scope.$broadcast(ScopeEvent_HideSetupParametersDialog);
+        }
     }
 
-    MainModule.controller("setupParameterDefinitionsController", ['$scope', '$rootScope', setupParameterDefinitionsController]);
+    MainModule.controller("setupParameterDefinitionsController", ['$scope', 'setupParameterSettings', setupParameterDefinitionsController]);
+
+    // #endregion
+
+    // #region setupParameterSettings Service
+
+    interface ISetupParameterSettings {
+        serviceNowUrl: string;
+        gitRepositoryBaseUrl: string;
+    }
+
+    class setupParameterSettings {
+        private _settings: ISetupParameterSettings;
+
+        get serviceNowUrl(): string { return this._settings.serviceNowUrl; }
+        set serviceNowUrl(value: string) {
+            if (value === this._settings.serviceNowUrl)
+                return;
+            if (isNilOrWhiteSpace(value))
+                throw new Error("URL cannot be empty.");
+            let parsedUrl: IParsedUriString = parseUriString(value);
+            if (isNil(parsedUrl.origin))
+                throw new Error("URL cannot be relative.");
+            if (!(isNil(parsedUrl.queryString) && isNil(parsedUrl.fragment) && parsedUrl.path.length == 0)) {
+                if (value === parsedUrl.origin.value)
+                    return;
+                this._settings.serviceNowUrl = parsedUrl.origin.value;
+            } else
+                this._settings.serviceNowUrl = value;
+            this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
+            this.raiseUpdated();
+        }
+
+        get gitRepositoryBaseUrl(): string { return this._settings.gitRepositoryBaseUrl; }
+        set gitRepositoryBaseUrl(value: string) {
+            if (value === this._settings.gitRepositoryBaseUrl)
+                return;
+            if (isNilOrWhiteSpace(value))
+                throw new Error("URL cannot be empty.");
+            let parsedUrl: IParsedUriString = parseUriString(value);
+            if (isNil(parsedUrl.origin))
+                throw new Error("URL cannot be relative.");
+            if (!(isNil(parsedUrl.queryString) && isNil(parsedUrl.fragment))) {
+                value = parsedUrl.origin.value + parsedUrl.path;
+                if (value === this._settings.gitRepositoryBaseUrl)
+                    return;
+            }
+            this._settings.gitRepositoryBaseUrl = value;
+            this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
+            this.raiseUpdated();
+        }
+
+        private raiseUpdated() {
+            this.$rootScope.$emit(ScopeEvent_SetupParameterSettingsChanged, <ISetupParameterSettings>{
+                serviceNowUrl: this._settings.serviceNowUrl,
+                gitRepositoryBaseUrl: this._settings.gitRepositoryBaseUrl
+            });
+        }
+
+        onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISetupParameterSettings) => void) { scope.$on(ScopeEvent_SetupParameterSettingsChanged, handler); }
+
+        constructor(private $rootScope: ng.IScope, private _sessionStorage: SessionStorageService, $http: ng.IHttpService) {
+            this._settings = _sessionStorage.getObject<ISetupParameterSettings>("setupParameterSettings");
+            if (isNil(this._settings))
+                this._settings = { serviceNowUrl: DefaultURL_ServiceNow, gitRepositoryBaseUrl: DefaultURL_GitRepositoryBase };
+            else {
+                if (isNilOrWhiteSpace(this._settings.serviceNowUrl))
+                    this._settings.serviceNowUrl = DefaultURL_ServiceNow;
+                if (isNilOrWhiteSpace(this._settings.gitRepositoryBaseUrl))
+                    this._settings.gitRepositoryBaseUrl = DefaultURL_GitRepositoryBase;
+            }
+
+            $http.get("./defaults.json").then((nav: ng.IHttpPromiseCallbackArg<ISetupParameterSettings>) => {
+                if (isNil(nav.data))
+                    return;
+                if (isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl) {
+                    if (isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl)
+                        return;
+                    this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
+                } else {
+                    this._settings.serviceNowUrl = nav.data.serviceNowUrl;
+                    if (!isNil(nav.data.serviceNowUrl) && this._settings.serviceNowUrl !== nav.data.serviceNowUrl)
+                        this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
+                }
+                this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
+                this.raiseUpdated();
+            });
+        }
+    }
+
+    MainModule.factory("setupParameterSettings", ["$rootScope", "SessionStorageService", "$http", setupParameterSettings]);
+
+    // #endregion
+
+    /**
+     * Options for the relative icon URL of collapsible items.
+     *
+     * @enum {string}
+     */
+    export enum CollapsibleIconUrl {
+        collapse = 'images/collapse.svg',
+        expand = 'images/expand.svg'
+    }
+
+    /**
+     * Options for the verb name of collapsible items.
+     *
+     * @enum {string}
+     */
+    export enum CollapsibleActionVerb {
+        collapse = 'Collapse',
+        expand = 'Expand'
+    }
+
+    interface ICardParentScope {
+        cardNumber?: number;
+        parentCard?: ICardParentScope;
+        collapsibleCards: ICardScope[];
+        currentSelectedCardIndex: number;
+        addCard(card: ICardScope, attributes: ICardAttributes);
+    }
+
+    interface ICardContainerScope extends INestedControllerScope<IMainControllerScope>, ICardParentScope {
+        cardNumber: undefined;
+        parentCard: undefined;
+    }
+
+    interface ICardScope extends INestedControllerScope<IMainControllerScope>, ICardParentScope {
+        isExpanded: boolean;
+        shouldExpand: boolean;
+        cardNumber: number;
+        cardHeadingText: string;
+        cardIconUrl: CollapsibleIconUrl;
+        cardActionVerb: CollapsibleActionVerb;
+        toggleCurrentCard(): void;
+        parentCard: ICardParentScope;
+    }
+
+    interface ICardAttributes extends ng.IAttributes {
+        headingText: string;
+    }
+
+    function isRootCardContainerScope(scope: ICardContainerScope | ICardScope): scope is ICardContainerScope { return typeof (scope.parentCard) === 'undefined' };
+
+    class CardContainerController extends MainControllerChild<ICardContainerScope> {
+        constructor(protected $scope: ICardContainerScope) {
+            super($scope);
+
+            $scope.parent = undefined;
+            $scope.cardNumber = undefined;
+            $scope.collapsibleCards = [];
+            $scope.currentSelectedCardIndex = -1;
+            let controller: CardContainerController = this;
+            $scope.selectCard = (index: number) => { controller.selectCard($scope, index); }
+            $scope.addCard = (card: ICardScope, attributes: ICardAttributes) => { controller._addCard($scope, card, attributes); }
+        }
+
+        private selectCard(scope: ICardParentScope, index: number) {
+            if (scope.currentSelectedCardIndex === index)
+                return;
+            for (let i: number = 0; i < scope.collapsibleCards.length; i++) {
+                if (i == index)
+                    this.showCard(scope.collapsibleCards[i]);
+                else {
+                    scope.collapsibleCards[i].shouldExpand = false;
+                    this.hideCard(scope.collapsibleCards[i]);
+                }
+            }
+        }
+
+        private hideCard(card: ICardScope) {
+            card.isExpanded = false;
+            card.cardIconUrl = CollapsibleIconUrl.expand;
+            card.cardActionVerb = CollapsibleActionVerb.expand;
+            for (let i: number = 0; i < card.collapsibleCards.length; i++) {
+                if (card.collapsibleCards[i].isExpanded)
+                    this.hideCard(card.collapsibleCards[i]);
+            }
+        }
+
+        private showCard(card: ICardScope) {
+            card.isExpanded = card.shouldExpand = true;
+            card.cardIconUrl = CollapsibleIconUrl.collapse;
+            card.cardActionVerb = CollapsibleActionVerb.collapse;
+            for (let i: number = 0; i < card.collapsibleCards.length; i++) {
+                if (card.collapsibleCards[i].shouldExpand)
+                    this.showCard(card.collapsibleCards[i]);
+            }
+        }
+
+        private _addCard(parentScope: ICardParentScope, cardScope: ICardScope, attributes: ICardAttributes): void {
+            let index: number = parentScope.collapsibleCards.length;
+            cardScope.parentCard = parentScope;
+            cardScope.cardNumber = index + 1;
+            cardScope.cardHeadingText = attributes.headingText;
+            cardScope.collapsibleCards = [];
+            cardScope.currentSelectedCardIndex = -1;
+            let controller: CardContainerController = this;
+            cardScope.addCard = (card: ICardScope, attributes: ICardAttributes) => { controller._addCard(cardScope, card, attributes); };
+            cardScope.toggleCurrentCard = () => { controller.selectCard(parentScope, (cardScope.isExpanded) ? -1 : index); };
+            if (index == 0) {
+                cardScope.isExpanded = true;
+                cardScope.cardIconUrl = CollapsibleIconUrl.collapse;
+                cardScope.cardActionVerb = CollapsibleActionVerb.collapse;
+                parentScope.currentSelectedCardIndex = 0;
+            } else {
+                cardScope.isExpanded = false;
+                cardScope.cardIconUrl = CollapsibleIconUrl.expand;
+                cardScope.cardActionVerb = CollapsibleActionVerb.expand;
+            }
+        }
+
+        addCard(scope: ICardScope, attributes: ICardAttributes): void {
+            if (isNil(scope.collapsibleCards)) {
+                let parentScope: ICardContainerScope = <ICardContainerScope>(scope.$parent.$new());
+                parentScope.collapsibleCards = [];
+                parentScope.currentSelectedCardIndex = -1;
+                parentScope.parentCard = undefined;
+                parentScope.cardNumber = undefined;
+                this._addCard(parentScope, scope, attributes);
+            }
+            else
+                this._addCard((isNil(scope.parentCard)) ? this.$scope : scope.parentCard, scope, attributes);
+
+        }
+    }
+
+    MainModule.directive("collapsibleCardContainer", () => {
+        return {
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            controller: ['$scope', CardContainerController],
+            template: ''
+        };
+    });
+
+    MainModule.directive("collapsibleCardL0", () => {
+        return {
+            require: "^^collapsibleCardContainer",
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            templateUrl: "Templates/collapsibleCardL0.htm",
+            link: (scope: ICardScope, element: JQuery, attributes: ICardAttributes, controller: CardContainerController) => {
+                controller.addCard(scope, attributes);
+            }
+        };
+    });
+
+    MainModule.directive("collapsibleCardL1", () => {
+        return {
+            require: "^^collapsibleCardContainer",
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            templateUrl: "Templates/collapsibleCardL1.htm",
+            link: (scope: ICardScope, element: JQuery, attributes: ICardAttributes, controller: CardContainerController) => {
+                controller.addCard(scope, attributes);
+            }
+        };
+    });
+
+    MainModule.directive("collapsibleCardL2", () => {
+        return {
+            require: "^^collapsibleCardContainer",
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            templateUrl: "Templates/collapsibleCardL2.htm",
+            link: (scope: ICardScope, element: JQuery, attributes: ICardAttributes, controller: CardContainerController) => {
+                controller.addCard(scope, attributes);
+            }
+        };
+    });
+
+    MainModule.directive("collapsibleCardL3", () => {
+        return {
+            require: "^^collapsibleCardContainer",
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            templateUrl: "Templates/collapsibleCardL3.htm",
+            link: (scope: ICardScope, element: JQuery, attributes: ICardAttributes, controller: CardContainerController) => {
+                controller.addCard(scope, attributes);
+            }
+        };
+    });
 
     // #endregion
 }
