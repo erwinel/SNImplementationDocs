@@ -1,6 +1,7 @@
 /// <reference path="Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="Scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="sys.ts" />
 /// <reference path="app.ts" />
 
 namespace cards {
@@ -12,16 +13,23 @@ namespace cards {
      * @interface ICardParentScope
      * @extends {ng.IScope}
      */
-    export interface ICardContainerScope<TParent extends app.IMainControllerScope> extends app.INestedControllerScope<TParent> {
-        cardNames: string[];
+    export interface ICardContainerScope extends ng.IScope {
         selectedCardName?: string;
-        selectedCardIndex?: number;
+        selectedCardIndex: number;
         collapseSelectedCard(): boolean;
-        collapseCard(name: string): boolean;
-        expandCard(name: string): boolean;
-        toggleCard(name: string): boolean;
+        collapseCard(name: string | number): boolean;
+        expandCard(name: string | number): boolean;
+        toggleCard(name: string | number): boolean;
         indexOfCard(name: string): number;
-        $parent: TParent;
+        nameOfCard(index: number): string;
+        addCard(name: string, card: ICardScope): number;
+    }
+
+    export function isCardContainerScope(scope: ng.IScope): scope is ICardContainerScope {
+        return !((sys.isNil(scope) || sys.isNil((<ICardContainerScope>scope).selectedCardIndex) || sys.isNil((<ICardContainerScope>scope).collapseCard) || sys.isNil((<ICardContainerScope>scope).collapseSelectedCard) ||
+            sys.isNil((<ICardContainerScope>scope).expandCard) || sys.isNil((<ICardContainerScope>scope).toggleCard) || sys.isNil((<ICardContainerScope>scope).addCard))) && sys.isNumber((<ICardContainerScope>scope).selectedCardIndex) &&
+            (typeof (<ICardContainerScope>scope).collapseCard === "function") && (typeof (<ICardContainerScope>scope).collapseSelectedCard === "function") &&
+            (typeof (<ICardContainerScope>scope).expandCard === "function") && (typeof (<ICardContainerScope>scope).toggleCard === "function" && (typeof (<ICardContainerScope>scope).addCard === "function"));
     }
 
     /**
@@ -31,150 +39,186 @@ namespace cards {
      * @class CardParentController
      * @extends {cardController}
      */
-    export class CardParentController<TParentScope extends app.IMainControllerScope, TScope extends ICardContainerScope<TParentScope>> extends app.MainControllerChild<TScope> {
-        private _selectedCardName?: string;
-        private _selectedCardIndex: number;
+    export class CardParentController implements ng.IController {
+        private _cardNames: string[] = [];
+        private _childCards: ICardScope[] = [];
+        private _selectedCardIndex: number = -1;
+
+        get selectedCardName(): string | undefined {
+            if (this._selectedCardIndex > -1)
+                return this._cardNames[this._selectedCardIndex];
+        }
+        set selectedCardName(name: string | undefined) { this.selectedCardIndex = (typeof (name) === "string") ? this._cardNames.indexOf(name) : -1; }
+
+        get selectedCardIndex(): number | undefined { return this._selectedCardIndex; }
+        set selectedCardIndex(index: number) {
+            if (index < 0) {
+                if (this._selectedCardIndex > -1)
+                    this.collapseCard(this._selectedCardIndex);
+            } else
+                this.expandCard(index);
+        }
+
         /**
          * Creates an instance of topLevelCardController.
          * @param {ICardContainerScope} $scope The {@link ng.IScope} object for the new card, which implements {@link ICardParentScope}.
          */
-        constructor($scope: TScope) {
-            super($scope);
-            $scope.cardNames = [];
-            $scope.selectedCardName = this._selectedCardName = undefined;
-            $scope.selectedCardIndex = this._selectedCardIndex = -1;
-            let controller: CardParentController<TParentScope, TScope> = this;
+        constructor(protected $scope: ICardContainerScope) {
+            let controller: CardParentController = this;
+            $scope.selectedCardIndex = this.selectedCardIndex;
+            $scope.selectedCardName = this.selectedCardName;
+            $scope.addCard = (name: string, card: ICardScope) => { return controller.addCard(name, card); };
             $scope.collapseSelectedCard = () => { return controller.collapseSelectedCard(); }
-            $scope.collapseCard = (name: string) => { return controller.collapseCard(name); }
-            $scope.expandCard = (name: string) => { return controller.expandCard(name); }
-            $scope.toggleCard = (name: string) => { return controller.toggleCard(name); }
+            $scope.collapseCard = (name: string | number) => { return controller.collapseCard(name); }
+            $scope.expandCard = (name: string | number) => { return controller.expandCard(name); }
+            $scope.toggleCard = (name: string | number) => { return controller.toggleCard(name); }
             $scope.indexOfCard = (name: string) => { return controller.indexOfCard(name); }
+            $scope.nameOfCard = (index: number) => { return controller.nameOfCard(index); }
         }
 
-        collapseSelectedCard(): boolean {
-            this.$doCheck();
-            if (this._selectedCardIndex < 0)
-                return false;
-            let previousIndex: number = this._selectedCardIndex;
-            let previousName: string | undefined = this._selectedCardName;
-            this.$scope.selectedCardIndex = this._selectedCardIndex = -1;
-            this.$scope.selectedCardName = this._selectedCardName = undefined;
-            if (!app.isNil(previousName))
-                this.onCardNameChanged(previousName);
-            this.onCardIndexChanged(previousIndex);
+        addCard(name: string, card: ICardScope): number {
+            if (sys.isNilOrWhiteSpace(name))
+                throw new Error("Invalid card name.");
+            if (sys.isNil(card) || !sys.isNumber(card.$id))
+                throw new Error("Invalid card.");
+            if (!sys.isNil(card.currentCardParent))
+                throw new Error("Card \"" + name + "\" belongs to another collection");
+            let index: number = this._cardNames.indexOf(name);
+            if (index > -1) {
+                if (this._childCards[index].$id === card.$id)
+                    return;
+                throw new Error("A card with the name \"" + name + "\" has already been added.");
+            }
+            index = this._childCards.length;
+            this._cardNames.push(name);
+            this._childCards.push(card);
+            card.currentCardName = name;
+            card.currentCardNumber = index + 1;
+            card.currentCardParent = this.$scope;
+            if (this._selectedCardIndex < 0) {
+                this._selectedCardIndex = this.$scope.selectedCardIndex = index;
+                this.$scope.selectedCardName = name;
+                card.cardActionVerb = CollapsibleActionVerb.collapse;
+                card.cardIconUrl = CollapsibleIconUrl.collapse;
+                card.currentCardIsExpanded = true;
+            } else {
+                card.cardActionVerb = CollapsibleActionVerb.expand;
+                card.cardIconUrl = CollapsibleIconUrl.expand;
+                card.currentCardIsExpanded = false;
+            }
+        }
+
+        collapseSelectedCard(): boolean { return this._selectedCardIndex > -1 && this.collapseCard(this._selectedCardIndex); }
+
+        collapseCard(name: string | number): boolean {
+            if (typeof (name) === "string") {
+                if ((name = this._cardNames.indexOf(name)) !== this._selectedCardIndex)
+                    return false;
+            } else {
+                if (typeof (name) !== "number" || isNaN(name) || name !== this._selectedCardIndex)
+                    return false;
+            }
+            let card: ICardScope = this._childCards[name];
+            this._selectedCardIndex = this.$scope.selectedCardIndex = -1;
+            this.$scope.selectedCardName = undefined;
+            card.cardActionVerb = CollapsibleActionVerb.expand;
+            card.cardIconUrl = CollapsibleIconUrl.expand;
+            card.currentCardIsExpanded = false;
             return true;
         }
 
-        collapseCard(name: string): boolean {
-            this.$doCheck();
-            let index: number = this.indexOfCard(name);
-            if (index < 0)
-                return true;
-            if (index !== this._selectedCardIndex)
-                return false;
-
-            name = this.$scope.cardNames[index];
-            this.$scope.selectedCardIndex = this._selectedCardIndex = -1;
-            this.$scope.selectedCardName = this._selectedCardName = undefined;
-            this.onCardNameChanged(name);
-            this.onCardIndexChanged(index);
+        expandCard(name: string | number): boolean {
+            let oldIndex: number = this._selectedCardIndex;
+            let index: number;
+            if (typeof (name) === "string") {
+                if ((index = this._cardNames.indexOf(name)) < 0 || index == this._selectedCardIndex)
+                    return false;
+                this.$scope.selectedCardName = name;
+            } else {
+                if (typeof (name) !== "number" || isNaN(name) || name === this._selectedCardIndex || name < 0 || name >= this._childCards.length)
+                    return false;
+                index = name;
+                this.$scope.selectedCardName = this._cardNames[index];
+            }
+            let card: ICardScope = this._childCards[index];
+            this._selectedCardIndex = this.$scope.selectedCardIndex = index;
+            card.cardActionVerb = CollapsibleActionVerb.collapse;
+            card.cardIconUrl = CollapsibleIconUrl.collapse;
+            card.currentCardIsExpanded = true;
+            if (oldIndex > -1) {
+                card = this._childCards[oldIndex];
+                card.cardActionVerb = CollapsibleActionVerb.expand;
+                card.cardIconUrl = CollapsibleIconUrl.expand;
+                card.currentCardIsExpanded = false;
+            }
             return true;
         }
 
-        indexOfCard(name: string): number {
-            let i: number = this.$scope.cardNames.indexOf(name);
-            if (i < 0 && !app.isNilOrEmpty(name)) {
-                let lc: string = name.toLowerCase();
-                if (lc !== name || name.toUpperCase() !== name) {
-                    while (++i < this.$scope.cardNames.length) {
-                        if (this.$scope.cardNames[i].toLowerCase() === lc)
-                            return i;
-                    }
-                    return -1;
+        toggleCard(name: string | number): boolean {
+            let index: number;
+            if (typeof (name) === "string") {
+                if ((index = this._cardNames.indexOf(name)) < 0)
+                    return false;
+            } else {
+                if (typeof (name) !== "number" || isNaN(name) || name < 0 || name >= this._childCards.length)
+                    return false;
+                index = name;
+                name = this._cardNames[index];
+            }
+            let card: ICardScope = this._childCards[index];
+            if (index == this._selectedCardIndex) {
+                this._selectedCardIndex = this.$scope.selectedCardIndex = -1;
+                this.$scope.selectedCardName = undefined;
+                card.cardActionVerb = CollapsibleActionVerb.expand;
+                card.cardIconUrl = CollapsibleIconUrl.expand;
+                card.currentCardIsExpanded = false;
+            } else {
+                let oldIndex: number = this._selectedCardIndex;
+                this._selectedCardIndex = this.$scope.selectedCardIndex = index;
+                this.$scope.selectedCardName = name;
+                card.cardActionVerb = CollapsibleActionVerb.collapse;
+                card.cardIconUrl = CollapsibleIconUrl.collapse;
+                card.currentCardIsExpanded = true;
+                if (oldIndex > -1) {
+                    card = this._childCards[oldIndex];
+                    card.cardActionVerb = CollapsibleActionVerb.expand;
+                    card.cardIconUrl = CollapsibleIconUrl.expand;
+                    card.currentCardIsExpanded = false;
                 }
             }
-            return i;
-        }
-
-        expandCard(name: string): boolean {
-            this.$doCheck();
-            let index: number = this.indexOfCard(name);
-            if (index < 0)
-                return false;
-            if (index === this._selectedCardIndex)
-                return true;
-            let previousIndex: number = this._selectedCardIndex;
-            let previousName: string | undefined = this._selectedCardName;
-            this.$scope.selectedCardIndex = this._selectedCardIndex = index;
-            this.$scope.selectedCardName = this._selectedCardName = name = this.$scope.cardNames[index];
-            if (previousName !== name)
-                this.onCardNameChanged(previousName);
-            this.onCardIndexChanged(previousIndex);
             return true;
         }
 
-        toggleCard(name: string): boolean {
-            this.$doCheck();
-            let index: number = this.indexOfCard(name);
-            if (index < 0)
-                return false;
-            name = this.$scope.cardNames[index];
-            if (index !== this._selectedCardIndex) {
-                let previousIndex: number = this._selectedCardIndex;
-                let previousName: string | undefined = this._selectedCardName;
-                this.$scope.selectedCardIndex = this._selectedCardIndex = index;
-                this.$scope.selectedCardName = this._selectedCardName = name;
-                if (previousName !== name)
-                    this.onCardNameChanged(previousName);
-                this.onCardIndexChanged(previousIndex);
-                return true;
-            }
-            this.$scope.selectedCardIndex = this._selectedCardIndex = -1;
-            this.$scope.selectedCardName = this._selectedCardName = undefined;
-            this.onCardNameChanged(name);
-            this.onCardIndexChanged(index);
-            return false;
+        indexOfCard(name: string): number { return (typeof (name) === "string") ? this._cardNames.indexOf(name) : -1; }
+
+        nameOfCard(index: number): string {
+            if (index > -1 && index < this._cardNames.length)
+                return this._cardNames[index];
         }
-
-        onCardNameChanged(previousName: string | undefined) { }
-
-        onCardIndexChanged(previousIndex: number) { }
 
         $doCheck() {
-            if (app.isNil(this.$scope.cardNames))
-                this.$scope.cardNames = [];
-            let previousIndex: number = this._selectedCardIndex;
-            let previousName: string | undefined = this._selectedCardName;
-            if (this.$scope.selectedCardName !== previousName) {
-                if (app.isNil(this.$scope.selectedCardName))
-                    this.$scope.selectedCardIndex = -1;
-                else {
-                    let index: number = this.indexOfCard(this.$scope.selectedCardName);
-                    if (index < 0) {
-                        if (this.$scope.selectedCardIndex === previousIndex || this.$scope.selectedCardIndex < 0 || this.$scope.selectedCardIndex >= this.$scope.cardNames.length) {
-                            this.$scope.selectedCardIndex = -1;
-                            this.$scope.selectedCardName = undefined;
-                        } else
-                            this.$scope.selectedCardName = this.$scope.cardNames[this.$scope.selectedCardIndex];
-                    } else {
-                        this.$scope.selectedCardIndex = index;
-                        this.$scope.selectedCardName = this.$scope.cardNames[index];
-                    }
+            if (typeof (this.$scope.selectedCardIndex) !== "number" || isNaN(this.$scope.selectedCardIndex) || this.$scope.selectedCardIndex >= this._cardNames.length || this.$scope.selectedCardIndex < -2)
+                this.$scope.selectedCardIndex = -1;
+            let index: number;
+            if (this.$scope.selectedCardIndex === this._selectedCardIndex)
+                index = this.indexOfCard(this.$scope.selectedCardName);
+            else
+                index = this.$scope.selectedCardIndex;
+
+            if (index === this._selectedCardIndex) {
+                if (index > -1) {
+                    let card: ICardScope = this._childCards[index];
+                    if (!card.currentCardIsExpanded) {
+                        this._selectedCardIndex = this.$scope.selectedCardIndex = -1;
+                        this.$scope.selectedCardName = undefined;
+                        card.cardActionVerb = CollapsibleActionVerb.expand;
+                        card.cardIconUrl = CollapsibleIconUrl.expand;
+                    }   
                 }
-            } else if (this.$scope.selectedCardIndex !== this._selectedCardIndex) {
-                if (this.$scope.selectedCardIndex < 0 || this.$scope.selectedCardIndex >= this.$scope.cardNames.length) {
-                    this.$scope.selectedCardIndex = -1;
-                    this.$scope.selectedCardName = undefined;
-                } else
-                    this.$scope.selectedCardName = this.$scope.cardNames[this.$scope.selectedCardIndex];
-            } else
-                return;
-            this._selectedCardName = this.$scope.selectedCardName;
-            this._selectedCardIndex = this.$scope.selectedCardIndex;
-            if (previousName !== this._selectedCardName)
-                this.onCardNameChanged(previousName);
-            if (previousIndex !== this._selectedCardIndex)
-                this.onCardIndexChanged(previousIndex);
+            } else if (index < 0)
+                this.collapseCard(this._selectedCardIndex);
+            else
+                this.expandCard(index);
         }
     }
 
@@ -208,17 +252,17 @@ namespace cards {
      * @interface ICardScope
      * @extends {ng.IScope}
      */
-    export interface ICardScope<TParent extends ICardContainerScope<app.IMainControllerScope>> extends ICardContainerScope<app.IMainControllerScope> {
+    export interface ICardScope extends ICardContainerScope {
         currentCardName: string,
         currentCardNumber: number,
         cardHeadingText: string,
         cardIconUrl: CollapsibleIconUrl,
         cardActionVerb: CollapsibleActionVerb,
         currentCardIsExpanded: boolean,
-        $parent: TParent,
         expandCurrentCard(): boolean,
         collapseCurrentCard(): boolean,
-        toggleCurrentCard(): boolean
+        toggleCurrentCard(): boolean,
+        currentCardParent: ICardContainerScope
     }
 
     /**
@@ -228,7 +272,10 @@ namespace cards {
      * @class cardController
      * @implements {ng.IController}
      */
-    export abstract class CardController<TParentScope extends ICardContainerScope<app.IMainControllerScope>, TScope extends ICardScope<TParentScope>> extends CardParentController<TParentScope, TScope> {
+    export abstract class CardController extends CardParentController {
+        private _parentScope: ICardContainerScope;
+        private _currentCardIsExpanded: boolean;
+
         get currentCardName(): string { return this._name; }
 
         /**
@@ -238,33 +285,47 @@ namespace cards {
          * @param {string} headingText The heading text for the new card.
          * @memberof cardController
          */
-        constructor(protected $scope: TScope, private _name: string, headingText: string) {
+        constructor(protected $scope: ICardScope, private _name: string, headingText: string) {
             super($scope);
-            $scope.currentCardName = _name;
-            $scope.cardHeadingText = headingText;
-            let i: number = $scope.$parent.indexOfCard(_name);
-            if (i < 0) {
-                $scope.currentCardNumber = $scope.$parent.cardNames.length + 1;
-                $scope.$parent.cardNames.push(name);
+            let parentScope: ICardContainerScope | undefined;
+            for (let ps: ng.IScope = $scope.$parent; !sys.isNil(ps); ps = ps.$parent) {
+                if (isCardContainerScope(ps)) {
+                    parentScope = ps;
+                    break;
+                }
             }
-            else
-                $scope.currentCardNumber = i + 1;
-            let controller: CardController<TParentScope, TScope> = this;
+            $scope.cardHeadingText = headingText;
+            let controller: CardController = this;
             $scope.expandCurrentCard = () => { return controller.expandCurrentCard(); }
             $scope.collapseCurrentCard = () => { return controller.collapseCurrentCard(); }
             $scope.toggleCurrentCard = () => { return controller.toggleCurrentCard(); }
-            if ($scope.$parent.selectedCardName === _name || (i < 1 && typeof ($scope.$parent.selectedCardName) === 'undefined'))
-                this.expandCurrentCard();
-            else
-                this.collapseCurrentCard();
+            if (sys.isNil(parentScope)) {
+                let parentController: CardParentController = new CardParentController(<ICardContainerScope>($scope.$parent.$new(true)));
+                parentController.addCard(_name, $scope);
+            } else
+                parentScope.addCard(_name, $scope);
+
+            this._parentScope = $scope.currentCardParent;
+            this._currentCardIsExpanded = $scope.currentCardIsExpanded;
         }
 
         $doCheck() {
-            if (this.$scope.$parent.selectedCardName === this._name) {
-                if (!this.$scope.currentCardIsExpanded)
-                    this.expandCurrentCard();
-            } else if (this.$scope.currentCardIsExpanded)
-                this.collapseCurrentCard();
+            super.$doCheck();
+            if (this.$scope.currentCardName !== this._name)
+                this.$scope.currentCardName = this._name
+            if (sys.isNil(this.$scope.currentCardParent) || this.$scope.currentCardParent.$id !== this._parentScope.$id)
+                this.$scope.currentCardParent = this._parentScope;
+            if (this._currentCardIsExpanded !== this.$scope.currentCardIsExpanded) {
+                if (this._parentScope.selectedCardName === this._name) { // # Parent says we should be selected
+                    if (this._currentCardIsExpanded)
+                        this._parentScope.collapseCard(this._name);
+                    else
+                        this._currentCardIsExpanded = true;
+                } else if (this._currentCardIsExpanded)
+                    this._currentCardIsExpanded = false;
+                else
+                    this._parentScope.expandCard(this._name);
+            }
         }
 
         /**
@@ -272,24 +333,14 @@ namespace cards {
          *
          * @memberof cardController
          */
-        expandCurrentCard(): boolean {
-            this.$scope.cardIconUrl = CollapsibleIconUrl.collapse;
-            this.$scope.cardActionVerb = CollapsibleActionVerb.collapse;
-            this.$scope.currentCardIsExpanded = true;
-            return this.$scope.$parent.expandCard(this._name);
-        }
+        expandCurrentCard(): boolean { return this._parentScope.expandCard(this._name); }
 
         /**
          * Hides the body of the current card.
          *
          * @memberof cardController
          */
-        collapseCurrentCard(): boolean {
-            this.$scope.cardIconUrl = CollapsibleIconUrl.expand;
-            this.$scope.cardActionVerb = CollapsibleActionVerb.expand;
-            this.$scope.currentCardIsExpanded = false;
-            return this.$scope.$parent.collapseCard(this._name);
-        }
+        collapseCurrentCard(): boolean { return this._parentScope.collapseCard(this._name); }
 
         /**
          * Toggles the visibility of the current card's body.
@@ -297,10 +348,7 @@ namespace cards {
          * @returns {boolean} true if the current card was changed to being expanded; otherwise, false if the card was changed to being collapsed.
          * @memberof cardController
          */
-        toggleCurrentCard(): boolean {
-            this.$scope.currentCardIsExpanded = this.$scope.$parent.toggleCard(this._name);
-            return this.$scope.currentCardIsExpanded;
-        }
+        toggleCurrentCard(): boolean { return this._parentScope.toggleCard(this._name); }
     }
 
     // #endregion

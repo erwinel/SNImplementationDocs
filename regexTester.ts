@@ -1,8 +1,15 @@
 /// <reference path="Scripts/typings/jquery/jquery.d.ts"/>
 /// <reference path="Scripts/typings/angularjs/angular.d.ts"/>
-/// <reference path="app.ts"/>
+/// <reference path="sys.ts" />
 
 namespace regexTester {
+    /**
+    * The main module for this app.
+    *
+    * @type {ng.IModule}
+    */
+    export let regexTesterModule: ng.IModule = angular.module("regexTester", []);
+
     // #region LocalStorageService
 
     export interface IStoredRegex {
@@ -17,7 +24,7 @@ namespace regexTester {
         ignoreWhitespace: boolean;
     }
 
-    class LocalRegexStorageService {
+    class localRegexStorageService {
         keys(): string[] {
             let result: string[] = [];
             for (let i: number = 0; i < localStorage.length; i++)
@@ -28,7 +35,7 @@ namespace regexTester {
         load(key: string, scope: IRegexTesterControllerScope): boolean {
             try {
                 let json: string = localStorage.getItem(key);
-                if (!app.isNilOrWhiteSpace(json)) {
+                if (!sys.isNilOrWhiteSpace(json)) {
                     let data: IStoredRegex = <IStoredRegex>(JSON.parse(json));
                     scope.inputPattern = data.pattern;
                     let i: number = data.inputText.length;
@@ -66,7 +73,7 @@ namespace regexTester {
         clear(): void { localStorage.clear(); }
     }
 
-    app.MainModule.factory("LocalRegexStorageService", LocalRegexStorageService);
+    app.appModule.factory("localRegexStorageService", localRegexStorageService);
 
     // #endregion
 
@@ -117,7 +124,7 @@ namespace regexTester {
         setInputRowCount(inc: boolean): void;
     }
 
-    class RegexTesterController implements ng.IController {
+    class regexTesterController implements ng.IController {
         private _inputText: string[] = [];
         private _regex: RegExp;
         private _inputPattern: string = '';
@@ -129,8 +136,8 @@ namespace regexTester {
         private _dotAll: boolean = false;
         private _ignoreWhitespace: boolean = false;
 
-        constructor(protected $scope: IRegexTesterControllerScope, protected storageSvc: LocalRegexStorageService) {
-            let controller: RegexTesterController = this;
+        constructor(protected $scope: IRegexTesterControllerScope, protected storageSvc: localRegexStorageService) {
+            let controller: regexTesterController = this;
 
             $scope.inputItems = [];
             this.addInputItem();
@@ -186,7 +193,7 @@ namespace regexTester {
 
         saveSession(): void {
             this.$scope.sessionLoadMessage = this.$scope.sessionSaveMessage = '';
-            if (app.isNilOrWhiteSpace(this.$scope.currentSavedName))
+            if (sys.isNilOrWhiteSpace(this.$scope.currentSavedName))
                 alert("Saved session must have a name.");
             else {
                 this.storageSvc.save((this.$scope.currentSavedName = this.$scope.currentSavedName.trim()), this.$scope);
@@ -266,7 +273,7 @@ namespace regexTester {
                 try {
                     let result: RegExpExecArray = this._regex.exec(item.inputText);
                     item.evaluated = true;
-                    if (app.isNil(result)) {
+                    if (sys.isNil(result)) {
                         item.success = false;
                         item.matchIndex = -1;
                         item.matchGroups = [];
@@ -278,7 +285,7 @@ namespace regexTester {
                         item.cssClass = ['alert', 'alert-success'];
                         item.matchIndex = result.index;
                         item.matchGroups = result.map((value: string, index: number) => {
-                            if (app.isNil(value))
+                            if (sys.isNil(value))
                                 return { index: index, success: false, statusMessage: 'Not matched', value: '', cssClass: ['alert', 'alert-secondary'] };
                             return { index: index, success: true, statusMessage: 'Matched ' + value.length + ' characters', value: value, cssClass: ['alert', 'alert-success'] };
                         });
@@ -298,7 +305,7 @@ namespace regexTester {
             if (this.$scope.ignoreWhitespace != this._ignoreWhitespace) {
                 if (this._ignoreWhitespace) {
                     this._ignoreWhitespace = false;
-                    this.$scope.inputPattern = this.$scope.inputPattern.replace(RegexTesterController.whitespacRe, "");
+                    this.$scope.inputPattern = this.$scope.inputPattern.replace(regexTesterController.whitespacRe, "");
                 } else
                     this._ignoreWhitespace = true;
             }
@@ -329,10 +336,10 @@ namespace regexTester {
                         this.$scope.flags += 's';
                     let pattern: string = this._inputPattern;
                     if (this.$scope.ignoreWhitespace)
-                        pattern = pattern.replace(RegexTesterController.whitespacRe, "");
+                        pattern = pattern.replace(regexTesterController.whitespacRe, "");
                     this.$scope.fullPattern = "/" + pattern + "/" + this.$scope.flags;
                     let regex: RegExp = (this.$scope.flags.length == 0) ? new RegExp(pattern) : new RegExp(pattern, this.$scope.flags);
-                    if (app.isNil(regex))
+                    if (sys.isNil(regex))
                         throw "Failed to create regular expression.";
                     this._regex = regex;
                     if (pattern.length == 0) {
@@ -367,5 +374,5 @@ namespace regexTester {
         }
     }
 
-    app.MainModule.controller("RegexTesterController", ["$scope", "LocalRegexStorageService", RegexTesterController]);
+    regexTesterModule.controller("regexTesterController", ["$scope", "localRegexStorageService", regexTesterController]);
 }

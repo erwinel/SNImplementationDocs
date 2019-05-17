@@ -1,6 +1,7 @@
 /// <reference path="Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="Scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="sys.ts" />
 
 namespace app {
     /**
@@ -8,14 +9,7 @@ namespace app {
     *
     * @type {ng.IModule}
     */
-    export let MainModule: ng.IModule = angular.module("MainModule", []);
-
-    let urlParseRe: RegExp = /^(([^@:/?#]*):(?:\/\/((?:([^@:/?#]*)(?::([^@:/?#]*))?@)?([^:/?#]*)(?::(\d+(?=[:/?#]|$)))?))?)?(([:/]+(?=(?:[^?#:/]+[:/]*)?(?:\?|\#|$))|[:/]*[^:/?#]+(?=[:/]+[^?#])(?:[:/]+[^:/?#]+(?=[:/]+[^?#]))*)?[:/]*((\.*(?:\.[^.:/?#]*(?=\.)|[^.:/?#]+)*)(?:\.([^.:/?#]*))?)[:/]*)(?:\?([^#]*))?(?:\#(.*))?$/;
-    let trimRightRe: RegExp = /^((\s*\S+)(\s+\S+)*)\s*$/;
-    let trimLeftRe: RegExp = /^\s*(\S.*)$/;
-    let identifierRe: RegExp = /^[a-z_][a-z\d]*$/i;
-    let falseStringRe: RegExp = /^(f(alse)?|no?|0+(\.0+)?)([^\w-]|$)/i;
-    let numberStringRe: RegExp = /^\d+(\.\d+)$/i;
+    export let appModule: ng.IModule = angular.module("app", []);
 
     export const ScopeEvent_OpenMainModalPopupDialog: string = 'OpenMainModalPopupDialog';
     export const ScopeEvent_CloseMainModalPopupDialog: string = 'CloseMainModalPopupDialog';
@@ -24,931 +18,9 @@ namespace app {
     export const ScopeEvent_SetupParameterSettingsChanged: string = "SetupParameterSettingsChanged";
     export const ScopeEvent_AddCollapsibleCard: string = "AddCollapsibleCard";
     export const ScopeEvent_: string = "";
-    export const StorageKey_SetupParameterSettings = "setupParameterSettings";
+    export const StorageKey_SetupParameterSettings = "targetSysConfigSettings";
     const DefaultURL_ServiceNow = "https://inscomscd.service-now.com";
     const DefaultURL_GitRepositoryBase = "https://github.com/erwinel";
-
-    // #region Utility functions
-
-    /**
-     * Determines if a value is null or undefined.
-     * @param {*} value Value to test.
-     * @returns {boolean} true if value was null or undefined; otherwise, false.
-     */
-    export function isNil(value: any | null | undefined): value is null | undefined { return typeof (value) === 'undefined' || value === null; }
-
-    export function isNilOrEmpty<T>(value: Array<T> | null | undefined): value is ({ length: 0 } & Array<T>) | null | undefined;
-    export function isNilOrEmpty(value: Array<any> | null | undefined): value is ({ length: 0 } & Array<any>) | null | undefined;
-    export function isNilOrEmpty(value: string | null | undefined): value is ({ length: 0 } & string) | null | undefined;
-    export function isNilOrEmpty(value: string | Array<any> | null | undefined): value is ({ length: 0 } & string) | ({ length: 0 } & Array<any>) | null | undefined {
-        return (typeof (value) !== 'string' && (typeof (value) != 'object' || value === null || !Array.isArray(value))) || value.length == 0;
-    }
-
-    export function isNilOrWhiteSpace(value: string | null | undefined): boolean { return typeof (value) !== 'string' || value.trim().length == 0; }
-
-    export function notNil<T>(obj: T | null | undefined): obj is T;
-    export function notNil(obj: any | null | undefined): obj is boolean | number | string | object | symbol;
-    export function notNil(obj: any | null | undefined): boolean { return typeof (obj) !== 'undefined' && obj != null; }
-
-    export function notNilOrEmpty<T>(value: Array<T> | null | undefined): value is Array<T>;
-    export function notNilOrEmpty(value: Array<any> | null | undefined): value is Array<any>;
-    export function notNilOrEmpty(value: string | null | undefined): value is string;
-    export function notNilOrEmpty(value: string | Array<any> | null | undefined): value is string | Array<any> {
-        return (typeof (value) == 'string' || (typeof (value) == 'object' && value != null && Array.isArray(value))) && value.length > 0;
-    }
-
-    export function notNilOrWhiteSpace(value: string | null | undefined): value is string { return typeof (value) == 'string' && value.trim().length > 0 }
-
-    /**
-     * Determines if value's type is an object.
-     * @param {*} value Value to test.
-     * @param {boolean} [noArray=false] If value is an array, return false.
-     * @returns {boolean} true if value was null or undefined; otherwise, false.
-     */
-    export function isObject(value: any | null | undefined, noArray?: boolean): value is object { return (typeof (value) == "object" && value !== null && !(noArray && Array.isArray(value))); }
-
-    /**
-     * Determines if a String represents a valid identifier name.
-     * @param {string} text String to test.
-     * @returns {boolean} true if value was a valid identifier name; otherwise, false.
-     */
-    export function isValidIdentifierName(text: string): boolean { return typeof (text) == "string" && identifierRe.test(text); }
-
-    export function asNotNil<T>(value: T | null | undefined, defaultValue: T): T;
-    export function asNotNil(value: string | null | undefined, trim?: boolean): string;
-    export function asNotNil(value: string | null | undefined, defaultValue: string, trim: boolean): string;
-    export function asNotNil(value: any | null | undefined, opt?: any, trim?: boolean): any {
-        if (typeof (value) === "undefined" || value === null)
-            return (typeof (opt) !== 'undefined') ? opt : '';
-        if (typeof (value) !== 'string')
-            return value;
-        return ((typeof (opt) === "boolean") ? opt : trim === true) ? value.trim() : value;
-    }
-
-    /**
-     * Ensures that a value is a string, converting it if necessary.
-     * @param {*} value Value to assert.
-     * @param {string} defaultValue The default value to return if the value is null or undefined.
-     * @returns {string} Input value converted to a string.
-     */
-    export function asString(value: any | null | undefined, defaultValue: string);
-    /**
-     * Ensures that a value is a string, converting it if necessary.
-     * @param {*} value Value to assert.
-     * @param {boolean} trim If true, then the resulting string will be trimmed.
-     * @param {string} defaultValue The default value to return if the value is null or undefined.
-     * @returns {string} Input value converted to a string.
-     */
-    export function asString(value: any | null | undefined, trim: boolean, defaultValue: string);
-    /**
-     * Ensures that a value is a string, converting it if necessary.
-     * @param {*} value Value to assert.
-     * @param {boolean} [trim=false] If true, then the resulting string will be trimmed.
-     * @param {boolean} [allowNil=false] If true, and the input value is null or undefined, then the input value will be returned; otherwise, a null or undefined input value will cause an empty string to be returned.
-     * @returns {string} Input value converted to a string.
-     */
-    export function asString(value: any | null | undefined, trim?: boolean, allowNil?: boolean);
-    export function asString(value: any | null | undefined, trim: string | boolean = false, spec: string | boolean = false): string {
-        if (isNil(value))
-            return (typeof (trim) === 'string') ? trim : ((typeof (spec) === 'string') ? spec : ((spec) ? value : ""));
-        if (typeof (value) != "string") {
-            if (Array.isArray(value))
-                value = value.join("\n");
-            else {
-                try { value = value.toString(); } catch (err) { /* okay to ignnore */ }
-                if (isNil(value))
-                    return (typeof (trim) === 'string') ? trim : ((typeof (spec) === 'string') ? spec : ((spec) ? value : ""));
-                if (typeof (value) != "string") {
-                    try {
-                        value = Object.prototype.toString.call(value);
-                        if (isNil(value))
-                            return (typeof (trim) === 'string') ? trim : ((typeof (spec) === 'string') ? spec : ((spec) ? value : ""));
-                    }
-                    catch (err) {
-                        try { value = value + ""; }
-                        catch (err) {
-                            if (typeof (trim) === 'string')
-                                return trim;
-                            if (typeof (spec) === 'string')
-                                return spec;
-                            if (spec)
-                                return;
-                            return "";
-                        }
-                    }
-                }
-            }
-        }
-
-        if (typeof (trim) === 'boolean' && trim)
-            return value.trim();
-
-        return value;
-    }
-
-    export function subStringBefore(source: string, search: RegExp, nilIfNoMatch?: boolean): string;
-    export function subStringBefore(source: string, search: string, nilIfNoMatch?: boolean, caseSensitive?: boolean): string;
-    export function subStringBefore(source: string, search: string | RegExp, nilIfNoMatch: boolean = false, caseSensitive: boolean = false): string {
-        if (!isNilOrEmpty(source)) {
-            if (typeof (search) === "string") {
-                if (search.length > 0) {
-                    let i: number = (caseSensitive) ? source.indexOf(search) : source.toLowerCase().indexOf(search.toLowerCase());
-                    if (i > -1)
-                        return source.substr(0, i);
-                }
-            } else if (!isNil(search)) {
-                let match: RegExpExecArray = search.exec(source);
-                if (!isNilOrEmpty(match))
-                    return source.substr(0, match.index);
-            }
-        }
-        if (!nilIfNoMatch)
-            return source;
-    }
-
-    export function subStringAfter(source: string, search: RegExp, nilIfNoMatch?: boolean): string;
-    export function subStringAfter(source: string, search: string, nilIfNoMatch?: boolean, caseSensitive?: boolean): string;
-    export function subStringAfter(source: string, search: string | RegExp, nilIfNoMatch: boolean = false, caseSensitive: boolean = false): string {
-        if (!isNilOrEmpty(source)) {
-            if (typeof (search) === "string") {
-                if (search.length > 0) {
-                    let i: number = (caseSensitive) ? source.indexOf(search) : source.toLowerCase().indexOf(search.toLowerCase());
-                    if (i > -1)
-                        return source.substr(i + search.length);
-                }
-            } else if (!isNil(search)) {
-                let match: RegExpExecArray = search.exec(source);
-                if (!isNilOrEmpty(match))
-                    return source.substr(match.index + match[0].length);
-            }
-        }
-        if (!nilIfNoMatch)
-            return source;
-    }
-
-    export function splitAt(source: string, index: number): [string, string] | [string]
-    export function splitAt(source: string, search: RegExp, includeMatch?: false): [string, string] | [string]
-    export function splitAt(source: string, search: RegExp, includeMatch: true): [string, string, string] | [string]
-    export function splitAt(source: string, search: string, caseSensitive?: boolean): [string, string] | [string];
-    export function splitAt(source: string, spec: number | string | RegExp, opt: boolean = false): [string, string, string] | [string, string] | [string] {
-        if (!isNilOrEmpty(source)) {
-            if (typeof (spec) === "number") {
-                if (!isNaN(spec) && spec > -1 && spec < source.length)
-                    return [source.substr(0, spec), source.substr(spec)];
-            } else if (typeof (spec) === "string") {
-                if (spec.length > 0) {
-                    let i: number = (opt) ? source.indexOf(spec) : source.toLowerCase().indexOf(spec.toLowerCase());
-                    if (i > -1)
-                        return [source.substr(0, i), source.substr(i)];
-                }
-            } else if (!isNil(spec)) {
-                let match: RegExpExecArray = spec.exec(source);
-                if (!isNilOrEmpty(match)) {
-                    if (opt)
-                        return [source.substr(0, match.index), match[0], source.substr(match.index + match[0].length)];
-                    return [source.substr(0, match.index), source.substr(match.index + match[0].length)];
-                }
-            }
-        }
-        return [source];
-    }
-
-    /**
-     * Ensures that a value is a floating-point number, converting it if necessary.
-     * @param value
-     * @param defaultValue
-     * @returns {string} Input value converted to a floating-point number.
-     */
-    export function asFloat(value: any | null | undefined, defaultValue: number | null | undefined = NaN): number {
-        if (typeof (value) === 'undefined' || value === null)
-            return defaultValue;
-        if (typeof (value) === 'number')
-            return value;
-        let n: number = parseFloat(value);
-        if (isNaN(n))
-            return defaultValue;
-        return n;
-    }
-
-    /**
-     * Ensures that a value is a whole number, converting it if necessary.
-     * @param value
-     * @param defaultValue
-     * @returns {string} Input value converted to a whole number.
-     */
-    export function asInt(value: any | null | undefined, defaultValue: number | null | undefined = NaN): number {
-        if (typeof (value) === 'undefined' || value === null)
-            return defaultValue;
-        if (typeof (value) === 'number')
-            return value;
-        let n: number = parseInt(value);
-        if (isNaN(n))
-            return defaultValue;
-        return n;
-    }
-
-    /**
-     * Trims trailing whitespace from text.
-     * @param {string} text Text to trim.
-     * @returns {string} Text with trailing whitespace removed.
-     */
-    export function trimRight(text: string): string {
-        var m = trimRightRe.exec(asString(text));
-        return (isNil(m)) ? "" : m[1];
-    }
-
-    /**
-     * Trims leading whitespace from text.
-     * @param {string} text Text to trim.
-     * @returns {string} Text with leading whitespace removed.
-     */
-    export function trimLeft(text: string): string {
-        var m = trimLeftRe.exec(asString(text));
-        return (isNil(m)) ? "" : m[1];
-    }
-
-    export function asBoolean(value: any | null | undefined, nilIsTrue: boolean = false): boolean {
-        if (isNil(value))
-            return (nilIsTrue == true);
-        if (typeof (value) == "boolean")
-            return value;
-        if (typeof (value) == "object") {
-            if (!Array.isArray(value)) {
-                if (typeof (value.valueOf) == "function") {
-                    try { value = value.valueOf(); } catch (e) { }
-                    if (isNil(value))
-                        return (nilIsTrue == true);
-                }
-                if (typeof (value) != "object" || !Array.isArray(value))
-                    value = [value];
-                else if (value.length == 0)
-                    return false;
-            } else if (value.length == 0)
-                return false;
-        } else
-            value = [value];
-        if (nilIsTrue) {
-            for (var i = 0; i < value.length; i++) {
-                var v = value[i];
-                if (isNil(v))
-                    return true;
-                if (typeof (v) == "boolean") {
-                    if (v)
-                        return true;
-                    continue;
-                }
-                if (typeof (v) != "string") {
-                    if (typeof (v.valueOf) == "function") {
-                        try { v = v.valueOf(); } catch (e) { }
-                        if (isNil(v))
-                            return true;
-                        if (typeof (v) == "boolean") {
-                            if (v)
-                                return true;
-                            continue;
-                        }
-                    }
-                    if (typeof (v) != "string")
-                        v = asString(v);
-                }
-
-                if (v.length == 0 || (v = v.trim()).length == 0 || !falseStringRe.test(v))
-                    return true;
-            }
-        } else {
-            for (var i = 0; i < value.length; i++) {
-                var v = value[i];
-                if (isNil(v))
-                    continue;
-                if (typeof (v) == "boolean") {
-                    if (v)
-                        return true;
-                    continue;
-                }
-                if (typeof (v) != "string") {
-                    if (typeof (v.valueOf) == "function") {
-                        try { v = v.valueOf(); } catch (e) { }
-                        if (isNil(v))
-                            continue;
-                        if (typeof (v) == "boolean") {
-                            if (v)
-                                return true;
-                            continue;
-                        }
-                    }
-                    if (typeof (v) != "string")
-                        v = asString(v);
-                }
-
-                if (v.length > 0 && (v = v.trim()).length > 0 && !falseStringRe.test(v))
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    export function notString(value: any | null | undefined): boolean { return typeof (value) !== 'string'; }
-
-    export function asNotWhitespaceOrUndefined(value: string | null | undefined, trim?: boolean): string | undefined {
-        if (typeof (value) === 'string') {
-            if (trim === true) {
-                if ((value = value.trim()).length > 0)
-                    return value;
-            } else if (value.trim().length > 0)
-                return value;
-        }
-    }
-
-    export function asDefinedOrNull<T>(value: T | null | undefined): T | null { return (typeof (value) === undefined) ? null : value; }
-
-    export function asUndefinedIfNull<T>(value: T | null | undefined): T | undefined {
-        if (typeof (value) !== undefined && value !== null)
-            return value;
-    }
-
-    export function asNotEmptyOrNull<T>(value: Array<T> | null | undefined): Array<T> | undefined;
-    export function asNotEmptyOrNull(value: Array<any> | null | undefined): Array<any> | undefined;
-    export function asNotEmptyOrNull(value: string | null | undefined, trim?: boolean): string | undefined;
-    export function asNotEmptyOrNull(value: string | Array<any> | null | undefined, trim?: boolean): string | Array<any> | null {
-        if (typeof (value) === 'string') {
-            if (trim) {
-                if ((value = value.trim()).length > 0)
-                    return value;
-            } else if (value.trim().length > 0)
-                return value;
-        }
-        return null;
-    }
-
-    export function asNotWhitespaceOrNull(value: string | null | undefined, trim?: boolean): string | null {
-        if (typeof (value) === 'string') {
-            if (trim === true) {
-                if ((value = value.trim()).length > 0)
-                    return value;
-            } else if (value.trim().length > 0)
-                return value;
-        }
-        return null;
-    }
-
-    export function asNotEmptyOrUndefined<T>(value: Array<T> | null | undefined): Array<T> | undefined;
-    export function asNotEmptyOrUndefined(value: Array<any> | null | undefined): Array<any> | undefined;
-    export function asNotEmptyOrUndefined(value: string | null | undefined, trim?: boolean): string | undefined;
-    export function asNotEmptyOrUndefined(value: string | Array<any> | null | undefined, trim?: boolean): string | Array<any> | undefined {
-        if (typeof (value) !== 'undefined' && value !== null && value.length > 0)
-            return (trim === true && typeof (value) === 'string') ? value.trim() : value;
-    }
-
-    export function isError(value: any | null | undefined): value is Error {
-        return typeof (value) == 'object' && value !== null && typeof (value.message) == 'string' && typeof (value.name) == 'string' &&
-            (typeof (value.stack) == 'undefined' || value.stack === null || typeof (value.stack) == 'string');
-    }
-
-    export function compareStrings(a: any | null | undefined, b: any | null | undefined): number {
-        if (typeof (a) === 'undefined')
-            return (typeof (b) === 'undefined') ? 0 : -1;
-        if (typeof (b) === 'undefined')
-            return 1;
-        if (a === null)
-            return (b === null) ? 0 : -1;
-        if (b === null)
-            return 1;
-        if (typeof (a) !== 'string')
-            return (typeof (b) !== 'string') ? compareStrings(a.toString(), b.toString()) : 1;
-        if (typeof (b) !== 'string')
-            return -1;
-        if (a === b)
-            return 0;
-        let n = a.localeCompare(b, undefined, { sensitivity: 'accent', numeric: true });
-        if (n != 0 || (n = a.localeCompare(b, undefined, { numeric: true })) != 0 || (n = a.localeCompare(b)) != 0)
-            return n;
-        return (a < b) ? -1 : 1;
-    }
-
-    export function isIterable(value: any | null | undefined): value is { [Symbol.iterator](): Function } {
-        if (typeof (value) !== 'object' || value == null)
-            return false;
-        if (Array.isArray(value))
-            return true;
-        let fn: any | null | undefined = value[Symbol.iterator];
-        return (typeof (fn) === 'function');
-    }
-
-    export function asIterable<T>(source: T | T[] | Iterable<T> | null | undefined, allowNull: boolean = false): Iterable<T> {
-        if (typeof (source) === 'undefined')
-            return [];
-        if (source === null)
-            return (allowNull) ? [null] : [];
-        return (Array.isArray(source)) ? source : ((isIterable(source)) ? <Iterable<T>>source : [<T>source]);
-    }
-
-    export function asArray<T>(source: T | T[] | Iterable<T> | null | undefined, allowNull: boolean = false): T[] {
-        if (typeof (source) === 'undefined')
-            return [];
-        if (source === null)
-            return (allowNull) ? [null] : [];
-        if (Array.isArray(source))
-            return source;
-        if (isIterable(source)) {
-            let iterator: Iterator<T>;
-            let fn: Function = source[Symbol.iterator];
-            try { iterator = fn(); } catch { /* okay to ignore */ }
-            if (typeof (iterator) === 'object' && iterator !== null) {
-                let result: T[] = [];
-                try {
-                    let ir: IteratorResult<T> = iterator.next();
-                    if (allowNull)
-                        while (!ir.done) {
-                            if (typeof (ir.value) !== 'undefined')
-                                result.push(ir.value);
-                            ir = iterator.next();
-                        }
-                    else
-                        while (!ir.done) {
-                            if (typeof (ir.value) !== 'undefined' && ir.value !== null)
-                                result.push(ir.value);
-                            ir = iterator.next();
-                        }
-                } catch { /* okay to ignore */ }
-                return result;
-            }
-        }
-        return [<T>source];
-    }
-
-    export function skipFirst<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any);
-    export function skipFirst<T>(source: Iterable<T>, count: number);
-    export function skipFirst<T>(source: Iterable<T>, spec: number | { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[] {
-        let result: T[] = [];
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let ir: IteratorResult<T> = iterator.next();
-        if (typeof (spec) === 'number')
-            while (!ir.done) {
-                if (spec < 1) {
-                    result.push(ir.value);
-                    while (!(ir = iterator.next()).done)
-                        result.push(ir.value);
-                    break;
-                }
-                spec--;
-                ir = iterator.next();
-            }
-        else {
-            let index: number = 0;
-            if (typeof (thisArg) === 'undefined')
-                while (!ir.done) {
-                    if (!spec(ir.value, index++, source)) {
-                        result.push(ir.value);
-                        while (!(ir = iterator.next()).done)
-                            result.push(ir.value);
-                        break;
-                    }
-                    ir = iterator.next();
-                }
-            else
-                while (!ir.done) {
-                    if (!spec.call(thisArg, ir.value, index++, source)) {
-                        result.push(ir.value);
-                        while (!(ir = iterator.next()).done)
-                            result.push(ir.value);
-                        break;
-                    }
-                    ir = iterator.next();
-                }
-        }
-        return result;
-    }
-
-    export function skipLast<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any);
-    export function skipLast<T>(source: Iterable<T>, count: number);
-    export function skipLast<T>(source: Iterable<T>, spec: number | { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[] {
-        let result: T[] = reverse(source);
-        if (typeof (spec) === 'number') {
-            while (result.length > 0 && spec-- > 0)
-                result.shift();
-        } else if (typeof (thisArg) === 'undefined') {
-            while (result.length > 0 && spec(result[0], result.length - 1, source))
-                result.shift();
-        } else {
-            while (result.length > 0 && spec.call(thisArg, result[0], result.length - 1, source))
-                result.shift();
-        }
-        return result.reverse();
-    }
-
-    export function takeFirst<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any);
-    export function takeFirst<T>(source: Iterable<T>, count: number);
-    export function takeFirst<T>(source: Iterable<T>, spec: number | { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[] {
-        let result: T[] = [];
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let ir: IteratorResult<T> = iterator.next();
-        if (typeof (spec) === 'number')
-            while (!ir.done && spec-- > 0) {
-                result.push(ir.value);
-                ir = iterator.next();
-            }
-        else {
-            let index: number = 0;
-            if (typeof (thisArg) === 'undefined')
-                while (!ir.done && spec(ir.value, index++, source)) {
-                    result.push(ir.value);
-                    ir = iterator.next();
-                }
-            else
-                while (!ir.done && spec.call(thisArg, ir.value, index++, source)) {
-                    result.push(ir.value);
-                    ir = iterator.next();
-                }
-        }
-        return result;
-    }
-
-    export function takeLast<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any);
-    export function takeLast<T>(source: Iterable<T>, count: number);
-    export function takeLast<T>(source: Iterable<T>, spec: number | { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[] {
-        let result: T[] = reverse(source);
-        if (typeof (spec) === 'number')
-            while (result.length > 0 && spec)
-                result.pop();
-        else if (typeof (thisArg) === 'undefined')
-            while (result.length > 0 && spec(result[0], result.length - 1, source))
-                result.shift();
-        else
-            while (result.length > 0 && spec.call(thisArg, result[0], result.length - 1, source))
-                result.shift();
-        return result.reverse();
-    }
-
-    export function filter<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[] {
-        let result: T[] = [];
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let ir: IteratorResult<T> = iterator.next();
-        let index: number = 0;
-        if (typeof (thisArg) === 'undefined')
-            while (!ir.done) {
-                if (callbackfn(ir.value, index++, source))
-                    result.push(ir.value);
-                ir = iterator.next();
-            }
-        else
-            while (!ir.done) {
-                if (callbackfn.call(thisArg, ir.value, index++, source))
-                    result.push(ir.value);
-                ir = iterator.next();
-            }
-        return result;
-    }
-
-    export function first<T>(source: Iterable<T>, callbackfn: (value: T, index: number, iterable: Iterable<T>) => boolean, thisArg?: any): T | undefined {
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let r: IteratorResult<T> = iterator.next();
-        let index: number = 0;
-        if (typeof (thisArg) !== 'undefined')
-            while (!r.done) {
-                if (callbackfn.call(thisArg, r.value, index++, source))
-                    return r.value;
-                r = iterator.next();
-            }
-        else
-            while (!r.done) {
-                if (callbackfn(r.value, index, source))
-                    return r.value;
-                r = iterator.next();
-            }
-    }
-
-    export function indexOf<T>(source: Iterable<T>, callbackfn: (value: T, index: number, iterable: Iterable<T>) => boolean, thisArg?: any): number {
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let r: IteratorResult<T> = iterator.next();
-        let index: number = 0;
-        if (typeof (thisArg) !== 'undefined')
-            while (!r.done) {
-                if (callbackfn.call(thisArg, r.value, index++, source))
-                    return index;
-                r = iterator.next();
-            }
-        else
-            while (!r.done) {
-                if (callbackfn(r.value, index, source))
-                    return index;
-                r = iterator.next();
-            }
-    }
-
-    export function last<T>(source: Iterable<T>, callbackfn: (value: T, index: number, iterable: Iterable<T>) => boolean, thisArg?: any): T | undefined {
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let r: IteratorResult<T> = iterator.next();
-        let result: T;
-        let index: number = 0;
-        if (typeof (thisArg) !== 'undefined')
-            while (!r.done) {
-                if (callbackfn.call(thisArg, r.value, index++, source))
-                    result = r.value;
-                r = iterator.next();
-            }
-        else
-            while (!r.done) {
-                if (callbackfn(r.value, index++, source))
-                    result = r.value;
-                r = iterator.next();
-            }
-        return result;
-    }
-
-    export function join<T>(source: Iterable<T>, separator?: string): string {
-        if (Array.isArray(source))
-            return source.join(separator);
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let r: IteratorResult<T> = iterator.next();
-        let result: T[] = [];
-        let index: number = 0;
-        while (!r.done) {
-            result.push(r.value);
-            r = iterator.next();
-        }
-        return result.join(separator);
-    }
-
-    export function reverse<T>(source: Iterable<T>): T[] {
-        let result: T[] = [];
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let ir: IteratorResult<T> = iterator.next();
-        let index: number = 0;
-        while (!ir.done) {
-            result.unshift(ir.value);
-            ir = iterator.next();
-        }
-        return result;
-    }
-
-    export function indexOfAny(value: string, position: number, ...searchString: string[]);
-    export function indexOfAny(value: string, ...searchString: string[])
-    export function indexOfAny(value: string, position: number | string, ...searchString: string[]) {
-        let result: number;
-
-        if (typeof (position) === 'number') {
-            result = -1;
-            searchString.forEach((s: string) => {
-                if (s.length > 0) {
-                    let i: number = value.indexOf(s, position);
-                    if (i > -1 && (result < 0 || i < result))
-                        result = i;
-                }
-            });
-        } else {
-            searchString.forEach((s: string) => {
-                if (s.length > 0) {
-                    let i: number = value.indexOf(s);
-                    if (i > -1 && (result < 0 || i < result))
-                        result = i;
-                }
-            });
-        }
-
-        return result;
-    }
-
-    export function map<TSource, TResult>(source: Iterable<TSource>, callbackfn: (value: TSource, index: number, iterable: Iterable<TSource>) => TResult, thisArg?: any): TResult[] {
-        let iterator: Iterator<TSource> = source[Symbol.iterator]();
-        let r: IteratorResult<TSource> = iterator.next();
-        let result: TResult[] = [];
-        let index: number = 0;
-        if (typeof (thisArg) !== 'undefined')
-            while (!r.done) {
-                result.push(callbackfn.call(thisArg, r.value, index++, source));
-                r = iterator.next();
-            }
-        else
-            while (!r.done) {
-                result.push(callbackfn(r.value, index++, source));
-                r = iterator.next();
-            }
-        return result;
-    }
-
-    export function every<T>(source: Iterable<T>, callbackfn: (value: T, index: number, iterable: Iterable<T>) => boolean, thisArg?: any): boolean {
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let r: IteratorResult<T> = iterator.next();
-        let index: number = 0;
-        if (typeof (thisArg) !== 'undefined')
-            while (!r.done) {
-                if (!callbackfn.call(thisArg, r.value, index++, source))
-                    return false;
-                r = iterator.next();
-            }
-        else
-            while (!r.done) {
-                if (!callbackfn(r.value, index++, source))
-                    return false;
-                r = iterator.next();
-            }
-        return true;
-    }
-
-    export function some<T>(source: Iterable<T>, callbackfn: (value: T, index: number, iterable: Iterable<T>) => boolean, thisArg?: any): boolean {
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let r: IteratorResult<T> = iterator.next();
-        let index: number = 0;
-        if (typeof (thisArg) !== 'undefined')
-            while (!r.done) {
-                if (callbackfn.call(thisArg, r.value, index++, source))
-                    return true;
-                r = iterator.next();
-            }
-        else
-            while (!r.done) {
-                if (callbackfn(r.value, index++, source))
-                    return true;
-                r = iterator.next();
-            }
-        return true;
-    }
-
-    export function forEach<T>(source: Iterable<T>, callbackfn: (value: T, index: number, iterable: Iterable<T>) => void, thisArg?: any) {
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let r: IteratorResult<T> = iterator.next();
-        let index: number = 0;
-        if (typeof (thisArg) !== 'undefined')
-            while (!r.done) {
-                callbackfn.call(thisArg, r.value, index++, source);
-                r = iterator.next();
-            }
-        else
-            while (!r.done) {
-                callbackfn(r.value, index++, source);
-                r = iterator.next();
-            }
-    }
-
-    export function reduce<TSource, TResult>(source: Iterable<TSource>, callbackfn: (previousValue: TResult, currentValue: TSource, currentIndex: number, iterable: Iterable<TSource>) => TResult, initialValue: TResult): TResult {
-        let iterator: Iterator<TSource> = source[Symbol.iterator]();
-        let r: IteratorResult<TSource> = iterator.next();
-        let result: TResult = initialValue;
-        let index: number = 0;
-        while (!r.done) {
-            result = callbackfn(result, r.value, index++, source);
-            r = iterator.next();
-        }
-        return result;
-    }
-
-    export function unique<T>(source: Iterable<T>, callbackfn?: (x: T, y: T) => boolean, thisArg?: any): T[] {
-        if (typeof (callbackfn) !== 'function')
-            callbackfn = function (x: T, y: T) { return x === y; }
-        let iterator: Iterator<T> = source[Symbol.iterator]();
-        let r: IteratorResult<T> = iterator.next();
-        let result: T[] = [];
-        if (!r.done) {
-            result.push(r.value);
-            r = iterator.next();
-            let index: number = 0;
-            if (typeof (thisArg) !== 'undefined')
-                while (!r.done) {
-                    if (!result.some((value: T) => callbackfn.call(thisArg, r.value, value)))
-                        result.push(r.value);
-                    r = iterator.next();
-                }
-            else
-                while (!r.done) {
-                    if (!result.some((value: T) => callbackfn(r.value, value)))
-                        result.push(r.value);
-                    r = iterator.next();
-                }
-        }
-        return result;
-    }
-
-    export function areSequencesEqual<T>(source: Iterable<T> | null | undefined, target: Iterable<T> | null | undefined): boolean;
-    export function areSequencesEqual<T>(source: Iterable<T> | null | undefined, target: Iterable<T> | null | undefined, callbackfn: (x: T, y: T, index: number) => boolean, thisArg?: any): boolean;
-    export function areSequencesEqual<T>(source: Iterable<T> | null | undefined, target: Iterable<T> | null | undefined, callbackfn?: (x: any, y: any, index: number) => boolean, thisArg?: any): boolean {
-        if (typeof (source) != typeof (target) || (Array.isArray(source) && Array.isArray(target) && source.length != target.length))
-            return false;
-        let iteratorX: Iterator<T> = source[Symbol.iterator]();
-        let iteratorY: Iterator<T> = target[Symbol.iterator]();
-        let resultX: IteratorResult<T> = iteratorX.next();
-        let resultY: IteratorResult<T> = iteratorY.next();
-
-        if (typeof (callbackfn) !== 'function')
-            while (!resultX.done) {
-                if (resultY.done || resultX.value !== resultY.value)
-                    return false;
-                resultX = iteratorX.next();
-                resultY = iteratorY.next();
-            }
-        else if (typeof (thisArg) === 'undefined') {
-            let index: number = -1;
-            while (!resultX.done) {
-                if (resultY.done || !callbackfn.call(thisArg, resultX.value, resultY.value, ++index))
-                    return false;
-                resultX = iteratorX.next();
-                resultY = iteratorY.next();
-            }
-        } else {
-            let index: number = -1;
-            while (!resultX.done) {
-                if (resultY.done || !callbackfn(resultX.value, resultY.value, ++index))
-                    return false;
-                resultX = iteratorX.next();
-                resultY = iteratorY.next();
-            }
-        }
-        return resultY.done;
-    }
-
-    export const uriParseRegex_beforeQuery: RegExp = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;
-
-    export const uriParseRegex: RegExp = /^(([^\\\/@:\?#]*)(:[\\\/]{0,2})((?=[^\\\/@:\?#]*(?::[^\\\/@:\?#]*)?@)([^\\\/@:\?#]*)(:[^\\\/@:\?#]*)?@)?([^\\\/@:\?#]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?([^\?#]+)?(\?([^#]+)?)?(#(.+)?)?$/;
-
-    export enum uriParseGroup {
-        all = 0,
-        origin = 1,
-        schemeName = 2,
-        schemeSeparator = 3,
-        userInfo = 4,
-        username = 5,
-        password = 6,
-        hostname = 7,
-        portnumber = 8,
-        path = 9,
-        search = 10,
-        queryString = 11,
-        hash = 12,
-        fragment = 13
-    }
-
-    export interface IParsedUriString {
-        source: string;
-        origin?: {
-            value: string;
-            scheme: {
-                name: string;
-                separator: string;
-            }
-            userInfo?: {
-                value: string;
-                name: string;
-                password?: string;
-            }
-            host: {
-                value: string;
-                name: string;
-                portnumber?: string;
-            }
-        };
-        path: string;
-        queryString?: string;
-        fragment?: string;
-    }
-
-    export function parseUriString(source: string): IParsedUriString {
-        if (isNilOrEmpty(source))
-            return { source: source, path: source };
-        let match: RegExpExecArray = uriParseRegex.exec(source);
-        let result: IParsedUriString;
-        if (isNilOrEmpty(match)) {
-            result = { source: source, path: source };
-            let i: number = source.indexOf('#');
-            if (i > -1) {
-                result.fragment = source.substr(i + 1);
-                result.source = source = source.substr(0, i);
-            }
-            i = source.indexOf('?');
-            if (i > -1) {
-                result.queryString = source.substr(i + 1);
-                result.source = source.substr(0, i);
-            }
-        } else {
-            result = { source: source, path: (isNil(match[uriParseGroup.path])) ? '' : match[uriParseGroup.path] };
-            if (!isNil(match[uriParseGroup.origin])) {
-                let name: string = (isNil(match[uriParseGroup.hostname])) ? '' : match[uriParseGroup.hostname];
-                result.origin = {
-                    value: match[uriParseGroup.origin],
-                    scheme: {
-                        name: match[uriParseGroup.schemeName],
-                        separator: match[uriParseGroup.schemeSeparator]
-                    },
-                    host: { value: name, name: name }
-                };
-                if (!isNil(match[uriParseGroup.userInfo])) {
-                    result.origin.userInfo = { value: match[uriParseGroup.userInfo], name: (isNil(match[uriParseGroup.username])) ? '' : match[uriParseGroup.username] };
-                    if (!isNil(match[uriParseGroup.password]))
-                        result.origin.userInfo.password = match[uriParseGroup.password].substr(1);
-                }
-                if (!isNil(match[uriParseGroup.portnumber])) {
-                    result.origin.host.value += match[uriParseGroup.portnumber];
-                    result.origin.host.portnumber = match[uriParseGroup.portnumber].substr(1);
-                }
-            }
-            result.path = (isNil(match[uriParseGroup.path])) ? '' : match[uriParseGroup.path];
-            if (!isNil(match[uriParseGroup.search]))
-                result.queryString = (isNil(match[uriParseGroup.queryString])) ? '' : match[uriParseGroup.queryString];
-            if (!isNil(match[uriParseGroup.hash]))
-                result.fragment = (isNil(match[uriParseGroup.fragment])) ? '' : match[uriParseGroup.fragment];
-        }
-        return result;
-    }
-
-    // #endregion
 
     // #region Navigation
 
@@ -968,57 +40,57 @@ namespace app {
 
     // #region PageNavigationScope
 
-    export interface IPageNavigationScope<TParent extends IMainControllerScope> extends INestedControllerScope<TParent> {
-        pageTitle: string;
-        top: IRootNavigationContainerScope<IPageNavigationScope<TParent>>;
-        side: IRootNavigationContainerScope<IPageNavigationScope<TParent>>;
-    }
-
-    export interface IRootNavigationContainerScope<TParent extends IPageNavigationScope<IMainControllerScope>> extends IPageNavigationScope<TParent> {
+    export interface INavigationContainerScope extends ng.IScope {
         currentItemIndex: number;
-        items: INavigationItemScope<IRootNavigationContainerScope<TParent>>[];
+        pageTitle: string;
+        items: INavigationItemScope[];
     }
 
-    export interface RootNavigationContainerScope extends IRootNavigationContainerScope<IPageNavigationScope<IMainControllerScope>> {
-        items: INavigationItemScope<RootNavigationContainerScope>[];
+    export interface IPageNavigationScope extends ng.IScope {
+        top: INavigationContainerScope;
+        side: INavigationContainerScope;
     }
 
-    export interface PageNavigationScope extends IPageNavigationScope<IMainControllerScope> {
-        top: RootNavigationContainerScope;
-        side: RootNavigationContainerScope;
+    export interface INavigationItemScope extends ng.IScope, INavigationContainerScope {
+        linkTitle: string;
+        pageTitle: string;
+        href: string;
+        class: string[];
+        isCurrent: boolean;
+        onClick(): void;
     }
 
     function initializePageNavigationScope(parentScope: IMainControllerScope, location: ng.ILocationService, http: ng.IHttpService) {
-        let scope: PageNavigationScope = parentScope.pageNavigation = <PageNavigationScope>(parentScope.$new());
-        scope.top = <RootNavigationContainerScope>(scope.pageNavigation.$new());
+        let scope: IPageNavigationScope = parentScope.pageNavigation = <IPageNavigationScope>(parentScope.$new());
+        scope.top = <INavigationContainerScope>(scope.pageNavigation.$new());
         scope.top.items = [];
         scope.top.currentItemIndex = -1;
-        scope.side = <RootNavigationContainerScope>(scope.pageNavigation.$new());
+        scope.side = <INavigationContainerScope>(scope.pageNavigation.$new());
         scope.side.items = [];
         scope.side.currentItemIndex = -1;
 
         http.get<INavigationJSON>("./pageNavigation.json").then((nav: ng.IHttpPromiseCallbackArg<INavigationJSON>) => {
             let pageName: string = location.path().split("/").reduce((previousValue: string, currentValue: string) => { return (currentValue.length > 0) ? currentValue : previousValue }, "").toLowerCase();
-            if (isNil(nav.data))
+            if (sys.isNil(nav.data))
                 alert("Failed to load navigation from ./pageNavigation.json. Reason (" + nav.status + "): " + nav.statusText);
             else if (typeof (nav.data.items) === 'undefined')
                 alert("Failed to load navigation from ./pageNavigation.json. Reason: No items returned. Status: (" + nav.status + "): " + nav.statusText);
             else {
                 nav.data.items.forEach((d: INavigationDefinition, index: number) => {
-                    let item: INavigationItemScope<RootNavigationContainerScope> = toNavItem(pageName, nav.data, scope.top, d);
+                    let item: INavigationItemScope = toNavItem(pageName, nav.data, scope.top, d);
                     if ((item.isCurrent || item.currentItemIndex > -1) && scope.top.currentItemIndex < 0)
                         scope.top.currentItemIndex = index;
                 });
                 if (scope.top.currentItemIndex > -1) {
-                    let sideItem: INavigationItemScope<RootNavigationContainerScope> = scope.top.items[scope.top.currentItemIndex];
+                    let sideItem: INavigationItemScope = scope.top.items[scope.top.currentItemIndex];
                     scope.side.items = sideItem.items;
                     scope.side.currentItemIndex = sideItem.currentItemIndex;
                     sideItem.items = [];
                     sideItem.currentItemIndex = -1;
                 }
-                let container: RootNavigationContainerScope = (scope.side.currentItemIndex < 0) ? scope.top : scope.side;
+                let container: INavigationContainerScope = (scope.side.currentItemIndex < 0) ? scope.top : scope.side;
 
-                let selectedItem: INavigationItemScope<RootNavigationContainerScope> = container.items[(container.currentItemIndex < 0) ? 0 : container.currentItemIndex];
+                let selectedItem: INavigationItemScope = container.items[(container.currentItemIndex < 0) ? 0 : container.currentItemIndex];
                 while (!selectedItem.isCurrent) {
                     if (selectedItem.currentItemIndex < 0)
                         break;
@@ -1027,7 +99,7 @@ namespace app {
                 scope.pageTitle = selectedItem.pageTitle;
             }
         }).catch((reason: any) => {
-            if (!isNil(reason)) {
+            if (!sys.isNil(reason)) {
                 if (typeof (reason) !== 'string') {
                     try { alert("Failed to load navigation from ./pageNavigation.json. Reason: " + JSON.stringify(reason) + "."); }
                     catch { alert("Failed to load navigation from ./pageNavigation.json. Reason: " + reason + "."); }
@@ -1043,19 +115,10 @@ namespace app {
 
     // #region NavigationItemScope
 
-    export interface INavigationItemScope<TParent extends RootNavigationContainerScope> extends IRootNavigationContainerScope<TParent> {
-        linkTitle: string;
-        pageTitle: string;
-        href: string;
-        class: string[];
-        isCurrent: boolean;
-        onClick(): void;
-    }
-
-    function toNavItem<TParent extends RootNavigationContainerScope, TItem extends INavigationItemScope<TParent>>(pageName: string, config: INavigationJSON, container: TParent, definition: INavigationDefinition): TItem {
-        let item: TItem = <TItem>(container.$new());
+    function toNavItem(pageName: string, config: INavigationJSON, container: INavigationContainerScope, definition: INavigationDefinition): INavigationItemScope {
+        let item: INavigationItemScope = <INavigationItemScope>(container.$new());
         item.linkTitle = definition.linkTitle;
-        item.pageTitle = (isNilOrWhiteSpace(definition.pageTitle)) ? definition.linkTitle : definition.pageTitle;
+        item.pageTitle = (sys.isNilOrWhiteSpace(definition.pageTitle)) ? definition.linkTitle : definition.pageTitle;
         item.currentItemIndex = -1;
         if (pageName === definition.url) {
             item.href = '#';
@@ -1069,9 +132,9 @@ namespace app {
             item.onClick = () => { return true; };
         }
         item.items = [];
-        if (!isNilOrEmpty(definition.items)) {
+        if (!sys.isNilOrEmpty(definition.items)) {
             definition.items.forEach((d: INavigationDefinition, index: number) => {
-                let childItem: INavigationItemScope<TItem> = toNavItem(pageName, config, item, d);
+                let childItem: INavigationItemScope = toNavItem(pageName, config, item, d);
                 if ((childItem.isCurrent || childItem.currentItemIndex > -1) && item.currentItemIndex < 0) {
                     item.currentItemIndex = index;
                     item.class = config.selectedItemClass;
@@ -1086,7 +149,7 @@ namespace app {
 
     // #region Directives
 
-    MainModule.directive("mainAppPageHead", () => {
+    appModule.directive("mainAppPageHead", () => {
         return {
             restrict: "E",
             scope: true,
@@ -1094,64 +157,55 @@ namespace app {
         };
     });
 
-    interface INavItemAttributes extends ng.IAttributes { href: string; }
-
-    interface INavItemScope extends INestedControllerScope<IMainControllerScope> {
-        href: string;
-        classNames: string[];
-        onClick(): boolean;
-        text: string;
-    }
-
     // #endregion
 
     // #endregion
 
-    // #region MainController
+    // #region mainPageController
 
-    export interface INestedControllerScope<TParent extends IMainControllerScope> extends IMainControllerScope {
-        $parent: TParent
-    }
+    //export interface INestedControllerScope<TParent extends IMainControllerScope> extends IMainControllerScope {
+    //    $parent: TParent
+    //}
 
     export interface IMainControllerScope extends ng.IScope {
         serviceNowUrl: string;
         gitRepositoryBaseUrl: string;
-        pageNavigation: PageNavigationScope;
+        pageNavigation: IPageNavigationScope;
         showSetupParametersEditDialog(): void;
     }
 
-    class MainController implements ng.IController {
+    class mainPageController implements ng.IController {
         $doCheck() { }
 
-        showSetupParametersEditDialog() { setupParameterDefinitionsController.show(this.$scope); }
+        showSetupParametersEditDialog() { targetSysConfigEditController.show(this.$scope); }
 
-        hideSetupParametersEditDialog() { setupParameterDefinitionsController.hide(this.$scope); }
+        hideSetupParametersEditDialog() { targetSysConfigEditController.hide(this.$scope); }
 
         showModalDialogMessage(message: string, type: DialogMessageType = 'info', title?: string) { mainModalPopupDialogController.show(this.$scope, message, type, title); }
 
         hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
 
-        constructor(protected $scope: IMainControllerScope, protected $location: ng.ILocationService, protected $http: ng.IHttpService, settings: setupParameterSettings) {
+        constructor(protected $scope: IMainControllerScope, protected $location: ng.ILocationService, protected $http: ng.IHttpService, settings: targetSysConfigSettings) {
             $scope.serviceNowUrl = settings.serviceNowUrl;
             $scope.gitRepositoryBaseUrl = settings.gitRepositoryBaseUrl;
-            settings.onChanged($scope, (event: ng.IAngularEvent, value: ISetupParameterSettings) => {
+            settings.onChanged($scope, (event: ng.IAngularEvent, value: ISysConfigSettings) => {
                 $scope.serviceNowUrl = value.serviceNowUrl;
                 $scope.gitRepositoryBaseUrl = value.gitRepositoryBaseUrl;
             });
             initializePageNavigationScope($scope, $location, $http);
             $scope.showSetupParametersEditDialog = () => {
-                setupParameterDefinitionsController.show($scope);
+                targetSysConfigEditController.show($scope);
             };
         }
     }
 
-    MainModule.controller("MainController", ['$scope', "$location", "$http", "setupParameterSettings", MainController]);
+    appModule.controller("mainPageController", ['$scope', "$location", "$http", "targetSysConfigSettings", mainPageController]);
 
-    export abstract class MainControllerChild<TScope extends INestedControllerScope<IMainControllerScope>> implements ng.IController {
+    export abstract class MainControllerChild<TScope extends IMainControllerScope> implements ng.IController {
         $doCheck() { }
         constructor(protected $scope: TScope) { }
-        showSetupParametersEditDialog() { setupParameterDefinitionsController.show(this.$scope); }
-        hideSetupParametersEditDialog() { setupParameterDefinitionsController.hide(this.$scope); }
+        showSetupParametersEditDialog() { targetSysConfigEditController.show(this.$scope); }
+        hideSetupParametersEditDialog() { targetSysConfigEditController.hide(this.$scope); }
         showModalDialogMessage(message: string, type: DialogMessageType = 'info', title?: string) { mainModalPopupDialogController.show(this.$scope, message, type, title); }
         hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
     }
@@ -1162,7 +216,7 @@ namespace app {
 
     export type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
 
-    interface IDialogScope extends INestedControllerScope<IMainControllerScope> {
+    interface IDialogScope extends ng.IScope {
         isVisible: boolean;
         title: string;
         message: string;
@@ -1171,7 +225,7 @@ namespace app {
         close();
     }
 
-    export class mainModalPopupDialogController extends MainControllerChild<IDialogScope> {
+    export class mainModalPopupDialogController implements ng.IController {
         static show($scope: ng.IScope, message: string, type?: DialogMessageType, title?: string) {
             $scope.$broadcast(ScopeEvent_OpenMainModalPopupDialog, message, type, title);
         }
@@ -1179,13 +233,12 @@ namespace app {
             $scope.$broadcast(ScopeEvent_CloseMainModalPopupDialog);
         }
         constructor($scope: IDialogScope, $rootScope: ng.IScope) {
-            super($scope);
             $scope.title = '';
             $scope.message = '';
             $scope.bodyClass = '';
             $scope.close = () => { $('#mainModalPopupDialog').modal('hide'); };
             $rootScope.$on(ScopeEvent_OpenMainModalPopupDialog, (event: ng.IAngularEvent, message: string, type?: DialogMessageType, title?: string) => {
-                if (isNilOrWhiteSpace(title)) {
+                if (sys.isNilOrWhiteSpace(title)) {
                     switch (type) {
                         case 'warning':
                             $scope.title = 'Warning';
@@ -1202,14 +255,14 @@ namespace app {
                 } else
                     $scope.title = title;
                 $scope.bodyClass = 'modal-body alert alert-' + type;
-                $scope.message = (isNil(message)) ? '' : message;
+                $scope.message = (sys.isNil(message)) ? '' : message;
                 $('#mainModalPopupDialog').modal('show');
             });
             $rootScope.$on(ScopeEvent_CloseMainModalPopupDialog, (event: ng.IAngularEvent) => { $('#mainModalPopupDialog').modal('hide'); });
         }
     }
 
-    MainModule.controller("mainModalPopupDialogController", ['$scope', '$rootScope', mainModalPopupDialogController]);
+    appModule.controller("mainModalPopupDialogController", ['$scope', '$rootScope', mainModalPopupDialogController]);
 
     // #endregion
 
@@ -1229,7 +282,7 @@ namespace app {
                 try {
                     let key: string = this._keys[this._index];
                     let value: string = this._window.sessionStorage.getItem(key);
-                    if (!isNil(value))
+                    if (!sys.isNil(value))
                         return { done: false, value: [key, value] };
                     this._index = this._keys.length;
                 } catch { this._index = this._keys.length; }
@@ -1251,7 +304,7 @@ namespace app {
             else if (this._index < this._keys.length) {
                 try {
                     let value: string = this._window.sessionStorage.getItem(this._keys[this._index]);
-                    if (!isNil(value))
+                    if (!sys.isNil(value))
                         return { done: false, value: value };
                     this._index = this._keys.length;
                 } catch { this._index = this._keys.length; }
@@ -1260,7 +313,7 @@ namespace app {
         }
     }
 
-    export class SessionStorageService implements Map<string, string> {
+    export class sessionStorageService implements Map<string, string> {
         private _allKeys: string[];
         private _parsedKeys: string[];
         private _parsedObjects: (any | null | undefined)[];
@@ -1270,7 +323,7 @@ namespace app {
         get size(): number { return this.$window.sessionStorage.length; }
 
         constructor(private $window: ng.IWindowService) {
-            this[Symbol.toStringTag] = 'SessionStorageService';
+            this[Symbol.toStringTag] = 'sessionStorageService';
             this.check(true);
         }
 
@@ -1312,14 +365,14 @@ namespace app {
         entries(): IterableIterator<[string, string]> { return new SessionStorageEntryEnumerator(this.$window, this._allKeys); }
         [Symbol.iterator](): IterableIterator<[string, string]> { return this.entries(); }
 
-        forEach(callbackfn: (value: string, key: string, map: SessionStorageService) => void, thisArg?: any): void {
+        forEach(callbackfn: (value: string, key: string, map: sessionStorageService) => void, thisArg?: any): void {
             this.check();
             if (typeof (thisArg) === "undefined")
                 this._allKeys.forEach((key: string, index: number) => {
                     if (index < this._allKeys.length && this._allKeys[index] === key) {
                         let value: string | undefined;
                         try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
-                        if (!isNil(value))
+                        if (!sys.isNil(value))
                             callbackfn(value, key, this);
                     }
                 }, this);
@@ -1328,7 +381,7 @@ namespace app {
                     if (index < this._allKeys.length && this._allKeys[index] === key) {
                         let value: string | undefined;
                         try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
-                        if (!isNil(value))
+                        if (!sys.isNil(value))
                             callbackfn.call(thisArg, value, key, this);
                     }
                 }, this);
@@ -1355,7 +408,7 @@ namespace app {
                 return <T>this._parsedObjects[i];
             try {
                 let json: string = this.$window.sessionStorage.getItem(key);
-                if (!app.isNilOrEmpty(json)) {
+                if (!sys.isNilOrEmpty(json)) {
                     let result: T | undefined;
                     if (json !== "undefined")
                         result = <T>(ng.fromJson(json));
@@ -1378,7 +431,7 @@ namespace app {
 
         set(key: string, value: string): any | undefined {
             try {
-                if (isNil(value))
+                if (sys.isNil(value))
                     this.$window.sessionStorage.removeItem(key);
                 else
                     this.$window.sessionStorage.setItem(key, value);
@@ -1414,11 +467,11 @@ namespace app {
         values(): IterableIterator<string> { return new SessionStorageValueEnumerator(this.$window, this._allKeys); }
     }
 
-    MainModule.service("SessionStorageService", ["$window", SessionStorageService]);
+    appModule.service("sessionStorageService", ["$window", sessionStorageService]);
 
     // #endregion
 
-    // #region SetupParameters
+    // #region Target SyStem Configuration Information
 
     export enum cssValidationClass {
         isValid = 'is-valid',
@@ -1430,9 +483,9 @@ namespace app {
         isInvalid = 'is-invalid'
     }
 
-    // #region setupParameterDefinitionsController
+    // #region targetSysConfigEditController
 
-    interface ISetupParameterFieldState extends INestedControllerScope<ISetupParameterDefinitionScope> {
+    interface ISysConfigEditFieldState extends ISysConfigEditScope {
         original: string;
         text: string;
         isValid: boolean;
@@ -1442,28 +495,26 @@ namespace app {
         messageClass: string[];
     }
 
-    interface ISetupParameterDefinitionScope extends INestedControllerScope<IMainControllerScope> {
+    interface ISysConfigEditScope extends ng.IScope {
         serviceNowUrl: string;
         gitRepositoryBaseUrl: string;
         cancel(): void;
         accept(): void;
         close(): void;
-        serviceNowUrlField: ISetupParameterFieldState;
-        gitRepositoryBaseUrlField: ISetupParameterFieldState;
+        serviceNowUrlField: ISysConfigEditFieldState;
+        gitRepositoryBaseUrlField: ISysConfigEditFieldState;
     }
 
-    export class setupParameterDefinitionsController extends MainControllerChild<ISetupParameterDefinitionScope> {
-        constructor($scope: ISetupParameterDefinitionScope, private _settings: setupParameterSettings) {
-            super($scope);
-
-            $scope.serviceNowUrlField = <ISetupParameterFieldState>($scope.$new());
+    export class targetSysConfigEditController implements ng.IController {
+        constructor(protected $scope: ISysConfigEditScope, private _settings: targetSysConfigSettings) {
+            $scope.serviceNowUrlField = <ISysConfigEditFieldState>($scope.$new());
             $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = _settings.serviceNowUrl;
             $scope.serviceNowUrlField.validationMessage = '';
             $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
             $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
             $scope.serviceNowUrlField.isValid = true;
 
-            $scope.gitRepositoryBaseUrlField = <ISetupParameterFieldState>($scope.$new());
+            $scope.gitRepositoryBaseUrlField = <ISysConfigEditFieldState>($scope.$new());
             $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = _settings.gitRepositoryBaseUrl;
             $scope.gitRepositoryBaseUrlField.validationMessage = '';
             $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
@@ -1499,11 +550,13 @@ namespace app {
                     return;
                 }
 
-                $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text = subStringBefore(subStringBefore($scope.serviceNowUrlField.text, '#'), '?');
+                $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text =
+                    sys.subStringBefore(sys.subStringBefore($scope.serviceNowUrlField.text, '#'), '?');
                 $scope.serviceNowUrlField.validationMessage = '';
                 $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
                 $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-                $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.text = subStringBefore(subStringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
+                $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated =
+                    $scope.gitRepositoryBaseUrlField.text = sys.subStringBefore(sys.subStringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
                 $scope.gitRepositoryBaseUrlField.validationMessage = '';
                 $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
                 $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
@@ -1520,12 +573,10 @@ namespace app {
         }
 
         $doCheck() {
-            super.$doCheck();
-
-            [this.$scope.serviceNowUrlField, this.$scope.gitRepositoryBaseUrlField].forEach((item: ISetupParameterFieldState) => {
+            [this.$scope.serviceNowUrlField, this.$scope.gitRepositoryBaseUrlField].forEach((item: ISysConfigEditFieldState) => {
                 if (item.lastValidated === item.text)
                     return;
-                let uri: string = asString(item.text, true, '');
+                let uri: string = sys.asString(item.text, true, '');
                 item.lastValidated = uri;
                 if (uri.length === 0)
                     item.validationMessage = 'URL is required.';
@@ -1543,12 +594,12 @@ namespace app {
                     }
                     let match: RegExpExecArray | null | undefined;
                     if (uri.length > 0)
-                        match = uriParseRegex.exec(uri);
-                    if (isNilOrEmpty(match))
+                        match = sys.uriParseRegex.exec(uri);
+                    if (sys.isNilOrEmpty(match))
                         item.validationMessage = 'Invalid URL.';
-                    else if (isNilOrWhiteSpace(match[uriParseGroup.origin]))
+                    else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.origin]))
                         item.validationMessage = 'URL cannot be relative.';
-                    else if (isNilOrWhiteSpace(match[uriParseGroup.schemeName]) || isNilOrWhiteSpace(match[uriParseGroup.hostname]))
+                    else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.schemeName]) || sys.isNilOrWhiteSpace(match[sys.uriParseGroup.hostname]))
                         item.validationMessage = 'Invalid URL.';
                     else {
                         item.isValid = true;
@@ -1578,30 +629,30 @@ namespace app {
         }
     }
 
-    MainModule.controller("setupParameterDefinitionsController", ['$scope', 'setupParameterSettings', setupParameterDefinitionsController]);
+    appModule.controller("targetSysConfigEditController", ['$scope', 'targetSysConfigSettings', targetSysConfigEditController]);
 
     // #endregion
 
-    // #region setupParameterSettings Service
+    // #region targetSysConfigSettings Service
 
-    interface ISetupParameterSettings {
+    interface ISysConfigSettings {
         serviceNowUrl: string;
         gitRepositoryBaseUrl: string;
     }
 
-    class setupParameterSettings {
-        private _settings: ISetupParameterSettings;
+    class targetSysConfigSettings {
+        private _settings: ISysConfigSettings;
 
         get serviceNowUrl(): string { return this._settings.serviceNowUrl; }
         set serviceNowUrl(value: string) {
             if (value === this._settings.serviceNowUrl)
                 return;
-            if (isNilOrWhiteSpace(value))
+            if (sys.isNilOrWhiteSpace(value))
                 throw new Error("URL cannot be empty.");
-            let parsedUrl: IParsedUriString = parseUriString(value);
-            if (isNil(parsedUrl.origin))
+            let parsedUrl: sys.IParsedUriString = sys.parseUriString(value);
+            if (sys.isNil(parsedUrl.origin))
                 throw new Error("URL cannot be relative.");
-            if (!(isNil(parsedUrl.queryString) && isNil(parsedUrl.fragment) && parsedUrl.path.length == 0)) {
+            if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment) && parsedUrl.path.length == 0)) {
                 if (value === parsedUrl.origin.value)
                     return;
                 this._settings.serviceNowUrl = parsedUrl.origin.value;
@@ -1615,12 +666,12 @@ namespace app {
         set gitRepositoryBaseUrl(value: string) {
             if (value === this._settings.gitRepositoryBaseUrl)
                 return;
-            if (isNilOrWhiteSpace(value))
+            if (sys.isNilOrWhiteSpace(value))
                 throw new Error("URL cannot be empty.");
-            let parsedUrl: IParsedUriString = parseUriString(value);
-            if (isNil(parsedUrl.origin))
+            let parsedUrl: sys.IParsedUriString = sys.parseUriString(value);
+            if (sys.isNil(parsedUrl.origin))
                 throw new Error("URL cannot be relative.");
-            if (!(isNil(parsedUrl.queryString) && isNil(parsedUrl.fragment))) {
+            if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment))) {
                 value = parsedUrl.origin.value + parsedUrl.path;
                 if (value === this._settings.gitRepositoryBaseUrl)
                     return;
@@ -1631,35 +682,35 @@ namespace app {
         }
 
         private raiseUpdated() {
-            this.$rootScope.$emit(ScopeEvent_SetupParameterSettingsChanged, <ISetupParameterSettings>{
+            this.$rootScope.$emit(ScopeEvent_SetupParameterSettingsChanged, <ISysConfigSettings>{
                 serviceNowUrl: this._settings.serviceNowUrl,
                 gitRepositoryBaseUrl: this._settings.gitRepositoryBaseUrl
             });
         }
 
-        onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISetupParameterSettings) => void) { scope.$on(ScopeEvent_SetupParameterSettingsChanged, handler); }
+        onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISysConfigSettings) => void) { scope.$on(ScopeEvent_SetupParameterSettingsChanged, handler); }
 
-        constructor(private $rootScope: ng.IScope, private _sessionStorage: SessionStorageService, $http: ng.IHttpService) {
-            this._settings = _sessionStorage.getObject<ISetupParameterSettings>("setupParameterSettings");
-            if (isNil(this._settings))
+        constructor(private $rootScope: ng.IScope, private _sessionStorage: sessionStorageService, $http: ng.IHttpService) {
+            this._settings = _sessionStorage.getObject<ISysConfigSettings>("targetSysConfigSettings");
+            if (sys.isNil(this._settings))
                 this._settings = { serviceNowUrl: DefaultURL_ServiceNow, gitRepositoryBaseUrl: DefaultURL_GitRepositoryBase };
             else {
-                if (isNilOrWhiteSpace(this._settings.serviceNowUrl))
+                if (sys.isNilOrWhiteSpace(this._settings.serviceNowUrl))
                     this._settings.serviceNowUrl = DefaultURL_ServiceNow;
-                if (isNilOrWhiteSpace(this._settings.gitRepositoryBaseUrl))
+                if (sys.isNilOrWhiteSpace(this._settings.gitRepositoryBaseUrl))
                     this._settings.gitRepositoryBaseUrl = DefaultURL_GitRepositoryBase;
             }
 
-            $http.get("./defaults.json").then((nav: ng.IHttpPromiseCallbackArg<ISetupParameterSettings>) => {
-                if (isNil(nav.data))
+            $http.get("./defaults.json").then((nav: ng.IHttpPromiseCallbackArg<ISysConfigSettings>) => {
+                if (sys.isNil(nav.data))
                     return;
-                if (isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl) {
-                    if (isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl)
+                if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl) {
+                    if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl)
                         return;
                     this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
                 } else {
                     this._settings.serviceNowUrl = nav.data.serviceNowUrl;
-                    if (!isNil(nav.data.serviceNowUrl) && this._settings.serviceNowUrl !== nav.data.serviceNowUrl)
+                    if (!sys.isNil(nav.data.serviceNowUrl) && this._settings.serviceNowUrl !== nav.data.serviceNowUrl)
                         this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
                 }
                 this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
@@ -1668,7 +719,7 @@ namespace app {
         }
     }
 
-    MainModule.factory("setupParameterSettings", ["$rootScope", "SessionStorageService", "$http", setupParameterSettings]);
+    appModule.factory("targetSysConfigSettings", ["$rootScope", "sessionStorageService", "$http", targetSysConfigSettings]);
 
     // #endregion
 

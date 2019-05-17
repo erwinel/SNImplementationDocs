@@ -1270,6 +1270,7 @@
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="incidentManagement.ts" />
     <TypeScriptCompile Include="initialConfig.ts" />
+    <TypeScriptCompile Include="sys.ts" />
     <TypeScriptCompile Include="regexTester.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Test.ts" />

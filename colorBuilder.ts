@@ -1,4 +1,6 @@
-﻿export interface IHasNamedProperties { [index: string]: any }
+/// <reference path="sys.ts" />
+
+export interface IHasNamedProperties { [index: string]: any }
 export interface IColorModelRgb {
     a?: number;
     r: number;
