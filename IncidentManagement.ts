@@ -6,11 +6,11 @@
 /// <reference path="cards.ts" />
 
 namespace inicidentManagment {
-  class InicidentManagmentController extends cards.CardParentController {
-    constructor(protected $scope: cards.ICardContainerScope) {
-      super($scope);
+    class IncidentManagmentController extends cards.CardParentController {
+        constructor(protected $scope: cards.ICardContainerScope) {
+            super($scope);
+        }
     }
-  }
 
-  app.appModule.controller("InicidentManagmentController", ['$scope', InicidentManagmentController]);
+    app.appModule.controller("incidentManagmentController", ['$scope', IncidentManagmentController]);
 }
