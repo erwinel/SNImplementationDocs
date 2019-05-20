@@ -69,7 +69,7 @@ namespace initialConfig {
         static cardName: string = 'incidentManagementConfig';
         constructor($scope: cards.ICardScope) { super($scope, 'Import Incident Management Update Set'); }
     }
-    app.appModule.controller("incidentManagementConfigController", ['$scope', serviceCatalogConfigController]);
+    app.appModule.controller("incidentManagementConfigController", ['$scope', incidentManagementConfigController]);
 
     // #endregion
 }
