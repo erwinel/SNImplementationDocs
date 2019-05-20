@@ -97,7 +97,11 @@
     <Content Include=".gitmodules" />
     <Content Include="gh-pages\ColorEditor.html" />
     <Content Include="gh-pages\DevResources.html" />
+    <Content Include="gh-pages\images\adminSetup\index.html" />
+    <Content Include="gh-pages\images\index.html" />
+    <Content Include="gh-pages\images\InitialConfig\index.html" />
     <Content Include="gh-pages\images\open-iconic\Index.html" />
+    <Content Include="gh-pages\images\snippets\index.html" />
     <Content Include="gh-pages\lib\angular.js\angular-animate.js" />
     <Content Include="gh-pages\lib\angular.js\angular-animate.min.js" />
     <Content Include="gh-pages\lib\angular.js\angular-aria.js" />
@@ -1268,8 +1272,8 @@
     <TypeScriptCompile Include="cards.ts" />
     <TypeScriptCompile Include="colorBuilder.ts" />
     <TypeScriptCompile Include="app.ts" />
-    <TypeScriptCompile Include="incidentManagement.ts" />
-    <TypeScriptCompile Include="initialConfig.ts" />
+    <TypeScriptCompile Include="IncidentManagement.ts" />
+    <TypeScriptCompile Include="InitialConfig.ts" />
     <TypeScriptCompile Include="sys.ts" />
     <TypeScriptCompile Include="regexTester.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />

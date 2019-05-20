@@ -24,6 +24,7 @@ obj/*
 bin/*
 *.csproj.user
 *.suo
+*.cache
 
 # IDE - VSCode
 .vscode/*
@@ -51,3 +52,4 @@ testem.log
 Thumbs.db
 /packages
 /.vscode
+PageManager/obj/Debug/PageManager.csprojAssemblyReference.cache
