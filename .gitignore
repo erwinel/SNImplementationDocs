@@ -21,7 +21,9 @@
 # IDE - Visual Studio
 .vs/*
 obj/*
+PageManager/obj/*
 bin/*
+PageManager/bin/*
 *.csproj.user
 *.suo
 *.cache

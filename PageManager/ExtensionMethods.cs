@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Management.Automation;
 using System.Text.RegularExpressions;
@@ -692,6 +693,30 @@ namespace PageManager
         /// <param name="leafName">The name of the leaf segment or <c>null</c> if the source <seealso cref="Uri"/> is empty or null.</param>
         /// <returns>The parent path of the <see cref="Uri"/> or <c>null</c> if <seealso cref="Uri"/> is relative and contains no path specification.</returns>
         public static string SplitUriPath(this Uri uri, out string leafName) { return SplitUriPath(uri, out leafName); }
+
+        public static QueryParameterCollection ParseQuery(this Uri uri)
+        {
+
+        }
+
+        public static QueryParameterCollection ParseQuery(this string queryParams)
+        {
+            if (queryParams == null)
+                return null;
+            NameValueCollection result = new NameValueCollection();
+            if (queryParams.Length == 0 || queryParams == "?")
+                return result;
+            char[] splitParams = new char[] { '=' };
+            foreach (string[] kvp in ((queryParams[0] == '?') ? queryParams.Substring(1) : queryParams).Split('&').Select(a => a.Split(splitParams, 2)))
+            {
+
+            }
+        }
+
+        public static Uri Combine(this Uri uri, out Uri relativeUri)
+        {
+
+        }
 
         public const string NamespaceURI_Xhtml = "http://www.w3.org/1999/xhtml";
 

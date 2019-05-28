@@ -1255,12 +1255,15 @@
     <Content Include="gh-pages\lib\angular.js\angular.min.js.map" />
     <Content Include="gh-pages\pageNavigation.json" />
     <Content Include="gh-pages\defaults.json" />
+    <Content Include="gh-pages\appConfigData.json" />
     <None Include="packages.config" />
     <Content Include="README.md" />
     <Content Include="tsconfig-old.json" />
     <Content Include="tslint.json" />
     <Content Include="gh-pages\downloads\HTMLTypeScriptApp.vsix" />
     <Content Include="PowerShell\RefreshImageCatalog.ps1" />
+    <None Include="PageManager.bat" />
+    <None Include="PageManager.ps1" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
