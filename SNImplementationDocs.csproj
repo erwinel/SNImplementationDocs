@@ -97,6 +97,7 @@
     <Content Include=".gitmodules" />
     <Content Include="gh-pages\ColorEditor.html" />
     <Content Include="gh-pages\DevResources.html" />
+    <Content Include="gh-pages\downloads\uatstats.txt" />
     <Content Include="gh-pages\images\adminSetup\index.html" />
     <Content Include="gh-pages\images\index.html" />
     <Content Include="gh-pages\images\InitialConfig\index.html" />

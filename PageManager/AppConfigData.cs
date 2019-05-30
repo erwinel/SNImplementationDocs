@@ -85,7 +85,7 @@ namespace PageManager
                 string path = targetPath.ToString();
                 if ((string.IsNullOrEmpty(baseQuery) || !string.IsNullOrEmpty(targetQuery)) && (string.IsNullOrEmpty(baseFragment) || !string.IsNullOrEmpty(targetFragment)))
                 {
-                    if (!(path.StartsWith("/") || basePath.SplitUriPath
+                    throw new NotImplementedException();
                 }
                     return targetUri;
                 if (path.Length == 0 || path == "/")
@@ -107,8 +107,9 @@ namespace PageManager
                     baseUri = uriBuilder.Uri;
                 }
                 if (targetUri.IsAbsoluteUri)
-                    return baseUri
+                    throw new NotImplementedException();
             }
+            throw new NotImplementedException();
         }
         public NavigationItem(Uri baseUri, Uri targetUri)
         {
