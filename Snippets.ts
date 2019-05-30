@@ -36,4 +36,9 @@ namespace snippets {
     }
     app.appModule.controller("forceToUpdateSetNoValidationController", ['$scope', 'copyToClipboardService', ForceToUpdateSetNoValidationController]);
 
+    class MoveToUpdateSetController extends ClipardCardController {
+        constructor($scope: IClipboardCardScope, copyToClipboard: app.copyToClipboardService) { super($scope, copyToClipboard, 'Move To Current Update Set', 'moveToUpdateSet', 'Code copied to clipboard'); }
+    }
+    app.appModule.controller("moveToUpdateSetController", ['$scope', 'copyToClipboardService', MoveToUpdateSetController]);
+
 }
