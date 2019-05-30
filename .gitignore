@@ -21,12 +21,14 @@
 # IDE - Visual Studio
 .vs/*
 obj/*
-PageManager/obj/*
+/PageManager/obj/*
 bin/*
-PageManager/bin/*
+/PageManager/bin/*
 *.csproj.user
 *.suo
+*.csproj.CoreCompileInputs.cache
 *.cache
+*.csprojAssemblyReference.cache
 
 # IDE - VSCode
 .vscode/*

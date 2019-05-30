@@ -99,8 +99,10 @@
     <Content Include="gh-pages\DevResources.html" />
     <Content Include="gh-pages\downloads\uatstats.txt" />
     <Content Include="gh-pages\images\adminSetup\index.html" />
+    <Content Include="gh-pages\images\icons.svg" />
     <Content Include="gh-pages\images\index.html" />
     <Content Include="gh-pages\images\InitialConfig\index.html" />
+    <Content Include="gh-pages\images\open-iconic\clipboard.svg" />
     <Content Include="gh-pages\images\open-iconic\Index.html" />
     <Content Include="gh-pages\images\snippets\index.html" />
     <Content Include="gh-pages\lib\angular.js\angular-animate.js" />
@@ -1014,7 +1016,6 @@
     <Content Include="gh-pages\images\open-iconic\chevron-top.svg" />
     <Content Include="gh-pages\images\open-iconic\circle-check.svg" />
     <Content Include="gh-pages\images\open-iconic\circle-x.svg" />
-    <Content Include="gh-pages\images\open-iconic\clipboard.svg" />
     <Content Include="gh-pages\images\open-iconic\clock.svg" />
     <Content Include="gh-pages\images\open-iconic\cloud-download.svg" />
     <Content Include="gh-pages\images\open-iconic\cloud-upload.svg" />
@@ -1278,6 +1279,7 @@
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="IncidentManagement.ts" />
     <TypeScriptCompile Include="InitialConfig.ts" />
+    <TypeScriptCompile Include="Snippets.ts" />
     <TypeScriptCompile Include="sys.ts" />
     <TypeScriptCompile Include="regexTester.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />

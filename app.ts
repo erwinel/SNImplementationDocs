@@ -471,6 +471,34 @@ namespace app {
 
     // #endregion
 
+    // #region Copy To Clipboard Service
+
+    export class copyToClipboardService {
+        constructor(private $window: ng.IWindowService) { }
+        copy(element: JQuery, successMsg?: string) {
+            try {
+                element.text();
+                let range: Range = this.$window.document.createRange();
+                range.selectNode(element[0]);
+                let selection: Selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                this.$window.document.execCommand('copy');
+                selection.removeAllRanges();
+                if ((typeof successMsg === "string") && (successMsg = successMsg.trim()).length > 0)
+                    alert(successMsg);
+                else
+                    alert('Text copied to clipboard');
+            } catch (ex) {
+                alert('Failed to copy to clipboard: ' + ex);
+            }
+        }
+    }
+
+    appModule.service("copyToClipboardService", ["$window", copyToClipboardService]);
+
+    // #endregion
+
     // #region Target SyStem Configuration Information
 
     export enum cssValidationClass {
