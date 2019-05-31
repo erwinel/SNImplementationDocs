@@ -163,10 +163,6 @@ namespace app {
 
     // #region mainPageController
 
-    //export interface INestedControllerScope<TParent extends IMainControllerScope> extends IMainControllerScope {
-    //    $parent: TParent
-    //}
-
     export interface IMainControllerScope extends ng.IScope {
         serviceNowUrl: string;
         gitRepositoryBaseUrl: string;
@@ -185,7 +181,7 @@ namespace app {
 
         hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
 
-        constructor(protected $scope: IMainControllerScope, protected $location: ng.ILocationService, protected $http: ng.IHttpService, settings: targetSysConfigSettings) {
+        constructor(protected $scope: IMainControllerScope, protected $location: ng.ILocationService, protected $http: ng.IHttpService, protected settings: targetSysConfigSettings) {
             $scope.serviceNowUrl = settings.serviceNowUrl;
             $scope.gitRepositoryBaseUrl = settings.gitRepositoryBaseUrl;
             settings.onChanged($scope, (event: ng.IAngularEvent, value: ISysConfigSettings) => {
@@ -212,7 +208,7 @@ namespace app {
 
     // #endregion
 
-    // #region DialogScope
+    // #region mainModalPopupDialog
 
     export type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
 
@@ -668,7 +664,7 @@ namespace app {
         gitRepositoryBaseUrl: string;
     }
 
-    class targetSysConfigSettings {
+    export class targetSysConfigSettings {
         private _settings: ISysConfigSettings;
 
         get serviceNowUrl(): string { return this._settings.serviceNowUrl; }
@@ -750,6 +746,426 @@ namespace app {
     appModule.factory("targetSysConfigSettings", ["$rootScope", "sessionStorageService", "$http", targetSysConfigSettings]);
 
     // #endregion
+ 
+    // #endregion
+
+    // #region urlBuilderService
+
+    const uriParseRegex: RegExp = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;
+    const originParseRegex: RegExp = /^(([^\\\/@\s?#:]+)(:\/{0,2})((?=[^\\\/@?#:]*(?::[^\\\/@?#:]*)?@)([^\\\/@?#:]*)(:[^\\\/@?#:]*)?@)?(?:([^\\\/@?#\s:]+)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?)?)([\/:])?$/;
+    const schemeNameRegex: RegExp = /^([^\\\/@\s:]+):?$/;
+    const schemeSeparatorRegex: RegExp = /^:(\/\/?)?$/;
+    const hostRegex: RegExp = /^([^\\\/?#@\s"]+)(:\d+)?$/;
+    const fileSystemPathRegex: RegExp = /^([a-z]:([\\\/]([^\\\/?#:]|$)|$)|[\\\/]{2}[^\\\/?#:]+)/i;
+
+    enum uriParseGroup {
+        all = 0,
+        origin = 1,
+        schemeName = 2,
+        schemeSeparator = 3,
+        userInfo = 4,
+        username = 5,
+        password = 6,
+        hostname = 7,
+        portnumber = 8,
+        path = 9
+    }
+
+    /*
+     * https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top
+      └─┬─┘ └───────┬────────────────────┘└─┬─────────────┘└──┬───────────────────────┘└┬─┘
+      scheme     authority                 path              query                      fragment
+    
+      ldap://[2001:db8::7]/c=GB?objectClass?one
+      └─┬┘ └───────┬─────┘└─┬─┘ └──────┬──────┘
+     scheme    authority  path       query
+    
+      mailto:John.Doe@example.com
+      └──┬─┘ └─────────┬────────┘
+      scheme         path
+    
+      news:comp.infosystems.www.servers.unix
+      └─┬┘ └───────────────┬───────────────┘
+     scheme              path
+    
+      tel:+1-816-555-1212
+      └┬┘ └──────┬──────┘
+    scheme     path
+    
+      telnet://192.0.2.16:80/
+      └──┬─┘ └──────┬──────┘│
+      scheme    authority  path
+    
+      urn:oasis:names:specification:docbook:dtd:xml:4.1.2
+     */
+    export interface ISchemaProperties {
+        supportsPath?: boolean;
+        supportsQuery?: boolean;
+        supportsFragment?: boolean;
+        supportsCredentials?: boolean;
+        requiresHost?: boolean;
+        supportsPort?: boolean;
+        requiresUsername?: boolean;
+        schemeSeparator?: string;
+        defaultPort?: number;
+    }
+
+    export class SchemaProperties implements ISchemaProperties {
+        readonly name: string;
+        readonly supportsPath: boolean;
+        readonly supportsQuery: boolean;
+        readonly supportsFragment: boolean;
+        readonly supportsCredentials: boolean;
+        readonly requiresHost: boolean;
+        readonly supportsPort: boolean;
+        readonly requiresUsername: boolean;
+        readonly defaultPort: number;
+        readonly schemeSeparator: string;
+        constructor(name: string, properties?: ISchemaProperties) {
+            this.name = name;
+            if (typeof (properties) === 'undefined' || properties === null) {
+                this.supportsPath = true;
+                this.supportsQuery = true;
+                this.supportsFragment = true;
+                this.supportsCredentials = true;
+                this.requiresHost = false;
+                this.supportsPort = true;
+                this.requiresUsername = false;
+                this.defaultPort = NaN;
+                this.schemeSeparator = "://";
+            } else {
+                this.supportsPath = (typeof (properties.supportsPath) !== 'boolean' || properties.supportsPath === true);
+                this.supportsQuery = (typeof (properties.supportsQuery) !== 'boolean' || properties.supportsQuery === true);
+                this.supportsFragment = (typeof (properties.supportsFragment) !== 'boolean' || properties.supportsFragment === true);
+                this.supportsCredentials = (typeof (properties.supportsCredentials) !== 'boolean' || properties.supportsCredentials === true);
+                this.requiresHost = (typeof (properties.requiresHost) !== 'boolean' || properties.requiresHost === true);
+                this.supportsPort = (typeof (properties.supportsPort) !== 'boolean' || properties.supportsPort === true);
+                this.requiresUsername = (typeof (properties.requiresUsername) === 'boolean' && properties.requiresUsername === true);
+                this.defaultPort = properties.defaultPort;
+                this.schemeSeparator = (typeof (properties.schemeSeparator) == 'string') ? properties.schemeSeparator : "://";
+            }
+        }
+
+        static getSchemaProperties(name: string): SchemaProperties {
+            if (name.endsWith(':'))
+                name = name.substr(0, name.length - 1);
+            switch (name) {
+                case 'ftp':
+                    return SchemaProperties.uriScheme_ftp;
+                case 'ftps':
+                    return SchemaProperties.uriScheme_ftps;
+                case 'sftp':
+                    return SchemaProperties.uriScheme_sftp;
+                case 'http':
+                    return SchemaProperties.uriScheme_http;
+                case 'https':
+                    return SchemaProperties.uriScheme_https;
+                case 'gopher':
+                    return SchemaProperties.uriScheme_gopher;
+                case 'mailto':
+                    return SchemaProperties.uriScheme_mailto;
+                case 'news':
+                    return SchemaProperties.uriScheme_news;
+                case 'nntp':
+                    return SchemaProperties.uriScheme_nntp;
+                case 'telnet':
+                    return SchemaProperties.uriScheme_telnet;
+                case 'wais':
+                    return SchemaProperties.uriScheme_wais;
+                case 'file':
+                    return SchemaProperties.uriScheme_file;
+                case 'net.pipe':
+                    return SchemaProperties.uriScheme_netPipe;
+                case 'net.tcp':
+                    return SchemaProperties.uriScheme_netTcp;
+                case 'ldap':
+                    return SchemaProperties.uriScheme_ldap;
+                case 'ssh':
+                    return SchemaProperties.uriScheme_ssh;
+                case 'git':
+                    return SchemaProperties.uriScheme_git;
+                case 'urn':
+                    return SchemaProperties.uriScheme_urn;
+            }
+            return new SchemaProperties(name);
+        }
+        /**
+         * File Transfer protocol
+         **/
+        static readonly uriScheme_ftp: SchemaProperties = new SchemaProperties("ftp", { supportsQuery: false, supportsFragment: false, defaultPort: 21 });
+        /**
+         * File Transfer protocol (secure)
+         **/
+        static readonly uriScheme_ftps: SchemaProperties = new SchemaProperties("ftps", { supportsQuery: false, supportsFragment: false, defaultPort: 990 });
+        /**
+         * Secure File Transfer Protocol
+         **/
+        static readonly uriScheme_sftp: SchemaProperties = new SchemaProperties("sftp", { supportsQuery: false, supportsFragment: false, defaultPort: 22 });
+        /**
+         * Hypertext Transfer Protocol
+         **/
+        static uriScheme_http: SchemaProperties = new SchemaProperties("http", { defaultPort: 80 });
+        /**
+         * Hypertext Transfer Protocol (secure)
+         **/
+        static uriScheme_https: SchemaProperties = new SchemaProperties("https", { defaultPort: 443 });
+        /**
+         * The Gopher protocol
+         **/
+        static uriScheme_gopher: SchemaProperties = new SchemaProperties("gopher", { defaultPort: 70 });
+        /**
+         * Electronic mail address
+         **/
+        static uriScheme_mailto: SchemaProperties = new SchemaProperties("mailto", { schemeSeparator: ":" });
+        /**
+         * USENET news
+         **/
+        static uriScheme_news: SchemaProperties = new SchemaProperties("news", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" })
+        /**
+         * USENET news using NNTP access
+         **/
+        static uriScheme_nntp: SchemaProperties = new SchemaProperties("nntp", { defaultPort: 119 });
+        /**
+         * Reference to interactive sessions
+         **/
+        static uriScheme_telnet: SchemaProperties = new SchemaProperties("telnet", { supportsPath: false, supportsQuery: false, supportsFragment: false, supportsCredentials: false, defaultPort: 23 });
+        /**
+         * Wide Area Information Servers
+         **/
+        static uriScheme_wais: SchemaProperties = new SchemaProperties("wais", { defaultPort: 443 });
+        /**
+         * Host-specific file names
+         **/
+        static uriScheme_file: SchemaProperties = new SchemaProperties("file", { supportsQuery: false, supportsFragment: false, supportsCredentials: false, requiresHost: false, supportsPort: false });
+        /**
+         * Net Pipe
+         **/
+        static uriScheme_netPipe: SchemaProperties = new SchemaProperties("net.pipe", { supportsPort: false });
+        /**
+         * Net-TCP
+         **/
+        static uriScheme_netTcp: SchemaProperties = new SchemaProperties("net.tcp", { defaultPort: 808 });
+        /**
+         * Lightweight Directory Access Protocol
+         **/
+        static uriScheme_ldap: SchemaProperties = new SchemaProperties("ldap", { defaultPort: 389 });
+        /**
+         * Lightweight Directory Access Protocol
+         **/
+        static uriScheme_ssh: SchemaProperties = new SchemaProperties("ssh", { defaultPort: 22 });
+        /**
+         * GIT Respository
+         **/
+        static uriScheme_git: SchemaProperties = new SchemaProperties("git", { supportsQuery: false, supportsFragment: false, defaultPort: 9418 });;
+        /**
+         * Uniform Resource notation
+         **/
+        static uriScheme_urn: SchemaProperties = new SchemaProperties("urn", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" });
+    }
+
+    export class QueryParameters implements URLSearchParams {
+        append(name: string, value: string): void {
+            throw new Error("Method not implemented.");
+        }
+        delete(name: string): void {
+            throw new Error("Method not implemented.");
+        }
+        get(name: string): string {
+            throw new Error("Method not implemented.");
+        }
+        getAll(name: string): string[] {
+            throw new Error("Method not implemented.");
+        }
+        has(name: string): boolean {
+            throw new Error("Method not implemented.");
+        }
+        set(name: string, value: string): void {
+            throw new Error("Method not implemented.");
+        }
+        sort(): void {
+            throw new Error("Method not implemented.");
+        }
+        forEach(callbackfn: (value: string, key: string, parent: URLSearchParams) => void, thisArg?: any): void {
+            throw new Error("Method not implemented.");
+        }
+        [Symbol.iterator](): IterableIterator<[string, string]> {
+            throw new Error("Method not implemented.");
+        }
+        entries(): IterableIterator<[string, string]> {
+            throw new Error("Method not implemented.");
+        }
+        keys(): IterableIterator<string> {
+            throw new Error("Method not implemented.");
+        }
+        values(): IterableIterator<string> {
+            throw new Error("Method not implemented.");
+        }
+
+
+    }
+
+    export class Uri implements URL {
+        private _href: string = "";
+        private _origin: string = "";
+        private _schemeName: string = "";
+        private _schemeSeparator: string = "";
+        private _username?: string = undefined;
+        private _password?: string = undefined;
+        private _hostname: string = "";
+        private _port?: string = undefined;
+        private _portnumber: number = NaN;
+        private _pathname: string = "";
+        private _search?: string = undefined;
+        private _searchParams: URLSearchParams = new QueryParameters();
+        private _hash?: string = undefined;
+
+        get href(): string { return this._href; };
+        set href(value: string) { this._href = value; }
+
+        get origin(): string { return this._origin; };
+        set origin(value: string) {
+            if ((typeof (value) == "string") && value.trim().length > 0) {
+                let m: RegExpExecArray = originParseRegex.exec(value);
+                if ((typeof m !== "object") || m === null)
+                    throw new Error("Invalid origin");
+                this._origin = m[uriParseGroup.origin];
+                this._schemeName = m[uriParseGroup.schemeName];
+                this._schemeSeparator = m[uriParseGroup.schemeSeparator];
+                this._username = (typeof m[uriParseGroup.username] === "string" || typeof m[uriParseGroup.userInfo] !== "string") ? m[uriParseGroup.username] : "";
+                this._password = m[uriParseGroup.password];
+                this._hostname = m[uriParseGroup.hostname];
+                this._port = m[uriParseGroup.portnumber];
+                let s: string;
+                this._portnumber = NaN;
+                if ((typeof this._port === "string") && (s = this._port.trim()).length > 0) {
+                    try { this._portnumber = parseInt(s); } catch { }
+                    if (typeof this._portnumber !== "number")
+                        this._portnumber = NaN;
+                }
+                if (typeof m[uriParseGroup.path] == "string" && !this._pathname.startsWith("/"))
+                    this._pathname = (this._pathname.length == 0) ? "/" : "/" + this._pathname;
+            } else {
+                if (this._origin.length == 0)
+                    return;
+                this._origin = "";
+            }
+        }
+
+        get protocol(): string { return (typeof (this._schemeName) === "string") ? this._schemeName + this._schemeSeparator.substr(0, 1) : ""; };
+        set protocol(value: string) {
+            if ((typeof (value) == "string") && value.trim().length > 0) {
+                let index: number = value.indexOf(":");
+                if (index >= 0 && index < value.length - 1)
+                    throw new Error("Invalid protocol string");
+                this.schemeName = value;
+            } else
+                this.schemeName = "";
+        }
+
+        get schemeName(): string { return this._schemeName; }
+        set schemeName(value: string) {
+            if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
+                let m: RegExpExecArray = schemeNameRegex.exec(value);
+                if ((typeof m !== "object") || m === null)
+                    throw new Error("Invalid scheme name");
+                this._schemeName = m[1];
+                if (this._schemeSeparator.length == 0)
+                    this._schemeSeparator = SchemaProperties.getSchemaProperties(this._schemeName).schemeSeparator;
+            } else {
+                this._schemeName = this._schemeSeparator = "";
+
+            }
+        }
+
+        get schemeSeparator(): string { return this._schemeSeparator; }
+        set schemeSeparator(value: string) {
+            if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
+                if (!schemeSeparatorRegex.test(value))
+                    throw new Error("Invalid scheme separator");
+                if (this._schemeName.length == 0)
+                    this._schemeName = (value == ":") ? SchemaProperties.uriScheme_urn.name : SchemaProperties.uriScheme_http.name;
+                this._schemeSeparator = value;
+            } else
+                this._schemeName = this._schemeSeparator = "";
+            
+            this._schemeSeparator = value;
+        }
+
+        get username(): string { return this._username; };
+        set username(value: string) { this._username = value; }
+
+        get password(): string { return this._password; };
+        set password(value: string) { this._password = value; }
+
+        get host(): string { return (typeof this._port == "string") ? this._hostname + ":" + this._port : this._hostname; }
+        set host(value: string) {
+            if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
+                let m: RegExpExecArray = hostRegex.exec(value);
+                if ((typeof m !== "object") || m === null)
+                    throw new Error("Invalid host");
+                let p: number = NaN;
+                if (typeof m[2] === "string") {
+                    try { p = parseInt(m[2]); } catch { }
+                    if (p === 0 || p === -1)
+                        p = NaN;
+                    else if (typeof p !== "number" || isNaN(p) || p < 0 || p > 65535)
+                        throw new Error("Invalid port");
+                }
+                this._portnumber = p;
+                this._hostname = m[1];
+            } else
+                this._schemeName = this._schemeSeparator = "";
+
+            this._schemeSeparator = value;
+        }
+
+        get hostname(): string { return this._hostname; };
+        set hostname(value: string) { this._hostname = value; }
+
+        get port(): string { return this._port; };
+        set port(value: string) { this._port = value; }
+
+        get pathname(): string { return this._pathname; };
+        set pathname(value: string) { this._pathname = value; }
+
+        get search(): string { return this._search; };
+        set search(value: string) { this._search = value; }
+
+        get searchParams(): URLSearchParams { return this._searchParams; }
+        set searchParams(value: URLSearchParams) { this._searchParams = value; }
+
+        get hash(): string { return this._hash; }
+        set hash(value: string) { this._hash = value; }
+
+        toJSON(): string {
+            throw new Error("Method not implemented.");
+        }
+        constructor(baseUri: URL | Uri, relativeUri: string | URL | Uri);
+        constructor(uri: URL | Uri | string);
+        constructor(baseUri: string | URL | Uri, relativeUri?: string | URL | Uri) {
+            if ((typeof baseUri === "undefined") || baseUri === null) {
+                if ((typeof relativeUri === "undefined") || relativeUri === null)
+                    baseUri = "";
+            }
+
+            if (typeof (baseUri) === "string" && fileSystemPathRegex.test(baseUri))
+                try {
+                    let parseUrl: URL = new URL(baseUri);
+                    if ((typeof parseUrl === "object") && parseUrl !== null)
+                        baseUri = parseUrl;
+                } catch { }
+
+            let relative: Uri = ((typeof relativeUri !== "undefined") && relativeUri !== null) ? ((relativeUri instanceof Uri) ? relativeUri : new Uri(relativeUri)) : undefined;
+            
+            
+        }
+    }
+
+    export class UriBuilderService {
+
+    }
+
+    appModule.factory("uriBuilderService", ["$rootScope", UriBuilderService]);
 
     // #endregion
 }
