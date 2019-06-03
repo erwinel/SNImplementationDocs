@@ -3,13 +3,6 @@
 /// <reference path="sys.ts" />
 
 namespace regexTester {
-    /**
-    * The main module for this app.
-    *
-    * @type {ng.IModule}
-    */
-    export let regexTesterModule: ng.IModule = angular.module("regexTester", []);
-
     // #region LocalStorageService
 
     export interface IStoredRegex {
@@ -374,5 +367,5 @@ namespace regexTester {
         }
     }
 
-    regexTesterModule.controller("regexTesterController", ["$scope", "localRegexStorageService", regexTesterController]);
+    app.appModule.controller("regexTesterController", ["$scope", "localRegexStorageService", regexTesterController]);
 }

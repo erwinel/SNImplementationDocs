@@ -812,6 +812,7 @@ namespace app {
 
     export class SchemaProperties implements ISchemaProperties {
         readonly name: string;
+        readonly description: string;
         readonly supportsPath: boolean;
         readonly supportsQuery: boolean;
         readonly supportsFragment: boolean;
@@ -821,8 +822,10 @@ namespace app {
         readonly requiresUsername: boolean;
         readonly defaultPort: number;
         readonly schemeSeparator: string;
-        constructor(name: string, properties?: ISchemaProperties) {
+        constructor(name: string, properties?: ISchemaProperties, description?: string) {
             this.name = name;
+            description = ((typeof description !== "string") || (description = description.trim()).length == 0) ? "\"" + name + "\" scheme" : description;
+
             if (typeof (properties) === 'undefined' || properties === null) {
                 this.supportsPath = true;
                 this.supportsQuery = true;
@@ -892,116 +895,142 @@ namespace app {
         /**
          * File Transfer protocol
          **/
-        static readonly uriScheme_ftp: SchemaProperties = new SchemaProperties("ftp", { supportsQuery: false, supportsFragment: false, defaultPort: 21 });
+        static readonly uriScheme_ftp: SchemaProperties = new SchemaProperties("ftp", { supportsQuery: false, supportsFragment: false, defaultPort: 21 }, "File Transfer protocol");
         /**
          * File Transfer protocol (secure)
          **/
-        static readonly uriScheme_ftps: SchemaProperties = new SchemaProperties("ftps", { supportsQuery: false, supportsFragment: false, defaultPort: 990 });
+        static readonly uriScheme_ftps: SchemaProperties = new SchemaProperties("ftps", { supportsQuery: false, supportsFragment: false, defaultPort: 990 }, "File Transfer protocol (secure)");
         /**
          * Secure File Transfer Protocol
          **/
-        static readonly uriScheme_sftp: SchemaProperties = new SchemaProperties("sftp", { supportsQuery: false, supportsFragment: false, defaultPort: 22 });
+        static readonly uriScheme_sftp: SchemaProperties = new SchemaProperties("sftp", { supportsQuery: false, supportsFragment: false, defaultPort: 22 }, "Secure File Transfer Protocol");
         /**
          * Hypertext Transfer Protocol
          **/
-        static uriScheme_http: SchemaProperties = new SchemaProperties("http", { defaultPort: 80 });
+        static uriScheme_http: SchemaProperties = new SchemaProperties("http", { defaultPort: 80 }, "Hypertext Transfer Protocol");
         /**
          * Hypertext Transfer Protocol (secure)
          **/
-        static uriScheme_https: SchemaProperties = new SchemaProperties("https", { defaultPort: 443 });
+        static uriScheme_https: SchemaProperties = new SchemaProperties("https", { defaultPort: 443 }, "Hypertext Transfer Protocol (secure)");
         /**
-         * The Gopher protocol
+         * Gopher protocol
          **/
-        static uriScheme_gopher: SchemaProperties = new SchemaProperties("gopher", { defaultPort: 70 });
+        static uriScheme_gopher: SchemaProperties = new SchemaProperties("gopher", { defaultPort: 70 }, "Gopher protocol");
         /**
          * Electronic mail address
          **/
-        static uriScheme_mailto: SchemaProperties = new SchemaProperties("mailto", { schemeSeparator: ":" });
+        static uriScheme_mailto: SchemaProperties = new SchemaProperties("mailto", { schemeSeparator: ":" }, "Electronic mail address");
         /**
          * USENET news
          **/
-        static uriScheme_news: SchemaProperties = new SchemaProperties("news", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" })
+        static uriScheme_news: SchemaProperties = new SchemaProperties("news", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" }, "USENET news")
         /**
          * USENET news using NNTP access
          **/
-        static uriScheme_nntp: SchemaProperties = new SchemaProperties("nntp", { defaultPort: 119 });
+        static uriScheme_nntp: SchemaProperties = new SchemaProperties("nntp", { defaultPort: 119 }, "USENET news using NNTP access");
         /**
          * Reference to interactive sessions
          **/
-        static uriScheme_telnet: SchemaProperties = new SchemaProperties("telnet", { supportsPath: false, supportsQuery: false, supportsFragment: false, supportsCredentials: false, defaultPort: 23 });
+        static uriScheme_telnet: SchemaProperties = new SchemaProperties("telnet", { supportsPath: false, supportsQuery: false, supportsFragment: false, supportsCredentials: false, defaultPort: 23 }, "Reference to interactive sessions");
         /**
          * Wide Area Information Servers
          **/
-        static uriScheme_wais: SchemaProperties = new SchemaProperties("wais", { defaultPort: 443 });
+        static uriScheme_wais: SchemaProperties = new SchemaProperties("wais", { defaultPort: 443 }, "Wide Area Information Servers");
         /**
          * Host-specific file names
          **/
-        static uriScheme_file: SchemaProperties = new SchemaProperties("file", { supportsQuery: false, supportsFragment: false, supportsCredentials: false, requiresHost: false, supportsPort: false });
+        static uriScheme_file: SchemaProperties = new SchemaProperties("file", { supportsQuery: false, supportsFragment: false, supportsCredentials: false, requiresHost: false, supportsPort: false }, "Host-specific file names");
         /**
          * Net Pipe
          **/
-        static uriScheme_netPipe: SchemaProperties = new SchemaProperties("net.pipe", { supportsPort: false });
+        static uriScheme_netPipe: SchemaProperties = new SchemaProperties("net.pipe", { supportsPort: false }, "Net Pipe");
         /**
          * Net-TCP
          **/
-        static uriScheme_netTcp: SchemaProperties = new SchemaProperties("net.tcp", { defaultPort: 808 });
+        static uriScheme_netTcp: SchemaProperties = new SchemaProperties("net.tcp", { defaultPort: 808 }, "Net-TCP");
         /**
          * Lightweight Directory Access Protocol
          **/
-        static uriScheme_ldap: SchemaProperties = new SchemaProperties("ldap", { defaultPort: 389 });
+        static uriScheme_ldap: SchemaProperties = new SchemaProperties("ldap", { defaultPort: 389 }, "Lightweight Directory Access Protocol");
         /**
-         * Lightweight Directory Access Protocol
+         * Secure Shell
          **/
-        static uriScheme_ssh: SchemaProperties = new SchemaProperties("ssh", { defaultPort: 22 });
+        static uriScheme_ssh: SchemaProperties = new SchemaProperties("ssh", { defaultPort: 22 }, "Secure Shell");
         /**
          * GIT Respository
          **/
-        static uriScheme_git: SchemaProperties = new SchemaProperties("git", { supportsQuery: false, supportsFragment: false, defaultPort: 9418 });;
+        static uriScheme_git: SchemaProperties = new SchemaProperties("git", { supportsQuery: false, supportsFragment: false, defaultPort: 9418 }, "GIT Respository");
         /**
          * Uniform Resource notation
          **/
-        static uriScheme_urn: SchemaProperties = new SchemaProperties("urn", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" });
+        static uriScheme_urn: SchemaProperties = new SchemaProperties("urn", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" }, "Uniform Resource notation");
     }
 
     export class QueryParameters implements URLSearchParams {
+        constructor(params?: string | URLSearchParams) {
+            throw new Error("Not Implemented");
+            // TODO: Implement QueryParameters constructor.
+        }
+
         append(name: string, value: string): void {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.append().
         }
+
         delete(name: string): void {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.delete().
         }
+
         get(name: string): string {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.get().
         }
+
         getAll(name: string): string[] {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.getAll().
         }
+
         has(name: string): boolean {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.has().
         }
+
         set(name: string, value: string): void {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.set().
         }
+
         sort(): void {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.sort().
         }
+
         forEach(callbackfn: (value: string, key: string, parent: URLSearchParams) => void, thisArg?: any): void {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.forEach().
         }
+
         [Symbol.iterator](): IterableIterator<[string, string]> {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.iterator().
         }
+
         entries(): IterableIterator<[string, string]> {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.entries().
         }
+
         keys(): IterableIterator<string> {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.keys().
         }
+
         values(): IterableIterator<string> {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.values().
         }
-
-
     }
 
     export class Uri implements URL {
@@ -1019,6 +1048,7 @@ namespace app {
         private _searchParams: URLSearchParams = new QueryParameters();
         private _hash?: string = undefined;
 
+        // TODO: Implement QueryParameters.href.
         get href(): string { return this._href; };
         set href(value: string) { this._href = value; }
 
@@ -1051,6 +1081,7 @@ namespace app {
             }
         }
 
+        // TODO: Implement QueryParameters.protocol.
         get protocol(): string { return (typeof (this._schemeName) === "string") ? this._schemeName + this._schemeSeparator.substr(0, 1) : ""; };
         set protocol(value: string) {
             if ((typeof (value) == "string") && value.trim().length > 0) {
@@ -1062,6 +1093,7 @@ namespace app {
                 this.schemeName = "";
         }
 
+        // TODO: Implement QueryParameters.schemeName.
         get schemeName(): string { return this._schemeName; }
         set schemeName(value: string) {
             if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
@@ -1077,6 +1109,7 @@ namespace app {
             }
         }
 
+        // TODO: Implement QueryParameters.schemeSeparator.
         get schemeSeparator(): string { return this._schemeSeparator; }
         set schemeSeparator(value: string) {
             if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
@@ -1091,12 +1124,15 @@ namespace app {
             this._schemeSeparator = value;
         }
 
+        // TODO: Implement QueryParameters.username.
         get username(): string { return this._username; };
         set username(value: string) { this._username = value; }
 
+        // TODO: Implement QueryParameters.password.
         get password(): string { return this._password; };
         set password(value: string) { this._password = value; }
 
+        // TODO: Implement QueryParameters.host.
         get host(): string { return (typeof this._port == "string") ? this._hostname + ":" + this._port : this._hostname; }
         set host(value: string) {
             if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
@@ -1119,45 +1155,69 @@ namespace app {
             this._schemeSeparator = value;
         }
 
+        // TODO: Implement QueryParameters.hostname.
         get hostname(): string { return this._hostname; };
         set hostname(value: string) { this._hostname = value; }
 
+        // TODO: Implement QueryParameters.port.
         get port(): string { return this._port; };
         set port(value: string) { this._port = value; }
 
+        // TODO: Implement QueryParameters.pathname.
         get pathname(): string { return this._pathname; };
         set pathname(value: string) { this._pathname = value; }
 
+        // TODO: Implement QueryParameters.search.
         get search(): string { return this._search; };
         set search(value: string) { this._search = value; }
 
+        // TODO: Implement QueryParameters.searchParams.
         get searchParams(): URLSearchParams { return this._searchParams; }
         set searchParams(value: URLSearchParams) { this._searchParams = value; }
 
+        // TODO: Implement QueryParameters.hash.
         get hash(): string { return this._hash; }
         set hash(value: string) { this._hash = value; }
 
+        // TODO: Implement QueryParameters.toJSON().
         toJSON(): string {
             throw new Error("Method not implemented.");
         }
+
         constructor(baseUri: URL | Uri, relativeUri: string | URL | Uri);
         constructor(uri: URL | Uri | string);
         constructor(baseUri: string | URL | Uri, relativeUri?: string | URL | Uri) {
-            if ((typeof baseUri === "undefined") || baseUri === null) {
-                if ((typeof relativeUri === "undefined") || relativeUri === null)
+            if ((typeof baseUri === "undefined") || ((typeof baseUri !== "string") && ((typeof baseUri !== "object") || baseUri === null))) {
+                if ((typeof relativeUri === "undefined") || ((typeof relativeUri !== "string") && ((typeof relativeUri !== "object") || relativeUri === null)))
                     baseUri = "";
+                else
+                    baseUri = relativeUri;
+                relativeUri = undefined;
             }
 
-            if (typeof (baseUri) === "string" && fileSystemPathRegex.test(baseUri))
-                try {
-                    let parseUrl: URL = new URL(baseUri);
-                    if ((typeof parseUrl === "object") && parseUrl !== null)
-                        baseUri = parseUrl;
-                } catch { }
+            if (typeof baseUri === "string") {
+                // TODO: Implement QueryParameters constructor(string, *).
 
-            let relative: Uri = ((typeof relativeUri !== "undefined") && relativeUri !== null) ? ((relativeUri instanceof Uri) ? relativeUri : new Uri(relativeUri)) : undefined;
-            
-            
+            } else if (baseUri instanceof Uri) {
+                this._href = baseUri._href;
+                this._origin = baseUri._origin;
+                this._schemeName = baseUri._href;
+                this._schemeSeparator = baseUri._schemeSeparator;
+                this._username = baseUri._username;
+                this._password = baseUri._password;
+                this._hostname = baseUri._hostname;
+                this._port = baseUri._port;
+                this._portnumber = baseUri._portnumber;
+                this._pathname = baseUri._pathname;
+                this._search = baseUri._search;
+                this._searchParams = new QueryParameters(baseUri._searchParams);
+                this._hash = baseUri._hash;
+            } else {
+                // TODO: Implement QueryParameters constructor(Uri, *).
+
+            }
+
+                // TODO: Implement QueryParameters constructor(*, relative).
         }
     }
 

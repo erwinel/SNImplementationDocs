@@ -9,8 +9,8 @@ namespace snippets {
     app.appModule.controller("snippetsController", ['$scope', cards.CardParentController]);
 
     interface IClipboardCardScope extends cards.ICardScope {
-        copyToClipboard(): boolean;
         contentElementId: string;
+        copyContentToClipboard(): boolean;
     }
 
     abstract class ClipardCardController extends cards.CardController {
@@ -18,26 +18,43 @@ namespace snippets {
             super($scope, headingText);
             let controller: ClipardCardController = this;
             $scope.contentElementId = contentElementId;
-            $scope.copyToClipboard = () => { return controller.copyToClipboard(); }
+            $scope.copyContentToClipboard = () => { return controller.copyContentToClipboard(); }
         }
-        copyToClipboard(): boolean {
+        copyContentToClipboard(): boolean {
             this.copyToClipboardService.copy($("#" + this.contentElementId), this.copyToClipboardSuccessMsg);
             return false;
         }
     }
 
-    class ForceToUpdateSetWithValidationController extends ClipardCardController {
-        constructor($scope: IClipboardCardScope, copyToClipboard: app.copyToClipboardService) { super($scope, copyToClipboard, 'Force To Update Set', 'forceToUpdateSetWithValidation', 'Code copied to clipboard'); }
+    interface IClipboardWithConditionCardScope extends IClipboardCardScope {
+        conditionElementId: string;
+        copyConditionToClipboard(): boolean;
+    }
+    abstract class ClipboardWithConditionCardController extends ClipardCardController {
+        constructor($scope: IClipboardCardScope, copyToClipboardService: app.copyToClipboardService, headingText: string, contentElementId: string, public readonly conditionElementId: string, copyToClipboardSuccessMsg?: string) {
+            super($scope, copyToClipboardService, headingText, contentElementId, copyToClipboardSuccessMsg);
+            $scope.conditionElementId = conditionElementId;
+            let controller: ClipboardWithConditionCardController = this;
+            $scope.copyConditionToClipboard = () => { return controller.copyConditionToClipboard(); }
+        }
+        copyConditionToClipboard(): boolean {
+            this.copyToClipboardService.copy($("#" + this.conditionElementId));
+            return false;
+        }
+    }
+
+    class ForceToUpdateSetWithValidationController extends ClipboardWithConditionCardController {
+        constructor($scope: IClipboardCardScope, copyToClipboard: app.copyToClipboardService) { super($scope, copyToClipboard, 'Force To Update Set', 'forceToUpdateSet1Content', 'forceToUpdateSet1Condition', 'Code copied to clipboard'); }
     }
     app.appModule.controller("forceToUpdateSetWithValidationController", ['$scope', 'copyToClipboardService', ForceToUpdateSetWithValidationController]);
 
-    class ForceToUpdateSetNoValidationController extends ClipardCardController {
-        constructor($scope: IClipboardCardScope, copyToClipboard: app.copyToClipboardService) { super($scope, copyToClipboard, 'Force To Update Set (no validation)', 'forceToUpdateSetNoValidation', 'Code copied to clipboard'); }
+    class ForceToUpdateSetNoValidationController extends ClipboardWithConditionCardController {
+        constructor($scope: IClipboardCardScope, copyToClipboard: app.copyToClipboardService) { super($scope, copyToClipboard, 'Force To Update Set (no validation)', 'forceToUpdateSet2Content', 'forceToUpdateSet2Condition', 'Code copied to clipboard'); }
     }
     app.appModule.controller("forceToUpdateSetNoValidationController", ['$scope', 'copyToClipboardService', ForceToUpdateSetNoValidationController]);
 
-    class MoveToUpdateSetController extends ClipardCardController {
-        constructor($scope: IClipboardCardScope, copyToClipboard: app.copyToClipboardService) { super($scope, copyToClipboard, 'Move To Current Update Set', 'moveToUpdateSet', 'Code copied to clipboard'); }
+    class MoveToUpdateSetController extends ClipboardWithConditionCardController {
+        constructor($scope: IClipboardCardScope, copyToClipboard: app.copyToClipboardService) { super($scope, copyToClipboard, 'Move To Current Update Set', 'moveToUpdateSetContent', 'moveToUpdateSetCondition', 'Code copied to clipboard'); }
     }
     app.appModule.controller("moveToUpdateSetController", ['$scope', 'copyToClipboardService', MoveToUpdateSetController]);
 

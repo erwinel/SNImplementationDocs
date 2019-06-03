@@ -1199,7 +1199,7 @@
     <Content Include="gh-pages\Snippets.html" />
     <Content Include="gh-pages\Test.html" />
     <Content Include="gh-pages\theme.css" />
-    <Content Include="gh-pages\UriParser.html" />
+    <Content Include="gh-pages\URIBuilder.html" />
     <Content Include="Web.config" />
     <Content Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <Content Include="Scripts\typings\angularjs\angular-component-router.d.ts" />
