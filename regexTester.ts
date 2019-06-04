@@ -131,7 +131,6 @@ namespace regexTester {
 
         constructor(protected $scope: IRegexTesterControllerScope, protected storageSvc: localRegexStorageService) {
             let controller: regexTesterController = this;
-
             $scope.inputItems = [];
             this.addInputItem();
             $scope.inputPattern = this._inputPattern;
