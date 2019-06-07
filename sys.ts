@@ -62,6 +62,8 @@ namespace sys {
         return ((typeof (opt) === "boolean") ? opt : trim === true) ? value.trim() : value;
     }
 
+    export function stringFormat(format: string, ...args: any[]) { return format.replace(/\{(\d+)\}/g, (subString: string, g: string) => args[parseInt(g)]); }
+
     /**
      * Ensures that a value is a string, converting it if necessary.
      * @param {*} value Value to assert.

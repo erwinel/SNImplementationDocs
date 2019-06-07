@@ -1275,12 +1275,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="cards.ts" />
-    <TypeScriptCompile Include="ChangeManagement.ts" />
+    <TypeScriptCompile Include="accordionGroup.ts" />
     <TypeScriptCompile Include="colorBuilder.ts" />
     <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="commonServiceNowDefinitions.ts" />
     <TypeScriptCompile Include="IncidentManagement.ts" />
-    <TypeScriptCompile Include="InitialConfig.ts" />
     <TypeScriptCompile Include="Snippets.ts" />
     <TypeScriptCompile Include="sys.ts" />
     <TypeScriptCompile Include="regexTester.ts" />

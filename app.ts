@@ -1228,4 +1228,64 @@ namespace app {
     appModule.factory("uriBuilderService", ["$rootScope", UriBuilderService]);
 
     // #endregion
+
+    // #region notificationMessageService
+
+    export enum NotificationMessageType {
+        error,
+        warning,
+        info
+    }
+
+    export interface INotificationMessage {
+        type: NotificationMessageType;
+        title?: string;
+        message: string;
+    }
+
+    export class NotificationMessageService {
+        private _messages: INotificationMessage[] = [];
+
+        constructor(public readonly $log: ng.ILogService) { }
+        
+        addNotificationMessage(message: string, title: string, type: NotificationMessageType): void;
+        addNotificationMessage(message: string, type: NotificationMessageType): void;
+        addNotificationMessage(message: string, title: string): void;
+        addNotificationMessage(message: string): void;
+        addNotificationMessage(message: string, title?: string | NotificationMessageType, type?: NotificationMessageType): void {
+            if (typeof title === "number") {
+                type = title;
+                title = undefined;
+            }
+            if (typeof type !== "number" || (type !== NotificationMessageType.error && type !== NotificationMessageType.warning && type !== NotificationMessageType.info))
+                type = NotificationMessageType.info;
+
+            this._messages.push({
+                type: type,
+                title: (typeof title !== "string" || (title = title.trim()).length == 0) ? (type === NotificationMessageType.error) ? "Error" : ((type === NotificationMessageType.warning) ? "Warning" : "Notice") : title,
+                message: message
+            });
+        }
+        getMessages(type: NotificationMessageType, clear: boolean): INotificationMessage[];
+        getMessages(type: NotificationMessageType): INotificationMessage[];
+        getMessages(clear: boolean): INotificationMessage[];
+        getMessages(): INotificationMessage[];
+        getMessages(type?: NotificationMessageType | boolean, clear?: boolean): INotificationMessage[] {
+            let result: INotificationMessage[] = this._messages;
+            if (typeof type === "boolean")
+                clear = type;
+            else if (typeof type === "number" && (type === NotificationMessageType.error || type === NotificationMessageType.warning || type === NotificationMessageType.info)) {
+                if (clear === true)
+                    this._messages = result.filter((item: INotificationMessage) => item.type !== type);
+                return result.filter((item: INotificationMessage) => item.type === type);
+            }
+            if (clear === true)
+                this._messages = [];
+            return result;
+        }
+    }
+
+    appModule.factory("notificationMessageService", ["$log", NotificationMessageService]);
+
+    // #endregion
 }
