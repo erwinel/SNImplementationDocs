@@ -903,6 +903,7 @@
     <Content Include="gh-pages\Template\collapsibleCardL2.htm" />
     <Content Include="gh-pages\Template\collapsibleCardL3.htm" />
     <Content Include="gh-pages\Template\mainAppPageHead.htm" />
+    <Content Include="gh-pages\Template\regexGroupContent.htm" />
     <Content Include="index.html" />
     <Content Include="PowerShell\pagetemplate.xml" />
     <Content Include="PowerShell\sys_properties_config.html" />
