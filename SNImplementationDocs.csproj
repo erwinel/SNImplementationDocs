@@ -898,6 +898,7 @@
     <Content Include="gh-pages\lib\twitter-bootstrap\js\bootstrap.js" />
     <Content Include="gh-pages\lib\twitter-bootstrap\js\bootstrap.min.js" />
     <Content Include="gh-pages\RegexTester.html" />
+    <Content Include="gh-pages\SiteDesignNotes.html" />
     <Content Include="gh-pages\Template\collapsibleCardL0.htm" />
     <Content Include="gh-pages\Template\collapsibleCardL1.htm" />
     <Content Include="gh-pages\Template\collapsibleCardL2.htm" />

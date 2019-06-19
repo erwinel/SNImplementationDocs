@@ -450,7 +450,7 @@ namespace app {
                 if (typeof (value) === "undefined")
                     this.$window.sessionStorage.setItem(key, "undefined");
                 else
-                    this.$window.sessionStorage.setItem(key, ng.toJson(value, false));
+                    this.$window.sessionStorage.setItem(key, angular.toJson(value, false));
                 let i: number = this._parsedKeys.indexOf(key);
                 if (i < 0) {
                     this._parsedKeys.push(key);
@@ -469,7 +469,7 @@ namespace app {
 
     // #region Copy To Clipboard Service
 
-    export class copyToClipboardService {
+    export class CopyToClipboardService {
         constructor(private $window: ng.IWindowService) { }
         copy(element: JQuery, successMsg?: string) {
             try {
@@ -491,7 +491,75 @@ namespace app {
         }
     }
 
-    appModule.service("copyToClipboardService", ["$window", copyToClipboardService]);
+    appModule.service("copyToClipboardService", ["$window", CopyToClipboardService]);
+
+    // #endregion
+
+    // #region copyToClipboardButton directive <copy-to-clipboard-button target="id" class="" success-message=""></copy-to-clipboard-button>
+
+    interface ICopyToClipboardButtonAttributes extends ng.IAttributes {
+        class?: string;
+        target: string;
+        successMessage?: string;
+    }
+
+    interface IClipboardCopyScope extends ng.IScope {
+        clipboardCopyController: ClipboardCopyController;
+    }
+    
+    const btnCssClassRe: RegExp = /(^|\s)btn(\s|$)/g;
+    const btnStyleCssClassRe: RegExp = /(^|\s)btn-\S/g;
+    const paddingCssClassRe: RegExp = /(^|\s)p(l|t|r|b)?-\S/g;
+
+    class ClipboardCopyController implements ng.IController {
+        private _cssClass: string[];
+        private _targetId: string;
+        private _successMessage?: string;
+
+        get cssClass(): string[] { return this._cssClass; }
+
+        get targetId(): string { return this._targetId; }
+
+        constructor(public $scope: IClipboardCopyScope, public copyToClipboardService: CopyToClipboardService) {
+
+        }
+
+        copyToClipboard(): void { this.copyToClipboardService.copy($("#" + this._targetId), this._successMessage); }
+
+        static createDirective(): ng.IDirective {
+            return {
+                restrict: "E",
+                controllerAs: "clipboardCopyController",
+                controller: ["$scope", "copyToClipboardService", ClipboardCopyController],
+                replace: true,
+                template: '<button ng-click="clipboardCopyController.copyToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>',
+                link: (scope: IClipboardCopyScope, element: JQuery, attr: ICopyToClipboardButtonAttributes, controller: ng.IController) => {
+                    scope.clipboardCopyController.initialize(attr.target, attr.successMessage, attr.class);
+                }
+            };
+        }
+
+        initialize(targetId: string, successMessage?: string, cssClass?: string) {
+            this._targetId = targetId;
+            this._successMessage = successMessage;
+            if (typeof cssClass === "string" && (cssClass = cssClass.trim()).length > 0) {
+                this._cssClass = sys.unique(cssClass.split(sys.whitespaceRe));
+                if (this._cssClass.indexOf('btn') < 0)
+                    this._cssClass.unshift('btn');
+                if (!btnStyleCssClassRe.test(cssClass)) {
+                    this._cssClass.push("btn-light");
+                    this._cssClass.push("btn-outline-dark");
+                }
+                if (!paddingCssClassRe.test(cssClass))
+                    this._cssClass.push("p-1");
+            } else
+                this._cssClass = ['btn', 'btn-light', 'btn-outline-dark', 'p-1'];
+        }
+
+        $onInit() { }
+    }
+
+    app.appModule.directive("copyToClipboardButton", ClipboardCopyController.createDirective);
 
     // #endregion
 

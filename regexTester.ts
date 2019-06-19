@@ -434,7 +434,7 @@ namespace regexTester {
     //    setInputRowCount(inc: boolean): void;
     //}
 
-    interface ITestMatchGroup { index: number; statusMessage: string; success: boolean; value: string; cssClass: string[] };
+    interface ITestMatchGroup { index: number; statusMessage: string; success: boolean; value: string; cssClass: string[] }
 
     class TestStringItem {
         private readonly _itemNumber: number;
@@ -472,7 +472,7 @@ namespace regexTester {
                 try { resolve(item.evaluateRegex(regex, value)); } catch (e) { reject(e); }
             }).then((results: { matchIndex: number, groups: ITestMatchGroup[] }) => {
                 item.onEvaluated(value, regex, results);
-                this._owner.hasEvaluations = true;
+                item._owner.hasEvaluations = true;
             }, (reason: any) => { item.onError(reason); });
         }
 
@@ -562,7 +562,7 @@ namespace regexTester {
             if (sys.isNil(reason))
                 this._statusMessage = "Match evaluation error";
             else
-                this._statusMessage = "Match evaluation error: " + ((typeof reason === "string") ? reason : (((typeof reason === "object") ? ng.toJson(reason) : sys.asString(reason))));
+                this._statusMessage = "Match evaluation error: " + ((typeof reason === "string") ? reason : (((typeof reason === "object") ? angular.toJson(reason) : sys.asString(reason))));
             this._matchIndex = -1;
         }
 
@@ -625,9 +625,9 @@ namespace regexTester {
         private _validationClass: string[] = [];
         private _areEvaluationsVisible: boolean = false;
         private _hasEvaluations: boolean = false;
-        private _sessionLoadMessage: string;
-        private _sessionSaveMessage: string;
-        private _inputRowCount: number;
+        private _sessionLoadMessage: string = "";
+        private _sessionSaveMessage: string = "";
+        private _inputRowCount: number = 3;
 
         get regex(): RegExp | undefined { return this._regex; }
 
@@ -653,9 +653,9 @@ namespace regexTester {
 
         get inputRowCount(): number { return this._inputRowCount; }
 
-        get canIncreaseInputRows(): boolean { return this._inputRowCount < 25 && !this._ignoreWhitespace; }
+        get canIncreaseInputRows(): boolean { return this._inputRowCount < 25 && this._ignoreWhitespace; }
 
-        get canDecreaseInputRows(): boolean { return this._inputRowCount > 3 && !this._ignoreWhitespace; }
+        get canDecreaseInputRows(): boolean { return this._inputRowCount > 3 && this._ignoreWhitespace; }
 
         get inputItems(): TestStringItem[] { return this._inputItems; }
 
@@ -863,7 +863,7 @@ namespace regexTester {
                     controller._validationClass = [];
                 this._hasEvaluations = true;
             }, (reason: any) => {
-                    controller._patternParseError = "Pattern parse error: " + ((typeof reason === "string") ? reason : (((typeof reason === "object") ? ng.toJson(reason) : sys.asString(reason))));
+                    controller._patternParseError = "Pattern parse error: " + ((typeof reason === "string") ? reason : (((typeof reason === "object") ? angular.toJson(reason) : sys.asString(reason))));
                     controller._validationClass = ['alert', 'alert-danger'];
             });
         }

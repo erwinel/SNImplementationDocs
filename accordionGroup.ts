@@ -16,7 +16,7 @@ namespace accordionGroup {
         state?: any;
     }
 
-    class AccordionGroupController {
+    class AccordionGroupController implements ng.IController {
         private _state: IAccordionGroupItemState[] = [];
         private _current: string | undefined = undefined;
 
@@ -29,7 +29,7 @@ namespace accordionGroup {
             }
         }
 
-        add(name: string, showHideCallback: IShowHideCallback, state?: any): number {
+        add(name: string, showHideCallback: IShowHideCallback, autoExpand?: boolean, state?: any): number {
             if (typeof name !== "string")
                 name = "";
             let id: number = this._state.length;
@@ -37,12 +37,30 @@ namespace accordionGroup {
                 while (typeof (this.get(id)) !== "undefined")
                     id--;
             }
-            this._state.push({ id: id, callback: showHideCallback, name: name, state: state });
             if (this._state.length == 1) {
+                this._state.push({ id: id, callback: showHideCallback, name: name, state: state });
+                if (typeof autoExpand === "boolean" && !autoExpand)
+                    showHideCallback(false, state);
+                else {
+                    this._current = name;
+                    showHideCallback(true, state);
+                }
+            } else if (typeof autoExpand === "boolean" && autoExpand) {
+                this._current = undefined;
+                if (typeof this._current === "string") {
+                    let toHide: IAccordionGroupItemState[] = this.find(this._current);
+                    toHide.forEach((item: IAccordionGroupItemState) => item.callback(false, item.state));
+                }
+                let toShow: IAccordionGroupItemState[] = this.find(name);
                 this._current = name;
-                showHideCallback(true);
-            } else
+                if (toShow.length > 0)
+                    toShow.forEach((item: IAccordionGroupItemState) => item.callback(true, item.state));
+                this._state.push({ id: id, callback: showHideCallback, name: name, state: state });
+                showHideCallback(true, state);
+            } else {
+                this._state.push({ id: id, callback: showHideCallback, name: name, state: state });
                 showHideCallback(this._current === name);
+            }
             return id;
         }
 
@@ -71,9 +89,9 @@ namespace accordionGroup {
             let toShow: IAccordionGroupItemState[] = this.find(name);
             if (toShow.length == 0)
                 return;
-            toHide.forEach((item: IAccordionGroupItemState) => item.callback(false));
+            toHide.forEach((item: IAccordionGroupItemState) => item.callback(false, item.state));
             this._current = name;
-            toShow.forEach((item: IAccordionGroupItemState) => item.callback(true));
+            toShow.forEach((item: IAccordionGroupItemState) => item.callback(true, item.state));
         }
 
         hide(name: string): void {
@@ -82,7 +100,7 @@ namespace accordionGroup {
             if (name !== this._current || this._state.length == 0)
                 return;
             this._current = undefined;
-            this.find(name).forEach((toHide: IAccordionGroupItemState) => toHide.callback(false));
+            this.find(name).forEach((toHide: IAccordionGroupItemState) => toHide.callback(false, toHide.state));
         }
 
         toggle(name: string): void {
@@ -93,6 +111,8 @@ namespace accordionGroup {
             else
                 this.show(name);
         }
+
+        $onInit(): void { }
     }
 
     app.appModule.directive("accordionGroup", () => <ng.IDirective>{
@@ -104,10 +124,19 @@ namespace accordionGroup {
 
     // #region accordion-group-toggle-on-click
 
-    interface IAccordionGroupToggleOnClickAttributes extends ng.IAttributes { accordionGroupToggleOnClick: string; }
+    interface IAccordionGroupToggleOnClickAttributes extends ng.IAttributes { accordionGroupToggleOnClick: string; class?: string }
 
     function AccordionGroupToggleOnClickLink(scope: ng.IScope, element: JQuery, instanceAttributes: IAccordionGroupToggleOnClickAttributes, controller: AccordionGroupController): void {
         element.on("click", () => controller.toggle(instanceAttributes.accordionGroupToggleOnClick));
+        if (typeof instanceAttributes.class === "string") {
+            let c: string = instanceAttributes.class.trim();
+            if (c.length > 0) {
+                let n: string[] = c.split(sys.whitespaceRe);
+                if (n.indexOf("cursor-pointer") >= 0)
+                    return;
+            }
+        }
+        instanceAttributes.$addClass("cursor-pointer");
     }
 
     app.appModule.directive("accordionGroupToggleOnClick", () => <ng.IDirective>{
@@ -120,17 +149,27 @@ namespace accordionGroup {
 
     // #endregion
 
-    // #region accordion-group-content-item
+    // #region <accordion-group-content-item auto-expand="(true|false)?"></accordion-group-content-item>
 
-    interface IAccordionGroupContentItemAttributes extends ng.IAttributes { accordionGroupContentItem: string; }
+    interface IAccordionGroupContentItemAttributes extends ng.IAttributes { accordionGroupContentItem: string; autoExpand: string; }
 
     function AccordionGroupContentItemLink(scope: ng.IScope, element: JQuery, instanceAttributes: IAccordionGroupContentItemAttributes, controller: AccordionGroupController): void {
+        let autoExpand: boolean | undefined;
+        if (typeof instanceAttributes.autoExpand === "string") {
+            let s: string = instanceAttributes.autoExpand.trim();
+            if (s.length > 0) {
+                if (sys.isTrueRe.test(s))
+                    autoExpand = true;
+                else if (sys.isFalseRe.test(s))
+                    autoExpand = false;
+            }
+        }
         let id: number = controller.add(instanceAttributes.accordionGroupContentItem, (show: boolean) => {
             if (show)
                 element.show();
             else
                 element.hide();
-        });
+        }, autoExpand);
         element.on("$destory", () => controller.remove(id));
     }
 
@@ -171,6 +210,10 @@ namespace accordionGroup {
             expandedClass = expandedClass.concat(s.split(/\s+/));
         if ((typeof instanceAttributes.collapsedClass === "string") && (s = instanceAttributes.collapsedClass.trim()).length > 0)
             collapsedClass = collapsedClass.concat(s.split(/\s+/));
+        if (expandedClass.indexOf("cursor-pointer") < 0)
+            expandedClass.unshift("cursor-pointer");
+        if (collapsedClass.indexOf("cursor-pointer") < 0)
+            collapsedClass.unshift("cursor-pointer");
         scope.isShown = false;
         let id: number = controller.add(instanceAttributes.accordionGroupContentItem, (show: boolean) => {
             scope.isShown = show;

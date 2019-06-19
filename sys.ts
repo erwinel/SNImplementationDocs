@@ -1,10 +1,14 @@
 namespace sys {
-    let urlParseRe: RegExp = /^(([^@:/?#]*):(?:\/\/((?:([^@:/?#]*)(?::([^@:/?#]*))?@)?([^:/?#]*)(?::(\d+(?=[:/?#]|$)))?))?)?(([:/]+(?=(?:[^?#:/]+[:/]*)?(?:\?|\#|$))|[:/]*[^:/?#]+(?=[:/]+[^?#])(?:[:/]+[^:/?#]+(?=[:/]+[^?#]))*)?[:/]*((\.*(?:\.[^.:/?#]*(?=\.)|[^.:/?#]+)*)(?:\.([^.:/?#]*))?)[:/]*)(?:\?([^#]*))?(?:\#(.*))?$/;
-    let trimRightRe: RegExp = /^((\s*\S+)(\s+\S+)*)\s*$/;
-    let trimLeftRe: RegExp = /^\s*(\S.*)$/;
-    let identifierRe: RegExp = /^[a-z_][a-z\d]*$/i;
-    let falseStringRe: RegExp = /^(f(alse)?|no?|0+(\.0+)?)([^\w-]|$)/i;
-    let numberStringRe: RegExp = /^\d+(\.\d+)$/i;
+    export const whitespaceRe: RegExp = /[\s\r\n]+/g;
+    export const isTrueRe: RegExp = /^(t(rue)?|y(es)?|1)$/g;
+    export const isFalseRe: RegExp = /^(f(alse)?|no?|o)$/g;
+    export const trueFalseRe: RegExp = /^((t(?:rue)?|y(?:es)?|1)|(f(?:alse)?|no?|0))$/g;
+    const urlParseRe: RegExp = /^(([^@:/?#]*):(?:\/\/((?:([^@:/?#]*)(?::([^@:/?#]*))?@)?([^:/?#]*)(?::(\d+(?=[:/?#]|$)))?))?)?(([:/]+(?=(?:[^?#:/]+[:/]*)?(?:\?|\#|$))|[:/]*[^:/?#]+(?=[:/]+[^?#])(?:[:/]+[^:/?#]+(?=[:/]+[^?#]))*)?[:/]*((\.*(?:\.[^.:/?#]*(?=\.)|[^.:/?#]+)*)(?:\.([^.:/?#]*))?)[:/]*)(?:\?([^#]*))?(?:\#(.*))?$/;
+    const trimRightRe: RegExp = /^((\s*\S+)(\s+\S+)*)\s*$/;
+    const trimLeftRe: RegExp = /^\s*(\S.*)$/;
+    const identifierRe: RegExp = /^[a-z_][a-z\d]*$/i;
+    const falseStringRe: RegExp = /^(f(alse)?|no?|0+(\.0+)?)([^\w-]|$)/i;
+    const numberStringRe: RegExp = /^\d+(\.\d+)$/i;
 
     /**
      * Determines if a value is null or undefined.
