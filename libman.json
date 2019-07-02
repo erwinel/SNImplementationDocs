@@ -7,6 +7,10 @@
       "destination": "gh-pages/lib/twitter-bootstrap/"
     },
     {
+      "library": "bootstrap-table@1.15.2",
+      "destination": "gh-pages/lib/bootstrap-table/"
+    },
+    {
       "library": "popper.js@1.15.0",
       "destination": "gh-pages/lib/popper.js/"
     },

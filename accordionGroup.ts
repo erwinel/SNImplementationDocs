@@ -37,7 +37,7 @@ namespace accordionGroup {
                 while (typeof (this.get(id)) !== "undefined")
                     id--;
             }
-            if (this._state.length == 1) {
+            if (this._state.length == 0) {
                 this._state.push({ id: id, callback: showHideCallback, name: name, state: state });
                 if (typeof autoExpand === "boolean" && !autoExpand)
                     showHideCallback(false, state);

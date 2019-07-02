@@ -316,10 +316,10 @@ namespace sn_emulation_helpers {
         }
         static NewSysId(): string {
             let value: string = "";
-            let rand: RandomSource = new RandomSource();
-            let arr: Int8Array = new Int8Array(32);
-            rand.getRandomValues(arr).forEach((v: number) => value += (v >> 4).toString(16));
-            return value;
+            let rv: string[] = [];
+            for (let i: number = 0; i < 32; i++)
+                rv.push(Math.round(Math.random() * 255.0).toString(16));
+            return rv.join("");
         }
         constructor(gr: sn.GlideRecord, value?: string) {
             super(gr, Emulated_SysId.toSysIdString(value, true), "sys_id", "Sys ID");

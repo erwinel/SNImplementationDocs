@@ -56,27 +56,17 @@ Function Add-FileRow {
         [System.Xml.XmlElement]$TableBody
     )
 
-    $OwnerDocument = $TableBody.OwnerDocument;
-    $RowElement = $TableBody.AppendChild($OwnerDocument.CreateElement('tr', $Script:Xmlns_Xhtml));
-    $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('th', $Script:Xmlns_Xhtml));
-    $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('scope')).Value = 'row';
+    Process {
+        $OwnerDocument = $TableBody.OwnerDocument;
+        $RowElement = $TableBody.AppendChild($OwnerDocument.CreateElement('tr', $Script:Xmlns_Xhtml));
+        $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('th', $Script:Xmlns_Xhtml));
+        $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('scope')).Value = 'row';
 
-    if ($File.Extension -ieq '.svg') {
-        $SvgDocument = New-Object -TypeName 'System.Xml.XmlDocument';
-        try {
-            $SvgDocument.Load($_.FullName);
-            if ($null -eq $SvgDocument.DocumentElement) {
-                $AElement = $TdElement.AppendChild($OwnerDocument.CreateElement('a', $Script:Xmlns_Xhtml));
-                $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = $File.Name;
-                $AElement.Attributes.Append($OwnerDocument.CreateAttribute('target')).Value = '_blank';
-                $AElement.InnerText = $File.Name;
-                $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
-                $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('colspan')).Value = '3';
-                $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger';
-                $TdElement.InnerText = "Error loading SVG file: File has not document element";
-                $SvgDocument = $null;
-            } else {
-                if ($SvgDocument.DocumentElement.NamespaceURI -cne $Script:Xmlns_Svg -or $SvgDocument.DocumentElement.LocalName -cne 'svg') {
+        if ($File.Extension -ieq '.svg') {
+            $SvgDocument = New-Object -TypeName 'System.Xml.XmlDocument';
+            try {
+                $SvgDocument.Load($File.FullName);
+                if ($null -eq $SvgDocument.DocumentElement) {
                     $AElement = $TdElement.AppendChild($OwnerDocument.CreateElement('a', $Script:Xmlns_Xhtml));
                     $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = $File.Name;
                     $AElement.Attributes.Append($OwnerDocument.CreateAttribute('target')).Value = '_blank';
@@ -84,107 +74,47 @@ Function Add-FileRow {
                     $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
                     $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('colspan')).Value = '3';
                     $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger';
-                    $TdElement.InnerText = "Error loading SVG file: Unexpected root element name $($SvgDocument.DocumentElement.Name)";
+                    $TdElement.InnerText = "Error loading SVG file: File has not document element";
                     $SvgDocument = $null;
+                } else {
+                    if ($SvgDocument.DocumentElement.NamespaceURI -cne $Script:Xmlns_Svg -or $SvgDocument.DocumentElement.LocalName -cne 'svg') {
+                        $AElement = $TdElement.AppendChild($OwnerDocument.CreateElement('a', $Script:Xmlns_Xhtml));
+                        $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = $File.Name;
+                        $AElement.Attributes.Append($OwnerDocument.CreateAttribute('target')).Value = '_blank';
+                        $AElement.InnerText = $File.Name;
+                        $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
+                        $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('colspan')).Value = '3';
+                        $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger';
+                        $TdElement.InnerText = "Error loading SVG file: Unexpected root element name $($SvgDocument.DocumentElement.Name)";
+                        $SvgDocument = $null;
+                    }
                 }
-            }
-        } catch {
-            $AElement = $TdElement.AppendChild($OwnerDocument.CreateElement('a', $Script:Xmlns_Xhtml));
-            $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = $File.Name;
-            $AElement.Attributes.Append($OwnerDocument.CreateAttribute('target')).Value = '_blank';
-            $AElement.InnerText = $File.Name;
-            $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
-            $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('colspan')).Value = '3';
-            $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger';
-            $TdElement.InnerText = "Error loading SVG file: $_";
-        }
-        if ($null -ne $SvgDocument) {
-            $SvgNsmgr = New-Object -TypeName 'System.Xml.XmlNamespaceManager' -ArgumentList $SvgDocument.NameTable;
-            $SvgNsmgr.AddNamespace('s', $Script:Xmlns_Svg);
-            $XmlNodeList = $SvgDocument.DocumentElement.SelectNodes('s:defs/s:symbol[not(count(@id)=0)]', $SvgNsmgr);
-            if ($XmlNodeList.Count -eq 0) {
+            } catch {
                 $AElement = $TdElement.AppendChild($OwnerDocument.CreateElement('a', $Script:Xmlns_Xhtml));
                 $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = $File.Name;
                 $AElement.Attributes.Append($OwnerDocument.CreateAttribute('target')).Value = '_blank';
                 $AElement.InnerText = $File.Name;
                 $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
-                $ImgElement = $TdElement.AppendChild($OwnerDocument.CreateElement('img', $Script:Xmlns_Xhtml));
-                $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('src')).Value = $File.Name;
-                $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('alt')).Value = "Displayed Image for $($File.Name)";
-
-                $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
-                $XmlAttribute = $SvgDocument.DocumentElement.SelectSingleNode('@width');
-                $SourceWidth = -1;
-                $SourceHeight = -1;
-                if ($null -ne $XmlAttribute -and $XmlAttribute.Value.Trim().Length -gt 0) {
-                    try {
-                        $i = [System.Xml.XmlConvert]::ToInt32($XmlAttribute.Value.Trim());
-                        if ($i -le 0) {
-                            $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger text-sm-left';
-                            $TdElement.InnerText = $XmlAttribute.Value;
-                        } else {
-                            $SourceWidth = $i;
-                            $TdElement.InnerText = $i.ToString();
-                        }
-                    } catch {
-                        $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger text-sm-left';
-                        $TdElement.InnerText = "Error parsing number value for '$($XmlAttribute.Value)': $_";
-                    }
-                } else {
-                    $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-warning text-sm-left';
-                    $TdElement.InnerText = '(not specified)';
-                }
-                $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
-                $XmlAttribute = $SvgDocument.DocumentElement.SelectSingleNode('@height');
-                if ($null -ne $XmlAttribute -and $XmlAttribute.Value.Trim().Length -gt 0) {
-                    try {
-                        $i = [System.Xml.XmlConvert]::ToInt32($XmlAttribute.Value.Trim());
-                        if ($i -le 0) {
-                            $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger text-sm-left';
-                            $TdElement.InnerText = $XmlAttribute.Value;
-                        } else {
-                            $SourceHeight = $i;
-                            $TdElement.InnerText = $i.ToString();
-                        }
-                    } catch {
-                        $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger text-sm-left';
-                        $TdElement.InnerText = "Error parsing number value for '$($XmlAttribute.Value)': $_";
-                    }
-                } else {
-                    $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-warning text-sm-left';
-                    $TdElement.InnerText = '(not specified)';
-                }
-                Set-ThumbWidth -Element $ImgElement -Width $SourceWidth -Height $SourceHeight -Svg;
-            } else {
-                $TdElement.InnerText = $File.Name;
-                $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
                 $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('colspan')).Value = '3';
-            
-                $TableElement = $SectionElement.AppendChild($OwnerDocument.CreateElement('table', $Script:Xmlns_Xhtml));
-                $TableElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'table table-bordered';
-                $RowElement = $TableElement.AppendChild($OwnerDocument.CreateElement('thead', $Script:Xmlns_Xhtml)).AppendChild($OwnerDocument.CreateElement('tr', $Script:Xmlns_Xhtml));
-                @('ID', 'Image', 'Width', 'Height') | ForEach-Object {
-                    $XmlElement = $RowElement.AppendChild($OwnerDocument.CreateElement('th', $Script:Xmlns_Xhtml));
-                    $XmlElement.Attributes.Append($OwnerDocument.CreateAttribute('scope')).Value = 'col';
-                    $XmlElement.InnerText = $_;
-                }
-                $BodyElement = $TableBody.AppendChild($OwnerDocument.CreateElement('tbody', $Script:Xmlns_Xhtml));
-                @($XmlNodeList) | ForEach-Object {
-                    $id = $_.SelectSingleNode('@id').Value;
-                    $RowElement = $BodyElement.AppendChild($OwnerDocument.CreateElement('tr', $Script:Xmlns_Xhtml));
-                    $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('th', $Script:Xmlns_Xhtml));
-                    $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('scope')).Value = 'row';
+                $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger';
+                $TdElement.InnerText = "Error loading SVG file: $_";
+            }
+            if ($null -ne $SvgDocument) {
+                $SvgNsmgr = New-Object -TypeName 'System.Xml.XmlNamespaceManager' -ArgumentList $SvgDocument.NameTable;
+                $SvgNsmgr.AddNamespace('s', $Script:Xmlns_Svg);
+                $XmlNodeList = $SvgDocument.DocumentElement.SelectNodes('s:defs/s:symbol[not(count(@id)=0)]', $SvgNsmgr);
+                if ($XmlNodeList.Count -eq 0) {
                     $AElement = $TdElement.AppendChild($OwnerDocument.CreateElement('a', $Script:Xmlns_Xhtml));
-                    $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = "$($File.Name)#$id";
-                    $AElement.InnerText = $id;
+                    $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = $File.Name;
+                    $AElement.Attributes.Append($OwnerDocument.CreateAttribute('target')).Value = '_blank';
+                    $AElement.InnerText = $File.Name;
                     $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
-                    $ImgElement = $TdElement.AppendChild($OwnerDocument.CreateElement('svg', $Script:Xmlns_Xhtml));
-                    $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'fill-light stroke-dark';
-                    $XmlELement = $ImgElement.AppendChild($OwnerDocument.CreateElement('use', $Script:Xmlns_Xhtml));
-                    $XmlELement.Attributes.Append($OwnerDocument.CreateAttribute('href', $Script:Xmlns_xlink)).Value = "$($File.Name)#$id";
-                    $XmlELement.InnerText = '';
+                    $ImgElement = $TdElement.AppendChild($OwnerDocument.CreateElement('img', $Script:Xmlns_Xhtml));
+                    $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('src')).Value = $File.Name;
+                    $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('alt')).Value = "Displayed Image for $($File.Name)";
+
                     $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
-                    $XmlAttribute = $_.SelectSingleNode('@width');
+                    $XmlAttribute = $SvgDocument.DocumentElement.SelectSingleNode('@width');
                     $SourceWidth = -1;
                     $SourceHeight = -1;
                     if ($null -ne $XmlAttribute -and $XmlAttribute.Value.Trim().Length -gt 0) {
@@ -206,7 +136,7 @@ Function Add-FileRow {
                         $TdElement.InnerText = '(not specified)';
                     }
                     $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
-                    $XmlAttribute = $_.SelectSingleNode('@height');
+                    $XmlAttribute = $SvgDocument.DocumentElement.SelectSingleNode('@height');
                     if ($null -ne $XmlAttribute -and $XmlAttribute.Value.Trim().Length -gt 0) {
                         try {
                             $i = [System.Xml.XmlConvert]::ToInt32($XmlAttribute.Value.Trim());
@@ -226,28 +156,100 @@ Function Add-FileRow {
                         $TdElement.InnerText = '(not specified)';
                     }
                     Set-ThumbWidth -Element $ImgElement -Width $SourceWidth -Height $SourceHeight -Svg;
+                } else {
+                    $TdElement.InnerText = $File.Name;
+                    $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
+                    $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('colspan')).Value = '3';
+            
+                    $TableElement = $SectionElement.AppendChild($OwnerDocument.CreateElement('table', $Script:Xmlns_Xhtml));
+                    $TableElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'table table-bordered';
+                    $RowElement = $TableElement.AppendChild($OwnerDocument.CreateElement('thead', $Script:Xmlns_Xhtml)).AppendChild($OwnerDocument.CreateElement('tr', $Script:Xmlns_Xhtml));
+                    @('ID', 'Image', 'Width', 'Height') | ForEach-Object {
+                        $XmlElement = $RowElement.AppendChild($OwnerDocument.CreateElement('th', $Script:Xmlns_Xhtml));
+                        $XmlElement.Attributes.Append($OwnerDocument.CreateAttribute('scope')).Value = 'col';
+                        $XmlElement.InnerText = $_;
+                    }
+                    $BodyElement = $TableBody.AppendChild($OwnerDocument.CreateElement('tbody', $Script:Xmlns_Xhtml));
+                    @($XmlNodeList) | ForEach-Object {
+                        $id = $_.SelectSingleNode('@id').Value;
+                        $RowElement = $BodyElement.AppendChild($OwnerDocument.CreateElement('tr', $Script:Xmlns_Xhtml));
+                        $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('th', $Script:Xmlns_Xhtml));
+                        $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('scope')).Value = 'row';
+                        $AElement = $TdElement.AppendChild($OwnerDocument.CreateElement('a', $Script:Xmlns_Xhtml));
+                        $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = "$($File.Name)#$id";
+                        $AElement.InnerText = $id;
+                        $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
+                        $ImgElement = $TdElement.AppendChild($OwnerDocument.CreateElement('svg', $Script:Xmlns_Xhtml));
+                        $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'fill-light stroke-dark';
+                        $XmlELement = $ImgElement.AppendChild($OwnerDocument.CreateElement('use', $Script:Xmlns_Xhtml));
+                        $XmlELement.Attributes.Append($OwnerDocument.CreateAttribute('href', $Script:Xmlns_xlink)).Value = "$($File.Name)#$id";
+                        $XmlELement.InnerText = '';
+                        $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
+                        $XmlAttribute = $_.SelectSingleNode('@width');
+                        $SourceWidth = -1;
+                        $SourceHeight = -1;
+                        if ($null -ne $XmlAttribute -and $XmlAttribute.Value.Trim().Length -gt 0) {
+                            try {
+                                $i = [System.Xml.XmlConvert]::ToInt32($XmlAttribute.Value.Trim());
+                                if ($i -le 0) {
+                                    $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger text-sm-left';
+                                    $TdElement.InnerText = $XmlAttribute.Value;
+                                } else {
+                                    $SourceWidth = $i;
+                                    $TdElement.InnerText = $i.ToString();
+                                }
+                            } catch {
+                                $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger text-sm-left';
+                                $TdElement.InnerText = "Error parsing number value for '$($XmlAttribute.Value)': $_";
+                            }
+                        } else {
+                            $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-warning text-sm-left';
+                            $TdElement.InnerText = '(not specified)';
+                        }
+                        $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
+                        $XmlAttribute = $_.SelectSingleNode('@height');
+                        if ($null -ne $XmlAttribute -and $XmlAttribute.Value.Trim().Length -gt 0) {
+                            try {
+                                $i = [System.Xml.XmlConvert]::ToInt32($XmlAttribute.Value.Trim());
+                                if ($i -le 0) {
+                                    $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger text-sm-left';
+                                    $TdElement.InnerText = $XmlAttribute.Value;
+                                } else {
+                                    $SourceHeight = $i;
+                                    $TdElement.InnerText = $i.ToString();
+                                }
+                            } catch {
+                                $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger text-sm-left';
+                                $TdElement.InnerText = "Error parsing number value for '$($XmlAttribute.Value)': $_";
+                            }
+                        } else {
+                            $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-warning text-sm-left';
+                            $TdElement.InnerText = '(not specified)';
+                        }
+                        Set-ThumbWidth -Element $ImgElement -Width $SourceWidth -Height $SourceHeight -Svg;
+                    }
                 }
             }
-        }
-    } else {
-        $AElement = $TdElement.AppendChild($OwnerDocument.CreateElement('a', $Script:Xmlns_Xhtml));
-        $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = $File.Name;
-        $AElement.InnerText = $File.Name;
-        $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
-        $Image = $null;
-        try { $Image = [System.Drawing.Image]::FromFile($_.FullName); }
-        catch {
-            $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('colspan')).Value = '3';
-            $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger';
-            $TdElement.InnerText = "Error loading image file: $_";
-        }
-        if ($null -ne $Image) {
-            $ImgElement = $TdElement.AppendChild($OwnerDocument.CreateElement('img', $Script:Xmlns_Xhtml));
-            $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('src')).Value = $File.Name;
-            $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('alt')).Value = "Displayed Image for $($File.Name)";
-            Set-ThumbWidth -Element $ImgElement -Width $Image.Width -Height $Image.Height;
-            $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml)).InnerText = "$($Image.Width)";
-            $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml)).InnerText = "$($Image.Height)";
+        } else {
+            $AElement = $TdElement.AppendChild($OwnerDocument.CreateElement('a', $Script:Xmlns_Xhtml));
+            $AElement.Attributes.Append($OwnerDocument.CreateAttribute('href')).Value = $File.Name;
+            $AElement.InnerText = $File.Name;
+            $TdElement = $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml));
+            $Image = $null;
+            try { $Image = [System.Drawing.Image]::FromFile($File.FullName); }
+            catch {
+                $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('colspan')).Value = '3';
+                $TdElement.Attributes.Append($OwnerDocument.CreateAttribute('class')).Value = 'text-danger';
+                $TdElement.InnerText = "Error loading image file: $_";
+            }
+            if ($null -ne $Image) {
+                $ImgElement = $TdElement.AppendChild($OwnerDocument.CreateElement('img', $Script:Xmlns_Xhtml));
+                $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('src')).Value = $File.Name;
+                $ImgElement.Attributes.Append($OwnerDocument.CreateAttribute('alt')).Value = "Displayed Image for $($File.Name)";
+                Set-ThumbWidth -Element $ImgElement -Width $Image.Width -Height $Image.Height;
+                $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml)).InnerText = "$($Image.Width)";
+                $RowElement.AppendChild($OwnerDocument.CreateElement('td', $Script:Xmlns_Xhtml)).InnerText = "$($Image.Height)";
+            }
         }
     }
 }
