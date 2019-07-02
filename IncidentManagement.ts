@@ -7,275 +7,242 @@
 
 namespace inicidentManagment {
     type YesNoValue = "Yes" | "No";
+
     interface IEmulatedProducer {
         users_impacted: number;
         productivity_impact: number;
         is_mission_related: YesNoValue;
     }
-    interface IIncidentManagmentScope extends ng.IScope {
-        priorityMatcherColumns: ISortableColumnScope[];
-        priorityMatcherRules: IPriorityMatcherRuleDisplay[];
 
-    }
     type ImactUrgencySrc = 1 | 2 | 3;
     const ImpactUrgencyNames: string[] = ["High", "Medium", "Low"];
     type IncidentPrioritySrc = 1 | 2 | 3 | 4 | 5;
     const IncidentPriorityNames = ["Critical", "High", "Moderate", "Low", "Planning"];
-    interface IPriorityMatcherRuleSrc {
-        order: number;
-        impact: ImactUrgencySrc;
-        urgency: ImactUrgencySrc;
-        is_mission_related: boolean;
-        vip_priority: boolean;
-        incident_priority: IncidentPrioritySrc;
-    }
-    const PriorityMatcherRuleValues: IPriorityMatcherRuleSrc[] = [
-        { order: 100, impact: 1, urgency: 1, is_mission_related: true, vip_priority: true, incident_priority: 1 },
-        { order: 200, impact: 1, urgency: 1, is_mission_related: false, vip_priority: true, incident_priority: 1 },
-        { order: 300, impact: 1, urgency: 1, is_mission_related: true, vip_priority: false, incident_priority: 1 },
-        { order: 400, impact: 1, urgency: 2, is_mission_related: true, vip_priority: true, incident_priority: 1 },
-        { order: 500, impact: 2, urgency: 1, is_mission_related: true, vip_priority: true, incident_priority: 1 },
-        { order: 600, impact: 1, urgency: 1, is_mission_related: false, vip_priority: false, incident_priority: 2 },
-        { order: 700, impact: 1, urgency: 2, is_mission_related: false, vip_priority: true, incident_priority: 2 },
-        { order: 800, impact: 1, urgency: 2, is_mission_related: true, vip_priority: false, incident_priority: 2 },
-        { order: 900, impact: 2, urgency: 1, is_mission_related: false, vip_priority: true, incident_priority: 2 },
-        { order: 1000, impact: 2, urgency: 1, is_mission_related: true, vip_priority: false, incident_priority: 2 },
-        { order: 1100, impact: 1, urgency: 3, is_mission_related: true, vip_priority: true, incident_priority: 2 },
-        { order: 1200, impact: 2, urgency: 2, is_mission_related: true, vip_priority: true, incident_priority: 2 },
-        { order: 1300, impact: 3, urgency: 1, is_mission_related: true, vip_priority: true, incident_priority: 2 },
-        { order: 1400, impact: 1, urgency: 2, is_mission_related: false, vip_priority: false, incident_priority: 3 },
-        { order: 1500, impact: 2, urgency: 1, is_mission_related: false, vip_priority: false, incident_priority: 3 },
-        { order: 1600, impact: 1, urgency: 3, is_mission_related: false, vip_priority: true, incident_priority: 3 },
-        { order: 1700, impact: 1, urgency: 3, is_mission_related: true, vip_priority: false, incident_priority: 3 },
-        { order: 1800, impact: 2, urgency: 2, is_mission_related: false, vip_priority: true, incident_priority: 3 },
-        { order: 1900, impact: 2, urgency: 2, is_mission_related: true, vip_priority: false, incident_priority: 3 },
-        { order: 2000, impact: 3, urgency: 1, is_mission_related: false, vip_priority: true, incident_priority: 3 },
-        { order: 2100, impact: 3, urgency: 1, is_mission_related: true, vip_priority: false, incident_priority: 3 },
-        { order: 2200, impact: 2, urgency: 3, is_mission_related: true, vip_priority: true, incident_priority: 3 },
-        { order: 2300, impact: 3, urgency: 2, is_mission_related: true, vip_priority: true, incident_priority: 3 },
-        { order: 2400, impact: 1, urgency: 3, is_mission_related: false, vip_priority: false, incident_priority: 4 },
-        { order: 2500, impact: 2, urgency: 2, is_mission_related: false, vip_priority: false, incident_priority: 4 },
-        { order: 2600, impact: 3, urgency: 1, is_mission_related: false, vip_priority: false, incident_priority: 4 },
-        { order: 2700, impact: 2, urgency: 3, is_mission_related: false, vip_priority: true, incident_priority: 4 },
-        { order: 2800, impact: 2, urgency: 3, is_mission_related: true, vip_priority: false, incident_priority: 4 },
-        { order: 2900, impact: 3, urgency: 2, is_mission_related: false, vip_priority: true, incident_priority: 4 },
-        { order: 3000, impact: 3, urgency: 2, is_mission_related: true, vip_priority: false, incident_priority: 4 },
-        { order: 3100, impact: 3, urgency: 3, is_mission_related: true, vip_priority: true, incident_priority: 4 },
-        { order: 3200, impact: 2, urgency: 3, is_mission_related: false, vip_priority: false, incident_priority: 5 },
-        { order: 3300, impact: 3, urgency: 2, is_mission_related: false, vip_priority: false, incident_priority: 5 },
-        { order: 3400, impact: 3, urgency: 3, is_mission_related: false, vip_priority: true, incident_priority: 5 },
-        { order: 3500, impact: 3, urgency: 3, is_mission_related: true, vip_priority: false, incident_priority: 5 },
-        { order: 3600, impact: 3, urgency: 3, is_mission_related: false, vip_priority: false, incident_priority: 5 }
-    ];
-    interface IPriorityMatcherRuleDisplay extends IPriorityMatcherRuleSrc {
-        impactName: string;
-        urgencyName: string;
-        is_mission_relatedText: YesNoValue;
-        vip_priorityText: YesNoValue;
-        incident_priorityName: string;
-        rowClass: string[];
-    }
-    interface IColumnToggleCallback { (id: number): void; }
-    interface ISortableColumnScope extends ng.IScope {
-        label: string;
-        alt: string;
-        tooltip: string;
-        showArrow: boolean;
-        arrowUrl: string;
-        isAscending: boolean;
-        isCurrent: boolean;
-        sort: { (a: IPriorityMatcherRuleDisplay, b: IPriorityMatcherRuleDisplay): number };
-        toggle: { (): void; };
-        buttonClass: string[];
-    }
-    class SortableColumnController {
-        private _label: string;
-        private _alt: string;
-        private _showArrow: boolean;
-        private _arrowUrl: string;
-        private _isAscending: boolean | undefined;
-        private _effectiveDirAscending: boolean = false;
+    
 
-        get id(): number { return this._id; }
-        get label(): string { return this._label; }
-        get alt(): string { return this._alt; }
-        get showArrow(): boolean { return this._showArrow; }
-        get arrowUrl(): string { return this._arrowUrl; }
-        get isAscending(): boolean | undefined { return this._isAscending; }
-        set isAscending(value: boolean | undefined) {
-            if (typeof value === "undefined" || value === null) {
-                if (typeof this._isAscending === "undefined")
-                    return;
-                this._isAscending = undefined;
-                this._showArrow = false;
-            } else if (value == true) {
-                if (this._isAscending === true)
-                    return;
-                this._isAscending = this._effectiveDirAscending = true;
-                this._arrowUrl = "images/open-iconic/arrow-bottom.svg";
-                this._showArrow = true;
-            } else if (value !== false) {
-                this._isAscending = this._effectiveDirAscending = false;
-                this._arrowUrl = "images/open-iconic/arrow-top.svg";
-                this._showArrow = true;
+    class SortableColumnState<TRow extends { [key: string]: any }> {
+        private readonly _headingText: string;
+        private _isDescending: boolean = false;
+        private _isCurrent: boolean = false;
+        private _imageAltText: string;
+        private _buttonTooltip: string;
+        private _buttonImageUrl: string;
+        private _buttonClass: string;
+
+        get propertyName(): string { return this._propertyName; }
+        get headingText(): string { return this._headingText; }
+        get imageAltText(): string { return this._imageAltText; }
+        get buttonTooltip(): string { return this._buttonTooltip; }
+        get buttonImageUrl(): string { return this._buttonImageUrl; }
+        get buttonClass(): string[] { return ["btn", this._buttonClass, "p-1", "w-100"]; }
+
+        get isDescending(): boolean { return this._isDescending; }
+        set isDescending(value: boolean) {
+            if (this._isDescending === (value = sys.asBoolean(value, false)))
+                return;
+            this._isDescending = value;
+            this.updateText();
+            this._onSortChangeCallback(this);
+        }
+
+        get isCurrent(): boolean { return this._isCurrent; }
+        set isCurrent(value: boolean) {
+            if (this._isCurrent === (value = sys.asBoolean(value, false)))
+                return;
+            this._isCurrent = value;
+            this.updateText();
+        }
+
+        constructor(headingText: string, private readonly _propertyName: string, private readonly _onSortChangeCallback: { (col?: SortableColumnState<TRow>): void }) {
+            if (typeof _propertyName !== "string" || _propertyName.trim().length == 0)
+                throw new Error("Property name cannot be empty.");
+            this._headingText = (typeof headingText != "string" || (headingText = headingText.trim()).length == 0) ? _propertyName.trim() : headingText;
+            this.updateText();
+        }
+
+        compare(x: TRow, y: TRow): number {
+            let a: any, b: any;
+            let t1: string = typeof x;
+            if (t1 === "object" && x !== null) {
+                a = x[this._propertyName];
+                t1 = typeof a;
+            } else
+                a = x;
+            let t2: string = typeof y;
+            if (t2 === "object" && y !== null) {
+                b = y[this._propertyName];
+                t2 = typeof b;
+            } else
+                b = y;
+            if (t1 === "undefined")
+                return (t2 === "undefined") ? 0 : -1;
+            if (t2 === "undefined")
+                return 1;
+            if (t1 === "boolean") {
+                if (t2 === "boolean")
+                    return (a === b) ? 0 : ((a) ? -1 : 1);
+                if (t2 === "number")
+                    return ((isNaN(b) || b === 0) === a) ? 0 : ((a) ? -1 : 1);
+                if (t2 === "object" && b === null)
+                    return 1;
+            } else if (t1 === "number") {
+                if (t2 === "number")
+                    return a - b;
+                if (t2 === "boolean")
+                    return ((isNaN(a) || a === 0) === b) ? 0 : ((b) ? 1 : -1);
+                if (t2 === "object" && b === null)
+                    return 1;
+            } else if (t1 === "object" && a === null)
+                return (t2 === "object" && b === null) ? 0 : -1;
+            return (a < b) ? -1 : ((a > b) ? 1 : 0);
+        }
+
+        toggleSort(): void {
+            if (this._isCurrent)
+                this.isDescending = !this._isDescending;
+            else
+                this._onSortChangeCallback(this);
+        }
+
+        private updateText(): void {
+            if (this._isDescending) {
+                this._imageAltText = "Sorted by column in descending order";
+                this._buttonImageUrl = "./images/open-iconic/arrow-top.svg";
+            } else {
+                this._imageAltText = "Sorted by column in ascending order";
+                this._buttonImageUrl = "./images/open-iconic/arrow-bottom.svg";
             }
+            this._buttonTooltip = (this._isCurrent == this._isDescending) ? "Sort ascending" : "Sort descending";
+            this._buttonClass = (this._isCurrent) ? "btn-primary" : "btn-outline-secondary";
         }
-        get effectiveDirAscending(): boolean { return this._effectiveDirAscending; }
-        constructor(private _id: number, private callback: IColumnToggleCallback) { }
-        sort(): void { this.callback(this._id); }
     }
-    const ICONURL_SORT_ASC: string = "./images/open-iconic/arrow-bottom.svg";
-    const ICONURL_SORT_DESC: string = "./images/open-iconic/arrow-top.svg";
-    const IMG_ALT_SORT_ASC: string = "Column sorted in ascending order";
-    const IMG_ALT_SORT_DESC: string = "Column sortedin descending order";
-    const BUTTON_TOOLTIP_SORT_ASC: string = "Sort ascending";
-    const BUTTON_TOOLTIP_SORT_DESC: string = "Sort descending";
-    const BUTTON_CLASS_SORT_CURRENT: string[] = ["btn", "btn-primary", "p-1", "w-100"];
-    const BUTTON_CLASS_SORT_OTHER: string[] = ["btn", "btn-outline-secondary", "p-1", "w-100"];
-    const ROW_CLASS_EVEN: string[] = ["row", "flex-nowrap", "bg-white"];
-    const ROW_CLASS_ODD: string[] = ["row", "flex-nowrap", "bg-gray"];
 
-    //class EmulatedIncidentRecord extends sn_emulation_helpers.Emulated_GlideRecord {
-    //    constructor() {
-    //        super({ comment: <sn.GlideElement>{ getLabel: () => "Comment", getName(): () => "comment" }, u_is_mission_related: false, impact: 0, urgency: 0 });
-    //    }
-    //}
-    class IncidentManagmentController implements ng.IController {
-        constructor(protected $scope: IIncidentManagmentScope) {
-            $scope.users_impacted = {
-                label: "Users Impacted",
-                selected: 0,
-                options: [
-                    { value: 0, text: "Unspecified / Unknown" },
-                    { value: 1, text: "More than 100 people" },
-                    { value: 2, text: "50 to 100 people" },
-                    { value: 3, text: "10 to 49 people" },
-                    { value: 4, text: "Less than 10 people" }
-                ],
-                isAutoValue: false,
-                valueClass: "",
-                explanation: {
-                    class: "",
-                    colSpan: 2
-                }
-            };
-            $scope.productivity_impact = {
-                label: "Productivity Impact",
-                selected: 0,
-                isAutoValue: false,
-                options: [
-                    { value: 0, text: "Unspecified / Unknown" },
-                    { value: 1, text: "Complete work stoppage" },
-                    { value: 2, text: "Partial work stoppage" },
-                    { value: 3, text: "Effects execution of time-sensitive activities" },
-                    { value: 4, text: "Currently using a work-around / alternate method to perform affected duties" }
-                ],
-                valueClass: "",
-                explanationClass: ""
-            };
-            $scope.is_mission_related = {
-                label: "Is Mission Related",
-                value: "No",
-                operand: 1.125,
-                explanation: {
-                    colSpan: 2,
-                    class: ""
-                }
-            };
-            $scope.caller_vip = {
-                label: "Is VIP",
-                value: false,
-                operand: 1.375
-            };
-            let controller: IncidentManagmentController = this;
-            $scope.priorityMatcherColumns = <ISortableColumnScope[]>[
-                <ISortableColumnScope>$scope.$new(),
-                <ISortableColumnScope>$scope.$new(),
-                <ISortableColumnScope>$scope.$new(),
-                <ISortableColumnScope>$scope.$new(),
-                <ISortableColumnScope>$scope.$new(),
-                <ISortableColumnScope>$scope.$new()
-            ];
-            $scope.priorityMatcherColumns[0].label = "Order";
-            $scope.priorityMatcherColumns[0].sort = (a: IPriorityMatcherRuleDisplay, b: IPriorityMatcherRuleDisplay) => a.order - b.order;
-            $scope.priorityMatcherColumns[1].label = "Impact";
-            $scope.priorityMatcherColumns[1].sort = (a: IPriorityMatcherRuleDisplay, b: IPriorityMatcherRuleDisplay) => a.impact - b.impact;
-            $scope.priorityMatcherColumns[2].label = "Urgency";
-            $scope.priorityMatcherColumns[2].sort = (a: IPriorityMatcherRuleDisplay, b: IPriorityMatcherRuleDisplay) => a.urgency - b.urgency;
-            $scope.priorityMatcherColumns[3].label = "Is Mission Related?";
-            $scope.priorityMatcherColumns[3].sort = (a: IPriorityMatcherRuleDisplay, b: IPriorityMatcherRuleDisplay) => (a.is_mission_related == b.is_mission_related) ? 0 : ((a.is_mission_related) ? -1 : 1);
-            $scope.priorityMatcherColumns[4].label = "Is Caller VIP?";
-            $scope.priorityMatcherColumns[4].sort = (a: IPriorityMatcherRuleDisplay, b: IPriorityMatcherRuleDisplay) => (a.vip_priority == b.vip_priority) ? 0 : ((a.vip_priority) ? -1 : 1);
-            $scope.priorityMatcherColumns[5].label = "Priority Assignment";
-            $scope.priorityMatcherColumns[5].sort = (a: IPriorityMatcherRuleDisplay, b: IPriorityMatcherRuleDisplay) => a.incident_priority - b.incident_priority;
-            $scope.priorityMatcherColumns.forEach((currentCol: ISortableColumnScope) => {
-                currentCol.alt = IMG_ALT_SORT_ASC;
-                currentCol.tooltip = BUTTON_TOOLTIP_SORT_ASC;
-                currentCol.showArrow = false;
-                currentCol.arrowUrl = ICONURL_SORT_ASC;
-                currentCol.isAscending = true;
-                currentCol.isCurrent = false;
-                currentCol.buttonClass = BUTTON_CLASS_SORT_OTHER;
-                currentCol.toggle = () => {
-                    let sorted: IPriorityMatcherRuleDisplay[] = controller.$scope.priorityMatcherRules.sort(currentCol.sort);
-                    if (currentCol.isCurrent) {
-                        if (currentCol.isAscending) {
-                            controller.$scope.priorityMatcherRules = sorted.reverse();
-                            currentCol.tooltip = BUTTON_TOOLTIP_SORT_ASC;
-                            currentCol.alt = IMG_ALT_SORT_DESC;
-                            currentCol.arrowUrl = ICONURL_SORT_DESC;
-                            currentCol.isAscending = false;
-                        } else {
-                            controller.$scope.priorityMatcherRules = sorted;
-                            currentCol.tooltip = BUTTON_TOOLTIP_SORT_DESC;
-                            currentCol.alt = IMG_ALT_SORT_ASC;
-                            currentCol.arrowUrl = ICONURL_SORT_ASC;
-                            currentCol.isAscending = true;
-                        }
-                    } else {
-                        controller.$scope.priorityMatcherColumns.filter((cs: ISortableColumnScope) => cs.isCurrent).forEach((cs: ISortableColumnScope) => {
-                            cs.tooltip = (cs.isAscending) ? BUTTON_TOOLTIP_SORT_ASC : BUTTON_TOOLTIP_SORT_DESC;
-                            cs.showArrow = cs.isCurrent = false;
-                            cs.buttonClass = BUTTON_CLASS_SORT_OTHER;
-                        });
-                        if (currentCol.isAscending) {
-                            controller.$scope.priorityMatcherRules = sorted;
-                            currentCol.tooltip = BUTTON_TOOLTIP_SORT_DESC;
-                        } else {
-                            controller.$scope.priorityMatcherRules = sorted.reverse();
-                            currentCol.tooltip = BUTTON_TOOLTIP_SORT_ASC;
-                        }
-                        currentCol.isCurrent = currentCol.showArrow = true;
-                        currentCol.buttonClass = BUTTON_CLASS_SORT_CURRENT;
-                    }
-                    $scope.priorityMatcherRules.forEach((v: IPriorityMatcherRuleDisplay, i: number) => v.rowClass = (i % 2 == 0) ? ROW_CLASS_EVEN : ROW_CLASS_ODD);
-                };
+    class PriorityMatcherRule {
+        private _rowClass: string;
+        get order(): number { return this._order; }
+        get impact_value(): ImactUrgencySrc { return this._impact; }
+        get urgency_value(): ImactUrgencySrc { return this._urgency; }
+        get is_mission_related_value(): boolean { return this._is_mission_related; }
+        get vip_priority_value(): boolean { return this._vip_priority; }
+        get incident_priority_value(): IncidentPrioritySrc { return this._incident_priority; }
+        get impact_display_text(): string { return ImpactUrgencyNames[this._impact - 1]; }
+        get urgency_display_text(): string { return ImpactUrgencyNames[this._urgency - 1]; }
+        get is_mission_related_display_text(): YesNoValue { return (this._is_mission_related) ? "Yes" : "No"; }
+        get vip_priority_display_text(): YesNoValue { return (this._is_mission_related) ? "Yes" : "No"; }
+        get incident_priority_display_text(): string { return IncidentPriorityNames[this._urgency - 1]; }
+        get rowClass(): string[] { return ["row", "flex-nowrap", this._rowClass]; }
+
+        constructor(private readonly _order: number,
+            private readonly _impact: ImactUrgencySrc,
+            private readonly _urgency: ImactUrgencySrc,
+            private readonly _is_mission_related: boolean,
+            private readonly _vip_priority: boolean,
+            private readonly _incident_priority: IncidentPrioritySrc) { }
+
+        static sortRules(sortColumn: SortableColumnState<PriorityMatcherRule>, rules: PriorityMatcherRule[]): void {
+            ((sortColumn.isDescending) ?
+                rules.sort((x: PriorityMatcherRule, y: PriorityMatcherRule) => sortColumn.compare(y, x)) :
+                rules.sort((x: PriorityMatcherRule, y: PriorityMatcherRule) => sortColumn.compare(x, y))).forEach((value: PriorityMatcherRule, index: number) => {
+                value._rowClass = ((index % 2) === 0) ? "bg-white" : "bg-gray";
+                rules[index] = value;
             });
-            $scope.priorityMatcherColumns[0].tooltip = BUTTON_TOOLTIP_SORT_DESC;
-            $scope.priorityMatcherColumns[0].showArrow = $scope.priorityMatcherColumns[0].isCurrent = true;
-            $scope.priorityMatcherColumns[0].buttonClass = BUTTON_CLASS_SORT_CURRENT;
-            $scope.priorityMatcherRules = PriorityMatcherRuleValues.map((v: IPriorityMatcherRuleSrc, i: number) => <IPriorityMatcherRuleDisplay>{
-                order: v.order,
-                impact: v.impact, impactName: ImpactUrgencyNames[v.impact - 1],
-                urgency: v.urgency, urgencyName: ImpactUrgencyNames[v.urgency - 1],
-                is_mission_related: v.is_mission_related, is_mission_relatedText: (v.is_mission_related) ? "Yes" : "No",
-                vip_priority: v.vip_priority, vip_priorityText: (v.vip_priority) ? "Yes" : "No",
-                incident_priority: v.incident_priority, incident_priorityName: IncidentPriorityNames[v.incident_priority - 1],
-                rowClass: []
-            }).sort($scope.priorityMatcherColumns[0].sort);
-            $scope.priorityMatcherRules.forEach((v: IPriorityMatcherRuleDisplay, i: number) => v.rowClass = (i % 2 == 0) ? ROW_CLASS_EVEN : ROW_CLASS_ODD);
         }
+
+        static lookupPriority(impact: ImactUrgencySrc, urgency: ImactUrgencySrc, isMissionRelated: boolean, isVip: boolean): IncidentPrioritySrc {
+            return PriorityMatcherRule._priorityMatcherRules.filter((value: PriorityMatcherRule) => { return impact === value._impact && urgency === value._urgency && isMissionRelated == value._is_mission_related && isVip == value._vip_priority })[0]._incident_priority;
+        }
+
+        static getRules(sortColumn: SortableColumnState<PriorityMatcherRule>): PriorityMatcherRule[] {
+            let result: PriorityMatcherRule[] = PriorityMatcherRule._priorityMatcherRules.sort((x: PriorityMatcherRule, y: PriorityMatcherRule) => sortColumn.compare(x, y)).map((value: PriorityMatcherRule) => {
+                return new PriorityMatcherRule(value._order, value._impact, value._urgency, value._is_mission_related, value._vip_priority, value._incident_priority);
+            });
+            this.sortRules(sortColumn, result);
+            return result;
+        }
+
+        private static readonly _priorityMatcherRules: PriorityMatcherRule[] = [
+            new PriorityMatcherRule(100, 1, 1, true, true, 1),
+            new PriorityMatcherRule(200, 1, 1, false, true, 1),
+            new PriorityMatcherRule(300, 1, 1, true, false, 1),
+            new PriorityMatcherRule(400, 1, 2, true, true, 1),
+            new PriorityMatcherRule(500, 2, 1, true, true, 1),
+            new PriorityMatcherRule(600, 1, 1, false, false, 2),
+            new PriorityMatcherRule(700, 1, 2, false, true, 2),
+            new PriorityMatcherRule(800, 1, 2, true, false, 2),
+            new PriorityMatcherRule(900, 2, 1, false, true, 2),
+            new PriorityMatcherRule(1000, 2, 1, true, false, 2),
+            new PriorityMatcherRule(1100, 1, 3, true, true, 2),
+            new PriorityMatcherRule(1200, 2, 2, true, true, 2),
+            new PriorityMatcherRule(1300, 3, 1, true, true, 2),
+            new PriorityMatcherRule(1400, 1, 2, false, false, 3),
+            new PriorityMatcherRule(1500, 2, 1, false, false, 3),
+            new PriorityMatcherRule(1600, 1, 3, false, true, 3),
+            new PriorityMatcherRule(1700, 1, 3, true, false, 3),
+            new PriorityMatcherRule(1800, 2, 2, false, true, 3),
+            new PriorityMatcherRule(1900, 2, 2, true, false, 3),
+            new PriorityMatcherRule(2000, 3, 1, false, true, 3),
+            new PriorityMatcherRule(2100, 3, 1, true, false, 3),
+            new PriorityMatcherRule(2200, 2, 3, true, true, 3),
+            new PriorityMatcherRule(2300, 3, 2, true, true, 3),
+            new PriorityMatcherRule(2400, 1, 3, false, false, 4),
+            new PriorityMatcherRule(2500, 2, 2, false, false, 4),
+            new PriorityMatcherRule(2600, 3, 1, false, false, 4),
+            new PriorityMatcherRule(2700, 2, 3, false, true, 4),
+            new PriorityMatcherRule(2800, 2, 3, true, false, 4),
+            new PriorityMatcherRule(2900, 3, 2, false, true, 4),
+            new PriorityMatcherRule(3000, 3, 2, true, false, 4),
+            new PriorityMatcherRule(3100, 3, 3, true, true, 4),
+            new PriorityMatcherRule(3200, 2, 3, false, false, 5),
+            new PriorityMatcherRule(3300, 3, 2, false, false, 5),
+            new PriorityMatcherRule(3400, 3, 3, false, true, 5),
+            new PriorityMatcherRule(3500, 3, 3, true, false, 5),
+            new PriorityMatcherRule(3600, 3, 3, false, false, 5)
+        ];
+    }
+
+    class IncidentManagmentController implements ng.IController {
+        private readonly _priorityMatcherColumns: SortableColumnState<PriorityMatcherRule>[];
+        private readonly _priorityMatcherRules: PriorityMatcherRule[];
+
+        get priorityMatcherColumns(): SortableColumnState<PriorityMatcherRule>[] { return this._priorityMatcherColumns; }
+
+        get priorityMatcherRules(): PriorityMatcherRule[] { return this._priorityMatcherRules; }
+
+        constructor() {
+            let controller: IncidentManagmentController = this;
+            function onSortChangeCallback(col: SortableColumnState<PriorityMatcherRule>) {
+                if (!col.isCurrent) {
+                    controller._priorityMatcherColumns.forEach((value: SortableColumnState<PriorityMatcherRule>) => value.isCurrent = false);
+                    col.isCurrent = true;
+                }
+                PriorityMatcherRule.sortRules(col, controller._priorityMatcherRules);
+            }
+            this._priorityMatcherColumns = [
+                new SortableColumnState<PriorityMatcherRule>("Order", "order", onSortChangeCallback),
+                new SortableColumnState<PriorityMatcherRule>("Impact", "impact_value", onSortChangeCallback),
+                new SortableColumnState<PriorityMatcherRule>("Urgency", "urgency_value", onSortChangeCallback),
+                new SortableColumnState<PriorityMatcherRule>("Is Mission Related?", "is_mission_related_value", onSortChangeCallback),
+                new SortableColumnState<PriorityMatcherRule>("Is Caller VIP?", "vip_priority_value", onSortChangeCallback),
+                new SortableColumnState<PriorityMatcherRule>("Priority Assignment", "incident_priority_value", onSortChangeCallback)
+            ];
+            this._priorityMatcherColumns[0].isCurrent = true;
+            this._priorityMatcherRules = PriorityMatcherRule.getRules(this._priorityMatcherColumns[0]);
+        }
+
         $doCheck() { }
     }
 
-    interface ISelectionOption { value: string; text: string; id?: string; }
-    
-    class DropdownSelectionController {
-        private _selectedIndex: number;
-        private _selectedValue?: string;
-        private _selectedText?: string;
+    interface ISelectionOption<TValue> { value: TValue; label: string, id?: string; }
 
-        get options(): ISelectionOption[] { return this._options; }
+    app.appModule.controller("incidentManagmentController", [IncidentManagmentController]);
+
+    class DropdownSelectionState<TValue> {
+        private _selectedIndex: number;
+        private _selectedValue?: TValue;
+        private _selectedText?: string;
+        private _selectedLabel?: string;
+
+        get options(): ISelectionOption<TValue>[] { return this._options; }
 
         get selectedIndex(): number { return this._selectedIndex; }
         set selectedIndex(value: number) {
@@ -283,26 +250,30 @@ namespace inicidentManagment {
                 value = -1;
             if (value === this._selectedIndex)
                 return;
-            let option: ISelectionOption | undefined;
+            let option: ISelectionOption<TValue> | undefined;
             this._selectedIndex = value;
             if (value < 0) {
                 this._selectedValue = undefined;
+                this._selectedLabel = undefined;
                 this._selectedText = undefined;
             } else {
                 option = this._options[value];
-                this._selectedText = option.text;
+                this._selectedLabel = option.label;
                 this._selectedValue = option.value;
+                this._selectedText = sys.asString(option.value, false, "");
             }
             if (typeof this._changeCallback === "function")
                 this._changeCallback(option, value);
         }
 
-        get selectedValue(): string | undefined { return this._selectedValue; }
-        set selectedValue(value: string | undefined) {
-            for (var i = 0; i < this._options.length; i++) {
-                if (this._options[i].value === value) {
-                    this.selectedIndex = i;
-                    return;
+        get selectedValue(): TValue | undefined { return this._selectedValue; }
+        set selectedValue(value: TValue | undefined) {
+            if (typeof value !== "undefined") {
+                for (let index: number = 0; index < this._options.length; index++) {
+                    if (this._options[index].value === value) {
+                        this.selectedIndex = index;
+                        return;
+                    }
                 }
             }
             this.selectedIndex = -1;
@@ -310,50 +281,58 @@ namespace inicidentManagment {
 
         get selectedText(): string | undefined { return this._selectedText; }
         set selectedText(value: string | undefined) {
-            for (var i = 0; i < this._options.length; i++) {
-                if (this._options[i].text === value) {
-                    this.selectedIndex = i;
-                    return;
+            if (typeof value === "string") {
+                for (let index: number = 0; index < this._options.length; index++) {
+                    if (sys.asString(this._options[index].value, false, "") === value) {
+                        this.selectedIndex = index;
+                        return;
+                    }
                 }
             }
             this.selectedIndex = -1;
         }
 
-        constructor(private _options: ISelectionOption[], private _changeCallback?: { (option?: ISelectionOption, index?: number): void }) {
+        get selectedLabel(): string | undefined { return this._selectedLabel; }
+        set selectedLabel(value: string | undefined) {
+            if (typeof value === "string") {
+                for (let index: number = 0; index < this._options.length; index++) {
+                    if (this._options[index].label === value) {
+                        this.selectedIndex = index;
+                        return;
+                    }
+                }
+            }
+            this.selectedIndex = -1;
+        }
+
+        constructor(private _options: ISelectionOption<TValue>[], private _changeCallback?: { (option?: ISelectionOption<TValue>, index?: number): void }) {
             if (typeof _options != "object" || _options === null || _options.length == 0)
                 this._selectedIndex = -1;
             else {
                 this._selectedIndex = 0;
-                this._selectedText = _options[0].text;
+                this._selectedLabel = _options[0].label;
                 this._selectedValue = _options[0].value;
+                this._selectedText = sys.asString(_options[0].value, false, "");
             }
         }
     }
 
-    app.appModule.controller("incidentManagmentController", ['$scope', IncidentManagmentController]);
-
     class ProducerEmulatorController implements ng.IController {
-        private _users_impacted: DropdownSelectionController;
-        private _productivity_impact: DropdownSelectionController;
-        private _is_mission_related: DropdownSelectionController;
+        private _users_impacted: DropdownSelectionState<number>;
+        private _productivity_impact: DropdownSelectionState<number>;
+        private _is_mission_related: DropdownSelectionState<boolean>;
         private _is_caller_vip: boolean = false;
         private _comment: string;
         private _impact: string;
         private _urgency: string;
         private _priority: string;
-        private _noUserImpactSelection: boolean;
-        private _noProductivityImpactSelection: boolean;
-        private _noImpactSelection: boolean;
         private _effective_productivity_impact: number;
         private _effective_user_impact: number;
-        private _baseFormulas: boolean;
-        private _vipOrMission: boolean;
-        private _vipAndMission: boolean;
-        private _missionAndNotVip: boolean;
+        private _showCalculations: boolean = false;
 
-        get users_impacted(): DropdownSelectionController { return this._users_impacted; }
-        get productivity_impact(): DropdownSelectionController { return this._productivity_impact; }
-        get is_mission_related(): DropdownSelectionController { return this._is_mission_related; }
+        get users_impacted(): DropdownSelectionState<number> { return this._users_impacted; }
+        get productivity_impact(): DropdownSelectionState<number> { return this._productivity_impact; }
+        get is_mission_related(): DropdownSelectionState<boolean> { return this._is_mission_related; }
         get is_caller_vip(): boolean { return this._is_caller_vip; }
         set is_caller_vip(value: boolean) {
             if (this._is_caller_vip === (value = value === true))
@@ -365,45 +344,48 @@ namespace inicidentManagment {
         get urgency(): string { return this._urgency; }
         get priority(): string { return this._priority; }
         get comment(): string { return this._comment; }
-        get noUserImpactSelection(): boolean { return this._noUserImpactSelection; }
-        get noProductivityImpactSelection(): boolean { return this._noProductivityImpactSelection; }
-        get noImpactSelection(): boolean { return this._noImpactSelection; }
+        get noUserImpactSelection(): boolean { return this._users_impacted.selectedValue == 0 && this._productivity_impact.selectedValue > 0; }
+        get noProductivityImpactSelection(): boolean { return this._productivity_impact.selectedValue == 0 && this._users_impacted.selectedValue > 0; }
+        get noImpactSelection(): boolean { return this._productivity_impact.selectedValue == 0 && this._users_impacted.selectedValue == 0; }
         get effective_productivity_impact(): number { return this._effective_productivity_impact; }
         get effective_user_impact(): number { return this._effective_user_impact; }
-        get baseFormulas(): boolean { return this._baseFormulas; }
-        get vipOrMission(): boolean { return this._vipOrMission; }
-        get vipAndMission(): boolean { return this._vipAndMission; }
-        get missionAndNotVip(): boolean { return this._missionAndNotVip; }
-
+        get vipOrMission(): boolean { return this._is_caller_vip || this._is_mission_related.selectedValue; }
+        get vipAndMission(): boolean { return this._is_caller_vip && this._is_mission_related.selectedValue; }
+        get missionAndNotVip(): boolean { return this._is_mission_related.selectedValue && !this._is_caller_vip; }
+        get showCalculations(): boolean { return this._showCalculations; }
+        set showCalculations(value: boolean) { this._showCalculations = value === true; }
+        
         constructor() {
             let controller: ProducerEmulatorController = this;
-            this._users_impacted = new DropdownSelectionController(<ISelectionOption[]>[
-                { value: "0", text: "Unspecified / Unknown", id: "usersImpacted0" },
-                { value: "1", text: "More than 100 people", id: "usersImpacted1" },
-                { value: "2", text: "50 to 100 people", id: "usersImpacted2" },
-                { value: "3", text: "10 to 49 people", id: "usersImpacted3" },
-                { value: "4", text: "Less than 10 people", id: "usersImpacted4" }
+            this._users_impacted = new DropdownSelectionState<number>(<ISelectionOption<number>[]>[
+                { value: 0, label: "Unspecified / Unknown", id: "usersImpacted0" },
+                { value: 1, label: "More than 100 people", id: "usersImpacted1" },
+                { value: 2, label: "50 to 100 people", id: "usersImpacted2" },
+                { value: 3, label: "10 to 49 people", id: "usersImpacted3" },
+                { value: 4, label: "Less than 10 people", id: "usersImpacted4" }
             ], () => {
                 controller.emulateCalculation();
-                });
-            this._productivity_impact = new DropdownSelectionController(<ISelectionOption[]>[
-                { value: "0", text: "Unspecified / Unknown", id: "productivityImpact0" },
-                { value: "1", text: "Complete work stoppage", id: "productivityImpact1" },
-                { value: "2", text: "Partial work stoppage", id: "productivityImpact2" },
-                { value: "3", text: "Effects execution of time-sensitive activities", id: "productivityImpact3" },
-                { value: "4", text: "Currently using a work-around / alternate method to perform affected duties", id: "productivityImpact4" }
+            });
+            this._productivity_impact = new DropdownSelectionState<number>(<ISelectionOption<number>[]>[
+                { value: 0, label: "Unspecified / Unknown", id: "productivityImpact0" },
+                { value: 1, label: "Complete work stoppage", id: "productivityImpact1" },
+                { value: 2, label: "Partial work stoppage", id: "productivityImpact2" },
+                { value: 3, label: "Effects execution of time-sensitive activities", id: "productivityImpact3" },
+                { value: 4, label: "Currently using a work-around / alternate method to perform affected duties", id: "productivityImpact4" }
             ], () => {
                 controller.emulateCalculation();
-                });
-            this._is_mission_related = new DropdownSelectionController(<ISelectionOption[]>[
-                { value: "0", text: "Yes", id: "isMissionRelated" },
-                { value: "1", text: "No", id: "isMissionRelated" }
+            });
+            this._is_mission_related = new DropdownSelectionState<boolean>(<ISelectionOption<boolean>[]>[
+                { value: true, label: "Yes", id: "isMissionRelated" },
+                { value: false, label: "No", id: "isMissionRelated" }
             ], () => {
                 controller.emulateCalculation();
-                });
+            });
             this._is_mission_related.selectedIndex = 1;
             this.emulateCalculation();
         }
+
+        toggleShowCalculations(): void { this._showCalculations = !this._showCalculations; }
 
         emulateCalculation(): void {
             let current: sn_emulation_helpers.Emulated_GlideRecord = new sn_emulation_helpers.Emulated_GlideRecord({
@@ -414,69 +396,42 @@ namespace inicidentManagment {
             });
             ProducerEmulatorController.emulateSubmitAnIncidentBusinessRule({
                 is_mission_related: <YesNoValue>this._is_mission_related.selectedText,
-                productivity_impact: parseInt(this._productivity_impact.selectedValue),
-                users_impacted: parseInt(this._users_impacted.selectedValue)
+                productivity_impact: this._productivity_impact.selectedValue,
+                users_impacted: this._users_impacted.selectedValue
             }, current, new sn_emulation_helpers.Emulated_GlideRecord({ vip: false }));
             let s: string = current.impact.toString();
-            let i: number = parseInt(s);
+            let i: ImactUrgencySrc = <ImactUrgencySrc>parseInt(s);
             this._impact = s + " - " + ImpactUrgencyNames[i - 1];
             s = current.urgency.toString();
-            let u: number = parseInt(s);
+            let u: ImactUrgencySrc = <ImactUrgencySrc>parseInt(s);
             this._urgency = s + " - " + ImpactUrgencyNames[u - 1];
-            let isMissionRelated = parseInt(this._is_mission_related.selectedValue) === 0;
-            let p: number = PriorityMatcherRuleValues.filter((v: IPriorityMatcherRuleSrc) => v.impact === i && v.urgency === u && v.is_mission_related === isMissionRelated && v.vip_priority === this.is_caller_vip)[0].incident_priority;
+            let p: IncidentPrioritySrc = PriorityMatcherRule.lookupPriority(i, u, this._is_mission_related.selectedValue, this._is_caller_vip);
             this._priority = p + " - " + IncidentPriorityNames[p - 1];
             this._comment = current.comment.toString();
-            if (isMissionRelated) {
-                this._baseFormulas = false;
-                if (this._is_caller_vip) {
-                    this._baseFormulas = this._vipOrMission = this._missionAndNotVip = false;
-                    this._vipAndMission = true;
+            if (this._productivity_impact.selectedValue === 0) {
+                if (this._users_impacted.selectedValue === 0) {
+                    this._effective_productivity_impact = this._effective_user_impact = (this._is_caller_vip) ? 2 : ((this._is_mission_related.selectedValue) ? 3 : 4);
                 } else {
-                    this._vipOrMission = this._missionAndNotVip = true;
-                    this._vipAndMission = false;
-                }
-            } else {
-                this._vipAndMission = this._missionAndNotVip = false;
-                if (this._is_caller_vip) {
-                    this._vipOrMission = true;
-                    this._baseFormulas = false;
-                } else {
-                    this._baseFormulas = true;
-                    this._vipOrMission = false;
-                }
-            }
-            if (parseInt(this._productivity_impact.selectedValue) === 0) {
-                if (parseInt(this._users_impacted.selectedValue) === 0) {
-                    this._noImpactSelection = true;
-                    this._noUserImpactSelection = this._noProductivityImpactSelection = false;
-                    this._effective_productivity_impact = this._effective_user_impact = (this._is_caller_vip) ? 2 : ((isMissionRelated) ? 3 : 4);
-                } else {
-                    this._effective_user_impact = parseInt(this._users_impacted.selectedValue);
-                    this._noProductivityImpactSelection = true;
-                    this._noUserImpactSelection = this._noImpactSelection = false;
+                    this._effective_user_impact = this._users_impacted.selectedValue;
                     this._effective_productivity_impact = this._effective_user_impact;
                 }
             } else {
-                this._noImpactSelection = this._noProductivityImpactSelection = false;
-                this._effective_productivity_impact = parseInt(this._productivity_impact.selectedValue);
-                if (parseInt(this._users_impacted.selectedValue) === 0) {
-                    this._noUserImpactSelection = true;
+                this._effective_productivity_impact = this._productivity_impact.selectedValue;
+                if (this._users_impacted.selectedValue === 0) {
                     this._effective_user_impact = this._effective_productivity_impact;
                 } else {
-                    this._effective_user_impact = parseInt(this._users_impacted.selectedValue);
-                    this._noUserImpactSelection =  false;
+                    this._effective_user_impact = this._users_impacted.selectedValue;
                 }
             }
         }
 
-
         static emulateSubmitAnIncidentBusinessRule(producer: IEmulatedProducer, current: sn.GlideRecord, caller: sn.GlideRecord): void {
             let users_impacted: number = (typeof producer.users_impacted === "number") ? producer.users_impacted : parseInt(producer.users_impacted);
-            current.u_is_mission_related = (producer.is_mission_related == "Yes");
+            let isMissionRelated = current.u_is_mission_related = (producer.is_mission_related == "Yes");
+            let isVip = caller.getValue('vip') == 'true';
             
-            let notes: string = "User selected the following incident submission options:\n\nMission Related: " + producer.is_mission_related + "\nUsers Affected: ";
-            if (caller.vip)
+            let notes: string = "User selected the following incident submission options:\n\nMission Related: " + producer.is_mission_related  + "\nUsers Affected: ";
+            if (isVip)
                 notes = "VIP " + notes;
             switch (users_impacted) {
                 case 1:
@@ -516,218 +471,20 @@ namespace inicidentManagment {
             }
             if (users_impacted < 1) {
                 if (productivity_impact < 1)
-                    productivity_impact = users_impacted = (caller.vip) ? 2 : ((current.u_is_mission_related) ? 3 : 4);
+                    productivity_impact = users_impacted = (caller.vip) ? 2 : ((isMissionRelated) ? 3 : 4);
                 else
                     users_impacted = productivity_impact;
             } else if (productivity_impact < 1)
                 productivity_impact = users_impacted;
 
-            current.impact = Math.round(((caller.vip) ? ((current.u_is_mission_related) ? (productivity_impact + users_impacted) :
+            current.impact = Math.round(((isVip) ? ((isMissionRelated) ? (productivity_impact + users_impacted) :
                 (productivity_impact + users_impacted) * 1.125) :
-                (productivity_impact + users_impacted) * ((current.u_is_mission_related) ? 1.25 : 1.375)) / (11.0 / 3.0));
-            current.urgency = Math.round((productivity_impact + ((caller.vip) ? ((current.u_is_mission_related) ? 1 : 2) : ((current.u_is_mission_related) ? 3 : 4))) * 0.35);
+                (productivity_impact + users_impacted) * ((isMissionRelated) ? 1.25 : 1.375)) / (11.0 / 3.0));
+            current.urgency = Math.round((productivity_impact + ((isVip) ? ((isMissionRelated) ? 1 : 2) : ((isMissionRelated) ? 3 : 4))) * 0.35);
         }
 
         $doCheck() { }
     }
+
     app.appModule.controller("producerEmulatorController", [ProducerEmulatorController]);
-
-    /*
-var mainModule = angular.module("mainModule", []);
-mainModule.controller("mainController", function ($scope) {
-});
-mainModule.controller("priorityExampleController", function ($scope) {
-    $scope.users_impacted = {
-        label: "Users Impacted",
-        selected: 0,
-        options: [
-            { value: 0, text: "Unspecified / Unknown" },
-            { value: 1, text: "More than 100 people" },
-            { value: 2, text: "50 to 100 people" },
-            { value: 3, text: "10 to 49 people" },
-            { value: 4, text: "Less than 10 people" }
-        ],
-        isAutoValue: false,
-        valueClass: "",
-        explanation: {
-            class: "",
-            colSpan: 2
-        }
-    };
-    $scope.productivity_impact = {
-        label: "Productivity Impact",
-        selected: 0,
-        isAutoValue: false,
-        options: [
-            { value: 0, text: "Unspecified / Unknown" },
-            { value: 1, text: "Complete work stoppage" },
-            { value: 2, text: "Partial work stoppage" },
-            { value: 3, text: "Effects execution of time-sensitive activities" },
-            { value: 4, text: "Currently using a work-around / alternate method to perform affected duties" }
-        ],
-        valueClass: "",
-        explanationClass: ""
-    };
-    $scope.is_mission_related = {
-        label: "Is Mission Related",
-        value: "No",
-        operand: 1.125,
-        explanation: {
-            colSpan: 2,
-            class: ""
-        }
-    };
-    $scope.caller_vip = {
-        label: "Is VIP",
-        value: false,
-        operand: 1.375
-    };
-    $scope.impact = {};
-    $scope.urgency = {};
-    $scope.comment = "";
-    function emulateSubmitAnIncidentBusinessRule(producer, current, caller) {
-        var users_impacted = parseInt(producer.users_impacted);
-        current.u_is_mission_related = (producer.is_mission_related == "Yes");
-        var notes = "User selected the following incident submission options:\n\nMission Related: " + producer.is_mission_related + "\nUsers Affected: ";
-        switch (users_impacted) {
-            case 1:
-                current.comment = notes + "More than 100 people";
-                break;
-            case 2:
-                current.comment = notes + "50 to 100 people";
-                break;
-            case 3:
-                current.comment = notes + "10 to 49 people";
-                break;
-            case 4:
-                current.comment = notes + "Less than 10 people";
-                break;
-            default:
-                current.comment = notes + "Unspecified / Unknown";
-                break;
-        }
-        notes = notes + "\nProductivity Impact: ";
-        var productivity_impact = parseInt(producer.productivity_impact);
-        switch (productivity_impact) {
-            case 1:
-                notes = notes + "Complete work stoppage";
-                break;
-            case 2:
-                notes = notes + "Partial work stoppage";
-                break;
-            case 3:
-                notes = notes + "Effects execution of time-sensitive activities";
-                break;
-            case 4:
-                notes = notes + "Currently using a work-around / alternate method to perform affected duties";
-                break;
-            default:
-                notes = notes + "Unspecified / Unknown";
-                break;
-        }
-        if (users_impacted < 1) {
-            if (productivity_impact < 1)
-                productivity_impact = users_impacted = (caller.vip) ? 2 : ((current.u_is_mission_related) ? 3 : 4);
-            else
-                users_impacted = productivity_impact;
-        } else if (productivity_impact < 1)
-            productivity_impact = users_impacted;
-
-        current.impact = Math.round(((caller.vip) ? ((current.u_is_mission_related) ? (productivity_impact + users_impacted) :
-            (productivity_impact + users_impacted) * 1.125) :
-            (productivity_impact + users_impacted) * ((current.u_is_mission_related) ? 1.25 : 1.375)) / (11.0 / 3.0));
-        current.urgency = Math.round((productivity_impact + ((caller.vip) ? ((current.u_is_mission_related) ? 1 : 2) : ((current.u_is_mission_related) ? 3 : 4))) * 0.35);
-    }
-    $scope.onOptionChange = function () {
-        var current = {};
-        emulateSubmitAnIncidentBusinessRule({
-            users_impacted: $scope.users_impacted.selected,
-            productivity_impact: $scope.productivity_impact.selected,
-            is_mission_related: $scope.is_mission_related.value
-        }, current, { vip: $scope.caller_vip.value });
-
-        $scope.users_impacted.value = parseFloat($scope.users_impacted.selected);
-        $scope.productivity_impact.value = parseFloat($scope.productivity_impact.selected);
-        $scope.users_impacted.isAutoValue = $scope.users_impacted.value < 1;
-        $scope.productivity_impact.isAutoValue = $scope.productivity_impact.value < 1;
-        if ($scope.users_impacted.isAutoValue) {
-            $scope.users_impacted.valueClass = "autoValue";
-            if ($scope.productivity_impact.isAutoValue)
-                $scope.productivity_impact.value = ($scope.caller_vip.value) ? 2 : ((current.u_is_mission_related) ? 3 : 4);
-            else
-                $scope.productivity_impact.valueClass = "";
-            $scope.productivity_impact.valueClass = $scope.productivity_impact.explanationClass = "";
-            $scope.users_impacted.value = $scope.productivity_impact.value;
-            $scope.users_impacted.explanation.class = "text-info";
-            $scope.users_impacted.explanation.colSpan = 2;
-        } else {
-            $scope.users_impacted.explanation.colSpan = 1;
-            $scope.users_impacted.valueClass = $scope.users_impacted.explanation.class = "";
-            if ($scope.productivity_impact.isAutoValue) {
-                $scope.productivity_impact.valueClass = "autoValue";
-                $scope.productivity_impact.value = $scope.users_impacted.value;
-                $scope.productivity_impact.explanationClass = "text-info";
-            } else {
-                $scope.productivity_impact.valueClass = $scope.productivity_impact.explanationClass = "";
-            }
-        }
-        $scope.impact.value = $scope.users_impacted.value + $scope.productivity_impact.value;
-        if ($scope.caller_vip.value) {
-            $scope.is_mission_related.colSpan = 2;
-            if (current.u_is_mission_related)
-                $scope.is_mission_related.explanation.class = "";
-            else {
-                $scope.impact.value *= $scope.is_mission_related.operand;
-                $scope.is_mission_related.explanation.class = "text-info";
-            }
-        } else {
-            $scope.is_mission_related.colSpan = 1;
-            if (current.u_is_mission_related) {
-                $scope.impact.value *= ($scope.is_mission_related.operand + $scope.caller_vip.operand);
-                $scope.is_mission_related.explanation.class = "text-info";
-            } else {
-                $scope.impact.value *= $scope.caller_vip.operand;
-                $scope.is_mission_related.explanation.class = "";
-            }
-        }
-        $scope.impact.value /= (11.0 / 3.0);
-        $scope.impact.rounded = current.impact;
-        $scope.urgency.value = ($scope.productivity_impact.value +
-            (($scope.caller_vip.value) ? ((current.u_is_mission_related) ? 1 : 2) : ((current.u_is_mission_related) ? 3 : 4))) * 0.35;
-        $scope.urgency.rounded = current.urgency;
-        if ($scope.impact.rounded != Math.round($scope.impact.value))
-            alert("Expected Impact: " + Math.round($scope.impact.value) + "; Actual: " + $scope.impact.rounded);
-        if ($scope.urgency.rounded != Math.round($scope.urgency.value))
-            alert("Expected Urgency: " + Math.round($scope.urgency.value) + "; Actual: " + $scope.urgency.rounded);
-        $scope.comment = current.comment;
-    };
-    $scope.get3TierDescription = function (value) {
-        switch (value) {
-            case 1:
-                return "1 - High";
-            case 2:
-                return "2 - Medium";
-            case 3:
-                return "3 - Low";
-        }
-        return "Unknown: " + value;
-    }
-    $scope.get5TierDescription = function (value) {
-        switch (value) {
-            case 1:
-                return "1 - Critical";
-            case 2:
-                return "2 - High";
-            case 3:
-                return "3 - Moderate";
-            case 4:
-                return "4 - Low";
-            case 5:
-                return "5 - Planning";
-        }
-        return "Unknown: " + value;
-    }
-    $scope.onOptionChange();
-});
-     */
 }
