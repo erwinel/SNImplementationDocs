@@ -1,4 +1,4 @@
-﻿/// <reference path="Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
@@ -9,493 +9,16 @@ namespace uriBuilder {
     const CSS_CLASS_INVALID: string = "is-invalid";
     const CSS_CLASS_TEXT_WARNING: string = "text-warning";
 
-    enum ValidationStatus {
-        Success,
-        Warning,
-        Error
-    }
-    interface IFieldWithValidationScope extends ng.IScope {
-        fieldName: string;
-        inputText: string;
-        validationStatus: ValidationStatus;
-        cssClass: string[];
-        validationMessage: string;
-        onChange(): void;
-    }
-    interface IOptionFieldScope extends ng.IScope {
-        isChecked: boolean;
-        enableRelated: boolean;
-        onChange(): void;
-    }
-    interface IUriBuilderScope extends ng.IScope {
-        href: IFieldWithValidationScope;
-        hasOrigin: IOptionFieldScope;
-        schemeOptions: IUriSchemeOption[];
-        selectedScheme: string;
-        currentScheme: IUriSchemeOption;
-        scheme: IFieldWithValidationScope;
-        selectedSeparator: "" | UriSchemeSeparator;
-        separatorOptions: UriSchemeSeparator[];
-        hasUsername: IOptionFieldScope;
-        username: IFieldWithValidationScope;
-        hasPassword: IOptionFieldScope;
-        password: IFieldWithValidationScope;
-        hasHost: IOptionFieldScope;
-        host: IFieldWithValidationScope;
-        hasPort: IOptionFieldScope;
-        port: IFieldWithValidationScope;
-        pathString: IFieldWithValidationScope;
-        hasQuery: IOptionFieldScope;
-        queryString: IFieldWithValidationScope;
-        hasFragment: IOptionFieldScope;
-        fragment: IFieldWithValidationScope;
-    }
+    export type UriSchemeSeparator = "://" | ":/" | ":";
+    export type UriPathSegmentSeparator = "/" | "\\" | ":";
 
-    class optionField {
-        private _enableRelated: boolean = true;
-        private _isChecked: boolean = false;
+    const uriSchemeParseRe: RegExp = /^([a-zA-Z_][-.\dA-_a-z~\ud800-\udbff]*)(:[\\/]{0,2})/;
 
-        get isChecked(): boolean { return this._isChecked; }
-        set isChecked(value: boolean) {
-            if (this._isChecked === value)
-                return;
-            this._isChecked = this.$Scope.isChecked = value;
-            this.$Scope.enableRelated = this._enableRelated && this._isChecked;
-            if (typeof this._onChangeCallback === "function")
-                this._onChangeCallback(!this._isChecked, this._isChecked);
-        }
+    const uriAuthorityParseRe: RegExp = /^(([^@:\\\/]+)?(:([^@:\\\/]+)?)?@)?(?:([^@:\\\/]+)?(?::(\d+)(?=[\\\/:]|$))?)?/;
 
-        get enableRelated(): boolean { return this._enableRelated; }
-        set enableRelated(value: boolean) {
-            if (this._enableRelated === value)
-                return;
-            this._enableRelated = value;
-            if (value) {
-                let isChecked: boolean = (this.$Scope.isChecked == true);
-                this.$Scope.enableRelated = isChecked;
-                if (this._isChecked != isChecked) {
-                    this._isChecked = isChecked;
-                    if (typeof this._onChangeCallback === "function")
-                        this._onChangeCallback(!this._isChecked, this._isChecked);
-                }
-            } else
-                this.$Scope.enableRelated = false;
-        }
+    const leadingPathSegmentRe: RegExp = /^[^:\\\/]+/;
 
-        constructor(protected $Scope: IOptionFieldScope, private readonly _onChangeCallback?: Function) {
-            $Scope.isChecked = this._isChecked;
-            $Scope.enableRelated = this._enableRelated && this._isChecked;
-            let current: optionField = this;
-            $Scope.onChange = () => {
-                if (current._isChecked === ($Scope.isChecked == true) || !current._enableRelated)
-                    return;
-                current._isChecked = ($Scope.isChecked == true);
-                $Scope.enableRelated = current._enableRelated && current._isChecked;
-                if (typeof current._onChangeCallback === "function")
-                    current._onChangeCallback(!current._isChecked, current._isChecked);
-            };
-        }
-
-        setWithoutChangeNotify(value: boolean): void {
-            this._isChecked = this.$Scope.isChecked = value;
-            this.$Scope.enableRelated = this._enableRelated && this._isChecked;
-        }
-    }
-    abstract class FieldWithValidation {
-        private _originalText: string;
-        private _outputText: string;
-
-        get inputText(): string { return this.$Scope.inputText; }
-        set inputText(text: string) {
-            this.$Scope.inputText = (typeof text === "string") ? text : "";
-            let newValue: string = this.coerceOutput(this.$Scope.inputText);
-            if (newValue === this._originalText)
-                return;
-            this._originalText = newValue;
-            this.validate();
-            if (typeof this._onChangeCallback === "function")
-                this._onChangeCallback();
-        }
-
-        get outputText(): string { return this._outputText; }
-
-        get validationMessage(): string { return this.$Scope.validationMessage; }
-
-        get validationStatus(): ValidationStatus {
-            let result: ValidationStatus = this.$Scope.validationStatus;
-            if ((typeof result !== "number") || isNaN(result))
-                this.$Scope.validationStatus = result = (((typeof this.$Scope.validationMessage !== "string") || this.$Scope.validationMessage.length == 0) ? ValidationStatus.Success : ValidationStatus.Error);
-            return result;
-        }
-
-        constructor(readonly name: string, protected $Scope: IFieldWithValidationScope, private readonly _onChangeCallback?: Function) {
-            $Scope.inputText = "";
-            $Scope.fieldName = name;
-            $Scope.validationStatus = ValidationStatus.Success;
-            $Scope.cssClass = [CSS_CLASS_VALID];
-            $Scope.validationMessage = "";
-            let current: FieldWithValidation = this;
-            $Scope.onChange = () => {
-                let newValue: string = this.coerceOutput(this.$Scope.inputText);
-                if (newValue === this._originalText)
-                    return;
-                this._originalText = newValue;
-                this.validate();
-                if (typeof this._onChangeCallback === "function")
-                    this._onChangeCallback();
-            };
-        }
-
-        setWithoutChangeNotify(text: string) {
-            this.$Scope.inputText = (typeof text === "string") ? text : "";
-            let newValue: string = this.coerceOutput(this.$Scope.inputText);
-            if (newValue === this._originalText)
-                return;
-            this._originalText = newValue;
-            this.validate();
-        }
-
-        protected validate(): ValidationStatus {
-            let newValue: string = this.coerceOutput(this.$Scope.inputText);
-            if (newValue === this._outputText)
-                return this.validationStatus;
-            this._outputText = newValue;
-            let message: string | ValidationStatus | [string, ValidationStatus] = this.getValidationMessage(newValue);
-            if (typeof message === "string")
-                this.setValidation(message);
-            else if (typeof message === "number")
-                this.setValidation("", message);
-            else if ((typeof message === "object") && message !== null && Array.isArray(message))
-                this.setValidation(message[0], message[1]);
-            else 
-                this.setValidation("");
-            
-            this.$Scope.cssClass = (this.$Scope.validationStatus == ValidationStatus.Warning) ? [CSS_CLASS_INVALID, CSS_CLASS_TEXT_WARNING] : [(this.$Scope.validationStatus == ValidationStatus.Success) ? CSS_CLASS_VALID : CSS_CLASS_INVALID];
-            return this.validationStatus;
-        }
-
-        setValidText(text: string) {
-            this.$Scope.inputText = this._originalText = this._outputText = this.coerceOutput(text);
-            this.$Scope.cssClass = [CSS_CLASS_VALID];
-            this.$Scope.validationMessage = "";
-            this.$Scope.isValid = true;
-            if (typeof this._onChangeCallback === "function")
-                this._onChangeCallback();
-        }
-
-        protected coerceOutput(inputText: string) { return (typeof inputText === "string") ? inputText : ""; }
-        protected abstract getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus];
-        setValidation(message: string, status?: ValidationStatus) {
-            if ((typeof message === "string") && (message = message.trim()).length > 0) {
-                this.$Scope.validationMessage = message;
-                this.$Scope.validationStatus = (isNaN(status)) ? ValidationStatus.Success : ((status === ValidationStatus.Success || status === ValidationStatus.Warning) ? status : ValidationStatus.Error);
-            } else if (typeof status === "number" && !isNaN(status)) {
-                switch (status) {
-                    case ValidationStatus.Success:
-                        this.$Scope.validationMessage = "";
-                        this.$Scope.validationStatus = ValidationStatus.Success;
-                        break;
-                    case ValidationStatus.Warning:
-                        this.$Scope.validationMessage = "Invalid value";
-                        this.$Scope.validationStatus = ValidationStatus.Warning;
-                        break;
-                    default:
-                        this.$Scope.validationMessage = "Invalid value";
-                        this.$Scope.validationStatus = ValidationStatus.Error;
-                        break;
-                }
-            } else {
-                this.$Scope.validationMessage = "";
-                this.$Scope.validationStatus = ValidationStatus.Success;
-            }
-        }
-    }
-    class HrefField extends FieldWithValidation {
-        constructor(name: string, $Scope: IFieldWithValidationScope, onChangeCallback?: Function) { super(name, $Scope, onChangeCallback); }
-        protected getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus] { return ""; }
-        setValidTextAndStatus(text: string, message: string): void {
-            this.setValidText(text);
-            
-        }
-    }
-    class SchemeField extends FieldWithValidation {
-        constructor(name: string, $Scope: IFieldWithValidationScope, onChangeCallback?: Function) { super(name, $Scope, onChangeCallback); }
-        protected getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus] { return ""; }
-    }
-    class UserNameField extends FieldWithValidation {
-        constructor(name: string, $Scope: IFieldWithValidationScope, onChangeCallback?: Function) { super(name, $Scope, onChangeCallback); }
-        protected getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus] { return ""; }
-    }
-    class PasswordField extends FieldWithValidation {
-        constructor(name: string, $Scope: IFieldWithValidationScope, onChangeCallback?: Function) { super(name, $Scope, onChangeCallback); }
-        protected getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus] { return ""; }
-    }
-    class HostField extends FieldWithValidation {
-        constructor(name: string, $Scope: IFieldWithValidationScope, onChangeCallback?: Function) { super(name, $Scope, onChangeCallback); }
-        protected getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus] { return ""; }
-    }
-    class PortField extends FieldWithValidation {
-        constructor(name: string, $Scope: IFieldWithValidationScope, onChangeCallback?: Function) { super(name, $Scope, onChangeCallback); }
-        protected getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus] { return ""; }
-    }
-    class PathStringField extends FieldWithValidation {
-        constructor(name: string, $Scope: IFieldWithValidationScope, onChangeCallback?: Function) { super(name, $Scope, onChangeCallback); }
-        protected getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus] { return ""; }
-    }
-    class QueryStringField extends FieldWithValidation {
-        constructor(name: string, $Scope: IFieldWithValidationScope, onChangeCallback?: Function) { super(name, $Scope, onChangeCallback); }
-        protected getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus] { return ""; }
-    }
-    class FragmentField extends FieldWithValidation {
-        constructor(name: string, $Scope: IFieldWithValidationScope, onChangeCallback?: Function) { super(name, $Scope, onChangeCallback); }
-        protected getValidationMessage(inputText: string): string | ValidationStatus | [string, ValidationStatus] { return ""; }
-    }
-    class UriBuilderController implements ng.IController {
-        private _href: HrefField;
-        private _hasOrigin: optionField;
-        private _hasUsername: optionField;
-        private _hasPassword: optionField;
-        private _hasHost: optionField;
-        private _hasPort: optionField;
-        private _hasQuery: optionField;
-        private _hasFragment: optionField;
-        private _selectedScheme: string;
-        private _selectedSeparator: UriSchemeSeparator;
-        private _scheme: SchemeField;
-        private _currrentScheme: UriSchemeInfo;
-        private _username: UserNameField;
-        private _password: PasswordField;
-        private _host: HostField;
-        private _port: PortField;
-        private _pathString: PathStringField;
-        private _queryString: QueryStringField;
-        private _fragment: FragmentField;
-
-        constructor(protected readonly $Scope: IUriBuilderScope) {
-            $Scope.href = <IFieldWithValidationScope>($Scope.$new());
-            $Scope.hasOrigin = <IOptionFieldScope>($Scope.$new());
-            $Scope.hasUsername = <IOptionFieldScope>($Scope.$new());
-            $Scope.hasPassword = <IOptionFieldScope>($Scope.$new());
-            $Scope.hasHost = <IOptionFieldScope>($Scope.$new());
-            $Scope.hasPort = <IOptionFieldScope>($Scope.$new());
-            $Scope.hasQuery = <IOptionFieldScope>($Scope.$new());
-            $Scope.hasFragment = <IOptionFieldScope>($Scope.$new());
-            $Scope.schemeOptions = [
-                UriSchemeInfo.uriScheme_https,
-                UriSchemeInfo.uriScheme_http,
-                UriSchemeInfo.uriScheme_ssh,
-                UriSchemeInfo.uriScheme_file,
-                UriSchemeInfo.uriScheme_ldap,
-                UriSchemeInfo.uriScheme_netPipe,
-                UriSchemeInfo.uriScheme_netTcp,
-                UriSchemeInfo.uriScheme_wais,
-                UriSchemeInfo.uriScheme_mailto,
-                UriSchemeInfo.uriScheme_ftp,
-                UriSchemeInfo.uriScheme_ftps,
-                UriSchemeInfo.uriScheme_sftp,
-                UriSchemeInfo.uriScheme_git,
-                UriSchemeInfo.uriScheme_news,
-                UriSchemeInfo.uriScheme_nntp,
-                UriSchemeInfo.uriScheme_tel,
-                UriSchemeInfo.uriScheme_telnet,
-                UriSchemeInfo.uriScheme_gopher,
-                UriSchemeInfo.uriScheme_urn,
-                <IUriSchemeOption>{ name: "", displayText: "(other)" }
-            ];
-            $Scope.separatorOptions = ["://", ":", ":/"];
-            $Scope.selectedScheme = this._selectedScheme = ($Scope.currentScheme = this._currrentScheme = UriSchemeInfo.uriScheme_https).name;
-            $Scope.selectedSeparator = <UriSchemeSeparator>$Scope.currentScheme.name;
-
-            let controller: UriBuilderController = this;
-            this._href = new HrefField("Full URI", $Scope.href, () => controller.onHrefChanged());
-            this._hasOrigin = new optionField($Scope.hasOrigin, () => { controller.onHasOriginChange(); });
-            this._hasUsername = new optionField($Scope.hasUsername, () => {
-                controller._hasPassword.enableRelated = controller._hasUsername.isChecked;
-                controller.rebuildHref();
-            });
-            this._hasPassword = new optionField($Scope.hasPassword, () => { controller.rebuildHref(); });
-            this._hasHost = new optionField($Scope.hasHost, () => {
-                controller._hasPort.enableRelated = controller._hasHost.isChecked;
-                controller.rebuildHref();
-            });
-            this._hasPort = new optionField($Scope.hasPort, () => { controller.rebuildHref(); });
-            this._hasQuery = new optionField($Scope.hasQuery, () => { controller.rebuildHref(); });
-            this._hasFragment = new optionField($Scope.hasFragment, () => { controller.rebuildHref(); });
-            this._scheme = new SchemeField("Scheme", $Scope.scheme, () => { controller.onSchemeChange(); });
-            this._username = new UserNameField("User Name", $Scope.username, () => { controller.rebuildHref(); });
-            this._password = new PasswordField("Password", $Scope.password, () => { controller.rebuildHref(); });
-            this._host = new HostField("Host Name", $Scope.host, () => { controller.rebuildHref(); });
-            this._port = new PortField("Port", $Scope.port, () => { controller.rebuildHref(); });
-            this._pathString = new PathStringField("Path", $Scope.pathString, () => { controller.rebuildHref(); });
-            this._queryString = new QueryStringField("Query", $Scope.queryString, () => { controller.rebuildHref(); });
-            this._fragment = new FragmentField("Fragment", $Scope.fragment, () => { controller.rebuildHref(); });
-        }
-        private onSchemeChange(): void {
-            let selectedScheme: string = (typeof this.$Scope.selectedScheme === "string") ? this.$Scope.selectedScheme : "";
-            if (selectedScheme !== this._selectedScheme) {
-                if (selectedScheme.length == 0) {
-                    this._selectedScheme = "";
-                    this.$Scope.selectedSeparator = this._selectedSeparator = this.$Scope.currentScheme.schemeSeparator;
-                    this._scheme.setValidText(this._currrentScheme.name);
-                    return;
-                }
-                this._selectedScheme = this.$Scope.selectedScheme;
-                this.$Scope.currentScheme = this._currrentScheme = UriSchemeInfo.getSchemaProperties(this._selectedScheme);
-            } else if (this._selectedScheme.length == 0) {
-                if (this._scheme.validationStatus === ValidationStatus.Error)
-                    return;
-                if ((this.$Scope.selectedSeparator === "://" || this.$Scope.selectedSeparator === ":/" || this.$Scope.selectedSeparator === ":"))
-                    this._selectedSeparator = this.$Scope.selectedSeparator;
-                else
-                    this.$Scope.selectedSeparator = this._selectedSeparator;
-                let scheme: UriSchemeInfo = UriSchemeInfo.getSchemaProperties(this._scheme.outputText);
-                this.$Scope.currentScheme = this._currrentScheme = (scheme.schemeSeparator === this._selectedSeparator) ? scheme : new UriSchemeInfo(scheme.name, {
-                    defaultPort: scheme.defaultPort, requiresHost: scheme.requiresHost, requiresUsername: scheme.requiresUsername, schemeSeparator: this._selectedSeparator, supportsCredentials: scheme.supportsCredentials, supportsFragment: scheme.supportsFragment,
-                    supportsHost: scheme.supportsHost, supportsPath: scheme.supportsPath, supportsPort: scheme.supportsPort, supportsQuery: scheme.supportsQuery
-                }, scheme.description);
-            }
-            this.rebuildHref();
-        }
-        onHasOriginChange(): void {
-            if (this._hasOrigin.isChecked) {
-                this._hasUsername.enableRelated = true;
-                if (this._hasUsername.isChecked)
-                    this._hasPassword.enableRelated = true;
-                this._hasHost.enableRelated = true;
-                if (this._hasHost.isChecked)
-                    this._hasPort.enableRelated = true;
-            } else
-                this._hasUsername.enableRelated = this._hasPassword.enableRelated = this._hasHost.enableRelated = this._hasPort.enableRelated = false;
-            this.rebuildHref();
-        }
-        rebuildHref(): void {
-            let validationFields: FieldWithValidation[] = [this._pathString];
-            if (this._hasOrigin.isChecked) {
-                if (this._selectedScheme.length == 0)
-                    validationFields.push(this._scheme);
-                if (this._hasUsername.isChecked) {
-                    validationFields.push(this._username);
-                    if (this._hasPassword.isChecked)
-                        validationFields.push(this._password);
-                }
-                if (this._hasHost.isChecked) {
-                    validationFields.push(this._host);
-                    if (this._hasPort.isChecked)
-                        validationFields.push(this._port);
-                }
-            }
-            if (this._hasQuery)
-                validationFields.push(this._queryString);
-            if (this._hasFragment)
-                validationFields.push(this._fragment);
-            if (validationFields.filter((f: FieldWithValidation) => f.validationStatus == ValidationStatus.Error).length > 0)
-                return;
-            let href: string = "";
-            if (this._hasOrigin.isChecked) {
-                href = this._currrentScheme.name + this._currrentScheme.schemeSeparator;
-                if (this._hasUsername.isChecked) {
-                    href += encodeURIComponent(this._username.outputText);
-                    if (this._hasPassword.isChecked)
-                        href += ":" + encodeURIComponent(this._password.outputText);
-                    href += "@";
-                }
-                if (this._hasHost.isChecked) {
-                    href += this._host.outputText;
-                    if (this._hasPort.isChecked)
-                        href += ":" + this._port.outputText;
-                }
-
-                if (this._pathString.outputText.length > 0 && !this._pathString.outputText.startsWith("/"))
-                    href += "/";
-                if (this._pathString.outputText.length > 0)
-                    href += this._pathString.outputText;
-            } else
-                href = this._pathString.outputText;
-            if (this._hasQuery.isChecked)
-                href += "?" + this._queryString.outputText;
-            this._href.setValidText((this._hasFragment) ? href + "#" + this._fragment.outputText : href);
-        }
-
-        onHrefChanged(): void {
-            let href: string = this._href.outputText;
-            let index: number = href.indexOf("#");
-            if (index < 0) {
-                this._hasFragment.setWithoutChangeNotify(false);
-                this._fragment.setWithoutChangeNotify("");
-            } else {
-                this._hasFragment.setWithoutChangeNotify(true);
-                this._fragment.setWithoutChangeNotify(href.substr(index + 1));
-                href = href.substr(0, index);
-            }
-            index = href.indexOf("?");
-            if (index < 0) {
-                this._hasQuery.setWithoutChangeNotify(false);
-                this._queryString.setWithoutChangeNotify("");
-            } else {
-                this._hasQuery.setWithoutChangeNotify(true);
-                this._queryString.setWithoutChangeNotify(href.substr(index + 1));
-                href = href.substr(0, index);
-            }
-
-            let scheme: UriSchemeInfo = getUriSchemeInfo(href);
-
-            if (typeof scheme === "object") {
-                this._hasOrigin.setWithoutChangeNotify(true);
-                // TODO: Parse after scheme
-                this.$Scope.currentScheme = this._currrentScheme = scheme;
-                let selectedOption: IUriSchemeOption = this.$Scope.schemeOptions.find((value: IUriSchemeOption) => value.name === scheme.name && value.schemeSeparator === scheme.schemeSeparator);
-                if ((typeof selectedOption === "object") && selectedOption !== null)
-                    this.$Scope.selectedScheme = this._selectedScheme = scheme.name;
-                else {
-                    this.$Scope.selectedScheme = this._selectedScheme = "";
-                    this.$Scope.selectedSeparator = scheme.schemeSeparator;
-                }
-                href = href.substr(scheme.name.length + scheme.schemeSeparator.length);
-                // TODO: Parse for username/password
-                // TODO: Parse for host/port
-            } else {
-                this._hasOrigin.setWithoutChangeNotify(false);
-                this._hasUsername.setWithoutChangeNotify(false);
-                this._hasPassword.setWithoutChangeNotify(false);
-                this._hasHost.setWithoutChangeNotify(false);
-                this._hasPort.setWithoutChangeNotify(false);
-                this._username.setWithoutChangeNotify("");
-                this._password.setWithoutChangeNotify("");
-                this._host.setWithoutChangeNotify("");
-                this._port.setWithoutChangeNotify("");
-            }
-
-            let validationFields: FieldWithValidation[] = [this._pathString];
-            if (this._hasOrigin.isChecked) {
-                if (this._selectedScheme.length == 0)
-                    validationFields.push(this._scheme);
-                if (this._hasUsername.isChecked) {
-                    validationFields.push(this._username);
-                    if (this._hasPassword.isChecked)
-                        validationFields.push(this._password);
-                }
-                if (this._hasHost.isChecked) {
-                    validationFields.push(this._host);
-                    if (this._hasPort.isChecked)
-                        validationFields.push(this._port);
-                }
-            }
-            if (this._hasQuery)
-                validationFields.push(this._queryString);
-            if (this._hasFragment)
-                validationFields.push(this._fragment);
-            validationFields = validationFields.filter((f: FieldWithValidation) => f.validationStatus != ValidationStatus.Success);
-            if (validationFields.length == 0)
-                this._href.setValidation("", ValidationStatus.Success);
-            else
-                this._href.setValidation((validationFields.length == 1) ? validationFields[0].name + ": " + validationFields[0].validationMessage : validationFields.map((f: FieldWithValidation) => f.name + ": " + f.validationMessage).join("; "),
-                    (validationFields.filter((f: FieldWithValidation) => f.validationStatus == ValidationStatus.Error).length == 0) ? ValidationStatus.Warning : ValidationStatus.Error);
-        }
-        $onInit(): void {
-
-        }
-    }
-    app.appModule.controller("uriBuilderController", ["$Scope", UriBuilderController]);
+    const trailingPathSegmentRe: RegExp = /^(:\\\/)([^:\\\/]+)?/;
 
     /*
       https://john.doe:userpassword@www.example.com:65535/forum/questions/?tag=networking&order=newest#top
@@ -565,10 +88,6 @@ namespace uriBuilder {
       └───┬───┘ └───────────────────┬───────────────────┘
         origin                     path
      */
-
-    export type UriSchemeSeparator = "://" | ":/" | ":";
-
-    const uriSchemeParseRe: RegExp = /^([a-zA-Z_][-.\dA-_a-z~\ud800-\udbff]*)(:[\\/]{0,2})/;
 
     export function getUriSchemeInfo(uri: string): UriSchemeInfo | undefined {
         if ((typeof uri === "string") && uri.length > 0) {
@@ -773,4 +292,689 @@ namespace uriBuilder {
         static uriScheme_urn: UriSchemeInfo = new UriSchemeInfo("urn", { supportsHost: false, schemeSeparator: ":" }, "Uniform Resource notation");
     }
 
+    class UriBuilderQueryItem {
+        private _hasValue: boolean;
+        private _value: string;
+        get key(): string { return this._key; }
+        set key(value: string) {
+            if (this._key === (value = sys.asString(value, "")))
+                return;
+            this._key = value;
+            if (typeof this._onChangeCallback === "function")
+                this._onChangeCallback();
+        }
+        get hasValue(): boolean { return this._hasValue; }
+        set hasValue(value: boolean) {
+            if (this._hasValue === (value = value == true))
+                return;
+            this._hasValue = value;
+            if (typeof this._onChangeCallback === "function")
+                this._onChangeCallback();
+        }
+        get value(): string { return (this._hasValue) ? this._value : ""; }
+        set value(value: string) {
+            if (this._value === (value = sys.asString(value, "")))
+                return;
+            this._value = value;
+            if (this._hasValue && typeof this._onChangeCallback === "function")
+                this._onChangeCallback();
+        }
+        constructor(private _id: number, private _key: string, value?: string, private _onChangeCallback?: Function, private _onDeleteCallback?: { (item?: UriBuilderQueryItem): void; }) {
+            if (typeof _key !== "string")
+                _key = "";
+            this._hasValue = typeof value === "string";
+            this._value = (this._hasValue && typeof value === "string") ? value : "";
+        }
+        toString(): string { return (this._hasValue) ? escape(this._key) + "=" + escape(this._value) : escape(this._key); }
+        deleteCurrent(): void {
+            if (typeof this._onDeleteCallback === "function")
+                this._onDeleteCallback(this);
+        }
+        static push(array: UriBuilderQueryItem[], key: string, value?: string, onChangeCallback?: Function, onDeleteCallback?: { (item?: UriBuilderQueryItem): void; }): void {
+            let id: number = array.length;
+            array.push(new UriBuilderQueryItem(id, key, value, onChangeCallback, onDeleteCallback));
+        }
+        static clear(array: UriBuilderQueryItem[]): void {
+            while (array.length > 0) {
+                let item: UriBuilderQueryItem = array.pop();
+                item._onChangeCallback = undefined;
+                item._onDeleteCallback = undefined;
+                item._id = -1;
+            }
+        }
+        static deleteItem(array: UriBuilderQueryItem[], item: UriBuilderQueryItem): boolean {
+            let index: number;
+            if (sys.isNil(item) || (index = item._id) < 0 || index >= array.length || item._key !== array[index]._key || item._hasValue !== array[index]._hasValue || item._value !== array[index]._value)
+                return false;
+            item = array[index];
+            item._onChangeCallback = undefined;
+            item._onDeleteCallback = undefined;
+            item._id = -1;
+            if (index == 0)
+                array.shift();
+            else if (index < array.length)
+                array.splice(index, 1);
+            else {
+                array.pop();
+                return true;
+            }
+            for (let i: number = index; i < array.length; i++)
+                array[i]._id = i;
+            return true;
+        }
+    }
+
+    class UriPathSegmentSeparatorOption {
+        get label(): string { return (this._value.length == 0) ? "(none)" : this._value; }
+        get value(): UriPathSegmentSeparator | "" { return this._value; }
+        constructor(private _value: UriPathSegmentSeparator | "") { }
+    }
+    class UriBuilderPathSegment {
+        static readonly _pathSeparatorOptions: UriPathSegmentSeparatorOption[] = [
+            new UriPathSegmentSeparatorOption("/"),
+            new UriPathSegmentSeparatorOption(":"),
+            new UriPathSegmentSeparatorOption("\\"),
+            new UriPathSegmentSeparatorOption("")
+        ];
+        private _separatorOptions: UriPathSegmentSeparatorOption[];
+        private _selectedSeparatorIndex: number;
+        get leadingSeparator(): UriPathSegmentSeparator | "" { return this._leadingSeparator; }
+        set leadingSeparator(value: UriPathSegmentSeparator | "") {
+            value = sys.asString(value);
+            if (this._leadingSeparator === (value = sys.asString(value)))
+                return;
+            for (let index: number = 0; index < this._separatorOptions.length; index++) {
+                if (this._separatorOptions[index].value === value) {
+                    this._leadingSeparator = value;
+                    this.selectedSeparatorIndex = index;
+                    return;
+                }
+            }
+        }
+        get selectedSeparatorIndex(): number { return this._selectedSeparatorIndex; }
+        set selectedSeparatorIndex(value: number) {
+            if (typeof value !== "number" || isNaN(value) || value < 0 || (value = Math.round(value)) >= this._separatorOptions.length || value === this._selectedSeparatorIndex)
+                return;
+            this._selectedSeparatorIndex = value;
+            if (typeof this._onChangeCallback === "function")
+                this._onChangeCallback();
+        }
+        get name(): string { return this._name; }
+        set name(value: string) {
+            if (this._name === (value = sys.asString(value, "")))
+                return;
+            this._name = value;
+            if (typeof this._onChangeCallback === "function")
+                this._onChangeCallback();
+        }
+        get separatorOptional(): boolean { return this._separatorOptional; }
+        set separatorOptional(value: boolean) {
+            if (this._separatorOptional === (value = value == true))
+                return;
+            this._separatorOptions = (this._separatorOptional) ? this._separatorOptions : this._separatorOptions.filter((value: UriPathSegmentSeparatorOption) => value.value.length > 0);
+            for (let index: number = 0; index < this._separatorOptions.length; index++) {
+                if (this._separatorOptions[index].value === this._leadingSeparator) {
+                    if (this._selectedSeparatorIndex !== index) {
+                        this._selectedSeparatorIndex = index;
+                        if (typeof this._onChangeCallback === "function")
+                            this._onChangeCallback();
+                    }
+                    return;
+                }
+            }
+            this._selectedSeparatorIndex = 0;
+            this._leadingSeparator = this._separatorOptions[0].value;
+            if (typeof this._onChangeCallback === "function")
+                this._onChangeCallback();
+        }
+        constructor(private _id: number, private _leadingSeparator: UriPathSegmentSeparator | "", private _name: string, private _onChangeCallback?: Function, private _onDeleteCallback?: { (item?: UriBuilderPathSegment): void; }, private _separatorOptional: boolean = false) {
+            if (typeof _leadingSeparator !== "string")
+                _leadingSeparator = (_separatorOptional) ? "/" : "";
+            else if (_separatorOptional && _leadingSeparator.length == 0)
+                _leadingSeparator = "/";
+            if (typeof _name !== "string")
+                _name = "";
+            this._separatorOptions = (_separatorOptional) ? this._separatorOptions : this._separatorOptions.filter((value: UriPathSegmentSeparatorOption) => value.value.length > 0);
+            for (let index: number = 0; index < this._separatorOptions.length; index++) {
+                if (this._separatorOptions[index].value === _leadingSeparator) {
+                    this._selectedSeparatorIndex = index;
+                    return;
+                }
+            }
+            this._selectedSeparatorIndex = 0;
+            this._leadingSeparator = this._separatorOptions[0].value;
+        }
+        deleteCurrent(): void {
+            if (typeof this._onDeleteCallback === "function")
+                this._onDeleteCallback(this);
+        }
+        static push(array: UriBuilderPathSegment[], leadingSeparator: UriPathSegmentSeparator | "", name: string, onChangeCallback?: Function, onDeleteCallback?: { (item?: UriBuilderPathSegment): void; }): void {
+            let id: number = array.length;
+            array.push(new UriBuilderPathSegment(id, leadingSeparator, name, onChangeCallback, onDeleteCallback, id == 0));
+        }
+        static reset(array: UriBuilderPathSegment[], leadingSeparator: UriPathSegmentSeparator | "", name: string): boolean {
+            while (array.length > 1) {
+                let item: UriBuilderPathSegment = array.pop();
+                item._onChangeCallback = undefined;
+                item._onDeleteCallback = undefined;
+                item._id = -1;
+            }
+            if (array[0]._name === name && array[0]._leadingSeparator === leadingSeparator)
+                return false;
+            array[0]._name = name;
+            array[0]._leadingSeparator = leadingSeparator;
+            return true;
+        }
+        static deleteItem(array: UriBuilderPathSegment[], item: UriBuilderPathSegment): boolean {
+            let index: number;
+            if (sys.isNil(item) || (index = item._id) < 0 || index >= array.length || item._name !== array[index]._name || item._selectedSeparatorIndex !== array[index]._selectedSeparatorIndex)
+                return false;
+            item._id = -1;
+            item = array[index];
+            item._onChangeCallback = undefined;
+            item._onDeleteCallback = undefined;
+            if (array.length < 2) {
+                if (array[0]._name.length == 0 && array[0]._leadingSeparator.length == 0)
+                    return false;
+                array[0]._name = "";
+                array[0]._leadingSeparator = "";
+                return true;
+            }
+            if (index == 0)
+                array.shift();
+            else if (index < array.length)
+                array.splice(index, 1);
+            else {
+                array.pop();
+                return true;
+            }
+            for (let i: number = index; i < array.length; i++)
+                array[i]._id = i;
+            if (index == 0)
+                array[0]._separatorOptional = true;
+            return true;
+        }
+    }
+
+    class UriBuilderController implements ng.IController {
+        private _isBuildUriMode: boolean = false;
+        private _isBuildPathMode: boolean = false;
+        private _isBuildQueryMode: boolean = false;
+        private _href: string = "";
+        private static readonly _schemeOptions: IUriSchemeOption[] = [
+            UriSchemeInfo.uriScheme_http,
+            UriSchemeInfo.uriScheme_https,
+            UriSchemeInfo.uriScheme_file,
+            UriSchemeInfo.uriScheme_ldap,
+            UriSchemeInfo.uriScheme_ftp,
+            UriSchemeInfo.uriScheme_ftps,
+            UriSchemeInfo.uriScheme_git,
+            UriSchemeInfo.uriScheme_mailto,
+            UriSchemeInfo.uriScheme_netPipe,
+            UriSchemeInfo.uriScheme_netTcp,
+            UriSchemeInfo.uriScheme_nntp,
+            UriSchemeInfo.uriScheme_sftp,
+            UriSchemeInfo.uriScheme_ssh,
+            UriSchemeInfo.uriScheme_tel,
+            UriSchemeInfo.uriScheme_telnet,
+            UriSchemeInfo.uriScheme_news,
+            UriSchemeInfo.uriScheme_gopher,
+            UriSchemeInfo.uriScheme_urn,
+            <IUriSchemeOption>{ name: "", displayText: "(other)"}
+        ];
+        private _selectedSchemIndex: number = 0;
+        private _otherSchemeName: string = "";
+        private _schemeErrorMessage: string = "";
+        private static readonly _schemeSeparatorOptions: UriSchemeSeparator[] = ["://", ":/", ":"];
+        private _selectedSchemeSeparatorIndex: number = 0;
+        private _isAbsolute: boolean = false;
+        private _hasAuthority: boolean = false;
+        private _hasUserInfo: boolean = false;
+        private _userName: string = "";
+        private _hasPassword: boolean = false;
+        private _password: string = "";
+        private _hostName: string = "";
+        private _hasPort: boolean = false;
+        private _portNumber: string = "";
+        private _portValue: number = NaN;
+        private _defaultPort: number = NaN;
+        private _portErrorMessage: string = "";
+        private _pathString: string = "";
+        private _pathSegments: UriBuilderPathSegment[] = [];
+        private _hasQuery: boolean = false;
+        private _queryValues: UriBuilderQueryItem[] = [];
+        private _queryString: string;
+        private _hasFragment: boolean = false;
+        private _fragment: string = "";
+        private _isAbsoluteUri: boolean;
+
+        get isBuildUriMode(): boolean { return this._isBuildUriMode; }
+        set isBuildUriMode(value: boolean) {
+            if (this._isBuildUriMode === (value = value == true))
+                return;
+            this._isBuildUriMode = value;
+            this.validate();
+        }
+        get isParseUriMode(): boolean { return !this._isBuildUriMode; }
+
+        get href(): string { return this._href; }
+        set href(value: string) {
+            if (this._href === (value = (typeof value === "string") ? value.trim() : ""))
+                return;
+            this._href = value;
+            if (this._isBuildUriMode)
+                return;
+            let index: number = value.indexOf("#");
+            this._hasFragment = index >= 0;
+            if (this._hasFragment) {
+                this._fragment = unescape(value.substr(index + 1));
+                value = value.substr(0, index);
+            } else
+                this._fragment = "";
+            index = value.indexOf("?");
+            this._hasQuery = index >= 0;
+            UriBuilderQueryItem.clear(this._queryValues);
+            let controller: UriBuilderController = this;
+            if (this._hasQuery) {
+                this._queryString = value.substr(index + 1);
+                if (this._queryString.length > 0) {
+                    this._queryString.split("&").forEach((kvp: string) => {
+                        let i: number = kvp.indexOf("=");
+                        if (i < 0)
+                            UriBuilderQueryItem.push(this._queryValues, unescape(kvp), undefined, () => {
+                                if (controller.isBuildQueryMode)
+                                    controller.rebuildQuery();
+                            }, (item: UriBuilderQueryItem) => {
+                                if (UriBuilderQueryItem.deleteItem(controller._queryValues, item) && controller.isBuildQueryMode)
+                                    controller.rebuildQuery();
+                            });
+                        else
+                            UriBuilderQueryItem.push(this._queryValues, unescape(kvp.substr(0, i)), unescape(kvp.substr(i + 1)), () => {
+                                if (controller.isBuildQueryMode)
+                                    controller.rebuildQuery();
+                            }, (item: UriBuilderQueryItem) => {
+                                if (UriBuilderQueryItem.deleteItem(controller._queryValues, item) && controller.isBuildQueryMode)
+                                    controller.rebuildQuery();
+                            });
+                    });
+                }
+                value = value.substr(0, index);
+            }
+            let scheme: UriSchemeInfo | undefined = getUriSchemeInfo(value);
+            this._isAbsoluteUri = !sys.isNil(scheme);
+            let m: RegExpExecArray;
+            if (this._isAbsoluteUri) {
+                value = value.substr(scheme.name.length + scheme.schemeSeparator.length);
+                this._otherSchemeName = scheme.name;
+                this._selectedSchemeSeparatorIndex = UriBuilderController._schemeSeparatorOptions.indexOf(scheme.schemeSeparator);
+                this._selectedSchemIndex = -1;
+                for (let i: number = 0; i < UriBuilderController._schemeSeparatorOptions.length; i++) {
+                    if (UriBuilderController._schemeOptions[i].name === scheme.name && UriBuilderController._schemeOptions[i].schemeSeparator === scheme.schemeSeparator) {
+                        this._selectedSchemIndex = i;
+                        break;
+                    }
+                }
+                m = uriAuthorityParseRe.exec(value);
+                this._hasAuthority = !sys.isNil(m);
+                if (this._hasAuthority) {
+                    this._hasUserInfo = !sys.isNil(m[1]);
+                    if (this._hasUserInfo) {
+                        this._userName = unescape(sys.asString(m[2], ""));
+                        this._hasPassword = !sys.isNil(m[3]);
+                        this._password = (this._hasPassword) ? unescape(m[4]) : "";
+                    } else {
+                        this._hasPassword = false;
+                        this._userName = this._password = "";
+                    }
+                    this._hostName = unescape(sys.asString(m[5], ""));
+                    this._hasPort = !sys.isNil(m[6]);
+                    this._portNumber = (this._hasPort) ? m[6] : "";
+                    value = value.substr(m[0].length);
+                } else {
+                    this._hasUserInfo = this._hasPassword = this._hasPort = false;
+                    this._userName = this._password = this._portNumber = "";
+                    m = trailingPathSegmentRe.exec(value);
+                    if (sys.isNil(m) || sys.isNil(m[1]))
+                        this._hostName = "";
+                    else {
+                        this._hostName = unescape(m[1]);
+                        value = value.substr(m[1].length);
+                    }
+                }
+            } else {
+                this._hasAuthority = this._hasUserInfo = this._hasPassword = this._hasPort = false;
+                this._userName = this._password = this._hostName = this._portNumber = "";
+            }
+            this._pathString = value;
+
+            m = leadingPathSegmentRe.exec(value);
+            if (sys.isNil(m)) {
+                m = trailingPathSegmentRe.exec(value);
+                if (sys.isNil(m)) {
+                    UriBuilderPathSegment.reset(this._pathSegments, "", unescape(value));
+                    return;
+                }
+                UriBuilderPathSegment.reset(this._pathSegments, <UriPathSegmentSeparator>m[1], unescape(sys.asString(m[2])));
+            } else
+                UriBuilderPathSegment.reset(this._pathSegments, "", unescape(m[0]));
+            while (value.length > m[0].length) {
+                value = value.substr(m[0].length);
+                m = trailingPathSegmentRe.exec(value);
+                UriBuilderPathSegment.push(this._pathSegments, <UriPathSegmentSeparator>m[1], unescape(sys.asString(m[2])), () => {
+                    if (controller.isBuildPathMode)
+                        controller.rebuildPath();
+                }, (item: UriBuilderPathSegment) => {
+                    if (UriBuilderPathSegment.deleteItem(controller._pathSegments, item) && controller.isBuildPathMode)
+                        controller.rebuildPath();
+                });
+            }
+            this.validate();
+        }
+        get uriType(): string { return (this._isAbsolute) ? "Absolute" : ((this._pathSegments[0].leadingSeparator.length > 0) ? "Relative (rooted)" : "Relative"); }
+        get isAbsolute(): boolean { return this._isAbsolute; }
+        set isAbsolute(value: boolean) {
+            if (this._isAbsolute === (value = sys.asBoolean(value, false)))
+                return;
+            this._isAbsolute = value;
+            this.validate();
+            if (this._isBuildUriMode)
+                this.rebuildHref();
+        }
+        get isRelative(): boolean { return !this._isAbsolute; }
+        get schemeName(): string {
+            let s: string = this.selectedSchemeName;
+            return (s.length == 0) ? this._otherSchemeName : s;
+        }
+        get schemeSeparator(): UriSchemeSeparator {
+            return (this.isCustomScheme) ? this.selectedSchemeSeparator : UriBuilderController._schemeOptions[this._selectedSchemIndex].schemeSeparator;
+        }
+        get schemeOptions(): IUriSchemeOption[] { return UriBuilderController._schemeOptions; }
+        get selectedSchemeName(): string { return UriBuilderController._schemeOptions[this._selectedSchemIndex].name; }
+        set selectedSchemeName(value: string) {
+            for (let index: number = 0; index < UriBuilderController._schemeOptions.length; index++) {
+                if (UriBuilderController._schemeOptions[index].name === value) {
+                    this.selectedSchemIndex = index;
+                    return;
+                }
+            }
+        }
+        get isCustomScheme(): boolean { return this.selectedSchemeName.length == 0; }
+        get selectedSchemIndex(): number { return this._selectedSchemIndex; }
+        set selectedSchemIndex(value: number) {
+            if (typeof value !== "number" || isNaN(value) || value < 0 || value >= UriBuilderController._schemeOptions.length || value === this._selectedSchemIndex)
+                return;
+            this._selectedSchemIndex = value;
+            this.validate();
+            if (this._isBuildUriMode && this._isAbsolute)
+                this.rebuildHref();
+        }
+        get otherSchemeName(): string { return this._otherSchemeName; }
+        set otherSchemeName(value: string) {
+            if (this._otherSchemeName === (value = sys.asString(value, "")))
+                return;
+            this._otherSchemeName = value;
+            this.validate();
+            if (this._isBuildUriMode && this._isAbsolute && this.isCustomScheme)
+                this.rebuildHref();
+        }
+        get schemeErrorMessage(): string { return (this._isAbsolute) ? this._schemeErrorMessage : ""; }
+        get hasSchemeError(): boolean { return this._isAbsolute && this._schemeErrorMessage.length > 0; }
+        get schemeSeparatorOptions(): UriSchemeSeparator[] { return UriBuilderController._schemeSeparatorOptions; }
+        get selectedSchemeSeparator(): UriSchemeSeparator { return UriBuilderController._schemeSeparatorOptions[this._selectedSchemeSeparatorIndex]; }
+        set selectedSchemeSeparator(value: UriSchemeSeparator) {
+            for (let index: number = 0; index < UriBuilderController._schemeSeparatorOptions.length; index++) {
+                if (UriBuilderController._schemeSeparatorOptions[index] === value) {
+                    this.selectedSchemeSeparatorIndex = index;
+                    return;
+                }
+            }
+        }
+        get selectedSchemeSeparatorIndex(): number { return this._selectedSchemeSeparatorIndex; }
+        set selectedSchemeSeparatorIndex(value: number) {
+            if (typeof value !== "number" || isNaN(value) || value < 0 || value >= UriBuilderController._schemeSeparatorOptions.length || value === this._selectedSchemeSeparatorIndex)
+                return;
+            this._selectedSchemeSeparatorIndex = value;
+            this.validate();
+            if (this._isBuildUriMode && this._isAbsolute && this.isCustomScheme)
+                this.rebuildHref();
+        }
+        get hasAuthority(): boolean { return this._hasAuthority && this._isAbsolute; }
+        set hasAuthority(value: boolean) {
+            if (this._hasAuthority === (value = sys.asBoolean(value, false)))
+                return;
+            this._hasAuthority = value;
+            this.validate();
+            if (this._isBuildUriMode && this._isAbsolute)
+                this.rebuildHref();
+        }
+        get hasUserInfo(): boolean { return this._hasUserInfo && this.hasAuthority; }
+        set hasUserInfo(value: boolean) {
+            if (this._hasUserInfo === (value = sys.asBoolean(value, false)))
+                return;
+            this._hasUserInfo = value;
+            if (this._isBuildUriMode && this._isAbsolute && this.hasAuthority)
+                this.rebuildHref();
+        }
+        get userName(): string { return (this.hasUserInfo) ? this._userName : ""; }
+        set userName(value: string) {
+            if (this._userName === (value = sys.asString(value, "")))
+                return;
+            this._userName = value;
+            if (this._isBuildUriMode && this._isAbsolute && this.hasUserInfo)
+                this.rebuildHref();
+        }
+        get hasPassword(): boolean { return this._hasPassword && this.hasUserInfo; }
+        set hasPassword(value: boolean) {
+            if (this._hasPassword === (value = sys.asBoolean(value, false)))
+                return;
+            this._hasPassword = value;
+            if (this._isBuildUriMode && this._isAbsolute && this.hasUserInfo)
+                this.rebuildHref();
+        }
+        get password(): string { return (this.hasPassword) ? this._password : ""; }
+        set password(value: string) {
+            if (this._password === (value = sys.asString(value, "")))
+                return;
+            this._password = value;
+            if (this._isBuildUriMode && this._isAbsolute && this.hasPassword)
+                this.rebuildHref();
+        }
+        get hostName(): string { return (this.hasAuthority) ? this._hostName : ""; }
+        set hostName(value: string) {
+            if (this._hostName === (value = sys.asString(value, "")))
+                return;
+            this._hostName = value;
+            this.validate();
+            if (this._isBuildUriMode && this.hasAuthority)
+                this.rebuildHref();
+        }
+        get hasPort(): boolean { return this._hasPort && this.hasAuthority; }
+        set hasPort(value: boolean) {
+            if (this._hasPort === (value = sys.asBoolean(value, false)))
+                return;
+            this._hasPort = value;
+            this.validate();
+            if (this._isBuildUriMode && this.hasAuthority)
+                this.rebuildHref();
+        }
+        get usingDefaultPort(): boolean { return this.isAbsolute && (!this.hasPort || this._portNumber.trim().length == 0) && !isNaN(this._defaultPort); }
+        get portNumber(): string { return (this.hasPort) ? this._portNumber : ""; }
+        set portNumber(value: string) {
+            if (this._portNumber === (value = sys.asString(value, "")))
+                return;
+            this._portNumber = value;
+            this.validate();
+            if (this._isBuildUriMode && this._isAbsolute)
+                this.rebuildHref();
+        }
+        get portValue(): number { return this._portValue; }
+        get portDisplayText(): string {
+            if (this.isAbsolute) {
+                let n: number;
+                if (this.hasPort) {
+                    n = this._portValue;
+                    return (isNaN(n)) ? this._portNumber : n.toString();
+                }
+                n = this._defaultPort;
+                if (!isNaN(n))
+                    return n.toString();
+            }
+            return "";
+        }
+        get hasPortError(): boolean { return this.hasPort && this._portErrorMessage.length > 0; }
+        get portErrorMessage(): string { return (this.hasPortError) ? this._portErrorMessage : ""; }
+
+        get isBuildPathMode(): boolean { return this._isBuildUriMode && this._isBuildPathMode; }
+        set isBuildPathMode(value: boolean) {
+            if (this._isBuildPathMode === (value = value == true))
+                return;
+            this._isBuildPathMode = value;
+            this.validate();
+        }
+        get isParsePathMode(): boolean { return this._isBuildUriMode && !this._isBuildPathMode; }
+        get pathSegments(): UriBuilderPathSegment[] { return this._pathSegments; }
+        get pathString(): string { return this._pathString; }
+        set pathString(value: string) {
+            if (this._pathString === (value = sys.asString(value, "")))
+                return;
+            this._pathString = value;
+            if (this.isParsePathMode)
+                this.rebuildHref();
+        }
+
+        get isBuildQueryMode(): boolean { return this._isBuildUriMode && this._isBuildQueryMode; }
+        set isBuildQueryMode(value: boolean) {
+            if (this._isBuildQueryMode === (value = value == true))
+                return;
+            this._isBuildQueryMode = value;
+        }
+        get isParseQueryMode(): boolean { return this._isBuildUriMode && !this._isBuildQueryMode; }
+        get hasQuery(): boolean { return this._hasQuery; }
+        set hasQuery(value: boolean) {
+            if (this._hasQuery === (value = sys.asBoolean(value, false)))
+                return;
+            this._hasQuery = value;
+            if (this._isBuildUriMode)
+                this.rebuildHref();
+        }
+        get queryValues(): UriBuilderQueryItem[] { return this._queryValues; }
+        get queryString(): string { return this._queryString; }
+        set queryString(value: string) {
+            if (this._queryString === (value = sys.asString(value, "")))
+                return;
+            this._queryString = value;
+            if (this.isParseQueryMode)
+                this.rebuildHref();
+        }
+
+        get hasFragment(): boolean { return this._hasFragment; }
+        set hasFragment(value: boolean) {
+            if (this._hasFragment === (value = sys.asBoolean(value, false)))
+                return;
+            this._hasFragment = value;
+            if (this._isBuildUriMode)
+                this.rebuildHref();
+        }
+        get fragment(): string { return this._fragment; }
+        set fragment(value: string) {
+            if (this._fragment === (value = sys.asString(value, "")))
+                return;
+            this._fragment = value;
+            if (this._isBuildUriMode)
+                this.rebuildHref();
+        }
+
+        get parseUriButtonClass(): string[] { return ["btn", (this._isBuildUriMode) ? "btn-primary" : "btn-secondary"]; }
+
+        get buildUriButtonClass(): string[] { return ["btn", (this._isBuildUriMode) ? "btn-secondary" : "btn-primary"]; }
+
+        constructor() {
+            let controller: UriBuilderController = this;
+            UriBuilderPathSegment.push(this._pathSegments, "", "", () => {
+                if (controller.isBuildPathMode)
+                    controller.rebuildPath();
+            }, (item: UriBuilderPathSegment) => {
+                if (UriBuilderPathSegment.deleteItem(controller._pathSegments, item) && controller.isBuildPathMode)
+                    controller.rebuildPath();
+            });
+        }
+
+
+        validate(): void {
+            if (this.isAbsolute) {
+                let opt: IUriSchemeOption = UriBuilderController._schemeOptions[this._selectedSchemIndex];
+                if (opt.name.length == 0) {
+                    let m: RegExpExecArray = uriSchemeParseRe.exec(this._otherSchemeName);
+                    if (sys.isNil(m))
+                        this._schemeErrorMessage = (this._otherSchemeName.trim().length == 0) ? "Scheme name cannot be empty." : "Invalid scheme name.";
+                    else {
+                        opt = UriBuilderController._schemeOptions.filter((v: IUriSchemeOption) => v.name === this._otherSchemeName).concat(opt)[0];
+                        this._schemeErrorMessage = "";
+                    }
+                } else
+                    this._schemeErrorMessage = "";
+                this._defaultPort = (typeof opt.defaultPort == "number") ? opt.defaultPort : NaN;
+                if (this.hasAuthority) {
+                    if (this.hasPort) {
+                        let s: string = this._portNumber.trim();
+                        if (s.length == 0) {
+                            this._portValue = this._defaultPort;
+                            this._portErrorMessage = "Port cannot be empty.";
+                        } else {
+                            this._portValue = parseInt(s);
+                            if (isNaN(this._portValue))
+                                this._portErrorMessage = "Invalid port number.";
+                            else if (this._portValue < 1 || this._portValue > 65535)
+                                this._portErrorMessage = "Port number out of range.";
+                            else
+                                this._portErrorMessage = "";
+                        }
+                    }
+                } else {
+                    this._portValue = this._defaultPort;
+                    this._portErrorMessage = "";
+                }
+            } else {
+                this._portValue = this._defaultPort = NaN;
+                this._schemeErrorMessage = this._portErrorMessage = "";
+            }
+        }
+
+        rebuildHref() {
+            let path: string = this._pathString;
+            if (this.isAbsolute) {
+                if (path.length > 0 && (!path.startsWith("/") || path.startsWith("\\") || path.startsWith(":")))
+                    path = "/" + path;
+                let href: string = this.schemeName + this.schemeSeparator;
+                if (this.hasUserInfo)
+                    href += ((this.hasPassword) ? encodeURIComponent(this.userName) + ":" + encodeURIComponent(this.password) : encodeURIComponent(this.userName)) + "@";
+                href += this.hostName;
+                if (this.hasPort)
+                    href += ":" + this.portNumber;
+                path = ((path.length > 0 && (!path.startsWith("/") || path.startsWith("\\") || path.startsWith(":"))) ? href + "/" : href) + path;
+            }
+            if (this.hasQuery)
+                path += "?" + this._queryString;
+            this._href = (this.hasFragment) ? path + "#" + encodeURI(this.fragment) : path;
+        }
+
+        rebuildQuery(): void {
+            let s: string = this._queryValues.map((value: UriBuilderQueryItem) => (value.hasValue) ? encodeURIComponent(value.key) + "=" + encodeURIComponent(value.value) : encodeURIComponent(value.key)).join("&");
+            if (s !== this._queryString) {
+                this._queryString = s;
+                this.rebuildHref();
+            }
+        }
+
+        rebuildPath(): void {
+            let s: string = this._pathSegments.map((value: UriBuilderPathSegment) => value.leadingSeparator + encodeURIComponent(value.name)).join("");
+            if (s !== this._pathString) {
+                this._pathString = s;
+                this.rebuildHref();
+            }
+        }
+
+        $onInit(): void { }
+    }
+    app.appModule.controller("uriBuilderController", ["$Scope", UriBuilderController]);
 }
