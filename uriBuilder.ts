@@ -5,6 +5,133 @@
 /// <reference path="app.ts" />
 
 namespace uriBuilder {
+
+    // #region evaluation-item directive
+
+    interface IEvaluationItemScope extends ng.IScope {
+        evaluationItem: EvaluationItemController;
+    }
+
+    interface IEvaluationItemAttributes extends ng.IAttributes {
+
+    }
+
+    class EvaluationItemController implements ng.IController {
+        private readonly _uriBuilder: UriBuilderController;
+
+        constructor(public $scope: IEvaluationItemScope, private $element: JQuery, private $attrs: IEvaluationItemAttributes, private $q: ng.IQService, private $log: ng.ILogService) {
+            $scope.evaluationItem = this;
+            let uriBuilder: UriBuilderController = <UriBuilderController>$scope.uriBuilder;
+            if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController)) {
+                let rootId: number = $scope.$root.$id;
+                for (let parentScope: ng.IScope = $scope.$parent; !sys.isNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
+                    if (!sys.isNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof UriBuilderController) {
+                        uriBuilder = parentScope.uriBuilder;
+                        break;
+                    }
+                }
+                if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController))
+                    throw new Error("Unable to detect parent uriBuilder controller scope");
+            }
+
+            this._uriBuilder = uriBuilder;
+
+            uriBuilder.$scope.$watch("expression", (newValue: RegExp | undefined, oldValue: RegExp | undefined, uriBuilderScope: IUriBuilderScope) => {
+
+            });
+        }
+
+        $doCheck() {
+
+        }
+
+        static createDirective(): ng.IDirective {
+            return {
+                controller: ["$scope", "$element", "$attrs", "$q", "$log", EvaluationItemController],
+                controllerAs: "evaluationItem",
+                scope: {
+                    id: '=',
+                    success: '='
+                },
+                template: '',
+                transclude: true
+            };
+        }
+    }
+
+    app.appModule.directive("evaluationItem", EvaluationItemController.createDirective);
+
+    // #endregion
+
+    // #region regexPattern controller
+
+    interface IRegexPatternScope extends ng.IScope {
+        currentController: RegexPatternController;
+        singleLineText: string;
+        multiLineText: string;
+        isMultiLine: string;
+    }
+
+    class RegexPatternController implements ng.IController {
+        private readonly _uriBuilder: UriBuilderController;
+
+        constructor(public $scope: IRegexPatternScope, private $q: ng.IQService, private $log: ng.ILogService) {
+            $scope.currentController = this;
+            let uriBuilder: UriBuilderController = <UriBuilderController>$scope.uriBuilder;
+            if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController)) {
+                let rootId: number = $scope.$root.$id;
+                for (let parentScope: ng.IScope = $scope.$parent; !sys.isNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
+                    if (!sys.isNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof UriBuilderController) {
+                        uriBuilder = parentScope.uriBuilder;
+                        break;
+                    }
+                }
+                if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController))
+                    throw new Error("Unable to detect parent uriBuilder controller scope");
+            }
+
+            this._uriBuilder = uriBuilder;
+        }
+
+        $doCheck() {
+
+        }
+    }
+
+    app.appModule.controller("regexPattern", ["$scope", "$q", "$log", RegexPatternController]);
+
+    // #endregion
+
+    // #region uriBuilder controller
+
+    interface IEvaluationItem {
+        id: number;
+        success?: boolean;
+    }
+
+    interface IUriBuilderScope extends ng.IScope {
+        uriBuilder: UriBuilderController;
+        expression: RegExp | undefined;
+        inputItems: IEvaluationItem[];
+    }
+
+    class UriBuilderController implements ng.IController {
+        constructor(public $scope: IUriBuilderScope, private $log: ng.ILogService) {
+            $scope.uriBuilder = this;
+            $scope.inputItems = [{ id: 0 }];
+        }
+
+        $doCheck() {
+
+        }
+    }
+
+    app.appModule.controller("uriBuilder", ["$scope", "$log", UriBuilderController]);
+
+    // #endregion
+}
+
+namespace uriBuilder_old {
     const CSS_CLASS_VALID: string = "is-valid";
     const CSS_CLASS_INVALID: string = "is-invalid";
     const CSS_CLASS_TEXT_WARNING: string = "text-warning";
@@ -111,6 +238,7 @@ namespace uriBuilder {
         description?: string;
         schemeSeparator: UriSchemeSeparator;
     }
+
     export interface IUriSchemeProperties {
         supportsPath?: boolean;
         supportsQuery?: boolean;
@@ -123,6 +251,7 @@ namespace uriBuilder {
         schemeSeparator?: UriSchemeSeparator;
         defaultPort?: number;
     }
+
     export class UriSchemeInfo implements IUriSchemeOption {
         readonly description: string;
         readonly supportsPath: boolean;
@@ -976,5 +1105,5 @@ namespace uriBuilder {
 
         $onInit(): void { }
     }
-    app.appModule.controller("uriBuilderController", ["$Scope", UriBuilderController]);
+    app.appModule.controller("uriBuilderController_old", ["$Scope", UriBuilderController]);
 }
