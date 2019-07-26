@@ -1,11 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="app">
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="Refresh" content="0; url=gh-pages/index.html" />
-  <title>Redirecting to sub-module root.</title>
+    <meta name="viewport" content="width=1024, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="utf-8" />
+    <meta name="app:pageId" content="Home" />
+    <title>ServiceNow Implementation and Maintenance</title>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
+    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="lib/angular.js/angular.js"></script>
+    <script type="text/javascript" src="App/sys.js"></script>
+    <script type="text/javascript" src="App/app.js"></script>
 </head>
 <body>
-  <h1>Redirecting to sub-module root.</h1>
+    <app-content>
+        <ul>
+            <li><sn-instance-link>Cloud Development Instance</sn-instance-link></li>
+            <li><a href="https://hi.service-now.com/" target="_blank">ServiceNow Customer Service System (HI)</a></li>
+            <li><a href="https://docs.servicenow.com/category/london" target="_blank">ServiceNow Documentation (London)</a></li>
+            <li><a href="https://community.servicenow.com/" target="_blank">ServiceNow Community Website</a></li>
+            <li><a href="https://developer.servicenow.com/" target="_blank">ServiceNow Developers</a></li>
+            <li><git-instance-link text="GIT Repository"></git-instance-link></li>
+        </ul>
+    </app-content>
 </body>
 </html>
