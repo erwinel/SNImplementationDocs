@@ -24,8 +24,8 @@ namespace uriBuilder {
             let uriBuilder: UriBuilderController = <UriBuilderController>$scope.uriBuilder;
             if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController)) {
                 let rootId: number = $scope.$root.$id;
-                for (let parentScope: ng.IScope = $scope.$parent; !sys.isNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
-                    if (!sys.isNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof UriBuilderController) {
+                for (let parentScope: ng.IScope = $scope.$parent; sys.notNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
+                    if (sys.notNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof UriBuilderController) {
                         uriBuilder = parentScope.uriBuilder;
                         break;
                     }
@@ -80,8 +80,8 @@ namespace uriBuilder {
             let uriBuilder: UriBuilderController = <UriBuilderController>$scope.uriBuilder;
             if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController)) {
                 let rootId: number = $scope.$root.$id;
-                for (let parentScope: ng.IScope = $scope.$parent; !sys.isNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
-                    if (!sys.isNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof UriBuilderController) {
+                for (let parentScope: ng.IScope = $scope.$parent; sys.notNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
+                    if (sys.notNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof UriBuilderController) {
                         uriBuilder = parentScope.uriBuilder;
                         break;
                     }
@@ -730,7 +730,7 @@ namespace uriBuilder_old {
                 value = value.substr(0, index);
             }
             let scheme: UriSchemeInfo | undefined = getUriSchemeInfo(value);
-            this._isAbsoluteUri = !sys.isNil(scheme);
+            this._isAbsoluteUri = sys.notNil(scheme);
             let m: RegExpExecArray;
             if (this._isAbsoluteUri) {
                 value = value.substr(scheme.name.length + scheme.schemeSeparator.length);
@@ -744,19 +744,19 @@ namespace uriBuilder_old {
                     }
                 }
                 m = uriAuthorityParseRe.exec(value);
-                this._hasAuthority = !sys.isNil(m);
+                this._hasAuthority = sys.notNil(m);
                 if (this._hasAuthority) {
-                    this._hasUserInfo = !sys.isNil(m[1]);
+                    this._hasUserInfo = sys.notNil(m[1]);
                     if (this._hasUserInfo) {
                         this._userName = unescape(sys.asString(m[2], ""));
-                        this._hasPassword = !sys.isNil(m[3]);
+                        this._hasPassword = sys.notNil(m[3]);
                         this._password = (this._hasPassword) ? unescape(m[4]) : "";
                     } else {
                         this._hasPassword = false;
                         this._userName = this._password = "";
                     }
                     this._hostName = unescape(sys.asString(m[5], ""));
-                    this._hasPort = !sys.isNil(m[6]);
+                    this._hasPort = sys.notNil(m[6]);
                     this._portNumber = (this._hasPort) ? m[6] : "";
                     value = value.substr(m[0].length);
                 } else {

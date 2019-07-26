@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 
 namespace PageManager
 {
+
     public class FileUri : Uri, IEquatable<FileUri>, IEquatable<Uri>
     {
         /// <summary>

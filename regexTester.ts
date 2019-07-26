@@ -114,8 +114,8 @@ namespace regexTester {
             let uriBuilder: RegexTesterController = <RegexTesterController>$scope.uriBuilder;
             if (sys.isNil(uriBuilder) || !(uriBuilder instanceof RegexTesterController)) {
                 let rootId: number = $scope.$root.$id;
-                for (let parentScope: ng.IScope = $scope.$parent; !sys.isNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
-                    if (!sys.isNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof RegexTesterController) {
+                for (let parentScope: ng.IScope = $scope.$parent; sys.notNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
+                    if (sys.notNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof RegexTesterController) {
                         uriBuilder = parentScope.uriBuilder;
                         break;
                     }
@@ -303,7 +303,7 @@ namespace regexTester {
                 this.$scope.inputLines = [];
                 let lineText: string = inputText;
                 let m: RegExpExecArray = LINETEXT_REGEXP.exec(lineText);
-                while (!sys.isNil(m)) {
+                while (sys.notNil(m)) {
                     let n: string = angular.toJson(m[2]);
                     let t: string = m[1];
                     if (sys.isNil(t))
@@ -333,7 +333,7 @@ namespace regexTester {
                     }
                     this.$scope.matchIndex = matchIndex;
                     m = LINETEXT_REGEXP.exec(results);
-                    while (!sys.isNil(m)) {
+                    while (sys.notNil(m)) {
                         let n: string = angular.toJson(m[2]);
                         let t: string = m[1];
                         if (sys.isNil(t))
@@ -761,7 +761,7 @@ namespace regexTester {
             }
             
             this.$scope.showInputItemHeading = true;
-            if (!sys.isNil(sys.first(this.$scope.inputItems, (value: IEvaluationItem) => value.isCurrent)))
+            if (sys.notNil(sys.first(this.$scope.inputItems, (value: IEvaluationItem) => value.isCurrent)))
                 this.$scope.inputItems = this.$scope.inputItems.map((value: IEvaluationItem) => { value.isCurrent = false; return value; });
         }
 
