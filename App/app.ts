@@ -16,6 +16,7 @@ namespace app {
     /**
      * The relative path of the default page.
      *
+     * @type {string}
      * @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
      */
     export const DEFAULT_PAGE_PATH: string = "index.html";
@@ -23,24 +24,18 @@ namespace app {
     /**
      * The default root absolute URL of the target ServiceNow instance.
      *
+     * @type {string}
      * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
      */
     export const DEFAULT_URL_SERVICENOW: string = "https://inscomscd.service-now.com";
-    
+
     /**
      * The default root absolute URL of the remote GIT repository.
      *
+     * @type {string}
      * @description - This MUST be an absolute URL and MUST NOT contain a URL query or fragment. If this contains an explicit path (which is usually the case), the path must end with a "/".
      */
     export const DEFAULT_URL_GIT_REPOSITORY: string = "https://github.com/erwinel/";
-    
-    export const ScopeEvent_OpenMainModalPopupDialog: string = 'OpenMainModalPopupDialog';
-    export const ScopeEvent_CloseMainModalPopupDialog: string = 'CloseMainModalPopupDialog';
-    export const ScopeEvent_ShowSetupParametersDialog: string = 'showSetupParameterDefinitionsControllerDialog';
-    export const ScopeEvent_HideSetupParametersDialog: string = 'hideSetupParameterDefinitionsControllerDialog';
-    export const ScopeEvent_SetupParameterSettingsChanged: string = "SetupParameterSettingsChanged";
-    export const ScopeEvent_AddCollapsibleCard: string = "AddCollapsibleCard";
-    export const ScopeEvent_: string = "";
 
     const DEFAULT_CURRENT_ITEM_CLASS: ReadonlyArray<string> = ["active", "nav-link"];
     const DEFAULT_SELECTED_ITEM_CLASS: ReadonlyArray<string> = ["active", "nav-link"];
@@ -53,16 +48,37 @@ namespace app {
     export const StorageKey_UrlConfigSettings: string = "UrlConfig";
     export const StorageKey_SetupParameterSettings: string = "targetSysConfigSettings";
 
+    /**
+     *
+     *
+     * @export
+     * @enum {string}
+     */
     export enum cssValidationClass {
+        /**
+         *
+         */
         isValid = 'is-valid',
         isInvalid = 'is-invalid'
     }
 
+    /**
+     *
+     *
+     * @export
+     * @enum {string}
+     */
     export enum cssFeedbackClass {
         isValid = 'valid-feedback',
         isInvalid = 'invalid-feedback'
     }
 
+    /**
+     *
+     *
+     * @export
+     * @enum {string}
+     */
     export enum cssAlertClass {
         alert = 'alert',
         danger = 'alert-danger',
@@ -82,45 +98,145 @@ namespace app {
 
     // #region appConfigData Service
 
+    /**
+     * Contains service URL definitions.
+     *
+     * @export
+     * @interface IUrlConfigSettings
+     */
     export interface IUrlConfigSettings {
         /**
          * The base URL for the target ServiceNow instance.
+         *
+         * @type {string}
+         * @memberof IUrlConfigSettings
          */
         serviceNowUrl: string;
 
         /**
          * The base URL for the target remote GIT repository.
+         *
+         * @type {string}
+         * @memberof IUrlConfigSettings
          */
         gitRepositoryUrl: string;
     }
 
+    /**
+     * Defines a navigation menu item.
+     *
+     * @interface INavigationDefinition
+     */
     interface INavigationDefinition {
+        /**
+         * Unique identifier of navigation menu item.
+         *
+         * @type {string}
+         * @memberof INavigationDefinition
+         */
         id?: string;
+        /**
+         * Relative target URL of navigation menu item.
+         *
+         * @type {string}
+         * @memberof INavigationDefinition
+         */
         url: string;
+        /**
+         * Display text for navigation menu item.
+         *
+         * @type {string}
+         * @memberof INavigationDefinition
+         */
         linkTitle: string;
+        /**
+         * Page title for navigation menu item.
+         *
+         * @type {string}
+         * @memberof INavigationDefinition
+         */
         pageTitle?: string;
+        /**
+         * Tooltip to use for navigation menu item.
+         *
+         * @type {string}
+         * @memberof INavigationDefinition
+         */
         toolTip?: string;
+        /**
+         * Heading text for child menu items that are displayed in the secondary navigation menu.
+         *
+         * @type {string}
+         * @memberof INavigationDefinition
+         */
         sideNavHeading?: string;
+        /**
+         * Child navigation menu items for the current navigation item, which gets displayed in the secondary navigation menu.
+         *
+         * @type {INavigationDefinition[]}
+         * @memberof INavigationDefinition
+         */
         items?: INavigationDefinition[];
     }
 
+    /**
+     * Represents the {@link IAppConfigJSON#navigation} property in the appConfigData.json file.
+     *
+     * @interface INavigationJSON
+     */
     interface INavigationJSON {
+        /**
+         * CSS class names to be applied to any of the ancestor navigation menu items of the item that corresponds to the current page.
+         *
+         * @type {string[]}
+         * @memberof INavigationJSON
+         */
         currentItemClass: string[];
+        /**
+         * CSS class names to be applied to the navigation menu item that corresponds to the current page.
+         *
+         * @type {string[]}
+         * @memberof INavigationJSON
+         */
         selectedItemClass: string[];
+        /**
+         * CSS class names to be applied to the navigation menu items that do no correspond to the current page or any of its ancestor items.
+         *
+         * @type {string[]}
+         * @memberof INavigationJSON
+         */
         otherItemClass: string[];
+        /**
+         * Top-leve navigation menu items.
+         *
+         * @type {INavigationDefinition[]}
+         * @memberof INavigationDefinition
+         */
         items: INavigationDefinition[];
     }
 
+    /**
+     * Represents the contents of the appConfigData.json file.
+     *
+     * @interface IAppConfigJSON
+     * @description The file represented by this interface is asynchronously loaded by the appConfigData service.
+     */
     interface IAppConfigJSON extends IUrlConfigSettings {
+        /**
+         * Navigation menu settings.
+         *
+         * @type {INavigationJSON}
+         * @memberof IAppConfigJSON
+         */
         navigation: INavigationJSON;
     }
 
-    export class NavigationUrl {
-        constructor(navItem: NavigationItem, url: string) {
-
-        }
-    }
-
+    /**
+     * Represents a menu navigation item.
+     *
+     * @export
+     * @class NavigationItem
+     */
     export class NavigationItem {
         private _id: string;
         private _linkTitle: string;
@@ -134,60 +250,175 @@ namespace app {
         private _parentNavItem: NavigationItem | undefined;
         private _childNavItems: ReadonlyArray<NavigationItem>;
 
+        /**
+         * The unique identifier of the navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get id(): string { return this._id; }
 
+        /**
+         * The display text for the current navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get linkTitle(): string { return this._linkTitle; }
 
+        /**
+         * The title of the page that corresponds to the current navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get pageTitle(): string { return this._pageTitle; }
 
+        /**
+         * The tooltip for the current navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get toolTip(): string { return this._toolTip; }
 
+        /**
+         * The secondary navigation heading text for child navigation menu items.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get sideNavHeading(): string { return this._sideNavHeading; }
 
         /**
          * The navigation menu hyperlink for the current item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
          */
         get navMenuHref(): string { return (this.hasOrIsCurrentPage) ? "#" : this._url; }
-        
+
         /**
-         * The relative URL of the current item.
+         * The relative URL of the current navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
          */
         get url(): string { return this._url; }
-        
+
         /**
-         * Indicates whether the current item represents the current page.
+         * Indicates whether the current navigation menu item represents the current page.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
          */
         get isCurrentPage(): boolean { return this._isCurrentPage === true; }
-        
+
         /**
-         * Indicates whether the current item represents the current page or the parent of the current page.
+         * Indicates whether the current navigation menu item represents the current page or the parent of the current page.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
          */
         get hasOrIsCurrentPage(): boolean { return typeof this._isCurrentPage === "boolean"; }
 
         /**
-         * Indicates whether the current item represents and ancestor of the current page.
+         * Indicates whether the current navigation menu item represents an ancestor of the current page.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
          */
         get hasCurrentPage(): boolean { return this._isCurrentPage === false; }
 
         /**
          * The CSS class names to be applied to the anchor tag.
+         *
+         * @readonly
+         * @type {ReadonlyArray<string>}
+         * @memberof NavigationItem
          */
         get anchorCssClass(): ReadonlyArray<string> { return (this.isCurrentPage) ? this._appConfigData.currentItemClass() : ((this.hasOrIsCurrentPage) ? this._appConfigData.selectedItemClass() : this._appConfigData.otherItemClass()); }
 
+        /**
+         * The child navigation menu items to display within the secondary navigation menu.
+         *
+         * @readonly
+         * @type {ReadonlyArray<NavigationItem>}
+         * @memberof NavigationItem
+         */
         get childNavItems(): ReadonlyArray<NavigationItem> { return this._childNavItems; }
 
+        /**
+         * Indicates whether the current navigation menu item has child menu items.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
+         */
         get hasChildNavItem(): boolean { return this._childNavItems.length > 0; }
 
+        /**
+         * Indicates whether the current navigation menu item has sibling items that share the same parent menu item.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
+         */
         get hasSiblingNavItem(): boolean { return sys.notNil(this._previousNavItem) || sys.notNil(this._nextNavItem); }
 
+        /**
+         * Indicates whether the current navigation menu item is a child item of another.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
+         */
         get isNestedNavItem(): boolean { return sys.notNil(this._parentNavItem) }
 
+        /**
+         * Navigation menu items to be displayed as nested items within the secondary navigation menu.
+         *
+         * @readonly
+         * @type {ReadonlyArray<NavigationItem>}
+         * @memberof NavigationItem
+         */
         get nestedSideNavChildItems(): ReadonlyArray<NavigationItem> { return (this.showNestedSideNavChildItems) ? this._childNavItems : []; }
 
+        /**
+         * Indicates whether the current navigation menu item represents the current page, is being displayed within the secondary navigation menu, and has child items.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
+         */
         get showNestedSideNavChildItems(): boolean { return this.isCurrentPage && this.isNestedNavItem && this.hasChildNavItem && !this.hasSiblingNavItem; }
 
+        /**
+         * Gets the parent navigation menu item.
+         *
+         * @readonly
+         * @type {(NavigationItem | undefined)}
+         * @memberof NavigationItem
+         */
         get parentNavItem(): NavigationItem | undefined { return this._parentNavItem; }
 
+        /**
+         * Creates an instance of NavigationItem.
+         *
+         * @param {AppConfigDataService} _appConfigData - The appConfigData service provider.
+         * @param {INavigationDefinition} navDef - The navigation menu item definition.
+         * @memberof NavigationItem
+         */
         constructor(private _appConfigData: AppConfigDataService, navDef: INavigationDefinition) {
             this._url = navDef.url;
             this._sideNavHeading = (typeof navDef.sideNavHeading === "string") ? navDef.sideNavHeading.trim() : "";
@@ -201,9 +432,15 @@ namespace app {
             this._childNavItems = NavigationItem.createNavItems(_appConfigData, navDef.items);
             this._childNavItems.forEach((item: NavigationItem) => { item._parentNavItem = this; }, this);
             if (this.isCurrentPage)
-                this.getParentNavItems().forEach((item: NavigationItem) => { item._isCurrentPage = false; });
+                this.getAncestorNavItems().forEach((item: NavigationItem) => { item._isCurrentPage = false; });
         }
 
+        /**
+         * Gets preceding sibling items for the current menu navigation item.
+         *
+         * @returns {NavigationItem[]}
+         * @memberof NavigationItem
+         */
         precedingSiblings(): NavigationItem[] {
             if (typeof this._previousNavItem === "undefined")
                 return [];
@@ -212,6 +449,12 @@ namespace app {
             return result;
         }
 
+        /**
+         * Gets following sibling items for the current menu navigation item.
+         *
+         * @returns {NavigationItem[]}
+         * @memberof NavigationItem
+         */
         followingSiblings(): NavigationItem[] {
             let result: NavigationItem[] = [];
             for (let i: NavigationItem = this._nextNavItem; typeof i !== "undefined"; i = i._nextNavItem)
@@ -219,13 +462,25 @@ namespace app {
             return result;
         }
 
-        getParentNavItems(): NavigationItem[] {
+        /**
+         * Gets all ancestor navigation menu items.
+         *
+         * @returns {NavigationItem[]}
+         * @memberof NavigationItem
+         */
+        getAncestorNavItems(): NavigationItem[] {
             let result: NavigationItem[] = [];
             for (let i: NavigationItem = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
                 result.unshift(i);
             return result;
         }
 
+        /**
+         * Gets ancestor navigation menu items that do not appear in the primary navigation menu.
+         *
+         * @returns {NavigationItem[]}
+         * @memberof NavigationItem
+         */
         getBreadcrumbLinks(): NavigationItem[] {
             let result: NavigationItem[] = [];
             if (sys.notNil(this._parentNavItem) && sys.notNil(this._parentNavItem._parentNavItem))
@@ -234,6 +489,13 @@ namespace app {
             return result;
         }
 
+        /**
+         * Handles the menu item click event.
+         *
+         * @param {BaseJQueryEventObject} [event]
+         * @memberof NavigationItem
+         * @description The purpose of this member is to prevent the default action for the navigation menu item that represents the current page.
+         */
         onClick(event?: BaseJQueryEventObject): void {
             if (this.isCurrentPage && sys.notNil(event)) {
                 if (!event.isDefaultPrevented)
@@ -243,6 +505,15 @@ namespace app {
             }
         }
 
+        /**
+         * Creates a navigation menu item objects from navigation menu definition objects.
+         *
+         * @static
+         * @param {AppConfigDataService} appConfigData - The application configuration data service provider.
+         * @param {INavigationDefinition[]} [items] - Defines the navigation menu items to be created.
+         * @returns {ReadonlyArray<NavigationItem>} - The navigation menu item objects.
+         * @memberof NavigationItem
+         */
         static createNavItems(appConfigData: AppConfigDataService, items?: INavigationDefinition[]): ReadonlyArray<NavigationItem> {
             if (typeof items !== "object" || items === null)
                 return [];
@@ -255,6 +526,14 @@ namespace app {
             return result;
         }
 
+        /**
+         * Finds the navigation menu item that represents the current page.
+         *
+         * @static
+         * @param {ReadonlyArray<NavigationItem>} items - Navigation menu items to recursively search.
+         * @returns {(NavigationItem | undefined)} - The navigation menu item that represents the current page or undefined if none are found that represent the current page.
+         * @memberof NavigationItem
+         */
         static findCurrentItem(items: ReadonlyArray<NavigationItem>): NavigationItem | undefined {
             if (items.length == 0)
                 return undefined;
@@ -266,6 +545,14 @@ namespace app {
             }
         }
 
+        /**
+         * Creates an array of ancestor navigation menu items to be displayed as breadcrumb links.
+         *
+         * @static
+         * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
+         * @returns {ReadonlyArray<NavigationItem>}
+         * @memberof NavigationItem
+         */
         static createSideNavBreadcrumbItems(current?: NavigationItem): ReadonlyArray<NavigationItem> {
             if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
                 return [];
@@ -275,6 +562,14 @@ namespace app {
             return result;
         }
 
+        /**
+         * Creates an array of sibling navigation menu items.
+         *
+         * @static
+         * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
+         * @returns {ReadonlyArray<NavigationItem>}
+         * @memberof NavigationItem
+         */
         static createSideNavSiblingItems(current?: NavigationItem): ReadonlyArray<NavigationItem> {
             if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
                 return [];
@@ -291,15 +586,71 @@ namespace app {
         }
     }
 
+    export type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
+
+    /**
+     * Defines a button to be displayed in a modal popup dialog.
+     *
+     * @export
+     * @interface IPopupDialogButtonDefinition
+     * @template T The type of value returned when the associated button is clicked.
+     */
     export interface IPopupDialogButtonDefinition<T> {
+        /**
+         * Value to be returned when the associated button is clicked.
+         *
+         * @type {T}
+         * @memberof IPopupDialogButtonDefinition
+         */
         value: T;
+
+        /**
+         * The text to be displayed for the button.
+         *
+         * @type {string}
+         * @memberof IPopupDialogButtonDefinition
+         */
         displayText: string;
     }
 
-    export interface ITHisPopupDialogShowCallback<TTHis, TResult> { (this: TTHis, message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<TResult>[], onClose?: { (result?: TResult): void; }): void; }
+    /**
+     * Callback for displaying a modal popup dialog.
+     *
+     * @export
+     * @interface ITHisPopupDialogShowCallback
+     * @template TTHis - Type of object to use as the "this" object when invoking the callback.
+     * @template TResult - The type of result value to be produced by the modal dialog.
+     * @param {string} message - The message text for the modal popup.
+     * @param {string} [title] - The title for the modal popup.
+     * @param {DialogMessageType} [type] - The type (severity) of the modal popup.
+     * @param {IPopupDialogButtonDefinition<TResult>[]} [buttons] - The buttons to display for the modal popup, which closes the modal dialog and defines the result value.
+     * @param {{ (result?: TResult): void; }} [onClose] - The callback to invoke when the modal popup dialog is closed.
+     */
+    export interface ITHisPopupDialogShowCallback<TTHis, TResult> {
+        (this: TTHis, message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<TResult>[], onClose?: { (result?: TResult): void; }): void;
+    }
 
+    /**
+     * Callback for displaying a modal popup dialog.
+     *
+     * @export
+     * @interface IPopupDialogShowCallback
+     * @template T - The type of result value to be produced by the modal dialog.
+     * @param {string} message - The message text for the modal popup.
+     * @param {string} [title] - The title for the modal popup.
+     * @param {DialogMessageType} [type] - The type (severity) of the modal popup.
+     * @param {IPopupDialogButtonDefinition<T>[]} [buttons] - The buttons to display for the modal popup, which closes the modal dialog and defines the result value.
+     * @param {{ (result?: T): void; }} [onClose] - The callback to invoke when the modal popup dialog is closed.
+     * @description - This is used within the {@link AppContentController} when the main modal popup dialog is displayed.
+     */
     export interface IPopupDialogShowCallback<T> { (message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: { (result?: T): void; }): void; }
-
+    
+    /**
+     * Class which implements the appConfigData service.
+     *
+     * @export
+     * @class AppConfigDataService
+     */
     export class AppConfigDataService {
         private _currentPageId: string;
         private _currentPageURL: URL;
@@ -312,19 +663,38 @@ namespace app {
         private _selectedItemClass: ReadonlyArray<string> = DEFAULT_SELECTED_ITEM_CLASS;
         private _otherItemClass: ReadonlyArray<string> = DEFAULT_OTHER_ITEM_CLASS;
         private _topNavItems: ReadonlyArray<NavigationItem> = [];
-        private _sideNavBreadcrumbItems: ReadonlyArray<NavigationItem> = [];
-        private _sideNavSiblingItems: ReadonlyArray<NavigationItem> = [];
-        private _sideNavChildItems: ReadonlyArray<NavigationItem> = [];
+        //private _sideNavBreadcrumbItems: ReadonlyArray<NavigationItem> = [];
+        //private _sideNavSiblingItems: ReadonlyArray<NavigationItem> = [];
+        //private _sideNavChildItems: ReadonlyArray<NavigationItem> = [];
         private _serviceNowUrlChangedCallback: { (value: URL): void; } | undefined;
         private _gitRepositoryUrlChangedCallback: { (value: URL): void; } | undefined;
         private _pageTitleChangedCallback: { (value: string): void; } | undefined;
         private _showMainModalPopupDialogCallback: IPopupDialogShowCallback<any> | undefined;
         private _hideMainModalPopupDialogCallback: { (result?: any): void } | undefined;
 
+        /**
+         * Gets the current page ID.
+         *
+         * @returns {string} The value of the "content" attribute for the html meta tag with the name attribute of "app:pageId".
+         * @memberof AppConfigDataService
+         */
         currentPageId(): string { return this._currentPageId; }
 
+        /**
+         * Gets relative path to the current page.
+         *
+         * @returns {string}
+         * @memberof AppConfigDataService
+         */
         pagePath(): string { return this._relativePagePath; }
 
+        /**
+         * Gets or sets the title of the current page
+         *
+         * @param {string} [value] - The optional value to set for the page title.
+         * @returns {string} The title of the current apge.
+         * @memberof AppConfigDataService
+         */
         pageTitle(value?: string): string {
             if (typeof value === "string" && value.trim().length > 0 && value !== this._pageTitle) {
                 this._pageTitle = value;
@@ -333,14 +703,46 @@ namespace app {
             return this._pageTitle;
         }
 
+        /**
+         * Gets the CSS class names to apply to navigation menu items that are ancestors of the item that represents the current page.
+         *
+         * @returns {ReadonlyArray<string>}
+         * @memberof AppConfigDataService
+         */
         currentItemClass(): ReadonlyArray<string> { return this._currentItemClass; }
 
+        /**
+         * Gets the CSS class names to apply to the navigation menu item that represents the current page.
+         *
+         * @returns {ReadonlyArray<string>}
+         * @memberof AppConfigDataService
+         */
         selectedItemClass(): ReadonlyArray<string> { return this._selectedItemClass; }
 
+        /**
+         * Gets the CSS class names to apply to the navigation menu item that do not represent the current page or any of its ancestors.
+         *
+         * @returns {ReadonlyArray<string>}
+         * @memberof AppConfigDataService
+         */
         otherItemClass(): ReadonlyArray<string> { return this._otherItemClass; }
 
+        /**
+         * Gets the navigation menu items that appear in the primary navigation menu.
+         *
+         * @returns {ReadonlyArray<NavigationItem>}
+         * @memberof AppConfigDataService
+         */
         topNavItems(): ReadonlyArray<NavigationItem> { return this._topNavItems; }
 
+        /**
+         * Gets or sets the base URL for the target ServiceNow instance.
+         *
+         * @param {URL} [value] - Optionally specify new value for base URL of the target ServiceNow instance.
+         * @returns {URL}
+         * @memberof AppConfigDataService
+         * @description Changes in this value cause any callbacks specified through {@link AppConfigDataService#onServiceNowUrlChanged} to be invoked.
+         */
         serviceNowUrl(value?: URL): URL {
             if (typeof value === "object" && value !== null && value instanceof URL && this._serviceNowUrl.href !== value.href) {
                 this._serviceNowUrl = value;
@@ -349,6 +751,14 @@ namespace app {
             return this._serviceNowUrl;
         }
 
+        /**
+         * Gets or sets the base URL for the GIT repository being used by the target ServiceNow instance.
+         *
+         * @param {URL} [value] - Optionally specify new value for base URL of the GIT repository being used by the target ServiceNow instance.
+         * @returns {URL}
+         * @memberof AppConfigDataService
+         * @description Changes in this value cause any callbacks specified through {@link AppConfigDataService#onGitRepositoryUrlChanged} to be invoked.
+         */
         gitRepositoryUrl(value?: URL): URL {
             if (typeof value === "object" && value !== null && value instanceof URL && this._gitRepositoryUrl.href !== value.href) {
                 this._gitRepositoryUrl = value;
@@ -357,6 +767,15 @@ namespace app {
             return this._gitRepositoryUrl;
         }
 
+        /**
+         *Creates an instance of AppConfigDataService.
+         * @param {sessionStorageService} _sessionStorage - The sessionStorage service provider.
+         * @param {ng.IHttpService} $http - The $http service provider.
+         * @param {ng.ILogService} $log - The $log service provider.
+         * @param {ng.IDocumentService} $document - The $document service provider.
+         * @param {ng.IWindowService} $window - The $window service provider
+         * @memberof AppConfigDataService
+         */
         constructor(private _sessionStorage: sessionStorageService, $http: ng.IHttpService, private $log: ng.ILogService, $document: ng.IDocumentService, private $window: ng.IWindowService) {
             let headElement: JQuery = $document.find('head').first();
             let titleElement: JQuery = headElement.find('title');
@@ -403,8 +822,34 @@ namespace app {
             });
         }
 
+        /**
+         * Displays the main application modal dialog box.
+         *
+         * @template TTHis - The "this" object to use for the onClose callback method.
+         * @template TResult - The type of result value produced by the modal dialog.
+         * @param {string} message - The message to display in the modal dialog.
+         * @param {(string | undefined)} title - The title of the modal dialog.
+         * @param {(DialogMessageType | undefined)} type - The message type (severity) of the modal dailog.
+         * @param {(IPopupDialogButtonDefinition<TResult>[] | undefined)} buttons - The option buttons to display in the modal dailog.
+         * @param {({ (this: TTHis, result?: TResult): void; } | undefined)} onClose - The callback to invoke when the dialog box is closed.
+         * @param {TTHis} thisArg - The object to use as the "this" object when onClose is invoked.
+         * @memberof AppConfigDataService
+         * @description This invokes the callback specified through the {@link AppConfigDataService#onShowMainModalPopupDialog} method by the {@link AppContentController} during its construction.
+         */
         showMainModalPopupDialog<TTHis, TResult>(message: string, title: string | undefined, type: DialogMessageType | undefined, buttons: IPopupDialogButtonDefinition<TResult>[] | undefined,
             onClose: { (this: TTHis, result?: TResult): void; } | undefined, thisArg: TTHis): void;
+        /**
+         * Displays the main application modal dialog box
+         *
+         * @template T - The type of result value produced by the modal dialog.
+         * @param {string} message - The message to display in the modal dialog.
+         * @param {string} [title] - The title of the modal dialog.
+         * @param {DialogMessageType} [type] - The message type (severity) of the modal dailog.
+         * @param {IPopupDialogButtonDefinition<T>[]} [buttons] - The option buttons to display in the modal dailog.
+         * @param {{ (result?: T): void; }} [onClose] - The callback to invoke when the dialog box is closed.
+         * @memberof AppConfigDataService
+         * @description This invokes the callback specified through the {@link AppConfigDataService#onShowMainModalPopupDialog} method by the {@link AppContentController} during its construction.
+         */
         showMainModalPopupDialog<T>(message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: { (result?: T): void; }): void;
         showMainModalPopupDialog(message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<any>[], onClose?: { (result?: any): void; }, thisArg?: any): void {
             let callback: IPopupDialogShowCallback<any> | undefined = this._showMainModalPopupDialogCallback;
@@ -416,7 +861,21 @@ namespace app {
             }
         }
 
+        /**
+         * Specifies a callback to invoke when the main modal popup dialog is to be displayed.
+         *
+         * @param {ITHisPopupDialogShowCallback<TTHis, TResult>} callback - The callback to invoke when the main modal popup dialog is to be displayed.
+         * @param {TTHis} thisArg - The object to use as the "this" object when the callback is invoked.
+         * @memberof AppConfigDataService
+         */
         onShowMainModalPopupDialog<TTHis, TResult>(callback: ITHisPopupDialogShowCallback<TTHis, TResult>, thisArg: TTHis): void;
+        /**
+         * Specifies a callback to invoke when the main modal popup dialog is to be displayed.
+         *
+         * @param {IPopupDialogShowCallback<T>} callback - The callback to invoke when the main modal popup dialog is to be displayed.
+         * @memberof AppConfigDataService
+         * @description - The {@link AppContentController} invokes this method during its construction to specify the callback that will actually display the popup dialog.
+         */
         onShowMainModalPopupDialog<T>(callback: IPopupDialogShowCallback<T>): void;
         onShowMainModalPopupDialog(callback: IPopupDialogShowCallback<any> | ITHisPopupDialogShowCallback<any, any>, thisArg?: any): void {
             if (typeof callback !== "function")
@@ -441,13 +900,36 @@ namespace app {
                 this._showMainModalPopupDialogCallback = callback;
         }
 
+        /**
+         * Closes the main modal popup dialog.
+         *
+         * @param {*} [result] - Result value to apply.
+         * @memberof AppConfigDataService
+         */
         closeMainModalPopupDialog(result?: any): void {
             let callback: { (result?: any): void } | undefined = this._hideMainModalPopupDialogCallback;
             if (typeof callback === "function")
                 callback(result);
         }
 
+        /**
+         * Specifies a callback to invoke when the main modal popup dialog is to be closed.
+         *
+         * @template TTHis - The type of object used as the "this" object when the callback is invoked.
+         * @template TResult - The type of result value for the modal popup dialog.
+         * @param {{ (this: TTHis, result?: TResult): void }} callback - The callback to invoke when the main modal popup dialog is to be closed.
+         * @param {TTHis} thisArg - The object to use as the "this" object when the callback is invoked.
+         * @memberof AppConfigDataService
+         */
         onCloseMainModalPopupDialog<TTHis, TResult>(callback: { (this: TTHis, result?: TResult): void }, thisArg: TTHis): void;
+        /**
+         * Specifies a callback to invoke when the main modal popup dialog is to be closed.
+         *
+         * @template T - The type of result value for the modal popup dialog.
+         * @param {{ (result?: T): void }} callback - The callback to invoke when the main modal popup dialog is to be closed.
+         * @memberof AppConfigDataService
+         * @description - The {@link AppContentController} invokes this method during its construction to specify the callback that will actually close the popup dialog.
+         */
         onCloseMainModalPopupDialog<T>(callback: { (result?: T): void }): void;
         onCloseMainModalPopupDialog(callback: { (result?: any): void } | { (this: any, result?: any): void }, thisArg?: any): void {
             if (typeof callback !== "function")
@@ -457,11 +939,11 @@ namespace app {
                 if (typeof hideMainModalPopupDialogCallback === "function")
                     this._hideMainModalPopupDialogCallback = (result?: any) => {
                         try { hideMainModalPopupDialogCallback(result); }
-                        finally { callback.call(result); }
+                        finally { callback.call(thisArg, result); }
                     };
                 else
                     this._hideMainModalPopupDialogCallback = (result?: any) => {
-                        callback.call(result);
+                        callback.call(thisArg, result);
                     };
             } else if (typeof hideMainModalPopupDialogCallback === "function")
                 this._hideMainModalPopupDialogCallback = (result?: any) => {
@@ -472,7 +954,21 @@ namespace app {
                 this._hideMainModalPopupDialogCallback = callback;
         }
 
+        /**
+         * Specifies a callback to invoke when the value of {@link AppConfigDataService#serviceNowUrl} has changed.
+         *
+         * @template T - The type of object used as the "this" object when the callback is invoked.
+         * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link AppConfigDataService#serviceNowUrl} has changed.
+         * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
+         * @memberof AppConfigDataService
+         */
         onServiceNowUrlChanged<T>(callback: { (this: T, value: URL): void; }, thisArg: T): void;
+        /**
+         * Specifies a callback to invoke when the value of {@link AppConfigDataService#serviceNowUrl} has changed.
+         *
+         * @param {{ (value: URL): void; }} callback - The callback to invoke when the value of {@link AppConfigDataService#serviceNowUrl} has changed.
+         * @memberof AppConfigDataService
+         */
         onServiceNowUrlChanged(callback: { (value: URL): void; }): void;
         onServiceNowUrlChanged(callback: { (value: URL): void; }, thisArg?: any): void {
             if (typeof callback !== "function")
@@ -499,7 +995,21 @@ namespace app {
                 callback(this._serviceNowUrl);
         }
 
+        /**
+         * Specifies a callback to invoke when the value of {@link AppConfigDataService#gitRepositoryUrl} has changed.
+         *
+         * @template T - The type of object used as the "this" object when the callback is invoked.
+         * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link AppConfigDataService#gitRepositoryUrl} has changed.
+         * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
+         * @memberof AppConfigDataService
+         */
         onGitRepositoryUrlChanged<T>(callback: { (this: T, value: URL): void; }, thisArg: T): void;
+        /**
+         * Specifies a callback to invoke when the value of {@link AppConfigDataService#gitRepositoryUrl} has changed.
+         *
+         * @param {{ (value: URL): void; }} callback - The callback to invoke when the value of {@link AppConfigDataService#gitRepositoryUrl} has changed.
+         * @memberof AppConfigDataService
+         */
         onGitRepositoryUrlChanged(callback: { (value: URL): void; }): void;
         onGitRepositoryUrlChanged(callback: { (value: URL): void; }, thisArg?: any): void {
             if (typeof callback !== "function")
@@ -526,7 +1036,21 @@ namespace app {
                 callback(this._gitRepositoryUrl);
         }
 
+        /**
+         * Specifies a callback to invoke when the value of {@link AppConfigDataService#pageTitle} has changed.
+         *
+         * @template T - The type of object used as the "this" object when the callback is invoked.
+         * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link AppConfigDataService#pageTitle} has changed.
+         * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
+         * @memberof AppConfigDataService
+         */
         onTitleChanged<T>(callback: { (this: T, value: string): void; }, thisArg: T): void;
+        /**
+         * Specifies a callback to invoke when the value of {@link AppConfigDataService#pageTitle} has changed.
+         *
+         * @param {{ (value: string): void; }} callback - The callback to invoke when the value of {@link AppConfigDataService#pageTitle} has changed.
+         * @memberof AppConfigDataService
+         */
         onTitleChanged(callback: { (value: string): void; }): void;
         onTitleChanged(callback: { (value: string): void; }, thisArg?: any): void {
             if (typeof callback !== "function")
@@ -553,7 +1077,23 @@ namespace app {
                 callback(this._pageTitle);
         }
 
+        /**
+         * Specifies callback(s) to invoke when settings have been loaded from appConfigData.json.
+         *
+         * @template T - The type of object used as the "this" object when the callback is invoked.
+         * @param {{ (this: T, svc: AppConfigDataService): void; }} successCallback - The callback to invoke when settings have been successfully loaded.
+         * @param {({ (this: T, reason: any, svc: AppConfigDataService): void; } | undefined)} errorCallback - The callback to invoke when there was an error loading settings from appConfigData.json.
+         * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
+         * @memberof AppConfigDataService
+         */
         onSettingsLoaded<T>(successCallback: { (this: T, svc: AppConfigDataService): void; }, errorCallback: { (this: T, reason: any, svc: AppConfigDataService): void; } | undefined, thisArg: T): void;
+        /**
+         * Specifies callback(s) to invoke when settings have been loaded from appConfigData.json.
+         *
+         * @param {{ (svc: AppConfigDataService): void; }} successCallback - The callback to invoke when settings have been successfully loaded.
+         * @param {{ (reason: any, svc: AppConfigDataService): void; }} [errorCallback] - The callback to invoke when there was an error loading settings from appConfigData.json.
+         * @memberof AppConfigDataService
+         */
         onSettingsLoaded(successCallback: { (svc: AppConfigDataService): void; }, errorCallback?: { (reason: any, svc: AppConfigDataService): void; }): void;
         onSettingsLoaded(successCallback: { (svc: AppConfigDataService): void; }, errorCallback?: { (reason: any, svc: AppConfigDataService): void; }, thisArg?: any): void {
             let svc: AppConfigDataService = this;
@@ -572,6 +1112,14 @@ namespace app {
             });
         }
 
+        /**
+         * Creates an absolute ServiceNow URL from a relative URL.
+         *
+         * @param {string} [relativeUrl] - The relative ServiceNow URL.
+         * @param {boolean} [toNav] - Whether to encapsulate the relative path within "/nav_to.do?uri=path".
+         * @returns {string}
+         * @memberof AppConfigDataService
+         */
         createServiceNowUrl(relativeUrl?: string, toNav?: boolean): string {
             if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".") {
                 let url: URL = new URL(relativeUrl, sys.makeDirectoryUrl(this._serviceNowUrl));
@@ -591,6 +1139,13 @@ namespace app {
             return this._serviceNowUrl.href;
         }
 
+        /**
+         * Creates an absolute git URL from a relative URL.
+         *
+         * @param {string} [relativeUrl] - The relative GIT URL.
+         * @returns {string}
+         * @memberof AppConfigDataService
+         */
         createGitRepositoryUrl(relativeUrl?: string): string {
             if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".")
                 return (new URL(relativeUrl, sys.makeDirectoryUrl(this._gitRepositoryUrl))).href;
@@ -624,10 +1179,18 @@ namespace app {
             let current: NavigationItem | undefined = NavigationItem.findCurrentItem(this.topNavItems());
             if (sys.notNil(current) && current.pageTitle.length > 0)
                 this.pageTitle(current.pageTitle);
-            this._sideNavBreadcrumbItems = NavigationItem.createSideNavBreadcrumbItems(current);
-            this._sideNavSiblingItems = NavigationItem.createSideNavSiblingItems(current);
+            //this._sideNavBreadcrumbItems = NavigationItem.createSideNavBreadcrumbItems(current);
+            //this._sideNavSiblingItems = NavigationItem.createSideNavSiblingItems(current);
         }
 
+        /**
+         * Converts a URL path to a fallback (default) page ID.
+         *
+         * @static
+         * @param {string} path - The URL Path to convert.
+         * @returns {string} The fallback page ID for the given URL path.
+         * @memberof AppConfigDataService
+         */
         static toPageId(path: string): string {
             let arr: string[];
             let i: number;
@@ -787,40 +1350,232 @@ namespace app {
 
     // #endregion
 
-    interface IPopupDialogButtonConfig extends IPopupDialogButtonDefinition<any> {
+    // #region appContent directive <app-content></app-content>
+
+    /**
+     * Defines a button to be shown in the modal popup dialog.
+     *
+     * @interface IPopupDialogButtonConfig
+     * @extends {IPopupDialogButtonDefinition<any>}
+     */
+    export interface IPopupDialogButtonConfig extends IPopupDialogButtonDefinition<any> {
+        /**
+         * The click event handler for the associated button.
+         *
+         * @param {JQueryInputEventObject} [event] - The event object.
+         * @memberof IPopupDialogButtonConfig
+         */
         onClick(event?: JQueryInputEventObject);
     }
 
-    interface IAppContentDirectiveScope extends ng.IScope {
-        ctrl: AppContentController;
-        topNavItems: ReadonlyArray<NavigationItem>;
+    /**
+     *
+     *
+     * @interface IAppContentDirectiveScope
+     * @extends {ng.IScope}
+     */
+    export interface IAppContentDirectiveScope extends ng.IScope {
+        /**
+         * The controller associated with the current scope.
+         *
+         * @type {AppContentController}
+         * @memberof IAppContentDirectiveScope
+         */
+        appContentController: AppContentController;
+        /**
+         * The title of the current page.
+         *
+         * @type {string}
+         * @memberof IAppContentDirectiveScope
+         */
         pageTitle: string;
+        /**
+         * The value of the GIT repository URL field in the edit setup parameters dialog.
+         *
+         * @type {string}
+         * @memberof IAppContentDirectiveScope
+         */
         serviceNowUrl: string;
+        /**
+         * Indicates whether the ServiceNow URL field in the edit setup parameters dialog is valid.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         serviceNowUrlIsValid: boolean;
+        /**
+         * The value of the GIT repository URL field in the edit setup parameters dialog.
+         *
+         * @type {string}
+         * @memberof IAppContentDirectiveScope
+         */
         gitRepositoryUrl: string;
+        /**
+         * Indicates whether the GIT repository URL field in the edit setup parameters dialog is valid.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         gitRepositoryUrlIsValid: boolean;
+        /**
+         * Indicates whether all fields in the edit setup parameters dialog are valid.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         setupParametersAreInvalid: boolean;
+        /**
+         * Indicates whether the edit setup parameters dialog is being displayed.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         setupParametersDialogVisible: boolean;
+        /**
+         * Navigation menu items to be displayed in the primary navigation menu.
+         *
+         * @type {ReadonlyArray<NavigationItem>}
+         * @memberof IAppContentDirectiveScope
+         */
+        topNavItems: ReadonlyArray<NavigationItem>;
+        /**
+         * Indicates whether the secondary navigation menu is to be displayed.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         showSideMenu: boolean;
+        /**
+         * Ancestor navigation menu items to be displayed in the secondary navigation menu.
+         *
+         * @type {ReadonlyArray<NavigationItem>}
+         * @memberof IAppContentDirectiveScope
+         */
         sideNavBreadcrumbItems: ReadonlyArray<NavigationItem>;
+        /**
+         * Indicates whether ancestor navigation menu items are to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         showBreadcrumbLinks: boolean;
+        /**
+         * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         showSideNavItems: boolean;
+        /**
+         * Heading text for the secondary navigation menu.
+         *
+         * @type {string}
+         * @memberof IAppContentDirectiveScope
+         */
         sideNavHeading: string;
+        /**
+         * Indicates whether a heading is to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         showSideNavHeading: boolean;
+        /**
+         * Navigation menu items within the secondary navigation menu, exclusing any that represents the current page or sibling items following the one that represents the current page.
+         *
+         * @type {ReadonlyArray<NavigationItem>}
+         * @memberof IAppContentDirectiveScope
+         */
         sideNavItems: ReadonlyArray<NavigationItem>;
+        /**
+         * Indicates whether navigation menu item representing the current page is to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         showCurrentItem: boolean;
+        /**
+         * Navigation menu item representing the current page.
+         *
+         * @type {ReadonlyArray<NavigationItem>}
+         * @memberof IAppContentDirectiveScope
+         */
         currentNavItem?: NavigationItem;
+        /**
+         * Navigation menu items within the secondary navigation menu that follow the item representing the current page.
+         *
+         * @type {ReadonlyArray<NavigationItem>}
+         * @memberof IAppContentDirectiveScope
+         */
         followingSideNavItems: ReadonlyArray<NavigationItem>;
+        /**
+         * CSS class names for the main content section.
+         *
+         * @type {string[]}
+         * @memberof IAppContentDirectiveScope
+         */
         mainSectionClass: string[];
+        /**
+         * Indicates whether the main modal popup dialog is being displayed.
+         *
+         * @type {boolean}
+         * @memberof IAppContentDirectiveScope
+         */
         popupDialogVisible: boolean;
+        /**
+         * The title of the modal popup dialog.
+         *
+         * @type {string}
+         * @memberof IAppContentDirectiveScope
+         */
         popupDialogTitle: string;
+        /**
+         * Message text for modal popup dialog.
+         *
+         * @type {string}
+         * @memberof IAppContentDirectiveScope
+         */
         popupDialogMessage: string;
+        /**
+         * Buttons to be displayed in modal popup dialog.
+         *
+         * @type {IPopupDialogButtonConfig[]}
+         * @memberof IAppContentDirectiveScope
+         */
         popupDialogButtons: IPopupDialogButtonConfig[];
+        /**
+         * The callback to invoke when the modal popup dialog has been closed.
+         *
+         * @type {{ (result?: any): void; }}
+         * @param {*} [result] - The dialog result value.
+         * @memberof IAppContentDirectiveScope
+         */
         onPopupDialogClose?: { (result?: any): void; };
+        /**
+         * CSS class names for the modal popup dialog body element.
+         *
+         * @type {string[]}
+         * @memberof IAppContentDirectiveScope
+         */
         popupDialogBodyClass: string[];
     }
 
-    class AppContentController implements ng.IController {
+    /**
+     * Implements the controller for the appContent directive
+     *
+     * @class AppContentController
+     * @implements {ng.IController}
+     */
+    export class AppContentController implements ng.IController {
+        /**
+         * Creates an instance of AppContentController.
+         * 
+         * @param {IAppContentDirectiveScope} $scope - The scope for the current appContent directive.
+         * @param {ng.ILogService} $log - The $log service.
+         * @param {ng.IWindowService} $window - The $window service.
+         * @param {AppConfigDataService} appConfigData - The appConfigData service.
+         * @memberof AppContentController
+         */
         constructor(private $scope: IAppContentDirectiveScope, private $log: ng.ILogService, private $window: ng.IWindowService, private appConfigData: AppConfigDataService) {
             $scope.serviceNowUrlIsValid = $scope.gitRepositoryUrlIsValid = $scope.setupParametersAreInvalid = true;
             $scope.setupParametersDialogVisible = $scope.showSideMenu = $scope.showBreadcrumbLinks = $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = $scope.popupDialogVisible = false;
@@ -847,10 +1602,10 @@ namespace app {
                 $scope.popupDialogMessage = message;
                 $scope.onClose = onClose;
                 if (typeof buttons !== "object" || buttons === null || ($scope.popupDialogButtons = <IPopupDialogButtonConfig[]>buttons.filter(b => typeof b === "object" && b !== null)).length === 0)
-                    $scope.popupDialogButtons = [<IPopupDialogButtonConfig>{ displayText: "Close", onClick: (event?: JQueryInputEventObject) => { $scope.ctrl.closePopupDialog(event); } }];
+                    $scope.popupDialogButtons = [<IPopupDialogButtonConfig>{ displayText: "Close", onClick: (event?: JQueryInputEventObject) => { $scope.appContentController.closePopupDialog(event); } }];
                 else
                     $scope.popupDialogButtons.forEach((value: IPopupDialogButtonConfig) => {
-                        value.onClick = (event?: JQueryInputEventObject) => $scope.ctrl.closePopupDialog(event, value.value);
+                        value.onClick = (event?: JQueryInputEventObject) => $scope.appContentController.closePopupDialog(event, value.value);
                     });
                 if (sys.isNilOrWhiteSpace(title)) {
                     switch (type) {
@@ -943,6 +1698,12 @@ namespace app {
                 this.$scope.mainSectionClass = ["container-fluid", "col-12"];
         }
 
+        /**
+         * Opens the edit dialog for setup parameters.
+         *
+         * @param {JQueryInputEventObject} [event] - The event object.
+         * @memberof AppContentController
+         */
         openSetupParametersEditDialog(event?: JQueryInputEventObject): void {
             sys.preventEventDefault(event);
             if (!this.$scope.setupParametersDialogVisible) {
@@ -951,6 +1712,13 @@ namespace app {
             }
         }
 
+        /**
+         * Closes the edit dialog for setup parameters.
+         *
+         * @param {JQueryInputEventObject} [event] - The event object.
+         * @param {boolean} [accept] - Whether to accept any validated changes that were made.
+         * @memberof AppContentController
+         */
         closeSetupParametersEditDialog(event?: JQueryInputEventObject, accept?: boolean): void {
             sys.preventEventDefault(event);
             if (this.$scope.setupParametersDialogVisible) {
@@ -959,6 +1727,13 @@ namespace app {
             }
         }
 
+        /**
+         * Closes the main modal popup dialog.
+         *
+         * @param {JQueryInputEventObject} [event] - The event object.
+         * @param {*} [result] - The result value use as the the modal dialog result.
+         * @memberof AppContentController
+         */
         closePopupDialog(event?: JQueryInputEventObject, result?: any): void {
             sys.preventEventDefault(event);
             if (this.$scope.popupDialogVisible) {
@@ -979,133 +1754,12 @@ namespace app {
     appModule.directive(DIRECTIVE_NAME_APPCONTENT, () => {
         return {
             controller: ['$scope', '$log', '$window', SERVICENAME_APP_CONFIG_DATA, AppContentController],
-            controllerAs: 'ctrl',
+            controllerAs: 'appContentController',
             restrict: "E",
             scope: true,
             templateUrl: 'Template/appContent.htm'
         };
     });
-
-    // #endregion
-
-    // #region mainAppPageHead directive
-
-    interface IMainAppPageHeadScope extends ng.IScope {
-        topNavItems: ReadonlyArray<NavigationItem>;
-        pageTitle: string;
-        serviceNowUrl: string;
-        serviceNowUrlIsValid: boolean;
-        gitRepositoryUrl: string;
-        gitRepositoryUrlIsValid: boolean;
-        setupParametersAreInvalid: boolean;
-        setupParametersDialogVisible: boolean;
-    }
-
-    class MainAppPageHeadController implements ng.IController {
-        constructor(private $scope: IMainAppPageHeadScope, private $log: ng.ILogService, private $window: ng.IWindowService, private appConfigData: AppConfigDataService) {
-            $scope.serviceNowUrlIsValid = $scope.gitRepositoryUrlIsValid = $scope.setupParametersAreInvalid = true;
-            $scope.setupParametersDialogVisible = false;
-            $scope.topNavItems = [];
-            $scope.$watchGroup(['serviceNowUrlIsValid', 'gitRepositoryBaseUrlIsValid'], () => {
-                let areValid: boolean = $scope.serviceNowUrlIsValid && $scope.gitRepositoryBaseUrlIsValid;
-                if (areValid !== $scope.setupParametersAreInvalid)
-                    $scope.setupParametersAreInvalid = areValid;
-            });
-            appConfigData.onTitleChanged((value: string) => { $scope.pageTitle = value; });
-            appConfigData.onServiceNowUrlChanged((value: URL) => { $scope.serviceNowUrl = value.href; });
-            appConfigData.onGitRepositoryUrlChanged((value: URL) => { $scope.gitRepositoryBaseUrl = value.href; });
-            appConfigData.onSettingsLoaded(() => {
-                $scope.topNavItems = appConfigData.topNavItems();
-            }, (reason: any) => {
-                $log.error("Error loading application settings: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
-                $window.alert("Unexpected error loading application settings. See browser log for more detail.");
-            }, this);
-        }
-
-        openSetupParametersEditDialog(event?: JQueryInputEventObject): void {
-            sys.preventEventDefault(event);
-            if (!this.$scope.setupParametersDialogVisible) {
-                $("#setupParametersDialog").modal('show');
-                this.$scope.setupParametersDialogVisible = true;
-            }
-        }
-
-        closeSetupParametersEditDialog(event?: JQueryInputEventObject, accept?: boolean): void {
-            sys.preventEventDefault(event);
-            if (!this.$scope.setupParametersDialogVisible) {
-                $("#setupParametersDialog").modal('hide');
-                this.$scope.setupParametersDialogVisible = false;
-            }
-        }
-
-        $onInit(): void { }
-    }
-
-    appModule.directive("mainAppPageHead", () => {
-        return {
-            controller: ['$scope', '$log', '$window', SERVICENAME_APP_CONFIG_DATA, MainAppPageHeadController],
-            controllerAs: 'ctrl',
-            restrict: "E",
-            scope: true,
-            templateUrl: 'Template/mainAppPageHead.htm'
-        };
-    });
-
-    // #endregion
-
-    // #endregion
-
-    // #region mainModalPopupDialog
-
-    export type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
-
-    interface IDialogScope extends ng.IScope {
-        isVisible: boolean;
-        title: string;
-        message: string;
-        bodyClass: string;
-        show(message: string, type?: DialogMessageType, title?: string);
-        close();
-    }
-
-    export class mainModalPopupDialogController implements ng.IController {
-        static show($scope: ng.IScope, message: string, type?: DialogMessageType, title?: string) {
-            $scope.$broadcast(ScopeEvent_OpenMainModalPopupDialog, message, type, title);
-        }
-        static hide($scope: ng.IScope) {
-            $scope.$broadcast(ScopeEvent_CloseMainModalPopupDialog);
-        }
-        constructor($scope: IDialogScope, $rootScope: ng.IScope) {
-            $scope.title = '';
-            $scope.message = '';
-            $scope.bodyClass = '';
-            $scope.close = () => { $('#mainModalPopupDialog').modal('hide'); };
-            $rootScope.$on(ScopeEvent_OpenMainModalPopupDialog, (event: ng.IAngularEvent, message: string, type?: DialogMessageType, title?: string) => {
-                if (sys.isNilOrWhiteSpace(title)) {
-                    switch (type) {
-                        case 'warning':
-                            $scope.title = 'Warning';
-                            break;
-                        case 'danger':
-                            $scope.title = 'Critical';
-                            break;
-                        case 'success':
-                            $scope.title = 'Success';
-                            break;
-                        default:
-                            $scope.title = 'Notice';
-                    }
-                } else
-                    $scope.title = title;
-                $scope.bodyClass = 'modal-body alert alert-' + type;
-                $scope.message = (sys.isNil(message)) ? '' : message;
-                $('#mainModalPopupDialog').modal('show');
-            });
-            $rootScope.$on(ScopeEvent_CloseMainModalPopupDialog, (event: ng.IAngularEvent) => { $('#mainModalPopupDialog').modal('hide'); });
-        }
-    }
-
-    appModule.controller("mainModalPopupDialogController", ['$scope', '$rootScope', mainModalPopupDialogController]);
 
     // #endregion
 
@@ -1357,7 +2011,7 @@ namespace app {
     interface IClipboardCopyScope extends ng.IScope {
         clipboardCopyController: ClipboardCopyController;
     }
-    
+
     class ClipboardCopyController implements ng.IController {
         private _cssClass: string[];
         private _targetId: string;
@@ -1592,277 +2246,6 @@ namespace app {
 
     // #endregion
 
-    // #region Target SyStem Configuration Information
-
-    //// #region targetSysConfigEditController
-
-    //interface ISysConfigEditFieldState extends ISysConfigEditScope {
-    //    original: string;
-    //    text: string;
-    //    isValid: boolean;
-    //    lastValidated: string;
-    //    validationMessage: string;
-    //    validationClass: string[];
-    //    messageClass: string[];
-    //}
-
-    //interface ISysConfigEditScope extends ng.IScope {
-    //    serviceNowUrl: string;
-    //    gitRepositoryBaseUrl: string;
-    //    cancel(): void;
-    //    accept(): void;
-    //    close(): void;
-    //    serviceNowUrlField: ISysConfigEditFieldState;
-    //    gitRepositoryBaseUrlField: ISysConfigEditFieldState;
-    //}
-
-    //export class targetSysConfigEditController implements ng.IController {
-    //    constructor(protected $scope: ISysConfigEditScope, private _settings: targetSysConfigSettings) {
-    //        $scope.serviceNowUrlField = <ISysConfigEditFieldState>($scope.$new());
-    //        $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = _settings.serviceNowUrl;
-    //        $scope.serviceNowUrlField.validationMessage = '';
-    //        $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //        $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-    //        $scope.serviceNowUrlField.isValid = true;
-
-    //        $scope.gitRepositoryBaseUrlField = <ISysConfigEditFieldState>($scope.$new());
-    //        $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = _settings.gitRepositoryBaseUrl;
-    //        $scope.gitRepositoryBaseUrlField.validationMessage = '';
-    //        $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //        $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
-    //        $scope.gitRepositoryBaseUrlField.isValid = true;
-
-    //        $scope.message = '';
-    //        $scope.bodyClass = '';
-    //        $scope.close = () => { $('#setupParametersDialog').modal('hide'); }
-    //        $scope.cancel = () => {
-    //            $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.original;
-    //            $scope.serviceNowUrlField.validationMessage = '';
-    //            $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //            $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-    //            $scope.serviceNowUrlField.isValid = true;
-    //            $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.original;
-    //            $scope.gitRepositoryBaseUrlField.validationMessage = '';
-    //            $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //            $scope.gitRepositoryBaseUrlField.isValid = true;
-    //            $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
-    //            $('#setupParametersDialog').modal('hide');
-    //        };
-    //        $scope.accept = () => {
-    //            this.$doCheck();
-    //            if (!$scope.serviceNowUrlField.isValid) {
-    //                if (!$scope.gitRepositoryBaseUrlField.isValid)
-    //                    alert("ServiceNow URL and GIT Repository Base URL are not valid.");
-    //                alert("ServiceNow URL is not valid.");
-    //                return;
-    //            }
-    //            if (!$scope.gitRepositoryBaseUrlField.isValid) {
-    //                alert("GIT Repository Base URL is not valid.");
-    //                return;
-    //            }
-
-    //            $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text =
-    //                sys.subStringBefore(sys.subStringBefore($scope.serviceNowUrlField.text, '#'), '?');
-    //            $scope.serviceNowUrlField.validationMessage = '';
-    //            $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //            $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-    //            $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated =
-    //                $scope.gitRepositoryBaseUrlField.text = sys.subStringBefore(sys.subStringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
-    //            $scope.gitRepositoryBaseUrlField.validationMessage = '';
-    //            $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //            $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
-    //            $('#setupParametersDialog').modal('hide');
-    //            this._settings.serviceNowUrl = $scope.serviceNowUrlField.original;
-    //            this._settings.gitRepositoryBaseUrl = $scope.gitRepositoryBaseUrlField.original;
-    //        };
-    //        $scope.$on(ScopeEvent_ShowSetupParametersDialog, (event: ng.IAngularEvent) => {
-    //            $('#setupParametersDialog').modal('show');
-    //        });
-    //        $scope.$on(ScopeEvent_HideSetupParametersDialog, (event: ng.IAngularEvent) => {
-    //            $('#setupParametersDialog').modal('hide');
-    //        });
-    //    }
-
-    //    $doCheck() {
-    //        [this.$scope.serviceNowUrlField, this.$scope.gitRepositoryBaseUrlField].forEach((item: ISysConfigEditFieldState) => {
-    //            if (item.lastValidated === item.text)
-    //                return;
-    //            let uri: string = sys.asString(item.text, true, '');
-    //            item.lastValidated = uri;
-    //            if (uri.length === 0)
-    //                item.validationMessage = 'URL is required.';
-    //            else {
-    //                let fragment: string = '', query: string = '';
-    //                let i: number = uri.indexOf('#');
-    //                if (i > -1) {
-    //                    fragment = uri.substr(i);
-    //                    uri = uri.substr(0, i);
-    //                }
-    //                i = uri.indexOf('?');
-    //                if (i > -1) {
-    //                    fragment = uri.substr(i);
-    //                    uri = uri.substr(0, i);
-    //                }
-    //                let match: RegExpExecArray | null | undefined;
-    //                if (uri.length > 0)
-    //                    match = sys.uriParseRegex.exec(uri);
-    //                if (sys.isNilOrEmpty(match))
-    //                    item.validationMessage = 'Invalid URL.';
-    //                else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.origin]))
-    //                    item.validationMessage = 'URL cannot be relative.';
-    //                else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.schemeName]) || sys.isNilOrWhiteSpace(match[sys.uriParseGroup.hostname]))
-    //                    item.validationMessage = 'Invalid URL.';
-    //                else {
-    //                    item.isValid = true;
-    //                    if (query.length > 0)
-    //                        item.validationMessage = 'URI query string will be ignored.';
-    //                    else if (fragment.length > 0)
-    //                        item.validationMessage = 'URI fragment (hash) will be ignored.';
-    //                    else
-    //                        return;
-    //                    item.validationClass = ['form-control', cssValidationClass.isInvalid];
-    //                    item.messageClass = ['invalid-feedback', 'text-warning'];
-    //                    return;
-    //                }
-    //            }
-    //            item.isValid = false;
-    //            item.validationClass = ['form-control', cssValidationClass.isInvalid];
-    //            item.messageClass = ['invalid-feedback'];
-    //        });
-    //    }
-
-    //    static show($scope: ng.IScope) {
-    //        $scope.$broadcast(ScopeEvent_ShowSetupParametersDialog);
-    //    }
-
-    //    static hide($scope: ng.IScope) {
-    //        $scope.$broadcast(ScopeEvent_HideSetupParametersDialog);
-    //    }
-    //}
-
-    //appModule.controller("targetSysConfigEditController", ['$scope', 'targetSysConfigSettings', targetSysConfigEditController]);
-
-    //// #endregion
-
-    // #region targetSysConfigSettings Service
-
-    ///**
-    // * System configuration settings.
-    // */
-    //export interface ISysConfigSettings {
-    //    /**
-    //     * The base URL for the target ServiceNow instance.
-    //     */
-    //    serviceNowUrl: string;
-
-    //    /**
-    //     * The base URL for the target remote GIT repository.
-    //     */
-    //    gitRepositoryBaseUrl: string;
-    //}
-    
-    ///**
-    // * This defines the callback for handling system settings change events.
-    // *
-    // * @export
-    // * @param event - The event that was raised.
-    // * @param settings - The new value for the settings.
-    // */
-    //export interface ISettingsChangeEventHandler {
-    //    (event: ng.IAngularEvent, settings: ISysConfigSettings): void;
-    //}
-
-    //export class targetSysConfigSettings {
-    //    private _settings: ISysConfigSettings;
-
-    //    get serviceNowUrl(): string { return this._settings.serviceNowUrl; }
-    //    set serviceNowUrl(value: string) {
-    //        if (value === this._settings.serviceNowUrl)
-    //            return;
-    //        if (sys.isNilOrWhiteSpace(value))
-    //            throw new Error("URL cannot be empty.");
-    //        let parsedUrl: sys.IParsedUriString = sys.parseUriString(value);
-    //        if (sys.isNil(parsedUrl.origin))
-    //            throw new Error("URL cannot be relative.");
-    //        if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment) && parsedUrl.path.length == 0)) {
-    //            if (value === parsedUrl.origin.value)
-    //                return;
-    //            this._settings.serviceNowUrl = parsedUrl.origin.value;
-    //        } else
-    //            this._settings.serviceNowUrl = value;
-    //        this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
-    //        this.raiseUpdated();
-    //    }
-
-    //    get gitRepositoryBaseUrl(): string { return this._settings.gitRepositoryBaseUrl; }
-    //    set gitRepositoryBaseUrl(value: string) {
-    //        if (value === this._settings.gitRepositoryBaseUrl)
-    //            return;
-    //        if (sys.isNilOrWhiteSpace(value))
-    //            throw new Error("URL cannot be empty.");
-    //        let parsedUrl: sys.IParsedUriString = sys.parseUriString(value);
-    //        if (sys.isNil(parsedUrl.origin))
-    //            throw new Error("URL cannot be relative.");
-    //        if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment))) {
-    //            value = parsedUrl.origin.value + parsedUrl.path;
-    //            if (value === this._settings.gitRepositoryBaseUrl)
-    //                return;
-    //        }
-    //        this._settings.gitRepositoryBaseUrl = value;
-    //        this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
-    //        this.raiseUpdated();
-    //    }
-
-    //    private raiseUpdated() {
-    //        this.$rootScope.$emit(ScopeEvent_SetupParameterSettingsChanged, <ISysConfigSettings>{
-    //            serviceNowUrl: this._settings.serviceNowUrl,
-    //            gitRepositoryBaseUrl: this._settings.gitRepositoryBaseUrl
-    //        });
-    //    }
-
-    //    /**
-    //     * Adds event listener for settings change event.
-    //     * 
-    //     * @param scope
-    //     * @param handler
-    //     */
-    //    onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISysConfigSettings) => void) { scope.$on(ScopeEvent_SetupParameterSettingsChanged, handler); }
-
-    //    constructor(private $rootScope: ng.IScope, private _sessionStorage: sessionStorageService, $http: ng.IHttpService) {
-    //        this._settings = _sessionStorage.getObject<ISysConfigSettings>("targetSysConfigSettings");
-    //        if (sys.isNil(this._settings))
-    //            this._settings = { serviceNowUrl: DefaultURL_ServiceNow, gitRepositoryBaseUrl: DefaultURL_GitRepositoryBase };
-    //        else {
-    //            if (sys.isNilOrWhiteSpace(this._settings.serviceNowUrl))
-    //                this._settings.serviceNowUrl = DefaultURL_ServiceNow;
-    //            if (sys.isNilOrWhiteSpace(this._settings.gitRepositoryBaseUrl))
-    //                this._settings.gitRepositoryBaseUrl = DefaultURL_GitRepositoryBase;
-    //        }
-
-    //        $http.get("./defaults.json").then((nav: ng.IHttpPromiseCallbackArg<ISysConfigSettings>) => {
-    //            if (sys.isNil(nav.data))
-    //                return;
-    //            if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl) {
-    //                if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl)
-    //                    return;
-    //                this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
-    //            } else {
-    //                this._settings.serviceNowUrl = nav.data.serviceNowUrl;
-    //                if (sys.notNil(nav.data.serviceNowUrl) && this._settings.serviceNowUrl !== nav.data.serviceNowUrl)
-    //                    this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
-    //            }
-    //            this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
-    //            this.raiseUpdated();
-    //        });
-    //    }
-    //}
-
-    //appModule.factory("targetSysConfigSettings", ["$rootScope", "sessionStorageService", "$http", targetSysConfigSettings]);
-
-    // #endregion
- 
-    // #endregion
-
     // #region urlBuilderService
 
     const uriParseRegex: RegExp = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;
@@ -1889,27 +2272,27 @@ namespace app {
      * https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top
       └─┬─┘ └───────┬────────────────────┘└─┬─────────────┘└──┬───────────────────────┘└┬─┘
       scheme     authority                 path              query                      fragment
-    
+
       ldap://[2001:db8::7]/c=GB?objectClass?one
       └─┬┘ └───────┬─────┘└─┬─┘ └──────┬──────┘
      scheme    authority  path       query
-    
+
       mailto:John.Doe@example.com
       └──┬─┘ └─────────┬────────┘
       scheme         path
-    
+
       news:comp.infosystems.www.servers.unix
       └─┬┘ └───────────────┬───────────────┘
      scheme              path
-    
+
       tel:+1-816-555-1212
       └┬┘ └──────┬──────┘
     scheme     path
-    
+
       telnet://192.0.2.16:80/
       └──┬─┘ └──────┬──────┘│
       scheme    authority  path
-    
+
       urn:oasis:names:specification:docbook:dtd:xml:4.1.2
      */
     export interface ISchemaProperties {
@@ -2234,7 +2617,7 @@ namespace app {
                 this._schemeSeparator = value;
             } else
                 this._schemeName = this._schemeSeparator = "";
-            
+
             this._schemeSeparator = value;
         }
 
@@ -2361,7 +2744,7 @@ namespace app {
         private _messages: INotificationMessage[] = [];
 
         constructor(public readonly $log: ng.ILogService) { }
-        
+
         addNotificationMessage(message: string, title: string, type: NotificationMessageType): void;
         addNotificationMessage(message: string, type: NotificationMessageType): void;
         addNotificationMessage(message: string, title: string): void;

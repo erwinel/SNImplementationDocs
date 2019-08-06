@@ -630,7 +630,7 @@ namespace regexTester {
 
     // #region uriBuilder controller
 
-    interface IEvaluationItem {
+    export interface IEvaluationItem {
         state: EvaluationState;
         canDeleteCurrent: boolean;
         isCurrent: boolean;
@@ -639,13 +639,13 @@ namespace regexTester {
         isReplaceMode: boolean;
     }
 
-    enum EditMode {
+    export enum EditMode {
         singleLine,
         multiLine,
         item
     }
 
-    interface IRegexTesterScope extends ng.IScope {
+    export interface IRegexTesterScope extends ng.IScope {
         regexTester: RegexTesterController;
         inputItems: IEvaluationItem[];
         singleLinePattern: string;
@@ -672,7 +672,7 @@ namespace regexTester {
         showInputItemHeading: boolean;
     }
 
-    class RegexTesterController implements ng.IController {
+    export class RegexTesterController implements ng.IController {
         private _expression: RegExp | undefined;
         private _pattern: string;
         private _flags: string;
