@@ -111,6 +111,7 @@
     <Content Include="downloads\logo_service-now.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="downloads\Service Catalog Patch 2019-08-13.xml" />
     <Content Include="downloads\sys_remote_update_set_Incident_Management.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
