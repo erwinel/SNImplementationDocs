@@ -1176,7 +1176,8 @@ var app;
             controllerAs: 'appContentController',
             restrict: "E",
             scope: true,
-            templateUrl: 'Template/appContent.htm'
+            templateUrl: 'Template/appContent.htm',
+            transclude: true
         };
     });
     // #endregion

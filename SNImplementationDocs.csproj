@@ -117,6 +117,7 @@
     <Content Include="downloads\sys_remote_update_set_Initial_Setup.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="downloads\sys_remote_update_set_Security_Incident_Setup.xml" />
     <Content Include="downloads\sys_remote_update_set_Service_Catalog.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2065,6 +2066,7 @@
     <Content Include="PowerShell\GenerateImageCatalogJSON.ps1" />
     <None Include="PageManager.bat" />
     <None Include="PageManager.ps1" />
+    <Content Include="PublishGhPages.ps1" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
