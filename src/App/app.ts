@@ -19,22 +19,6 @@ namespace app {
     const DEFAULT_SELECTED_ITEM_CLASS: ReadonlyArray<string> = ["active", "nav-link"];
     const DEFAULT_OTHER_ITEM_CLASS: ReadonlyArray<string> = ["nav-link"];
 
-    const SERVICENAME_SESSION_STORAGE: string = "sessionStorageService";
-
-    /**
-     * The session storage key used by the {@link cfg.Service} for storing URL configuration information.
-     *
-     * @export
-     * @type {string}
-     */
-    export const StorageKey_UrlConfigSettings: string = "UrlConfig";
-
-    /**
-     * @deprecated
-     * @todo Remove this symbol.
-     */
-    export const StorageKey_SetupParameterSettings: string = "targetSysConfigSettings";
-
     /**
      *
      *
@@ -867,7 +851,7 @@ namespace app {
              * @param {ng.IWindowService} $window - The $window service provider
              * @memberof app.cfg.Service
              */
-            constructor(private _sessionStorage: sessionStorageService, $http: ng.IHttpService, private $log: ng.ILogService, $document: ng.IDocumentService, private $window: ng.IWindowService) {
+            constructor(private _sessionStorage: storage.Service, $http: ng.IHttpService, private $log: ng.ILogService, $document: ng.IDocumentService, private $window: ng.IWindowService) {
                 let headElement: JQuery = $document.find('head').first();
                 let titleElement: JQuery = headElement.find('title');
                 if (titleElement.length == 0) {
@@ -1253,7 +1237,7 @@ namespace app {
             }
 
             private applySettings(appJson?: IAppConfigJSON): void {
-                let settings: IUrlConfigSettings | undefined = this._sessionStorage.getObject<IUrlConfigSettings>(StorageKey_UrlConfigSettings);
+                let settings: IUrlConfigSettings | undefined = this._sessionStorage.getObject<IUrlConfigSettings>(storage.STORAGEKEY_URL_CONFIG_SETTINGS);
                 if (typeof settings === "object" && settings !== null) {
                     if (typeof settings.serviceNowUrl === "string" && settings.serviceNowUrl.length > 0)
                         this.serviceNowUrl(new URL(settings.serviceNowUrl));
@@ -1270,7 +1254,7 @@ namespace app {
                         this.gitServiceUrl(new URL(appJson.gitServiceUrl));
                 }
 
-                this._sessionStorage.setObject(StorageKey_UrlConfigSettings, settings);
+                this._sessionStorage.setObject(storage.STORAGEKEY_URL_CONFIG_SETTINGS, settings);
 
                 if (typeof appJson === "object" && appJson !== null && typeof appJson.navigation === "object" && appJson.navigation !== null)
                     this._topNavItems = NavigationItem.createNavItems(this, appJson.navigation.items);
@@ -1309,7 +1293,7 @@ namespace app {
             }
         }
 
-        appModule.factory(SERVICE_NAME, [SERVICENAME_SESSION_STORAGE, "$http", '$log', '$document', '$window', Service]);
+        appModule.factory(SERVICE_NAME, [storage.SERVICE_NAME, "$http", '$log', '$document', '$window', Service]);
 
     }
     
@@ -1958,210 +1942,218 @@ namespace app {
         });
     }
 
-    // #region Session Storage Service
+    export namespace storage {
+        export const SERVICE_NAME: string = "sessionStorageService";
 
-    class SessionStorageEntryEnumerator implements IterableIterator<[string, string]> {
-        private _index: number = 0;
+        /**
+         * The session storage key used by the {@link cfg.Service} for storing URL configuration information.
+         *
+         * @export
+         * @type {string}
+         */
+        export const STORAGEKEY_URL_CONFIG_SETTINGS: string = "UrlConfig";
 
-        constructor(private _window: ng.IWindowService, private _keys: string[]) { }
+        class SessionStorageEntryEnumerator implements IterableIterator<[string, string]> {
+            private _index: number = 0;
 
-        [Symbol.iterator](): IterableIterator<[string, string]> { return this; }
+            constructor(private _window: ng.IWindowService, private _keys: string[]) { }
 
-        next(): IteratorResult<[string, string]> {
-            if (this._window.sessionStorage.length !== this._keys.length)
-                this._index = this._keys.length;
-            else if (this._index < this._keys.length) {
-                try {
-                    let key: string = this._keys[this._index];
-                    let value: string = this._window.sessionStorage.getItem(key);
-                    if (sys.notNil(value))
-                        return { done: false, value: [key, value] };
+            [Symbol.iterator](): IterableIterator<[string, string]> { return this; }
+
+            next(): IteratorResult<[string, string]> {
+                if (this._window.sessionStorage.length !== this._keys.length)
                     this._index = this._keys.length;
-                } catch { this._index = this._keys.length; }
-            }
-            return { done: true, value: undefined };
-        }
-    }
-
-    class SessionStorageValueEnumerator implements IterableIterator<string> {
-        private _index: number = 0;
-
-        constructor(private _window: ng.IWindowService, private _keys: string[]) { }
-
-        [Symbol.iterator](): IterableIterator<string> { return this; }
-
-        next(): IteratorResult<string> {
-            if (this._window.sessionStorage.length !== this._keys.length)
-                this._index = this._keys.length;
-            else if (this._index < this._keys.length) {
-                try {
-                    let value: string = this._window.sessionStorage.getItem(this._keys[this._index]);
-                    if (sys.notNil(value))
-                        return { done: false, value: value };
-                    this._index = this._keys.length;
-                } catch { this._index = this._keys.length; }
-            }
-            return { done: true, value: undefined };
-        }
-    }
-
-    export class sessionStorageService implements Map<string, string> {
-        private _allKeys: string[];
-        private _parsedKeys: string[];
-        private _parsedObjects: (any | null | undefined)[];
-
-        [Symbol.toStringTag]: string;
-
-        get size(): number { return this.$window.sessionStorage.length; }
-
-        constructor(private $window: ng.IWindowService) {
-            this[Symbol.toStringTag] = SERVICENAME_SESSION_STORAGE;
-            this.check(true);
-        }
-
-        private check(forceRefresh: boolean = false) {
-            if (!forceRefresh && this.$window.sessionStorage.length == this._allKeys.length)
-                return;
-            this._allKeys = [];
-            this._parsedKeys = [];
-            this._parsedObjects = [];
-            for (let i: number = 0; i < this.$window.sessionStorage.length; i++)
-                this._allKeys.push(this.$window.sessionStorage.key(i));
-        }
-
-        clear(): void {
-            this.$window.sessionStorage.clear();
-            this._allKeys = [];
-            this._parsedKeys = [];
-            this._parsedObjects = [];
-        }
-
-        delete(key: string): boolean {
-            this.check();
-            this.$window.sessionStorage.removeItem(key);
-            let i: number = this._parsedKeys.indexOf(key);
-            if (i < 0)
-                return false;
-            if (i == 0) {
-                this._parsedKeys.shift();
-                this._parsedObjects.shift();
-            } else if (i == (this._parsedKeys.length - 1)) {
-                this._parsedKeys.pop();
-                this._parsedObjects.pop();
-            } else {
-                this._parsedKeys.splice(i, 1);
-                this._parsedObjects.splice(i, 1);
-            }
-        }
-
-        entries(): IterableIterator<[string, string]> { return new SessionStorageEntryEnumerator(this.$window, this._allKeys); }
-        [Symbol.iterator](): IterableIterator<[string, string]> { return this.entries(); }
-
-        forEach(callbackfn: (value: string, key: string, map: sessionStorageService) => void, thisArg?: any): void {
-            this.check();
-            if (typeof (thisArg) === "undefined")
-                this._allKeys.forEach((key: string, index: number) => {
-                    if (index < this._allKeys.length && this._allKeys[index] === key) {
-                        let value: string | undefined;
-                        try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
+                else if (this._index < this._keys.length) {
+                    try {
+                        let key: string = this._keys[this._index];
+                        let value: string = this._window.sessionStorage.getItem(key);
                         if (sys.notNil(value))
-                            callbackfn(value, key, this);
-                    }
-                }, this);
-            else
-                this._allKeys.forEach((key: string, index: number) => {
-                    if (index < this._allKeys.length && this._allKeys[index] === key) {
-                        let value: string | undefined;
-                        try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
-                        if (sys.notNil(value))
-                            callbackfn.call(thisArg, value, key, this);
-                    }
-                }, this);
-        }
-
-        get(key: string): string | null {
-            this.check();
-            try {
-                if (this._allKeys.indexOf(key) > -1)
-                    return this.$window.sessionStorage.getItem(key);
-            } catch { /* okay to ignore */ }
-            return null;
-        }
-
-        getKeys(): string[] {
-            this.check();
-            return Array.from(this._allKeys);
-        }
-
-        getObject<T>(key: string): T | undefined {
-            this.check();
-            let i: number = this._parsedKeys.indexOf(key);
-            if (i > -1)
-                return <T>this._parsedObjects[i];
-            try {
-                let json: string = this.$window.sessionStorage.getItem(key);
-                if (!sys.isNilOrEmpty(json)) {
-                    let result: T | undefined;
-                    if (json !== "undefined")
-                        result = <T>(ng.fromJson(json));
-                    this._parsedKeys.push(key);
-                    this._parsedObjects.push(result);
-                    return result;
+                            return { done: false, value: [key, value] };
+                        this._index = this._keys.length;
+                    } catch { this._index = this._keys.length; }
                 }
-            } catch { }
+                return { done: true, value: undefined };
+            }
         }
 
-        has(key: string): boolean {
-            this.check();
-            return this._allKeys.indexOf(key) > -1;
+        class SessionStorageValueEnumerator implements IterableIterator<string> {
+            private _index: number = 0;
+
+            constructor(private _window: ng.IWindowService, private _keys: string[]) { }
+
+            [Symbol.iterator](): IterableIterator<string> { return this; }
+
+            next(): IteratorResult<string> {
+                if (this._window.sessionStorage.length !== this._keys.length)
+                    this._index = this._keys.length;
+                else if (this._index < this._keys.length) {
+                    try {
+                        let value: string = this._window.sessionStorage.getItem(this._keys[this._index]);
+                        if (sys.notNil(value))
+                            return { done: false, value: value };
+                        this._index = this._keys.length;
+                    } catch { this._index = this._keys.length; }
+                }
+                return { done: true, value: undefined };
+            }
         }
 
-        keys(): IterableIterator<string> {
-            this.check();
-            return Array.from(this._allKeys).values();
-        }
+        export class Service implements Map<string, string> {
+            private _allKeys: string[];
+            private _parsedKeys: string[];
+            private _parsedObjects: (any | null | undefined)[];
 
-        set(key: string, value: string): any | undefined {
-            try {
-                if (sys.isNil(value))
-                    this.$window.sessionStorage.removeItem(key);
-                else
-                    this.$window.sessionStorage.setItem(key, value);
+            [Symbol.toStringTag]: string;
+
+            get size(): number { return this.$window.sessionStorage.length; }
+
+            constructor(private $window: ng.IWindowService) {
+                this[Symbol.toStringTag] = SERVICE_NAME;
+                this.check(true);
+            }
+
+            private check(forceRefresh: boolean = false) {
+                if (!forceRefresh && this.$window.sessionStorage.length == this._allKeys.length)
+                    return;
+                this._allKeys = [];
+                this._parsedKeys = [];
+                this._parsedObjects = [];
+                for (let i: number = 0; i < this.$window.sessionStorage.length; i++)
+                    this._allKeys.push(this.$window.sessionStorage.key(i));
+            }
+
+            clear(): void {
+                this.$window.sessionStorage.clear();
+                this._allKeys = [];
+                this._parsedKeys = [];
+                this._parsedObjects = [];
+            }
+
+            delete(key: string): boolean {
+                this.check();
+                this.$window.sessionStorage.removeItem(key);
                 let i: number = this._parsedKeys.indexOf(key);
+                if (i < 0)
+                    return false;
                 if (i == 0) {
                     this._parsedKeys.shift();
                     this._parsedObjects.shift();
                 } else if (i == (this._parsedKeys.length - 1)) {
                     this._parsedKeys.pop();
                     this._parsedObjects.pop();
-                } else if (i < this._parsedKeys.length) {
+                } else {
                     this._parsedKeys.splice(i, 1);
                     this._parsedObjects.splice(i, 1);
                 }
-            } catch (e) { return e; }
-        }
+            }
 
-        setObject<T>(key: string, value: T | undefined): any | undefined {
-            try {
-                if (typeof (value) === "undefined")
-                    this.$window.sessionStorage.setItem(key, "undefined");
+            entries(): IterableIterator<[string, string]> { return new SessionStorageEntryEnumerator(this.$window, this._allKeys); }
+            [Symbol.iterator](): IterableIterator<[string, string]> { return this.entries(); }
+
+            forEach(callbackfn: (value: string, key: string, map: Service) => void, thisArg?: any): void {
+                this.check();
+                if (typeof (thisArg) === "undefined")
+                    this._allKeys.forEach((key: string, index: number) => {
+                        if (index < this._allKeys.length && this._allKeys[index] === key) {
+                            let value: string | undefined;
+                            try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
+                            if (sys.notNil(value))
+                                callbackfn(value, key, this);
+                        }
+                    }, this);
                 else
-                    this.$window.sessionStorage.setItem(key, angular.toJson(value, false));
+                    this._allKeys.forEach((key: string, index: number) => {
+                        if (index < this._allKeys.length && this._allKeys[index] === key) {
+                            let value: string | undefined;
+                            try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
+                            if (sys.notNil(value))
+                                callbackfn.call(thisArg, value, key, this);
+                        }
+                    }, this);
+            }
+
+            get(key: string): string | null {
+                this.check();
+                try {
+                    if (this._allKeys.indexOf(key) > -1)
+                        return this.$window.sessionStorage.getItem(key);
+                } catch { /* okay to ignore */ }
+                return null;
+            }
+
+            getKeys(): string[] {
+                this.check();
+                return Array.from(this._allKeys);
+            }
+
+            getObject<T>(key: string): T | undefined {
+                this.check();
                 let i: number = this._parsedKeys.indexOf(key);
-                if (i < 0) {
-                    this._parsedKeys.push(key);
-                    this._parsedObjects.push(value);
-                } else
-                    this._parsedObjects[i] = value;
-            } catch (e) { return e; }
+                if (i > -1)
+                    return <T>this._parsedObjects[i];
+                try {
+                    let json: string = this.$window.sessionStorage.getItem(key);
+                    if (!sys.isNilOrEmpty(json)) {
+                        let result: T | undefined;
+                        if (json !== "undefined")
+                            result = <T>(ng.fromJson(json));
+                        this._parsedKeys.push(key);
+                        this._parsedObjects.push(result);
+                        return result;
+                    }
+                } catch { }
+            }
+
+            has(key: string): boolean {
+                this.check();
+                return this._allKeys.indexOf(key) > -1;
+            }
+
+            keys(): IterableIterator<string> {
+                this.check();
+                return Array.from(this._allKeys).values();
+            }
+
+            set(key: string, value: string): any | undefined {
+                try {
+                    if (sys.isNil(value))
+                        this.$window.sessionStorage.removeItem(key);
+                    else
+                        this.$window.sessionStorage.setItem(key, value);
+                    let i: number = this._parsedKeys.indexOf(key);
+                    if (i == 0) {
+                        this._parsedKeys.shift();
+                        this._parsedObjects.shift();
+                    } else if (i == (this._parsedKeys.length - 1)) {
+                        this._parsedKeys.pop();
+                        this._parsedObjects.pop();
+                    } else if (i < this._parsedKeys.length) {
+                        this._parsedKeys.splice(i, 1);
+                        this._parsedObjects.splice(i, 1);
+                    }
+                } catch (e) { return e; }
+            }
+
+            setObject<T>(key: string, value: T | undefined): any | undefined {
+                try {
+                    if (typeof (value) === "undefined")
+                        this.$window.sessionStorage.setItem(key, "undefined");
+                    else
+                        this.$window.sessionStorage.setItem(key, angular.toJson(value, false));
+                    let i: number = this._parsedKeys.indexOf(key);
+                    if (i < 0) {
+                        this._parsedKeys.push(key);
+                        this._parsedObjects.push(value);
+                    } else
+                        this._parsedObjects[i] = value;
+                } catch (e) { return e; }
+            }
+
+            values(): IterableIterator<string> { return new SessionStorageValueEnumerator(this.$window, this._allKeys); }
         }
 
-        values(): IterableIterator<string> { return new SessionStorageValueEnumerator(this.$window, this._allKeys); }
+        appModule.service(SERVICE_NAME, ["$window", Service]);
     }
-
-    appModule.service(SERVICENAME_SESSION_STORAGE, ["$window", sessionStorageService]);
-
-    // #endregion
 
     // #region Copy To Clipboard Service
 
