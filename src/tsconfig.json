@@ -1,0 +1,30 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es6",
+    "module": "none",
+    "typeRoots": [
+      "Scripts/typings/popper.js",
+      "Scripts/typings/jquery",
+      "Scripts/typings/angularjs",
+      "Scripts/typings/bootstrap",
+      "Scripts/typings/bootstrap-table"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot",
+    "packages",
+    "legacy",
+    "PowerShell",
+    "ServiceNowScript",
+    "obj",
+    "bin",
+    "gh-pages",
+    "PageManager"
+  ]
+}
