@@ -13,40 +13,6 @@ var app;
      */
     app.appModule = angular.module("app", []);
     // #region Constants
-    /**
-     * The relative path of the default page.
-     *
-     * @export
-     * @type {string}
-     * @kind constant
-     * @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
-     */
-    app.DEFAULT_PAGE_PATH = "index.html";
-    /**
-     * The default root absolute URL of the target ServiceNow instance.
-     *
-     * @export
-     * @type {string}
-     * @kind constant
-     * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
-     */
-    app.DEFAULT_URL_SERVICENOW = "https://inscomscd.service-now.com";
-    /**
-     * The default root absolute URL of the remote GIT repository service.
-     *
-     * @export
-     * @type {string}
-     * @description - This MUST be an absolute URL and MUST NOT contain a URL query or fragment. If this contains an explicit path (which is usually the case), the path must end with a "/".
-     */
-    app.DEFAULT_URL_GIT_SERVICE = "https://github.com/erwinel/";
-    /**
-     * The default root absolute URL of the SAML identity provider to be used by ServiceNow.
-     *
-     * @export
-     * @type {string}
-     * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
-     */
-    app.DEFAULT_URL_IDP = "https://myidp.com";
     const DEFAULT_CURRENT_ITEM_CLASS = ["active", "nav-link"];
     const DEFAULT_SELECTED_ITEM_CLASS = ["active", "nav-link"];
     const DEFAULT_OTHER_ITEM_CLASS = ["nav-link"];
@@ -109,327 +75,362 @@ var app;
         cssAlertClass["success"] = "alert-success";
         cssAlertClass["warning"] = "alert-warning";
     })(cssAlertClass = app.cssAlertClass || (app.cssAlertClass = {}));
-    /**
-     * Represents a menu navigation item.
-     *
-     * @export
-     * @class NavigationItem
-     */
-    class NavigationItem {
-        /**
-         * Creates an instance of NavigationItem.
-         *
-         * @param {cfg.Service} _appConfigData - The appConfigData service provider.
-         * @param {INavigationDefinition} navDef - The navigation menu item definition.
-         * @memberof NavigationItem
-         */
-        constructor(_appConfigData, navDef) {
-            this._appConfigData = _appConfigData;
-            this._url = navDef.url;
-            this._sideNavHeading = (typeof navDef.sideNavHeading === "string") ? navDef.sideNavHeading.trim() : "";
-            this._linkTitle = (typeof navDef.linkTitle === "string" && navDef.linkTitle.length > 0) ? navDef.linkTitle : navDef.url;
-            this._pageTitle = (typeof navDef.pageTitle === "string") ? navDef.pageTitle.trim() : "";
-            this._toolTip = (typeof navDef.toolTip === "string") ? navDef.toolTip.trim() : ((this._pageTitle != this._linkTitle) ? this._pageTitle : "");
-            if (typeof navDef.id !== "string" || (this._id = navDef.id).length === 0)
-                this._id = cfg.Service.toPageId(this._url);
-            if (this._id === _appConfigData.currentPageId())
-                this._isCurrentPage = true;
-            this._childNavItems = NavigationItem.createNavItems(_appConfigData, navDef.items);
-            this._childNavItems.forEach((item) => { item._parentNavItem = this; }, this);
-            if (this.isCurrentPage)
-                this.getAncestorNavItems().forEach((item) => { item._isCurrentPage = false; });
-        }
-        /**
-         * The unique identifier of the navigation menu item.
-         *
-         * @readonly
-         * @type {string}
-         * @memberof NavigationItem
-         */
-        get id() { return this._id; }
-        /**
-         * The display text for the current navigation menu item.
-         *
-         * @readonly
-         * @type {string}
-         * @memberof NavigationItem
-         */
-        get linkTitle() { return this._linkTitle; }
-        /**
-         * The title of the page that corresponds to the current navigation menu item.
-         *
-         * @readonly
-         * @type {string}
-         * @memberof NavigationItem
-         */
-        get pageTitle() { return this._pageTitle; }
-        /**
-         * The tooltip for the current navigation menu item.
-         *
-         * @readonly
-         * @type {string}
-         * @memberof NavigationItem
-         */
-        get toolTip() { return this._toolTip; }
-        /**
-         * The secondary navigation heading text for child navigation menu items.
-         *
-         * @readonly
-         * @type {string}
-         * @memberof NavigationItem
-         */
-        get sideNavHeading() { return this._sideNavHeading; }
-        /**
-         * The navigation menu hyperlink for the current item.
-         *
-         * @readonly
-         * @type {string}
-         * @memberof NavigationItem
-         */
-        get navMenuHref() { return (this.hasOrIsCurrentPage) ? "#" : this._url; }
-        /**
-         * The relative URL of the current navigation menu item.
-         *
-         * @readonly
-         * @type {string}
-         * @memberof NavigationItem
-         */
-        get url() { return this._url; }
-        /**
-         * Indicates whether the current navigation menu item represents the current page.
-         *
-         * @readonly
-         * @type {boolean}
-         * @memberof NavigationItem
-         */
-        get isCurrentPage() { return this._isCurrentPage === true; }
-        /**
-         * Indicates whether the current navigation menu item represents the current page or the parent of the current page.
-         *
-         * @readonly
-         * @type {boolean}
-         * @memberof NavigationItem
-         */
-        get hasOrIsCurrentPage() { return typeof this._isCurrentPage === "boolean"; }
-        /**
-         * Indicates whether the current navigation menu item represents an ancestor of the current page.
-         *
-         * @readonly
-         * @type {boolean}
-         * @memberof NavigationItem
-         */
-        get hasCurrentPage() { return this._isCurrentPage === false; }
-        /**
-         * The CSS class names to be applied to the anchor tag.
-         *
-         * @readonly
-         * @type {ReadonlyArray<string>}
-         * @memberof NavigationItem
-         */
-        get anchorCssClass() { return (this.isCurrentPage) ? this._appConfigData.currentItemClass() : ((this.hasOrIsCurrentPage) ? this._appConfigData.selectedItemClass() : this._appConfigData.otherItemClass()); }
-        /**
-         * The child navigation menu items to display within the secondary navigation menu.
-         *
-         * @readonly
-         * @type {ReadonlyArray<NavigationItem>}
-         * @memberof NavigationItem
-         */
-        get childNavItems() { return this._childNavItems; }
-        /**
-         * Indicates whether the current navigation menu item has child menu items.
-         *
-         * @readonly
-         * @type {boolean}
-         * @memberof NavigationItem
-         */
-        get hasChildNavItem() { return this._childNavItems.length > 0; }
-        /**
-         * Indicates whether the current navigation menu item has sibling items that share the same parent menu item.
-         *
-         * @readonly
-         * @type {boolean}
-         * @memberof NavigationItem
-         */
-        get hasSiblingNavItem() { return sys.notNil(this._previousNavItem) || sys.notNil(this._nextNavItem); }
-        /**
-         * Indicates whether the current navigation menu item is a child item of another.
-         *
-         * @readonly
-         * @type {boolean}
-         * @memberof NavigationItem
-         */
-        get isNestedNavItem() { return sys.notNil(this._parentNavItem); }
-        /**
-         * Navigation menu items to be displayed as nested items within the secondary navigation menu.
-         *
-         * @readonly
-         * @type {ReadonlyArray<NavigationItem>}
-         * @memberof NavigationItem
-         */
-        get nestedSideNavChildItems() { return (this.showNestedSideNavChildItems) ? this._childNavItems : []; }
-        /**
-         * Indicates whether the current navigation menu item represents the current page, is being displayed within the secondary navigation menu, and has child items.
-         *
-         * @readonly
-         * @type {boolean}
-         * @memberof NavigationItem
-         */
-        get showNestedSideNavChildItems() { return this.isCurrentPage && this.isNestedNavItem && this.hasChildNavItem && !this.hasSiblingNavItem; }
-        /**
-         * Gets the parent navigation menu item.
-         *
-         * @readonly
-         * @type {(NavigationItem | undefined)}
-         * @memberof NavigationItem
-         */
-        get parentNavItem() { return this._parentNavItem; }
-        /**
-         * Gets preceding sibling items for the current menu navigation item.
-         *
-         * @returns {NavigationItem[]}
-         * @memberof NavigationItem
-         */
-        precedingSiblings() {
-            if (typeof this._previousNavItem === "undefined")
-                return [];
-            let result = this._previousNavItem.precedingSiblings();
-            result.push(this._previousNavItem);
-            return result;
-        }
-        /**
-         * Gets following sibling items for the current menu navigation item.
-         *
-         * @returns {NavigationItem[]}
-         * @memberof NavigationItem
-         */
-        followingSiblings() {
-            let result = [];
-            for (let i = this._nextNavItem; typeof i !== "undefined"; i = i._nextNavItem)
-                result.push(i);
-            return result;
-        }
-        /**
-         * Gets all ancestor navigation menu items.
-         *
-         * @returns {NavigationItem[]}
-         * @memberof NavigationItem
-         */
-        getAncestorNavItems() {
-            let result = [];
-            for (let i = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
-                result.unshift(i);
-            return result;
-        }
-        /**
-         * Gets ancestor navigation menu items that do not appear in the primary navigation menu.
-         *
-         * @returns {NavigationItem[]}
-         * @memberof NavigationItem
-         */
-        getBreadcrumbLinks() {
-            let result = [];
-            if (sys.notNil(this._parentNavItem) && sys.notNil(this._parentNavItem._parentNavItem))
-                for (let i = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
-                    result.unshift(i);
-            return result;
-        }
-        /**
-         * Handles the menu item click event.
-         *
-         * @param {BaseJQueryEventObject} [event]
-         * @memberof NavigationItem
-         * @description The purpose of this member is to prevent the default action for the navigation menu item that represents the current page.
-         */
-        onClick(event) {
-            if (this.isCurrentPage && sys.notNil(event)) {
-                if (!event.isDefaultPrevented)
-                    event.preventDefault();
-                if (!event.isPropagationStopped)
-                    event.stopPropagation();
-            }
-        }
-        /**
-         * Creates a navigation menu item objects from navigation menu definition objects.
-         *
-         * @static
-         * @param {cfg.Service} appConfigData - The application configuration data service provider.
-         * @param {INavigationDefinition[]} [items] - Defines the navigation menu items to be created.
-         * @returns {ReadonlyArray<NavigationItem>} - The navigation menu item objects.
-         * @memberof NavigationItem
-         */
-        static createNavItems(appConfigData, items) {
-            if (typeof items !== "object" || items === null)
-                return [];
-            let result = items.filter((value) => typeof value === "object" && value !== null).map((value) => new NavigationItem(appConfigData, value));
-            if (result.length > 0) {
-                let previous = result[0];
-                for (let i = 1; i < result.length; i++)
-                    previous = (result[0]._previousNavItem = previous)._nextNavItem = result[0];
-            }
-            return result;
-        }
-        /**
-         * Finds the navigation menu item that represents the current page.
-         *
-         * @static
-         * @param {ReadonlyArray<NavigationItem>} items - Navigation menu items to recursively search.
-         * @returns {(NavigationItem | undefined)} - The navigation menu item that represents the current page or undefined if none are found that represent the current page.
-         * @memberof NavigationItem
-         */
-        static findCurrentItem(items) {
-            if (items.length == 0)
-                return undefined;
-            if (items.length == 1)
-                return (items[0].isCurrentPage) ? items[0] : this.findCurrentItem(items[0]._childNavItems);
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].hasOrIsCurrentPage)
-                    return (items[i].isCurrentPage) ? items[i] : this.findCurrentItem(items[i]._childNavItems);
-            }
-        }
-        /**
-         * Creates an array of ancestor navigation menu items to be displayed as breadcrumb links.
-         *
-         * @static
-         * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
-         * @returns {ReadonlyArray<NavigationItem>}
-         * @memberof NavigationItem
-         */
-        static createSideNavBreadcrumbItems(current) {
-            if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
-                return [];
-            let result = [];
-            while (typeof (current = current._parentNavItem)._parentNavItem !== "undefined")
-                result.unshift(current);
-            return result;
-        }
-        /**
-         * Creates an array of sibling navigation menu items.
-         *
-         * @static
-         * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
-         * @returns {ReadonlyArray<NavigationItem>}
-         * @memberof NavigationItem
-         */
-        static createSideNavSiblingItems(current) {
-            if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
-                return [];
-            let result = [current];
-            if (typeof current._previousNavItem === "undefined") {
-                if (typeof current._nextNavItem === "undefined")
-                    return [];
-            }
-            else
-                for (let item = current._previousNavItem; typeof item != "undefined"; item = item._previousNavItem)
-                    result.unshift(item);
-            for (let item = current._nextNavItem; typeof item != "undefined"; item = item._nextNavItem)
-                result.push(item);
-            return result;
-        }
-    }
-    app.NavigationItem = NavigationItem;
+    // #endregion
     let cfg;
     (function (cfg) {
         cfg.SERVICE_NAME = "appConfigData";
+        /**
+         * The relative path of the default page.
+         *
+         * @export
+         * @type {string}
+         * @kind constant
+         * @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
+         */
+        cfg.DEFAULT_PAGE_PATH = "index.html";
+        /**
+         * The default root absolute URL of the target ServiceNow instance.
+         *
+         * @export
+         * @type {string}
+         * @kind constant
+         * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
+         */
+        cfg.DEFAULT_URL_SERVICENOW = "https://inscomscd.service-now.com";
+        /**
+         * The default root absolute URL of the remote GIT repository service.
+         *
+         * @export
+         * @type {string}
+         * @description - This MUST be an absolute URL and MUST NOT contain a URL query or fragment. If this contains an explicit path (which is usually the case), the path must end with a "/".
+         */
+        cfg.DEFAULT_URL_GIT_SERVICE = "https://github.com/erwinel/";
+        /**
+         * The default root absolute URL of the SAML identity provider to be used by ServiceNow.
+         *
+         * @export
+         * @type {string}
+         * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
+         */
+        cfg.DEFAULT_URL_IDP = "https://myidp.com";
+        /**
+         * Represents a menu navigation item.
+         *
+         * @export
+         * @class NavigationItem
+         */
+        class NavigationItem {
+            /**
+             * Creates an instance of NavigationItem.
+             *
+             * @param {cfg.Service} _appConfigData - The appConfigData service provider.
+             * @param {INavigationDefinition} navDef - The navigation menu item definition.
+             * @memberof NavigationItem
+             */
+            constructor(_appConfigData, navDef) {
+                this._appConfigData = _appConfigData;
+                this._url = navDef.url;
+                this._sideNavHeading = (typeof navDef.sideNavHeading === "string") ? navDef.sideNavHeading.trim() : "";
+                this._linkTitle = (typeof navDef.linkTitle === "string" && navDef.linkTitle.length > 0) ? navDef.linkTitle : navDef.url;
+                this._pageTitle = (typeof navDef.pageTitle === "string") ? navDef.pageTitle.trim() : "";
+                this._toolTip = (typeof navDef.toolTip === "string") ? navDef.toolTip.trim() : ((this._pageTitle != this._linkTitle) ? this._pageTitle : "");
+                if (typeof navDef.id !== "string" || (this._id = navDef.id).length === 0)
+                    this._id = cfg.Service.toPageId(this._url);
+                if (this._id === _appConfigData.currentPageId())
+                    this._isCurrentPage = true;
+                this._childNavItems = NavigationItem.createNavItems(_appConfigData, navDef.items);
+                this._childNavItems.forEach((item) => { item._parentNavItem = this; }, this);
+                if (this.isCurrentPage)
+                    this.getAncestorNavItems().forEach((item) => { item._isCurrentPage = false; });
+            }
+            /**
+             * The unique identifier of the navigation menu item.
+             *
+             * @readonly
+             * @type {string}
+             * @memberof NavigationItem
+             */
+            get id() { return this._id; }
+            /**
+             * The display text for the current navigation menu item.
+             *
+             * @readonly
+             * @type {string}
+             * @memberof NavigationItem
+             */
+            get linkTitle() { return this._linkTitle; }
+            /**
+             * The title of the page that corresponds to the current navigation menu item.
+             *
+             * @readonly
+             * @type {string}
+             * @memberof NavigationItem
+             */
+            get pageTitle() { return this._pageTitle; }
+            /**
+             * The tooltip for the current navigation menu item.
+             *
+             * @readonly
+             * @type {string}
+             * @memberof NavigationItem
+             */
+            get toolTip() { return this._toolTip; }
+            /**
+             * The secondary navigation heading text for child navigation menu items.
+             *
+             * @readonly
+             * @type {string}
+             * @memberof NavigationItem
+             */
+            get sideNavHeading() { return this._sideNavHeading; }
+            /**
+             * The navigation menu hyperlink for the current item.
+             *
+             * @readonly
+             * @type {string}
+             * @memberof NavigationItem
+             */
+            get navMenuHref() { return (this.hasOrIsCurrentPage) ? "#" : this._url; }
+            /**
+             * The relative URL of the current navigation menu item.
+             *
+             * @readonly
+             * @type {string}
+             * @memberof NavigationItem
+             */
+            get url() { return this._url; }
+            /**
+             * Indicates whether the current navigation menu item represents the current page.
+             *
+             * @readonly
+             * @type {boolean}
+             * @memberof NavigationItem
+             */
+            get isCurrentPage() { return this._isCurrentPage === true; }
+            /**
+             * Indicates whether the current navigation menu item represents the current page or the parent of the current page.
+             *
+             * @readonly
+             * @type {boolean}
+             * @memberof NavigationItem
+             */
+            get hasOrIsCurrentPage() { return typeof this._isCurrentPage === "boolean"; }
+            /**
+             * Indicates whether the current navigation menu item represents an ancestor of the current page.
+             *
+             * @readonly
+             * @type {boolean}
+             * @memberof NavigationItem
+             */
+            get hasCurrentPage() { return this._isCurrentPage === false; }
+            /**
+             * The CSS class names to be applied to the anchor tag.
+             *
+             * @readonly
+             * @type {ReadonlyArray<string>}
+             * @memberof NavigationItem
+             */
+            get anchorCssClass() { return (this.isCurrentPage) ? this._appConfigData.currentItemClass() : ((this.hasOrIsCurrentPage) ? this._appConfigData.selectedItemClass() : this._appConfigData.otherItemClass()); }
+            /**
+             * The child navigation menu items to display within the secondary navigation menu.
+             *
+             * @readonly
+             * @type {ReadonlyArray<NavigationItem>}
+             * @memberof NavigationItem
+             */
+            get childNavItems() { return this._childNavItems; }
+            /**
+             * Indicates whether the current navigation menu item has child menu items.
+             *
+             * @readonly
+             * @type {boolean}
+             * @memberof NavigationItem
+             */
+            get hasChildNavItem() { return this._childNavItems.length > 0; }
+            /**
+             * Indicates whether the current navigation menu item has sibling items that share the same parent menu item.
+             *
+             * @readonly
+             * @type {boolean}
+             * @memberof NavigationItem
+             */
+            get hasSiblingNavItem() { return sys.notNil(this._previousNavItem) || sys.notNil(this._nextNavItem); }
+            /**
+             * Indicates whether the current navigation menu item is a child item of another.
+             *
+             * @readonly
+             * @type {boolean}
+             * @memberof NavigationItem
+             */
+            get isNestedNavItem() { return sys.notNil(this._parentNavItem); }
+            /**
+             * Navigation menu items to be displayed as nested items within the secondary navigation menu.
+             *
+             * @readonly
+             * @type {ReadonlyArray<NavigationItem>}
+             * @memberof NavigationItem
+             */
+            get nestedSideNavChildItems() { return (this.showNestedSideNavChildItems) ? this._childNavItems : []; }
+            /**
+             * Indicates whether the current navigation menu item represents the current page, is being displayed within the secondary navigation menu, and has child items.
+             *
+             * @readonly
+             * @type {boolean}
+             * @memberof NavigationItem
+             */
+            get showNestedSideNavChildItems() { return this.isCurrentPage && this.isNestedNavItem && this.hasChildNavItem && !this.hasSiblingNavItem; }
+            /**
+             * Gets the parent navigation menu item.
+             *
+             * @readonly
+             * @type {(NavigationItem | undefined)}
+             * @memberof NavigationItem
+             */
+            get parentNavItem() { return this._parentNavItem; }
+            /**
+             * Gets preceding sibling items for the current menu navigation item.
+             *
+             * @returns {NavigationItem[]}
+             * @memberof NavigationItem
+             */
+            precedingSiblings() {
+                if (typeof this._previousNavItem === "undefined")
+                    return [];
+                let result = this._previousNavItem.precedingSiblings();
+                result.push(this._previousNavItem);
+                return result;
+            }
+            /**
+             * Gets following sibling items for the current menu navigation item.
+             *
+             * @returns {NavigationItem[]}
+             * @memberof NavigationItem
+             */
+            followingSiblings() {
+                let result = [];
+                for (let i = this._nextNavItem; typeof i !== "undefined"; i = i._nextNavItem)
+                    result.push(i);
+                return result;
+            }
+            /**
+             * Gets all ancestor navigation menu items.
+             *
+             * @returns {NavigationItem[]}
+             * @memberof NavigationItem
+             */
+            getAncestorNavItems() {
+                let result = [];
+                for (let i = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
+                    result.unshift(i);
+                return result;
+            }
+            /**
+             * Gets ancestor navigation menu items that do not appear in the primary navigation menu.
+             *
+             * @returns {NavigationItem[]}
+             * @memberof NavigationItem
+             */
+            getBreadcrumbLinks() {
+                let result = [];
+                if (sys.notNil(this._parentNavItem) && sys.notNil(this._parentNavItem._parentNavItem))
+                    for (let i = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
+                        result.unshift(i);
+                return result;
+            }
+            /**
+             * Handles the menu item click event.
+             *
+             * @param {BaseJQueryEventObject} [event]
+             * @memberof NavigationItem
+             * @description The purpose of this member is to prevent the default action for the navigation menu item that represents the current page.
+             */
+            onClick(event) {
+                if (this.isCurrentPage && sys.notNil(event)) {
+                    if (!event.isDefaultPrevented)
+                        event.preventDefault();
+                    if (!event.isPropagationStopped)
+                        event.stopPropagation();
+                }
+            }
+            /**
+             * Creates a navigation menu item objects from navigation menu definition objects.
+             *
+             * @static
+             * @param {cfg.Service} appConfigData - The application configuration data service provider.
+             * @param {INavigationDefinition[]} [items] - Defines the navigation menu items to be created.
+             * @returns {ReadonlyArray<NavigationItem>} - The navigation menu item objects.
+             * @memberof NavigationItem
+             */
+            static createNavItems(appConfigData, items) {
+                if (typeof items !== "object" || items === null)
+                    return [];
+                let result = items.filter((value) => typeof value === "object" && value !== null).map((value) => new NavigationItem(appConfigData, value));
+                if (result.length > 0) {
+                    let previous = result[0];
+                    for (let i = 1; i < result.length; i++)
+                        previous = (result[0]._previousNavItem = previous)._nextNavItem = result[0];
+                }
+                return result;
+            }
+            /**
+             * Finds the navigation menu item that represents the current page.
+             *
+             * @static
+             * @param {ReadonlyArray<NavigationItem>} items - Navigation menu items to recursively search.
+             * @returns {(NavigationItem | undefined)} - The navigation menu item that represents the current page or undefined if none are found that represent the current page.
+             * @memberof NavigationItem
+             */
+            static findCurrentItem(items) {
+                if (items.length == 0)
+                    return undefined;
+                if (items.length == 1)
+                    return (items[0].isCurrentPage) ? items[0] : this.findCurrentItem(items[0]._childNavItems);
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].hasOrIsCurrentPage)
+                        return (items[i].isCurrentPage) ? items[i] : this.findCurrentItem(items[i]._childNavItems);
+                }
+            }
+            /**
+             * Creates an array of ancestor navigation menu items to be displayed as breadcrumb links.
+             *
+             * @static
+             * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
+             * @returns {ReadonlyArray<NavigationItem>}
+             * @memberof NavigationItem
+             */
+            static createSideNavBreadcrumbItems(current) {
+                if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
+                    return [];
+                let result = [];
+                while (typeof (current = current._parentNavItem)._parentNavItem !== "undefined")
+                    result.unshift(current);
+                return result;
+            }
+            /**
+             * Creates an array of sibling navigation menu items.
+             *
+             * @static
+             * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
+             * @returns {ReadonlyArray<NavigationItem>}
+             * @memberof NavigationItem
+             */
+            static createSideNavSiblingItems(current) {
+                if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
+                    return [];
+                let result = [current];
+                if (typeof current._previousNavItem === "undefined") {
+                    if (typeof current._nextNavItem === "undefined")
+                        return [];
+                }
+                else
+                    for (let item = current._previousNavItem; typeof item != "undefined"; item = item._previousNavItem)
+                        result.unshift(item);
+                for (let item = current._nextNavItem; typeof item != "undefined"; item = item._nextNavItem)
+                    result.push(item);
+                return result;
+            }
+        }
+        cfg.NavigationItem = NavigationItem;
         /**
          * Class which implements the appConfigData service.
          *
@@ -451,9 +452,9 @@ var app;
                 this._sessionStorage = _sessionStorage;
                 this.$log = $log;
                 this.$window = $window;
-                this._serviceNowUrl = new URL(app.DEFAULT_URL_SERVICENOW);
-                this._gitServiceUrl = new URL(app.DEFAULT_URL_GIT_SERVICE);
-                this._idpUrl = new URL(app.DEFAULT_URL_GIT_SERVICE);
+                this._serviceNowUrl = new URL(cfg.DEFAULT_URL_SERVICENOW);
+                this._gitServiceUrl = new URL(cfg.DEFAULT_URL_GIT_SERVICE);
+                this._idpUrl = new URL(cfg.DEFAULT_URL_GIT_SERVICE);
                 this._currentItemClass = DEFAULT_CURRENT_ITEM_CLASS;
                 this._selectedItemClass = DEFAULT_SELECTED_ITEM_CLASS;
                 this._otherItemClass = DEFAULT_OTHER_ITEM_CLASS;
@@ -472,13 +473,13 @@ var app;
                 catch (_a) {
                     // Just in case
                     this._currentPageURL = new URL("http://localhost");
-                    this._currentPageURL.pathname = app.DEFAULT_PAGE_PATH;
+                    this._currentPageURL.pathname = cfg.DEFAULT_PAGE_PATH;
                 }
                 let segments = (typeof this._currentPageURL.pathname !== "string" || this._currentPageURL.pathname.length == 0 || this._currentPageURL.pathname == "/") ? [] : this._currentPageURL.pathname.split("/").filter((n) => n.length > 0);
                 if (segments.length == 0)
-                    segments = app.DEFAULT_PAGE_PATH.split("/");
+                    segments = cfg.DEFAULT_PAGE_PATH.split("/");
                 else if (!(/\.html?$/i).test(segments[segments.length - 1])) {
-                    let arr = app.DEFAULT_PAGE_PATH.split("/");
+                    let arr = cfg.DEFAULT_PAGE_PATH.split("/");
                     segments.push(arr[arr.length - 1]);
                 }
                 this._currentPageURL.pathname = "/" + (this._relativePagePath = (segments.length == 1) ? segments[0] : segments.join("/"));
@@ -906,10 +907,10 @@ var app;
                 let arr;
                 let i;
                 if (typeof path !== "string" || path.length == 0 || path == "/" || (arr = path.split("/").filter((value) => value.length > 0)).length === 0)
-                    arr = app.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
+                    arr = cfg.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
                 let n = arr.pop();
                 if ((i = n.lastIndexOf(".")) < 1 || i === n.length - 1) {
-                    let a = app.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
+                    let a = cfg.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
                     arr.push(n);
                     n = a[a.length - 1];
                     if ((i = n.lastIndexOf(".")) < 0) {
@@ -924,7 +925,6 @@ var app;
         cfg.Service = Service;
         app.appModule.factory(cfg.SERVICE_NAME, [SERVICENAME_SESSION_STORAGE, "$http", '$log', '$document', '$window', Service]);
     })(cfg = app.cfg || (app.cfg = {}));
-    // #endregion
     let urlInputDirective;
     (function (urlInputDirective) {
         const DIRECTIVE_NAME = "urlInput";
@@ -1146,7 +1146,7 @@ var app;
                 appConfigData.onGitServiceUrlChanged((value) => { $scope.gitRepositoryBaseUrl = value.href; });
                 appConfigData.onSettingsLoaded(() => {
                     $scope.topNavItems = appConfigData.topNavItems();
-                    let currentNavItem = NavigationItem.findCurrentItem($scope.topNavItems);
+                    let currentNavItem = cfg.NavigationItem.findCurrentItem($scope.topNavItems);
                     if (sys.isNil(currentNavItem)) {
                         $scope.showBreadcrumbLinks = $scope.showSideMenu = $scope.showSideNavHeading = $scope.showSideNavItems = $scope.showCurrentItem = false;
                         $scope.sideNavHeading = '';
