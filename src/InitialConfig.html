@@ -86,7 +86,7 @@
                         </div>
                         <ol>
                             <li>
-                                Import the <var class="targetName">util</var> application from <kbd><git-instance-link relative-url="x_44813_util.git"></git-instance-link></kbd>.
+                                Import the <var class="targetName">util</var> application from <kbd><config-url base="git" href="x_44813_util.git"></config-url></kbd>.
                                 <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
         to view instructions for importing applications from source countrol.</div> -->
                             </li>
@@ -110,7 +110,7 @@
                             <ol>
                                 <li>
                                     Navigate to
-                                    <sn-nav-link path-nodes="System Properties/Basic Configuration" relative-url="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true" />.
+                                    <sn-nav-link path-nodes="System Properties/Basic Configuration" href="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true"></sn-nav-link>.
                                     If you are in the &quot;Util&quot; application scope, you will see the following message:
                                     <img src="images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded" />
                                     This is intentional. It is important to ensure you are in the &quot;Util&quot; application scope, otherwise the
@@ -119,10 +119,10 @@
                                 <li>Set <var class="targetName">SDLC Config Stage</var> to the ServiceNow SDLC stage for the current server.</li>
                                 <li>Change to the <var class="targetName">Global</var> application scope.</li>
                                 <li>
-                                    Navigate to <sn-nav-link path-nodes="System Definition/Fix Scripts" relative-url="/sys_script_fix_list.do" to-nav="true" />.
+                                    Navigate to <sn-nav-link path-nodes="System Definition/Fix Scripts" href="/sys_script_fix_list.do" to-nav="true"></sn-nav-link>.
                                 </li>
                                 <li>
-                                    Open the fix script named <sn-instance-link relative-url="/sys_script_fix.do?sys_id=64638a60dbe31300e298771ebf96193a" to-nav="true"><var class="targetName">Initial Army Config</var></sn-instance-link>.
+                                    Open the fix script named <a:config-link base="sn" href="/sys_script_fix.do?sys_id=64638a60dbe31300e298771ebf96193a" to-nav="true"><var class="targetName">Initial Army Config</var></a:config-link>.
                                 </li>
                                 <li>
                                     Click
@@ -155,7 +155,7 @@
                             <li>Ensure you are in the <var class="targetName">Global</var> application scope.</li>
                             <li>
                                 Navigate to
-                                <sn-nav-link path-nodes="System Properties/Basic Configuration" relative-url="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true" />.
+                                <sn-nav-link path-nodes="System Properties/Basic Configuration" href="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true"></sn-nav-link>.
                             </li>
                             <li>
                                 Scroll to the <var class="targetName">Banner Image</var> property and click on the
@@ -181,11 +181,11 @@
                         </div>
                         <ol>
                             <li>
-                                Navigate to <sn-nav-link path-nodes="System Definition/Fix Scripts" relative-url="/sys_script_fix_list.do" to-nav="true" />.
+                                Navigate to <sn-nav-link path-nodes="System Definition/Fix Scripts" href="/sys_script_fix_list.do" to-nav="true"></sn-nav-link>.
                             </li>
                             <li>
                                 Open the fix script named
-                                <sn-instance-link relative-url="/sys_script_fix.do?sys_id=c4cf8a68dbe31300e298771ebf9619a3" to-nav="true"><var class="targetName">Army Bulk Plugin Activation</var></sn-instance-link>.
+                                <a:config-link base="sn" href="/sys_script_fix.do?sys_id=c4cf8a68dbe31300e298771ebf9619a3" to-nav="true"><var class="targetName">Army Bulk Plugin Activation</var></a:config-link>.
                             </li>
                             <li>
                                 Click
@@ -199,7 +199,7 @@
                         </ol>
                         <div class="detail">
                             To monitor the progress of plugin activations, navigate to
-                            <sn-nav-link path-nodes="System Diagnostics/Progress Workers" relative-url="/sys_progress_worker_list.do" to-nav="true" />.
+                            <sn-nav-link path-nodes="System Diagnostics/Progress Workers" href="/sys_progress_worker_list.do" to-nav="true"></sn-nav-link>.
                         </div>
                         <div class="card">
                             <div class="card-header">
@@ -230,7 +230,7 @@
                             </div>
                             <ol>
                                 <li>
-                                    Import the util application from <kbd><git-instance-link relative-url="x_44813_phys_net_network.git"></git-instance-link></kbd>.
+                                    Import the util application from <kbd><config-url base="git" href="x_44813_phys_net_network.git"></config-url></kbd>.
                                 </li>
                                 <li>
                                     Once the application is imported, select that application in order to put your session in the correct
@@ -239,7 +239,7 @@
                                 <li>
                                     In the original ServiceNow browser tab, you will need to refresh the browser screen to see the new menu item that was added when this application was imported.
                                 </li>
-                                <li>Navigate to <sn-nav-link path-nodes="Physical Networks/Physical Networks" relative-url="/x_44813_phys_net_network_list.do" to-nav="true" />.</li>
+                                <li>Navigate to <sn-nav-link path-nodes="Physical Networks/Physical Networks" href="/x_44813_phys_net_network_list.do" to-nav="true"></sn-nav-link>.</li>
                                 <li>Add the names of the physical networks. If there are any existing items you do not want, you may delete them.</li>
                                 <li>Change to the <var class="targetName">Global</var> application scope when finished.</li>
                             </ol>
@@ -330,7 +330,7 @@
                                         When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
                                         It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
                                         <ol>
-                                            <li>Navigate to <sn-nav-link path-nodes="System Policy/Rules/Caller VIP Lookup Rules" />.</li>
+                                            <li>Navigate to <sn-nav-link path-nodes="System Policy/Rules/Caller VIP Lookup Rules"></sn-nav-link>.</li>
                                             <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
                                         </ol>
                                     </div>
@@ -362,9 +362,9 @@
                                     <ol>
                                         <li>
                                             Navigate to
-                                            <sn-nav-link path-nodes="System LDAP/LDAP Servers" relative-url="/ldap_server_config_list.do" to-nav="true" />
+                                            <sn-nav-link path-nodes="System LDAP/LDAP Servers" href="/ldap_server_config_list.do" to-nav="true"></sn-nav-link>
                                             and open the pre-defined LDAP server if one exists; otherwise, navigate to
-                                            <sn-nav-link path-nodes="System LDAP/Create New Server" /> to create a new record.
+                                            <sn-nav-link path-nodes="System LDAP/Create New Server"></sn-nav-link> to create a new record.
                                         </li>
                                         <li>
                                             If editing an existing record, provide the following information in the form, then save changes, staying on the same form (not update):
@@ -427,7 +427,7 @@
                                     <div class="card-body">
                                         <div class="detail">
                                             Navigate to
-                                            <sn-nav-link path-nodes="System LDAP/LDAP Servers" relative-url="/ldap_server_config_list.do" to-nav="true" />
+                                            <sn-nav-link path-nodes="System LDAP/LDAP Servers" href="/ldap_server_config_list.do" to-nav="true"></sn-nav-link>
                                             and open the LDAP server that was just created/updated in the previous section.
                                             <div class="alert-info">Currently, groups are not being imported. If this changes,
                                                 then all users must be imported before the LDAP Group definitions can be imported.</div>
@@ -498,7 +498,7 @@
                                                 Coalesce Enterprise User Imports
                                                 <ol>
                                                     <li>Navigate to
-                                                    <sn-nav-link path-nodes="System LDAP/Transform Maps/Enterprise User Import" link-index="1" relative-url="/sys_transform_map_list.do" to-nav="true" />.</li>
+                                                    <sn-nav-link path-nodes="System LDAP/Transform Maps/Enterprise User Import" link-index="1" href="/sys_transform_map_list.do" to-nav="true"></sn-nav-link>.</li>
                                                     <li>
                                                         Under the <var class="targetName">Field Maps</var> tab, double-click the <var class="targetName">Coalesce</var> value for the
                                                         <var class="targetName">u_samaccountname</var> source field and change it to <kbd>true</kbd>.
@@ -511,7 +511,7 @@
                                             </li>
                                             <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Transform</var>, and in the resulting page, click the
                                                 <var class="targetName">Transform</var> button to apply the transform map.</li>
-                                            <li>Navigate to <sn-nav-link path-nodes="System LDAP/Data Sources" relative-url="/sys_data_source_list.do" to-nav="true" />
+                                            <li>Navigate to <sn-nav-link path-nodes="System LDAP/Data Sources" href="/sys_data_source_list.do" to-nav="true"></sn-nav-link>
                                             and open the <var class="targetName">Enterprise LDAP users</var> data source.</li>
                                             <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Load all records</var>.</li>
                                             <li>Once all users are loaded, click <var class="targetName">Run Transform</var>, and then in the resulting page, click the
@@ -525,7 +525,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="detail">
-                                            Navigate to <sn-nav-link path-nodes="System LDAP/LDAP Servers" relative-url="/ldap_server_config_list.do" to-nav="true" />
+                                            Navigate to <sn-nav-link path-nodes="System LDAP/LDAP Servers" href="/ldap_server_config_list.do" to-nav="true"></sn-nav-link>
                                             and open the LDAP server that was just created/updated in the previous section.
                                             <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
                                         </div>
@@ -591,7 +591,7 @@
                                                 Coalesce Admin User Imports
                                                 <ol>
                                                     <li>Navigate to
-                                                    <sn-nav-link path-nodes="System LDAP/Transform Maps/Admin User Import" relative-url="/sys_transform_map_list.do" link-index="1" to-nav="true" />.</li>
+                                                    <sn-nav-link path-nodes="System LDAP/Transform Maps/Admin User Import" href="/sys_transform_map_list.do" link-index="1" to-nav="true"></sn-nav-link>.</li>
                                                     <li>
                                                         Under the <var class="targetName">Field Maps</var> tab, double-click the <var class="targetName">Coalesce</var> value for the
                                                         <var class="targetName">u_samaccountname</var> source field and change it to <kbd>true</kbd>.
@@ -604,7 +604,7 @@
                                             </li>
                                             <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Transform</var>, and in the resulting page, click the
                                             <var class="targetName">Transform</var> button to apply the transform map.</li>
-                                            <li>Navigate to <sn-nav-link path-nodes="System LDAP/Data Sources" relative-url="/sys_data_source_list.do" to-nav="true" />
+                                            <li>Navigate to <sn-nav-link path-nodes="System LDAP/Data Sources" href="/sys_data_source_list.do" to-nav="true"></sn-nav-link>
                                             and open the <var class="targetName">Admin LDAP users</var> data source.</li>
                                             <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Load all records</var>.</li>
                                             <li>Once all users are loaded, click <var class="targetName">Run Transform</var>, and then in the resulting page, click the
@@ -640,7 +640,7 @@
                                         <div class="card-header"><h4>1. Install MultiProvider SSO</h4></div>
                                         <div class="card-body">
                                             Navigate to
-                                            <sn-nav-link path-nodes="System Definition/Plugins/Integration - Multiple Provider Single Sign-On Installer" relative-url="/v_plugin.do?sys_id=.integration.sso.multi.installer&sysparm_record_target=v_plugin" to-nav="true" />
+                                            <sn-nav-link path-nodes="System Definition/Plugins/Integration - Multiple Provider Single Sign-On Installer" href="/v_plugin.do?sys_id=.integration.sso.multi.installer&sysparm_record_target=v_plugin" to-nav="true"></sn-nav-link>
                                             and activate the plugin.
                                         </div>
                                     </div>
@@ -675,7 +675,7 @@
                                                     <ol>
                                                         <li>
                                                             Navigate to
-                                                            <sn-nav-link path-nodes="Multi-Provider SSO/Administration/x509 Certificate" relative-url="/sys_certificate_list.do" to-nav="true" />
+                                                            <sn-nav-link path-nodes="Multi-Provider SSO/Administration/x509 Certificate" href="/sys_certificate_list.do" to-nav="true"></sn-nav-link>
                                                             and click the <samp>New</samp> button.
                                                         </li>
                                                         <li>
@@ -715,7 +715,7 @@
                                                     <ol>
                                                         <li>
                                                             Navigate to
-                                                            <sn-nav-link path-nodes="Multi-Provider SSO/Administration/x509 Certificate" relative-url="/sys_certificate_list.do" to-nav="true" />
+                                                            <sn-nav-link path-nodes="Multi-Provider SSO/Administration/x509 Certificate" href="/sys_certificate_list.do" to-nav="true"></sn-nav-link>
                                                             and click the <samp>New</samp> button.
                                                         </li>
                                                         <li>
@@ -758,7 +758,7 @@
                                                     Before adding the identity provider, configure the load balancer identity provider and export the meta data XML.
                                                     Refer to the table at the end of this section for configuration suggestions.
                                                     <ol>
-                                                        <li>Navigate to <sn-nav-link path-nodes="Multi-Provider SSO/Identity Providers" relative-url="/sso_properties_list.do" to-nav="true" /> and click the <samp>New</samp> button.</li>
+                                                        <li>Navigate to <sn-nav-link path-nodes="Multi-Provider SSO/Identity Providers" href="/sso_properties_list.do" to-nav="true"></sn-nav-link> and click the <samp>New</samp> button.</li>
                                                         <li>When the page opens, you will be presented with an <samp>Import Identity Provider Metadata</samp>. SElect <samp>Xml</samp> and paste the meta data into the text box</li>
                                                         <li>Save changes to the identity provider and say in current form.</li>
                                                         <li>
@@ -801,11 +801,11 @@
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">ServiceNow Homepage:</th>
-                                                                <td colspan="3">This would typically be <sn-instance-url relative-url="/nav_to.do" /></td>
+                                                                <td colspan="3">This would typically be <a:config-url base="sn" href="nav_to.do"></a:config-url></td>
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">Entity ID / Issuer:</th>
-                                                                <td colspan="3">This would typically be <sn-instance-url /> (base URL of the <samp>ServiceNow Homepage</samp> field - without any URL path).</td>
+                                                                <td colspan="3">This would typically be <a:config-url base="sn"></a:config-url> (base URL of the <samp>ServiceNow Homepage</samp> field - without any URL path).</td>
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">Audience URI:</th>
@@ -952,7 +952,7 @@
                                                     Before adding the identity provider, configure the load balancer identity provider and export the meta data XML.
                                                     Refer to the table at the end of this section for configuration suggestions.
                                                     <ol>
-                                                        <li>Navigate to <sn-nav-link path-nodes="Multi-Provider SSO/Identity Providers" relative-url="/sso_properties_list.do" to-nav="true" /> and click the <samp>New</samp> button.</li>
+                                                        <li>Navigate to <sn-nav-link path-nodes="Multi-Provider SSO/Identity Providers" href="/sso_properties_list.do" to-nav="true"></sn-nav-link> and click the <samp>New</samp> button.</li>
                                                         <li>When the page opens, you will be presented with an <samp>Import Identity Provider Metadata</samp>. SElect <samp>Xml</samp> and paste the meta data into the text box</li>
                                                         <li>Save changes to the identity provider and say in current form.</li>
                                                         <li>
@@ -995,11 +995,11 @@
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">ServiceNow Homepage:</th>
-                                                                <td colspan="3">This would typically be <sn-instance-url relative-url="/nav_to.do" /></td>
+                                                                <td colspan="3">This would typically be <a:config-url base="sn" href="nav_to.do"></a:config-url>.</td>
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">Entity ID / Issuer:</th>
-                                                                <td colspan="3">This would typically be <sn-instance-url /> (base URL of the <samp>ServiceNow Homepage</samp> field - without any URL path).</td>
+                                                                <td colspan="3">This would typically be <a:config-url base="sn"></a:config-url> (base URL of the <samp>ServiceNow Homepage</samp> field - without any URL path).</td>
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">Audience URI:</th>
@@ -1145,7 +1145,7 @@
                             </div>
                             <div class="modal-body">
                                 To view the system time zone, navigate to
-                                <sn-nav-link path-nodes="System Properties/Basic Configuration" relative-url="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true" />
+                                <sn-nav-link path-nodes="System Properties/Basic Configuration" href="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true"></sn-nav-link>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" ng-click="closeSystemTimeZone" onclick="return false;">Close</button>

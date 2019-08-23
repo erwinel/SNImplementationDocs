@@ -3,13 +3,15 @@
 /// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
 
+/**
+ * The main application namespace
+ * @namespace
+ */
 namespace app {
     /**
      * The main module for this app.
-     *
      * @export
-     * @type {ng.IModule}
-     * @kind constant
+     * @constant {ng.IModule}
      */
     export let appModule: ng.IModule = angular.module("app", []);
 
@@ -21,14 +23,10 @@ namespace app {
 
     /**
      *
-     *
      * @export
      * @enum {string}
      */
     export enum cssValidationClass {
-        /**
-         *
-         */
         isValid = 'is-valid',
         isInvalid = 'is-invalid'
     }
@@ -67,57 +65,58 @@ namespace app {
 
     // #endregion
 
+    /**
+     * Namespace for the appConfigData service.
+     * @namespace
+     */
     export namespace cfg {
+        /**
+         * Defines the service name as "appConfigData".
+         * @export
+         * @constant {string}
+         */
         export const SERVICE_NAME: string = "appConfigData";
 
         /**
          * The relative path of the default page.
-         *
          * @export
-         * @type {string}
-         * @kind constant
+         * @constant {string}
          * @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
          */
         export const DEFAULT_PAGE_PATH: string = "index.html";
 
         /**
          * The default root absolute URL of the target ServiceNow instance.
-         *
          * @export
-         * @type {string}
-         * @kind constant
+         * @constant {string}
          * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
          */
         export const DEFAULT_URL_SERVICENOW: string = "https://inscomscd.service-now.com";
 
         /**
          * The default root absolute URL of the remote GIT repository service.
-         *
          * @export
-         * @type {string}
+         * @constant {string}
          * @description - This MUST be an absolute URL and MUST NOT contain a URL query or fragment. If this contains an explicit path (which is usually the case), the path must end with a "/".
          */
         export const DEFAULT_URL_GIT_SERVICE: string = "https://github.com/erwinel/";
 
         /**
          * The default root absolute URL of the SAML identity provider to be used by ServiceNow.
-         *
          * @export
-         * @type {string}
+         * @constant {string}
          * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
          */
         export const DEFAULT_URL_IDP: string = "https://myidp.com";
 
         /**
          * Contains service URL definitions.
-         *
          * @export
          * @interface IUrlConfigSettings
          */
         export interface IUrlConfigSettings {
             /**
              * The base URL for the target ServiceNow instance.
-             *
              * @type {string}
              * @memberof IUrlConfigSettings
              */
@@ -125,7 +124,6 @@ namespace app {
 
             /**
              * The base URL for the target remote GIT repository service.
-             *
              * @type {string}
              * @memberof IUrlConfigSettings
              */
@@ -133,18 +131,21 @@ namespace app {
 
             /**
              * The base URL for the SAML identity provider to be used by ServiceNow.
-             *
              * @type {string}
              * @memberof IUrlConfigSettings
              */
             idpUrl: string;
         }
 
-        export type UrlSettingsNames = "serviceNow" | "gitService" | "idp";
+        /**
+         * Defines the URL setting names supported by the appConfigData service.
+         * @export
+         * @typedef {('sn' | 'git' | 'idp')} UrlSettingsNames
+         */
+        export type UrlSettingsNames = 'sn' | 'git' | 'idp';
 
         /**
          * Defines a navigation menu item.
-         *
          * @interface INavigationDefinition
          */
         interface INavigationDefinition {
@@ -201,7 +202,6 @@ namespace app {
 
         /**
          * Represents the {@link IAppConfigJSON#navigation} property in the appConfigData.json file.
-         *
          * @interface INavigationJSON
          */
         interface INavigationJSON {
@@ -531,7 +531,7 @@ namespace app {
              * @static
              * @param {cfg.Service} appConfigData - The application configuration data service provider.
              * @param {INavigationDefinition[]} [items] - Defines the navigation menu items to be created.
-             * @returns {ReadonlyArray<NavigationItem>} - The navigation menu item objects.
+             * @returns {ReadonlyArray<NavigationItem>} The navigation menu item objects.
              * @memberof NavigationItem
              */
             static createNavItems(appConfigData: cfg.Service, items?: INavigationDefinition[]): ReadonlyArray<NavigationItem> {
@@ -551,7 +551,7 @@ namespace app {
              *
              * @static
              * @param {ReadonlyArray<NavigationItem>} items - Navigation menu items to recursively search.
-             * @returns {(NavigationItem | undefined)} - The navigation menu item that represents the current page or undefined if none are found that represent the current page.
+             * @returns {(NavigationItem | undefined)} The navigation menu item that represents the current page or undefined if none are found that represent the current page.
              * @memberof NavigationItem
              */
             static findCurrentItem(items: ReadonlyArray<NavigationItem>): NavigationItem | undefined {
@@ -606,6 +606,10 @@ namespace app {
             }
         }
 
+        /**
+         * Severity of message for the modal dialog.
+         * @typedef {('info' | 'warning' | 'danger' | 'primary' | 'success')} DialogMessageType
+         */
         export type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
 
         /**
@@ -637,39 +641,129 @@ namespace app {
          * Callback for displaying a modal popup dialog.
          *
          * @export
-         * @interface ITHisPopupDialogShowCallback
-         * @template TTHis - Type of object to use as the "this" object when invoking the callback.
+         * @typedef {(this: TThis, message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<TResult>[], onClose?: { (result?: TResult): void; })} ITHisPopupDialogShowCallback
+         * @template TThis - Type of object to use as the "this" object when invoking the callback.
          * @template TResult - The type of result value to be produced by the modal dialog.
+         * @this {TThis}
          * @param {string} message - The message text for the modal popup.
          * @param {string} [title] - The title for the modal popup.
          * @param {DialogMessageType} [type] - The type (severity) of the modal popup.
          * @param {IPopupDialogButtonDefinition<TResult>[]} [buttons] - The buttons to display for the modal popup, which closes the modal dialog and defines the result value.
          * @param {{ (result?: TResult): void; }} [onClose] - The callback to invoke when the modal popup dialog is closed.
          */
-        export interface ITHisPopupDialogShowCallback<TTHis, TResult> {
-            (this: TTHis, message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<TResult>[], onClose?: { (result?: TResult): void; }): void;
+        export interface ITHisPopupDialogShowCallback<TThis, TResult> {
+            (this: TThis, message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<TResult>[], onClose?: { (result?: TResult): void; }): void;
         }
 
         /**
          * Callback for displaying a modal popup dialog.
-         *
          * @export
-         * @interface IPopupDialogShowCallback
+         * @typedef {{ (message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: { (result?: T): void; }): void; }} IPopupDialogShowCallback
          * @template T - The type of result value to be produced by the modal dialog.
          * @param {string} message - The message text for the modal popup.
          * @param {string} [title] - The title for the modal popup.
          * @param {DialogMessageType} [type] - The type (severity) of the modal popup.
          * @param {IPopupDialogButtonDefinition<T>[]} [buttons] - The buttons to display for the modal popup, which closes the modal dialog and defines the result value.
          * @param {{ (result?: T): void; }} [onClose] - The callback to invoke when the modal popup dialog is closed.
-         * @description - This is used within the {@link AppContentController} when the main modal popup dialog is displayed.
+         * @description - This is used within the {@link Controller} when the main modal popup dialog is displayed.
          */
         export interface IPopupDialogShowCallback<T> { (message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: { (result?: T): void; }): void; }
 
         /**
-         * Class which implements the appConfigData service.
-         *
+         * Callback for notifying changes to a settings value.
          * @export
-        * @class Service
+         * @typedef {(this: TThis, newValue: TValue, oldValue: TValue)} IThisNotifyValueChange
+         * @template TValue - The type of value that was changed.
+         * @template TThis - Type of object to use as the "this" object when invoking the callback.
+         * @this {TThis}
+         * @param {TValue} newValue - The new value after the change.
+         * @param {TValue} oldValue - The previous value before the change.
+         */
+        export interface IThisNotifyValueChange<TValue, TThis> { (this: TThis, newValue: TValue, oldValue: TValue): void; }
+
+        /**
+         * Callback for notifying changes to a settings value.
+         * @export
+         * @typedef {(newValue: T, oldValue: T)} INotifyValueChange
+         * @template T - The type of value that was changed.
+         * @param {T} newValue - The new value after the change.
+         * @param {T} oldValue - The previous value before the change.
+         */
+        export interface INotifyValueChange<T> { (newValue: T, oldValue: T): void; }
+
+        export interface IChangeLinkParent<T> { first?: NotifyChangeLink<T>; last?: NotifyChangeLink<T>; }
+
+        /**
+         * Represents a registered settings value change notification.
+         * @export
+         * @class NotifyChangeLink
+         * @template T - The type of value to be notified for changes.
+         */
+        export class NotifyChangeLink<T> {
+            private _id: symbol = Symbol();
+            private _previous?: NotifyChangeLink<T>;
+            private _next?: NotifyChangeLink<T>;
+            private _args: [INotifyValueChange<T>] | [IThisNotifyValueChange<T, any>, any];
+            constructor(parent: IChangeLinkParent<T>, onChange: INotifyValueChange<T>);
+            constructor(parent: IChangeLinkParent<T>, onChange: IThisNotifyValueChange<T, any>, thisObj: any);
+            constructor(parent: IChangeLinkParent<T>, onChange: INotifyValueChange<T> | IThisNotifyValueChange<T, any>, thisObj?: any) {
+                if (sys.isNil(parent.last))
+                    parent.first = parent.last = this;
+                else
+                    (this._previous = parent.last)._previous = this;
+                this._args = (arguments.length > 2) ? [onChange, thisObj] : [onChange];
+            }
+            static raiseChange<T>(parent: IChangeLinkParent<T>, newValue: T, oldValue: T): void {
+                if (sys.notNil(parent.first))
+                    NotifyChangeLink.__raiseChange<T>(parent.first, newValue, oldValue);
+            }
+            static remove<T>(parent: IChangeLinkParent<T>, item: NotifyChangeLink<T>): boolean {
+                if (!(typeof parent === "object" && parent !== null && sys.notNil(parent.first) && typeof item === "object" && item !== null && item instanceof NotifyChangeLink))
+                    return false;
+                if (sys.isNil(item._next)) {
+                    if (item._id !== parent.last._id)
+                        return false;
+                    parent.last = item._previous;
+                    if (sys.isNil(parent.last))
+                        parent.first = undefined;
+                    else
+                        item._previous = parent.last._next = undefined;
+                } else if (sys.isNil(item._previous)) {
+                    if (item._id !== parent.first._id)
+                        return false;
+                    parent.first = item._next;
+                    if (sys.isNil(parent.first))
+                        parent.last = undefined;
+                    else
+                        item._next = parent.first._previous = undefined;
+                } else {
+                    let first: NotifyChangeLink<T> = item;
+                    do { first = first._previous; } while (sys.notNil(first._previous));
+                    if (first._id !== parent.first._id)
+                        return false;
+                    (item._next._previous = item._previous)._next = item._next;
+                    item._next = item._previous = undefined;
+                }
+                return true;
+            }
+            private static __raiseChange<T>(item: NotifyChangeLink<T>, newValue: T, oldValue: T): void {
+                let next: NotifyChangeLink<T> | undefined = item._next;
+                try {
+                    if (item._args.length > 1)
+                        item._args[0].call(item._args[1], newValue, oldValue);
+                    else
+                        item._args[0](newValue, oldValue);
+                } finally {
+                    if (sys.notNil(next))
+                        NotifyChangeLink.__raiseChange<T>(next, newValue, oldValue);
+                }
+            }
+        }
+
+        /**
+         * Class which implements the appConfigData service.
+         * @export
+         * @class Service
          */
         export class Service {
             // #region Private properties
@@ -686,12 +780,25 @@ namespace app {
             private _selectedItemClass: ReadonlyArray<string> = DEFAULT_SELECTED_ITEM_CLASS;
             private _otherItemClass: ReadonlyArray<string> = DEFAULT_OTHER_ITEM_CLASS;
             private _topNavItems: ReadonlyArray<NavigationItem> = [];
-            //private _sideNavBreadcrumbItems: ReadonlyArray<NavigationItem> = [];
-            //private _sideNavSiblingItems: ReadonlyArray<NavigationItem> = [];
-            //private _sideNavChildItems: ReadonlyArray<NavigationItem> = [];
+            private _serviceNowUrlChangeNotify: IChangeLinkParent<URL> = {};
+            private _gitServiceUrlChangeNotify: IChangeLinkParent<URL> = {};
+            private _idpUrlChangeNotify: IChangeLinkParent<URL> = {};
+            private _pageTitleChangeNotify: IChangeLinkParent<string> = {};
+            /**
+             * @todo - Remove method when no longer used.
+             */
             private _serviceNowUrlChangedCallback: { (value: URL): void; } | undefined;
+            /**
+             * @todo - Remove method when no longer used.
+             */
             private _gitServiceUrlChangedCallback: { (value: URL): void; } | undefined;
+            /**
+             * @todo - Remove method when no longer used.
+             */
             private _idpUrlChangedCallback: { (value: URL): void; } | undefined;
+            /**
+             * @todo - Remove method when no longer used.
+             */
             private _pageTitleChangedCallback: { (value: string): void; } | undefined;
             private _showMainModalPopupDialogCallback: IPopupDialogShowCallback<any> | undefined;
             private _hideMainModalPopupDialogCallback: { (result?: any): void } | undefined;
@@ -724,9 +831,10 @@ namespace app {
              * @memberof Service
              */
             pageTitle(value?: string): string {
-                if (typeof value === "string" && value.trim().length > 0 && value !== this._pageTitle) {
+                let oldValue: string = this._pageTitle;
+                if (typeof value === "string" && value.trim().length > 0 && value !== oldValue) {
                     this._pageTitle = value;
-                    this.raiseTitleChanged();
+                    this.raiseTitleChanged(value, oldValue);
                 }
                 return this._pageTitle;
             }
@@ -763,6 +871,34 @@ namespace app {
              */
             topNavItems(): ReadonlyArray<NavigationItem> { return this._topNavItems; }
 
+            static validateURL(value: URL, allowPath: boolean = false): URL | string {
+                if (!(typeof value === "object" && value !== null && value instanceof URL))
+                    return "Value is not a URL";
+                value = new URL(value.href);
+                if (allowPath) {
+                    if (typeof value.pathname !== "string" || value.pathname.length == 0)
+                        value.pathname = "/";
+                    else if (!value.pathname.endsWith("/"))
+                        value.pathname = value.pathname + "/";
+                }
+                else if (typeof value.pathname === "string" && value.pathname.length > 0) {
+                    if (value.pathname !== "/")
+                        return "Path not allowed";
+                    value.pathname = "";
+                }
+                if (typeof value.search === "string" && value.search.length > 0) {
+                    if (value.search !== "?")
+                        return "Query parameters not allowed";
+                    value.search = "";
+                }
+                if (typeof value.hash === "string" && value.hash.length > 0) {
+                    if (value.hash !== "#")
+                        return "Fragment not allowed";
+                    value.hash = "";
+                }
+                return value;
+            }
+
             /**
              * Gets or sets the base URL for the target ServiceNow instance.
              *
@@ -772,9 +908,15 @@ namespace app {
              * @description Changes in this value cause any callbacks specified through {@link app.cfg.Service#onServiceNowUrlChanged} to be invoked.
              */
             serviceNowUrl(value?: URL): URL {
-                if (typeof value === "object" && value !== null && value instanceof URL && this._serviceNowUrl.href !== value.href) {
+                if (sys.isNil(value))
+                    return this._serviceNowUrl;
+                let validated: URL | string = Service.validateURL(value);
+                if (typeof validated === "string")
+                    throw new Error(validated);
+                let oldValue: URL = this._serviceNowUrl;
+                if (typeof oldValue !== "object" || oldValue.href !== value.href) {
                     this._serviceNowUrl = value;
-                    this.raiseServiceNowUrlChanged();
+                    this.raiseServiceNowUrlChanged(value, oldValue);
                 }
                 return this._serviceNowUrl;
             }
@@ -788,9 +930,15 @@ namespace app {
              * @description Changes in this value cause any callbacks specified through {@link app.cfg.Service#onGitRepositoryUrlChanged} to be invoked.
              */
             gitServiceUrl(value?: URL): URL {
-                if (typeof value === "object" && value !== null && value instanceof URL && this._gitServiceUrl.href !== value.href) {
+                if (sys.isNil(value))
+                    return this._gitServiceUrl;
+                let validated: URL | string = Service.validateURL(value, true);
+                if (typeof validated === "string")
+                    throw new Error(validated);
+                let oldValue: URL = this._gitServiceUrl;
+                if (typeof oldValue !== "object" || oldValue.href !== value.href) {
                     this._gitServiceUrl = value;
-                    this.raiseGitServiceUrlChanged();
+                    this.raiseGitServiceUrlChanged(value, oldValue);
                 }
                 return this._gitServiceUrl;
             }
@@ -804,19 +952,34 @@ namespace app {
              * @description Changes in this value cause any callbacks specified through {@link app.cfg.Service#onIdpUrlChanged} to be invoked.
              */
             idpUrl(value?: URL): URL {
-                if (typeof value === "object" && value !== null && value instanceof URL && this._idpUrl.href !== value.href) {
+                if (sys.isNil(value))
+                    return this._idpUrl;
+                let validated: URL | string = Service.validateURL(value);
+                if (typeof validated === "string")
+                    throw new Error(validated);
+                let oldValue: URL = this._idpUrl;
+                if (typeof oldValue !== "object" || oldValue.href !== value.href) {
                     this._idpUrl = value;
-                    this.raiseIdpUrlChanged();
+                    this.raiseIdpUrlChanged(value, oldValue);
                 }
                 return this._idpUrl;
             }
 
+            /**
+             * Creates a URL that is relative to a configuration setting URL base value.
+             * @param {UrlSettingsNames} setting - The name of the URL setting.
+             * @param {string} [relativeUrl] - The relative URL string.
+             * @param {string} [queryParameter] - The name of the query parameter to add to the result URL.
+             * @param {string} [queryValue] - The value of the query parameter to add to the result URL.
+             * @returns {URL} A URL that is relative to the configuration settings URL base value.
+             * @memberof Service
+             */
             createUrl(setting: UrlSettingsNames, relativeUrl?: string, queryParameter?: string, queryValue?: string): URL {
                 let url: URL;
-                if (setting === "gitService")
+                if (setting === "git")
                     url = this._gitServiceUrl;
                 else
-                    url = sys.makeDirectoryUrl((setting == "serviceNow") ? this._serviceNowUrl : this._idpUrl);
+                    url = sys.makeDirectoryUrl((setting == "sn") ? this._serviceNowUrl : this._idpUrl);
                 if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".")
                     url = new URL(relativeUrl, url);
                 else
@@ -844,7 +1007,7 @@ namespace app {
 
             /**
              * Creates an instance of the appConfigData service.
-             * @param {sessionStorageService} _sessionStorage - The sessionStorage service provider.
+             * @param {storage.Service} _sessionStorage - The sessionStorage service provider.
              * @param {ng.IHttpService} $http - The $http service provider.
              * @param {ng.ILogService} $log - The $log service provider.
              * @param {ng.IDocumentService} $document - The $document service provider.
@@ -902,19 +1065,19 @@ namespace app {
             /**
              * Displays the main application modal dialog box.
              *
-             * @template TTHis - The "this" object to use for the onClose callback method.
+             * @template TThis - The "this" object to use for the onClose callback method.
              * @template TResult - The type of result value produced by the modal dialog.
              * @param {string} message - The message to display in the modal dialog.
              * @param {(string | undefined)} title - The title of the modal dialog.
              * @param {(DialogMessageType | undefined)} type - The message type (severity) of the modal dailog.
              * @param {(IPopupDialogButtonDefinition<TResult>[] | undefined)} buttons - The option buttons to display in the modal dailog.
-             * @param {({ (this: TTHis, result?: TResult): void; } | undefined)} onClose - The callback to invoke when the dialog box is closed.
-             * @param {TTHis} thisArg - The object to use as the "this" object when onClose is invoked.
+             * @param {({ (this: TThis, result?: TResult): void; } | undefined)} onClose - The callback to invoke when the dialog box is closed.
+             * @param {TThis} thisArg - The object to use as the "this" object when onClose is invoked.
              * @memberof app.cfg.Service
-             * @description This invokes the callback specified through the {@link app.cfg.Service#onShowMainModalPopupDialog} method by the {@link AppContentController} during its construction.
+             * @description This invokes the callback specified through the {@link app.cfg.Service#onShowMainModalPopupDialog} method by the {@link Controller} during its construction.
              */
-            showMainModalPopupDialog<TTHis, TResult>(message: string, title: string | undefined, type: DialogMessageType | undefined, buttons: IPopupDialogButtonDefinition<TResult>[] | undefined,
-                onClose: { (this: TTHis, result?: TResult): void; } | undefined, thisArg: TTHis): void;
+            showMainModalPopupDialog<TThis, TResult>(message: string, title: string | undefined, type: DialogMessageType | undefined, buttons: IPopupDialogButtonDefinition<TResult>[] | undefined,
+                onClose: { (this: TThis, result?: TResult): void; } | undefined, thisArg: TThis): void;
             /**
              * Displays the main application modal dialog box
              *
@@ -925,7 +1088,7 @@ namespace app {
              * @param {IPopupDialogButtonDefinition<T>[]} [buttons] - The option buttons to display in the modal dailog.
              * @param {{ (result?: T): void; }} [onClose] - The callback to invoke when the dialog box is closed.
              * @memberof app.cfg.Service
-             * @description This invokes the callback specified through the {@link app.cfg.Service#onShowMainModalPopupDialog} method by the {@link AppContentController} during its construction.
+             * @description This invokes the callback specified through the {@link app.cfg.Service#onShowMainModalPopupDialog} method by the {@link Controller} during its construction.
              */
             showMainModalPopupDialog<T>(message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: { (result?: T): void; }): void;
             showMainModalPopupDialog(message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<any>[], onClose?: { (result?: any): void; }, thisArg?: any): void {
@@ -941,17 +1104,17 @@ namespace app {
             /**
              * Specifies a callback to invoke when the main modal popup dialog is to be displayed.
              *
-             * @param {ITHisPopupDialogShowCallback<TTHis, TResult>} callback - The callback to invoke when the main modal popup dialog is to be displayed.
-             * @param {TTHis} thisArg - The object to use as the "this" object when the callback is invoked.
+             * @param {ITHisPopupDialogShowCallback<TThis, TResult>} callback - The callback to invoke when the main modal popup dialog is to be displayed.
+             * @param {TThis} thisArg - The object to use as the "this" object when the callback is invoked.
              * @memberof app.cfg.Service
              */
-            onShowMainModalPopupDialog<TTHis, TResult>(callback: ITHisPopupDialogShowCallback<TTHis, TResult>, thisArg: TTHis): void;
+            onShowMainModalPopupDialog<TThis, TResult>(callback: ITHisPopupDialogShowCallback<TThis, TResult>, thisArg: TThis): void;
             /**
              * Specifies a callback to invoke when the main modal popup dialog is to be displayed.
              *
              * @param {IPopupDialogShowCallback<T>} callback - The callback to invoke when the main modal popup dialog is to be displayed.
              * @memberof app.cfg.Service
-             * @description - The {@link AppContentController} invokes this method during its construction to specify the callback that will actually display the popup dialog.
+             * @description - The {@link Controller} invokes this method during its construction to specify the callback that will actually display the popup dialog.
              */
             onShowMainModalPopupDialog<T>(callback: IPopupDialogShowCallback<T>): void;
             onShowMainModalPopupDialog(callback: IPopupDialogShowCallback<any> | ITHisPopupDialogShowCallback<any, any>, thisArg?: any): void {
@@ -992,20 +1155,20 @@ namespace app {
             /**
              * Specifies a callback to invoke when the main modal popup dialog is to be closed.
              *
-             * @template TTHis - The type of object used as the "this" object when the callback is invoked.
+             * @template TThis - The type of object used as the "this" object when the callback is invoked.
              * @template TResult - The type of result value for the modal popup dialog.
-             * @param {{ (this: TTHis, result?: TResult): void }} callback - The callback to invoke when the main modal popup dialog is to be closed.
-             * @param {TTHis} thisArg - The object to use as the "this" object when the callback is invoked.
+             * @param {{ (this: TThis, result?: TResult): void }} callback - The callback to invoke when the main modal popup dialog is to be closed.
+             * @param {TThis} thisArg - The object to use as the "this" object when the callback is invoked.
              * @memberof app.cfg.Service
              */
-            onCloseMainModalPopupDialog<TTHis, TResult>(callback: { (this: TTHis, result?: TResult): void }, thisArg: TTHis): void;
+            onCloseMainModalPopupDialog<TThis, TResult>(callback: { (this: TThis, result?: TResult): void }, thisArg: TThis): void;
             /**
              * Specifies a callback to invoke when the main modal popup dialog is to be closed.
              *
              * @template T - The type of result value for the modal popup dialog.
              * @param {{ (result?: T): void }} callback - The callback to invoke when the main modal popup dialog is to be closed.
              * @memberof app.cfg.Service
-             * @description - The {@link AppContentController} invokes this method during its construction to specify the callback that will actually close the popup dialog.
+             * @description - The {@link Controller} invokes this method during its construction to specify the callback that will actually close the popup dialog.
              */
             onCloseMainModalPopupDialog<T>(callback: { (result?: T): void }): void;
             onCloseMainModalPopupDialog(callback: { (result?: any): void } | { (this: any, result?: any): void }, thisArg?: any): void {
@@ -1036,8 +1199,39 @@ namespace app {
             // #region URL setting value change methods
 
             /**
+             * Registers a notification callback that will be invoked when the value of {@link cfg.Service#serviceNowUrl} has changed.
+             * @param {INotifyValueChange<URL>} onChange - The callback to invoke when the value of {@link cfg.Service#serviceNowUrl} has changed.
+             * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyServiceNowUrlChange(onChange: INotifyValueChange<URL>): NotifyChangeLink<URL>;
+            /**
+             * Registers a notification callback that will be invoked when the value of {@link cfg.Service#serviceNowUrl} has changed.
+             * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+             * @param {IThisNotifyValueChange<URL, T>} onChange - The callback to invoke when the value of {@link cfg.Service#serviceNowUrl} has changed.
+             * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+             * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyServiceNowUrlChange<T>(onChange: IThisNotifyValueChange<URL, T>, thisObj: T): NotifyChangeLink<URL>;
+            notifyServiceNowUrlChange(onChange: INotifyValueChange<URL> | IThisNotifyValueChange<URL, any>, thisObj?: any): NotifyChangeLink<URL> {
+                if (arguments.length > 1)
+                    return new NotifyChangeLink<URL>(this._serviceNowUrlChangeNotify, onChange, thisObj);
+                return new NotifyChangeLink<URL>(this._serviceNowUrlChangeNotify, onChange);
+            }
+
+            /**
+             * Unregister a notification callback to no longer be notified of changes to {@link cfg.Service#serviceNowUrl}.
+             * @param {NotifyChangeLink<URL>} notifier - The {@see cfg.NotifyChangeLink} that represents the registered notifcation callback.
+             * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link cfg.Service#serviceNowUrl}.
+             * @memberof Service
+             */
+            removeServiceNowUrlChangeNotify(notifier: NotifyChangeLink<URL>): boolean { return NotifyChangeLink.remove<URL>(this._serviceNowUrlChangeNotify, notifier); }
+
+            /**
              * Specifies a callback to invoke when the value of {@link app.cfg.Service#serviceNowUrl} has changed.
-             *
+             * @deprecated - Use {@link cfg.Service#notifyServiceNowUrlChange}, instead.
+             * @todo - Remove method when no longer used.
              * @template T - The type of object used as the "this" object when the callback is invoked.
              * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link app.cfg.Service#serviceNowUrl} has changed.
              * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
@@ -1046,7 +1240,8 @@ namespace app {
             onServiceNowUrlChanged<T>(callback: { (this: T, value: URL): void; }, thisArg: T): void;
             /**
              * Specifies a callback to invoke when the value of {@link app.cfg.Service#serviceNowUrl} has changed.
-             *
+             * @deprecated - Use {@link cfg.Service#notifyServiceNowUrlChange}, instead.
+             * @todo - Remove method when no longer used.
              * @param {{ (value: URL): void; }} callback - The callback to invoke when the value of {@link app.cfg.Service#serviceNowUrl} has changed.
              * @memberof app.cfg.Service
              */
@@ -1070,15 +1265,47 @@ namespace app {
                 callback(this._serviceNowUrl);
             }
 
-            private raiseServiceNowUrlChanged(): void {
+            private raiseServiceNowUrlChanged(newValue: URL, oldValue: URL): void {
+                NotifyChangeLink.raiseChange<URL>(this._serviceNowUrlChangeNotify, newValue, oldValue);
                 let callback: { (value: URL): void; } = this._serviceNowUrlChangedCallback;
                 if (typeof callback === "function")
                     callback(this._serviceNowUrl);
             }
 
             /**
+             * Registers a notification callback that will be invoked when the value of {@link cfg.Service#gitServiceUrl} has changed.
+             * @param {INotifyValueChange<URL>} onChange - The callback to invoke when the value of {@link cfg.Service#gitServiceUrl} has changed.
+             * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyGitServiceUrlChange(onChange: INotifyValueChange<URL>): NotifyChangeLink<URL>;
+            /**
+             * Registers a notification callback that will be invoked when the value of {@link cfg.Service#gitServiceUrl} has changed.
+             * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+             * @param {IThisNotifyValueChange<URL, T>} onChange - The callback to invoke when the value of {@link cfg.Service#gitServiceUrl} has changed.
+             * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+             * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyGitServiceUrlChange<T>(onChange: IThisNotifyValueChange<URL, T>, thisObj: T): NotifyChangeLink<URL>;
+            notifyGitServiceUrlChange(onChange: INotifyValueChange<URL> | IThisNotifyValueChange<URL, any>, thisObj?: any): NotifyChangeLink<URL> {
+                if (arguments.length > 1)
+                    return new NotifyChangeLink<URL>(this._gitServiceUrlChangeNotify, onChange, thisObj);
+                return new NotifyChangeLink<URL>(this._gitServiceUrlChangeNotify, onChange);
+            }
+
+            /**
+             * Unregister a notification callback to no longer be notified of changes to {@link cfg.Service#gitServiceUrl}.
+             * @param {NotifyChangeLink<URL>} notifier - The {@see cfg.NotifyChangeLink} that represents the registered notifcation callback.
+             * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link cfg.Service#gitServiceUrl}.
+             * @memberof Service
+             */
+            removeGitServiceUrlChangeNotify(notifier: NotifyChangeLink<URL>): boolean { return NotifyChangeLink.remove<URL>(this._gitServiceUrlChangeNotify, notifier); }
+
+            /**
              * Specifies a callback to invoke when the value of {@link app.cfg.Service#gitRepositoryUrl} has changed.
-             *
+             * @deprecated - Use {@link cfg.Service#notifyGitServiceUrlChange}, instead.
+             * @todo - Remove method when no longer used.
              * @template T - The type of object used as the "this" object when the callback is invoked.
              * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link app.cfg.Service#gitRepositoryUrl} has changed.
              * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
@@ -1087,7 +1314,8 @@ namespace app {
             onGitServiceUrlChanged<T>(callback: { (this: T, value: URL): void; }, thisArg: T): void;
             /**
              * Specifies a callback to invoke when the value of {@link app.cfg.Service#gitRepositoryUrl} has changed.
-             *
+             * @deprecated - Use {@link cfg.Service#notifyGitServiceUrlChange}, instead.
+             * @todo - Remove method when no longer used.
              * @param {{ (value: URL): void; }} callback - The callback to invoke when the value of {@link app.cfg.Service#gitRepositoryUrl} has changed.
              * @memberof app.cfg.Service
              */
@@ -1111,15 +1339,47 @@ namespace app {
                 callback(this._gitServiceUrl);
             }
 
-            private raiseGitServiceUrlChanged(): void {
+            private raiseGitServiceUrlChanged(newValue: URL, oldValue: URL): void {
+                NotifyChangeLink.raiseChange<URL>(this._gitServiceUrlChangeNotify, newValue, oldValue);
                 let callback: { (value: URL): void; } = this._gitServiceUrlChangedCallback;
                 if (typeof callback === "function")
                     callback(this._gitServiceUrl);
             }
 
             /**
+             * Registers a notification callback that will be invoked when the value of {@link cfg.Service#idpUrl} has changed.
+             * @param {INotifyValueChange<URL>} onChange - The callback to invoke when the value of {@link cfg.Service#idpUrl} has changed.
+             * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyIdpUrlChange(onChange: INotifyValueChange<URL>): NotifyChangeLink<URL>;
+            /**
+             * Registers a notification callback that will be invoked when the value of {@link cfg.Service#idpUrl} has changed.
+             * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+             * @param {IThisNotifyValueChange<URL, T>} onChange - The callback to invoke when the value of {@link cfg.Service#idpUrl} has changed.
+             * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+             * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyIdpUrlChange<T>(onChange: IThisNotifyValueChange<URL, T>, thisObj: T): NotifyChangeLink<URL>;
+            notifyIdpUrlChange(onChange: INotifyValueChange<URL> | IThisNotifyValueChange<URL, any>, thisObj?: any): NotifyChangeLink<URL> {
+                if (arguments.length > 1)
+                    return new NotifyChangeLink<URL>(this._idpUrlChangeNotify, onChange, thisObj);
+                return new NotifyChangeLink<URL>(this._idpUrlChangeNotify, onChange);
+            }
+
+            /**
+             * Unregister a notification callback to no longer be notified of changes to {@link cfg.Service#idpUrl}.
+             * @param {NotifyChangeLink<URL>} notifier - The {@see cfg.NotifyChangeLink} that represents the registered notifcation callback.
+             * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link cfg.Service#idpUrl}.
+             * @memberof Service
+             */
+            removeIdpUrlChangeNotify(notifier: NotifyChangeLink<URL>): boolean { return NotifyChangeLink.remove<URL>(this._idpUrlChangeNotify, notifier); }
+
+            /**
              * Specifies a callback to invoke when the value of {@link app.cfg.Service#idpUrl} has changed.
-             *
+             * @deprecated - Use {@link cfg.Service#notifyIdpUrlChange}, instead.
+             * @todo - Remove method when no longer used.
              * @template T - The type of object used as the "this" object when the callback is invoked.
              * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link app.cfg.Service#idpUrl} has changed.
              * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
@@ -1128,7 +1388,8 @@ namespace app {
             onIdpUrlChanged<T>(callback: { (this: T, value: URL): void; }, thisArg: T): void;
             /**
              * Specifies a callback to invoke when the value of {@link app.cfg.Service#idpUrl} has changed.
-             *
+             * @deprecated - Use {@link cfg.Service#notifyIdpUrlChange}, instead.
+             * @todo - Remove method when no longer used.
              * @param {{ (value: URL): void; }} callback - The callback to invoke when the value of {@link app.cfg.Service#idpUrl} has changed.
              * @memberof app.cfg.Service
              */
@@ -1152,15 +1413,98 @@ namespace app {
                 callback(this._idpUrl);
             }
 
-            private raiseIdpUrlChanged(): void {
+            private raiseIdpUrlChanged(newValue: URL, oldValue: URL): void {
+                NotifyChangeLink.raiseChange<URL>(this._idpUrlChangeNotify, newValue, oldValue);
                 let callback: { (value: URL): void; } = this._idpUrlChangedCallback;
                 if (typeof callback === "function")
                     callback(this._idpUrl);
             }
 
             /**
+             * Registers a notification callback that will be invoked when the value of URL setting has changed.
+             * @param {UrlSettingsNames} setting - The name of the URL setting.
+             * @param {INotifyValueChange<URL>} onChange - The callback to invoke when the corresponding {@link URL} has changed.
+             * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyUrlChange(setting: UrlSettingsNames, onChange: INotifyValueChange<URL>): NotifyChangeLink<URL>;
+            /**
+             * Registers a notification callback that will be invoked when the value of URL setting has changed.
+             * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+             * @param {UrlSettingsNames} setting - The name of the URL setting.
+             * @param {IThisNotifyValueChange<URL, T>} onChange - The callback to invoke when the corresponding {@link URL} has changed.
+             * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+             * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyUrlChange<T>(setting: UrlSettingsNames, onChange: IThisNotifyValueChange<URL, T>, thisObj: T): NotifyChangeLink<URL>;
+            notifyUrlChange(setting: UrlSettingsNames, onChange: INotifyValueChange<URL> | IThisNotifyValueChange<URL, any>, thisObj?: any): NotifyChangeLink<URL> {
+                if (setting === "sn") {
+                    if (arguments.length > 2)
+                        return this.notifyServiceNowUrlChange(onChange, thisObj);
+                    return this.notifyServiceNowUrlChange(onChange);
+                }
+                if (setting == "git") {
+                    if (arguments.length > 2)
+                        return this.notifyGitServiceUrlChange(onChange, thisObj);
+                    return this.notifyGitServiceUrlChange(onChange);
+                }
+                if (setting !== "idp")
+                    throw new Error("Invalid setting name");
+                if (arguments.length > 2)
+                    return this.notifyIdpUrlChange(onChange, thisObj);
+                return this.notifyIdpUrlChange(onChange);
+            }
+
+            /**
+             * Unregister a notification callback to no longer be notified of changes to a URL setting.
+             * @param {UrlSettingsNames} setting - The name of the URL setting.
+             * @param {NotifyChangeLink<URL>} notifier - The {@see cfg.NotifyChangeLink} that represents the registered notifcation callback.
+             * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link cfg.Service#idpUrl}.
+             * @memberof Service
+             */
+            removeUrlChangeNofify(setting: UrlSettingsNames, notifier: NotifyChangeLink<URL>): boolean {
+                if (setting === "sn")
+                    return this.removeServiceNowUrlChangeNotify(notifier);
+                if (setting === "git")
+                    return this.removeGitServiceUrlChangeNotify(notifier);
+                return setting === "idp" && this.removeIdpUrlChangeNotify(notifier);
+            }
+
+            /**
+             * Registers a notification callback that will be invoked when the value of {@link cfg.Service#pageTitle} has changed.
+             * @param {INotifyValueChange<string>} onChange - The callback to invoke when the value of {@link cfg.Service#pageTitle} has changed.
+             * @returns {NotifyChangeLink<string>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyPageTitleChange(onChange: INotifyValueChange<string>): NotifyChangeLink<string>;
+            /**
+             * Registers a notification callback that will be invoked when the value of {@link cfg.Service#pageTitle} has changed.
+             * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+             * @param {IThisNotifyValueChange<string, T>} onChange - The callback to invoke when the value of {@link cfg.Service#pageTitle} has changed.
+             * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+             * @returns {NotifyChangeLink<string>} An object that can be used to un-register the change notification.
+             * @memberof Service
+             */
+            notifyPageTitleChange<T>(onChange: IThisNotifyValueChange<string, T>, thisObj: T): NotifyChangeLink<string>;
+            notifyPageTitleChange(onChange: INotifyValueChange<string> | IThisNotifyValueChange<string, any>, thisObj?: any): NotifyChangeLink<string> {
+                if (arguments.length > 1)
+                    return new NotifyChangeLink<string>(this._pageTitleChangeNotify, onChange, thisObj);
+                return new NotifyChangeLink<string>(this._pageTitleChangeNotify, onChange);
+            }
+
+            /**
+             * Unregister a notification callback to no longer be notified of changes to {@link cfg.Service#pageTitle}.
+             * @param {NotifyChangeLink<string>} notifier - The {@see cfg.NotifyChangeLink} that represents the registered notifcation callback.
+             * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link cfg.Service#idpUrl}.
+             * @memberof Service
+             */
+            removePageTitleChangeNotify(notifier: NotifyChangeLink<string>): boolean { return NotifyChangeLink.remove<string>(this._pageTitleChangeNotify, notifier); }
+
+            /**
              * Specifies a callback to invoke when the value of {@link app.cfg.Service#pageTitle} has changed.
-             *
+             * @deprecated - Use {@link cfg.Service#notifyPageTitleChange}, instead.
+             * @todo - Remove method when no longer used.
              * @template T - The type of object used as the "this" object when the callback is invoked.
              * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link app.cfg.Service#pageTitle} has changed.
              * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
@@ -1169,7 +1513,8 @@ namespace app {
             onTitleChanged<T>(callback: { (this: T, value: string): void; }, thisArg: T): void;
             /**
              * Specifies a callback to invoke when the value of {@link app.cfg.Service#pageTitle} has changed.
-             *
+             * @deprecated - Use {@link cfg.Service#notifyPageTitleChange}, instead.
+             * @todo - Remove method when no longer used.
              * @param {{ (value: string): void; }} callback - The callback to invoke when the value of {@link app.cfg.Service#pageTitle} has changed.
              * @memberof app.cfg.Service
              */
@@ -1193,7 +1538,8 @@ namespace app {
                 callback(this._pageTitle);
             }
 
-            private raiseTitleChanged(): void {
+            private raiseTitleChanged(newValue: string, oldValue: string): void {
+                NotifyChangeLink.raiseChange<string>(this._pageTitleChangeNotify, newValue, oldValue);
                 let callback: { (value: string): void; } = this._pageTitleChangedCallback;
                 if (typeof callback === "function")
                     callback(this._pageTitle);
@@ -1203,7 +1549,6 @@ namespace app {
 
             /**
              * Specifies callback(s) to invoke when settings have been loaded from appConfigData.json.
-             *
              * @template T - The type of object used as the "this" object when the callback is invoked.
              * @param {{ (this: T, svc: Service): void; }} successCallback - The callback to invoke when settings have been successfully loaded.
              * @param {({ (this: T, reason: any, svc: Service): void; } | undefined)} errorCallback - The callback to invoke when there was an error loading settings from appConfigData.json.
@@ -1267,7 +1612,6 @@ namespace app {
 
             /**
              * Converts a URL path to a fallback (default) page ID.
-             *
              * @static
              * @param {string} path - The URL Path to convert.
              * @returns {string} The fallback page ID for the given URL path.
@@ -1292,19 +1636,28 @@ namespace app {
                 return (arr.length === 1) ? arr[0] : arr.join("/");
             }
         }
-
-        appModule.factory(SERVICE_NAME, [storage.SERVICE_NAME, "$http", '$log', '$document', '$window', Service]);
-
     }
-    
+    appModule.factory(cfg.SERVICE_NAME, [storage.SERVICE_NAME, "$http", '$log', '$document', '$window', cfg.Service]);
+
+    /**
+     * Namespace for the urlInput directive.
+     * @namespace
+     */
     export namespace urlInputDirective {
-        const DIRECTIVE_NAME: string = "urlInput";
+        /**
+         * Defines the directive name as "urlInput".
+         *
+         * @todo Rename to inputUrl to use as <input:url />
+         * @export
+         * @constant {string}
+         */
+        export const DIRECTIVE_NAME: string = "urlInput";
 
         /**
          * Attributes that can be used with the urlInput directive.
          *
          * @export
-         * @interface IUrlInputFieldAttributes
+         * @interface IDirectiveAttributes
          * @example <caption>Example of a required URL.</caption>
          * ```
          * <!-- Where gitRepositoryUrl == "https://yourinstance.servicenow.com" -->
@@ -1323,12 +1676,12 @@ namespace app {
          * <div class="alert alert-warning">URL not provided.</div>
          * ```
          */
-        export interface IUrlInputFieldAttributes {
+        export interface IDirectiveAttributes {
             /**
              * Model containing validated URL.
              *
              * @type {string}
-             * @memberof IUrlInputFieldAttributes
+             * @memberof IDirectiveAttributes
              */
             textModel: string,
 
@@ -1336,7 +1689,7 @@ namespace app {
              * Indicates whether the content of the input text field represents a valid URL.
              *
              * @type {string}
-             * @memberof IUrlInputFieldAttributes
+             * @memberof IDirectiveAttributes
              */
             isValid?: boolean,
 
@@ -1344,7 +1697,7 @@ namespace app {
              * Indicates whether a path is allowed in the URL.
              *
              * @type {string}
-             * @memberof IUrlInputFieldAttributes
+             * @memberof IDirectiveAttributes
              */
             allowPath?: boolean,
 
@@ -1352,7 +1705,7 @@ namespace app {
              * Indicates whether a fragment (hash) is allowed in the URL.
              *
              * @type {string}
-             * @memberof IUrlInputFieldAttributes
+             * @memberof IDirectiveAttributes
              */
             allowFragment?: boolean,
 
@@ -1360,7 +1713,7 @@ namespace app {
              * Indicates whether a query string is allowed in the URL.
              *
              * @type {string}
-             * @memberof IUrlInputFieldAttributes
+             * @memberof IDirectiveAttributes
              */
             allowQuery?: boolean,
 
@@ -1368,7 +1721,7 @@ namespace app {
              * Indicates whether the URL can be relative.
              *
              * @type {string}
-             * @memberof IUrlInputFieldAttributes
+             * @memberof IDirectiveAttributes
              */
             allowRelative?: boolean,
 
@@ -1376,7 +1729,7 @@ namespace app {
              * Indicates whether the URL is required (cannot be blank).
              *
              * @type {string}
-             * @memberof IUrlInputFieldAttributes
+             * @memberof IDirectiveAttributes
              */
             required?: boolean,
 
@@ -1384,7 +1737,7 @@ namespace app {
              * The text to display for the input field label.
              *
              * @type {string}
-             * @memberof IUrlInputFieldAttributes
+             * @memberof IDirectiveAttributes
              */
             labelText: string,
 
@@ -1392,12 +1745,12 @@ namespace app {
              * The value if the id attribute of the input text field.
              *
              * @type {string}
-             * @memberof IUrlInputFieldAttributes
+             * @memberof IDirectiveAttributes
              */
             textBoxId?: string
         }
 
-        interface IUrlInputFieldScope extends IUrlInputFieldAttributes, ng.IScope {
+        interface IDirectiveScope extends IDirectiveAttributes, ng.IScope {
             ctrl: Controller;
             text: string;
             textBoxId: string;
@@ -1407,11 +1760,11 @@ namespace app {
             isValid: boolean;
         }
 
-        class Controller {
+        export class Controller {
             private _isEmpty: boolean = true;
             private _invalidFormat: boolean = false;
 
-            constructor(private $scope: IUrlInputFieldScope) {
+            constructor(private $scope: IDirectiveScope) {
                 let ctrl: Controller = this;
             }
 
@@ -1488,7 +1841,7 @@ namespace app {
                     restrict: "E",
                     controller: ['$scope', Controller],
                     controllerAs: 'ctrl',
-                    link: (scope: IUrlInputFieldScope, element: JQuery, attrs: IUrlInputFieldAttributes & ng.IAttributes) => {
+                    link: (scope: IDirectiveScope, element: JQuery, attrs: IDirectiveAttributes & ng.IAttributes) => {
                         if (typeof scope.textBoxId !== "string" || scope.textBoxId.trim().length == 0) {
                             let i: number = 0;
                             let id: string = DIRECTIVE_NAME + ":" + i++;
@@ -1518,20 +1871,29 @@ namespace app {
                 };
             }
         }
-
-        app.appModule.directive(DIRECTIVE_NAME, Controller.createDirective);
-
-        // #endregion
     }
+    app.appModule.directive(urlInputDirective.DIRECTIVE_NAME, urlInputDirective.Controller.createDirective);
 
+    /**
+     * Namespace for the appContent directive.
+     * @namespace
+     * @example
+     * ```
+     * <app-content></app-content>
+     * ```
+     */
     export namespace appContentDirective {
+        /**
+         * Defines the directive name as "appContent".
+         * @export
+         * @constant {string}
+         */
         export const DIRECTIVE_NAME: string = "appContent";
 
         /**
          * Defines a button to be shown in the modal popup dialog.
-         *
          * @interface IPopupDialogButtonConfig
-         * @extends {IPopupDialogButtonDefinition<any>}
+         * @extends {cfg.IPopupDialogButtonDefinition<any>}
          */
         export interface IPopupDialogButtonConfig extends cfg.IPopupDialogButtonDefinition<any> {
             /**
@@ -1546,176 +1908,176 @@ namespace app {
         /**
          *
          *
-         * @interface IAppContentDirectiveScope
+         * @interface IDirectiveScope
          * @extends {ng.IScope}
          */
-        export interface IAppContentDirectiveScope extends ng.IScope {
+        export interface IDirectiveScope extends ng.IScope {
             /**
              * The controller associated with the current scope.
              *
-             * @type {AppContentController}
-             * @memberof IAppContentDirectiveScope
+             * @type {Controller}
+             * @memberof IDirectiveScope
              */
-            appContentController: AppContentController;
+            appContentController: Controller;
             /**
              * The title of the current page.
              *
              * @type {string}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             pageTitle: string;
             /**
              * The value of the GIT repository URL field in the edit setup parameters dialog.
              *
              * @type {string}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             serviceNowUrl: string;
             /**
              * Indicates whether the ServiceNow URL field in the edit setup parameters dialog is valid.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             serviceNowUrlIsValid: boolean;
             /**
              * The value of the GIT repository URL field in the edit setup parameters dialog.
              *
              * @type {string}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             gitRepositoryUrl: string;
             /**
              * Indicates whether the GIT repository URL field in the edit setup parameters dialog is valid.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             gitRepositoryUrlIsValid: boolean;
             /**
              * Indicates whether all fields in the edit setup parameters dialog are valid.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             setupParametersAreInvalid: boolean;
             /**
              * Indicates whether the edit setup parameters dialog is being displayed.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             setupParametersDialogVisible: boolean;
             /**
              * Navigation menu items to be displayed in the primary navigation menu.
              *
-             * @type {ReadonlyArray<NavigationItem>}
-             * @memberof IAppContentDirectiveScope
+             * @type {ReadonlyArray<cfg.NavigationItem>}
+             * @memberof IDirectiveScope
              */
             topNavItems: ReadonlyArray<cfg.NavigationItem>;
             /**
              * Indicates whether the secondary navigation menu is to be displayed.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             showSideMenu: boolean;
             /**
              * Ancestor navigation menu items to be displayed in the secondary navigation menu.
              *
-             * @type {ReadonlyArray<NavigationItem>}
-             * @memberof IAppContentDirectiveScope
+             * @type {ReadonlyArray<cfg.NavigationItem>}
+             * @memberof IDirectiveScope
              */
             sideNavBreadcrumbItems: ReadonlyArray<cfg.NavigationItem>;
             /**
              * Indicates whether ancestor navigation menu items are to be displayed in the secondary navigation menu.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             showBreadcrumbLinks: boolean;
             /**
              * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             showSideNavItems: boolean;
             /**
              * Heading text for the secondary navigation menu.
              *
              * @type {string}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             sideNavHeading: string;
             /**
              * Indicates whether a heading is to be displayed in the secondary navigation menu.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             showSideNavHeading: boolean;
             /**
              * Navigation menu items within the secondary navigation menu, exclusing any that represents the current page or sibling items following the one that represents the current page.
              *
-             * @type {ReadonlyArray<NavigationItem>}
-             * @memberof IAppContentDirectiveScope
+             * @type {ReadonlyArray<cfg.NavigationItem>}
+             * @memberof IDirectiveScope
              */
             sideNavItems: ReadonlyArray<cfg.NavigationItem>;
             /**
              * Indicates whether navigation menu item representing the current page is to be displayed in the secondary navigation menu.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             showCurrentItem: boolean;
             /**
              * Navigation menu item representing the current page.
              *
-             * @type {ReadonlyArray<NavigationItem>}
-             * @memberof IAppContentDirectiveScope
+             * @type {ReadonlyArray<cfg.NavigationItem>}
+             * @memberof IDirectiveScope
              */
             currentNavItem?: cfg.NavigationItem;
             /**
              * Navigation menu items within the secondary navigation menu that follow the item representing the current page.
              *
-             * @type {ReadonlyArray<NavigationItem>}
-             * @memberof IAppContentDirectiveScope
+             * @type {ReadonlyArray<cfg.NavigationItem>}
+             * @memberof IDirectiveScope
              */
             followingSideNavItems: ReadonlyArray<cfg.NavigationItem>;
             /**
              * CSS class names for the main content section.
              *
              * @type {string[]}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             mainSectionClass: string[];
             /**
              * Indicates whether the main modal popup dialog is being displayed.
              *
              * @type {boolean}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             popupDialogVisible: boolean;
             /**
              * The title of the modal popup dialog.
              *
              * @type {string}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             popupDialogTitle: string;
             /**
              * Message text for modal popup dialog.
              *
              * @type {string}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             popupDialogMessage: string;
             /**
              * Buttons to be displayed in modal popup dialog.
              *
              * @type {IPopupDialogButtonConfig[]}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             popupDialogButtons: IPopupDialogButtonConfig[];
             /**
@@ -1723,39 +2085,34 @@ namespace app {
              *
              * @type {{ (result?: any): void; }}
              * @param {*} [result] - The dialog result value.
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             onPopupDialogClose?: { (result?: any): void; };
             /**
              * CSS class names for the modal popup dialog body element.
              *
              * @type {string[]}
-             * @memberof IAppContentDirectiveScope
+             * @memberof IDirectiveScope
              */
             popupDialogBodyClass: string[];
         }
 
         /**
          * Implements the controller for the appContent directive
-         *
-         * @class AppContentController
+         * @class Controller
          * @implements {ng.IController}
-         * @example
-         * ```
-         * <app-content></app-content>
-         * ```
          */
-        export class AppContentController implements ng.IController {
+        export class Controller implements ng.IController {
             /**
-             * Creates an instance of AppContentController.
+             * Creates an instance of the controller for the appContent directive.
              *
-             * @param {IAppContentDirectiveScope} $scope - The scope for the current appContent directive.
+             * @param {IDirectiveScope} $scope - The scope for the current appContent directive.
              * @param {ng.ILogService} $log - The $log service.
              * @param {ng.IWindowService} $window - The $window service.
              * @param {cfg.Service} appConfigData - The appConfigData service.
-             * @memberof AppContentController
+             * @memberof Controller
              */
-            constructor(private $scope: IAppContentDirectiveScope, private $log: ng.ILogService, private $window: ng.IWindowService, private appConfigData: cfg.Service) {
+            constructor(private $scope: IDirectiveScope, private $log: ng.ILogService, private $window: ng.IWindowService, private appConfigData: cfg.Service) {
                 $scope.serviceNowUrlIsValid = $scope.gitRepositoryUrlIsValid = $scope.setupParametersAreInvalid = true;
                 $scope.setupParametersDialogVisible = $scope.showSideMenu = $scope.showBreadcrumbLinks = $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = $scope.popupDialogVisible = false;
                 $scope.topNavItems = $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
@@ -1881,7 +2238,7 @@ namespace app {
              * Opens the edit dialog for setup parameters.
              *
              * @param {JQueryInputEventObject} [event] - The event object.
-             * @memberof AppContentController
+             * @memberof Controller
              */
             openSetupParametersEditDialog(event?: JQueryInputEventObject): void {
                 sys.preventEventDefault(event);
@@ -1896,7 +2253,7 @@ namespace app {
              *
              * @param {JQueryInputEventObject} [event] - The event object.
              * @param {boolean} [accept] - Whether to accept any validated changes that were made.
-             * @memberof AppContentController
+             * @memberof Controller
              */
             closeSetupParametersEditDialog(event?: JQueryInputEventObject, accept?: boolean): void {
                 sys.preventEventDefault(event);
@@ -1911,7 +2268,7 @@ namespace app {
              *
              * @param {JQueryInputEventObject} [event] - The event object.
              * @param {*} [result] - The result value use as the the modal dialog result.
-             * @memberof AppContentController
+             * @memberof Controller
              */
             closePopupDialog(event?: JQueryInputEventObject, result?: any): void {
                 sys.preventEventDefault(event);
@@ -1929,27 +2286,34 @@ namespace app {
 
             $onInit(): void { }
         }
-
-        appModule.directive(DIRECTIVE_NAME, () => {
-            return {
-                controller: ['$scope', '$log', '$window', cfg.SERVICE_NAME, AppContentController],
-                controllerAs: 'appContentController',
-                restrict: "E",
-                scope: true,
-                templateUrl: 'Template/appContent.htm',
-                transclude: true
-            };
-        });
     }
-
+    appModule.directive(appContentDirective.DIRECTIVE_NAME, () => {
+        return {
+            controller: ['$scope', '$log', '$window', cfg.SERVICE_NAME, appContentDirective.Controller],
+            controllerAs: 'appContentController',
+            restrict: "E",
+            scope: true,
+            templateUrl: 'Template/appContent.htm',
+            transclude: true
+        };
+    });
+    
+    /**
+     * Namespace for the sessionStorageService.
+     * @namespace
+     */
     export namespace storage {
+        /**
+         * Defines the service name as "sessionStorageService".
+         * @export
+         * @constant {string}
+         */
         export const SERVICE_NAME: string = "sessionStorageService";
 
         /**
          * The session storage key used by the {@link cfg.Service} for storing URL configuration information.
-         *
          * @export
-         * @type {string}
+         * @constant {string}
          */
         export const STORAGEKEY_URL_CONFIG_SETTINGS: string = "UrlConfig";
 
@@ -1998,6 +2362,12 @@ namespace app {
             }
         }
 
+        /**
+         * Implements the sessionStorageService service.
+         * @export
+         * @class Service
+         * @implements {Map<string, string>}
+         */
         export class Service implements Map<string, string> {
             private _allKeys: string[];
             private _parsedKeys: string[];
@@ -2005,6 +2375,12 @@ namespace app {
 
             [Symbol.toStringTag]: string;
 
+            /**
+             * The number of settings values being stored.
+             * @readonly
+             * @type {number}
+             * @memberof Service
+             */
             get size(): number { return this.$window.sessionStorage.length; }
 
             constructor(private $window: ng.IWindowService) {
@@ -2151,45 +2527,12 @@ namespace app {
 
             values(): IterableIterator<string> { return new SessionStorageValueEnumerator(this.$window, this._allKeys); }
         }
-
-        appModule.service(SERVICE_NAME, ["$window", Service]);
     }
-
-    // #region Copy To Clipboard Service
-
-    export class CopyToClipboardService {
-        constructor(private $window: ng.IWindowService) { }
-        copy(element: JQuery, successMsg?: string) {
-            try {
-                element.text();
-                let range: Range = this.$window.document.createRange();
-                range.selectNode(element[0]);
-                let selection: Selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-                this.$window.document.execCommand('copy');
-                selection.removeAllRanges();
-                if ((typeof successMsg === "string") && (successMsg = successMsg.trim()).length > 0)
-                    alert(successMsg);
-                else
-                    alert('Text copied to clipboard');
-            } catch (ex) {
-                alert('Failed to copy to clipboard: ' + ex);
-            }
-        }
-    }
-
-    appModule.service("copyToClipboardService", ["$window", CopyToClipboardService]);
-
-    // #endregion
-
-    // #region copyToClipboardButton directive 
+    appModule.service(storage.SERVICE_NAME, ["$window", storage.Service]);
     
     /**
-     * Attributes that can be used with the copyToClipboardButton directive.
-     *
-     * @export
-     * @interface ICopyToClipboardButtonAttributes
+     * Namespace for the copyToClipboardButton directive and the copyToClipboardService.
+     * @namespace
      * @example <caption>Example with default message.</caption>
      * ```
      * <copy-to-clipboard-button target="exampleCode" ></copy-to-clipboard-button>
@@ -2213,591 +2556,1023 @@ namespace app {
      * </button>
      * ```
      */
-    export interface ICopyToClipboardButtonAttributes {
+    export namespace clipboard {
         /**
-         * CSS class names to apply to button.
-         *
-         * @type {string}
-         * @memberof ICopyToClipboardButtonAttributes
+         * Defines the copy service name as "copyToClipboardService".
+         * @export
+         * @constant {string}
          */
-        class?: string;
-        
+        export const COPY_SERVICE_NAME = "copyToClipboardService";
+
         /**
-         * ID of element containing text to be copied.
+         * Defines the copy directive name as "copyToClipboardButton".
          *
-         * @type {string}
-         * @memberof ICopyToClipboardButtonAttributes
+         * @todo Rename to buttonCopyToClipboard to use as <button:copy-to-clipboard />
+         * @export
+         * @constant {string}
          */
-        target: string;
-        
-        /**
-         * Message to display after text succssfully copied to clipboard.
-         *
-         * @type {string}
-         * @memberof ICopyToClipboardButtonAttributes
-         */
-        successMessage?: string;
-    }
+        export const COPY_DIRECTIVE_NAME = "copyToClipboardButton";
 
-    const btnCssClassRe: RegExp = /(^|\s)btn(\s|$)/g;
-    const btnStyleCssClassRe: RegExp = /(^|\s)btn-\S/g;
-    const paddingCssClassRe: RegExp = /(^|\s)p(l|t|r|b)?-\S/g;
+        const btnCssClassRe: RegExp = /(^|\s)btn(\s|$)/g;
+        const btnStyleCssClassRe: RegExp = /(^|\s)btn-\S/g;
+        const paddingCssClassRe: RegExp = /(^|\s)p(l|t|r|b)?-\S/g;
 
-    interface IClipboardCopyScope extends ng.IScope {
-        clipboardCopyController: ClipboardCopyController;
-    }
-
-    class ClipboardCopyController implements ng.IController {
-        private _cssClass: string[];
-        private _targetId: string;
-        private _successMessage?: string;
-
-        get cssClass(): string[] { return this._cssClass; }
-
-        get targetId(): string { return this._targetId; }
-
-        constructor(public $scope: IClipboardCopyScope, public copyToClipboardService: CopyToClipboardService) { }
-
-        copyToClipboard(event: BaseJQueryEventObject): void {
-            try { this.copyToClipboardService.copy($("#" + this._targetId), this._successMessage); }
-            finally { sys.preventEventDefault(event); }
-        }
-
-        static createDirective(): ng.IDirective {
-            return {
-                restrict: "E",
-                controllerAs: "clipboardCopyController",
-                controller: ["$scope", "copyToClipboardService", ClipboardCopyController],
-                replace: true,
-                template: '<button ng-click="clipboardCopyController.copyToClipboard(event)"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>',
-                link: (scope: IClipboardCopyScope, element: JQuery, attr: ICopyToClipboardButtonAttributes & ng.IAttributes, controller: ng.IController) => {
-                    scope.clipboardCopyController.initialize(attr.target, attr.successMessage, attr.class);
+        export class CopyService {
+            constructor(private $window: ng.IWindowService) { }
+            copy(element: JQuery, successMsg?: string) {
+                try {
+                    element.text();
+                    let range: Range = this.$window.document.createRange();
+                    range.selectNode(element[0]);
+                    let selection: Selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    this.$window.document.execCommand('copy');
+                    selection.removeAllRanges();
+                    if ((typeof successMsg === "string") && (successMsg = successMsg.trim()).length > 0)
+                        alert(successMsg);
+                    else
+                        alert('Text copied to clipboard');
+                } catch (ex) {
+                    alert('Failed to copy to clipboard: ' + ex);
                 }
-            };
-        }
-        
-        initialize(targetId: string, successMessage?: string, cssClass?: string) {
-            this._targetId = targetId;
-            this._successMessage = successMessage;
-            if (typeof cssClass === "string" && (cssClass = cssClass.trim()).length > 0) {
-                this._cssClass = sys.unique(cssClass.split(sys.whitespaceRe));
-                if (this._cssClass.indexOf('btn') < 0)
-                    this._cssClass.unshift('btn');
-                if (!btnStyleCssClassRe.test(cssClass)) {
-                    this._cssClass.push("btn-light");
-                    this._cssClass.push("btn-outline-dark");
-                }
-                if (!paddingCssClassRe.test(cssClass))
-                    this._cssClass.push("p-1");
-            } else
-                this._cssClass = ['btn', 'btn-light', 'btn-outline-dark', 'p-1'];
+            }
         }
 
-        $onInit() { }
+        /**
+         * Attributes that can be used with the copyToClipboardButton directive.
+         * @export
+         * @interface ICopyDirectiveAttributes
+         */
+        export interface ICopyDirectiveAttributes {
+            /**
+             * CSS class names to apply to button.
+             * @type {string}
+             * @memberof ICopyDirectiveAttributes
+             */
+            class?: string;
+
+            /**
+             * ID of element containing text to be copied.
+             * @type {string}
+             * @memberof ICopyDirectiveAttributes
+             */
+            target: string;
+
+            /**
+             * Message to display after text succssfully copied to clipboard.
+             * @type {string}
+             * @memberof ICopyDirectiveAttributes
+             */
+            successMessage?: string;
+        }
+
+        interface IClipboardCopyScope extends ng.IScope {
+            clipboardCopyController: ClipboardCopyController;
+        }
+
+        export class ClipboardCopyController implements ng.IController {
+            private _cssClass: string[];
+            private _targetId: string;
+            private _successMessage?: string;
+
+            get cssClass(): string[] { return this._cssClass; }
+
+            get targetId(): string { return this._targetId; }
+
+            constructor(public $scope: IClipboardCopyScope, public copyToClipboardService: CopyService) { }
+
+            copyToClipboard(event: BaseJQueryEventObject): void {
+                try { this.copyToClipboardService.copy($("#" + this._targetId), this._successMessage); }
+                finally { sys.preventEventDefault(event); }
+            }
+
+            static createDirective(): ng.IDirective {
+                return {
+                    restrict: "E",
+                    controllerAs: "clipboardCopyController",
+                    controller: ["$scope", "copyToClipboardService", ClipboardCopyController],
+                    replace: true,
+                    template: '<button ng-click="clipboardCopyController.copyToClipboard(event)"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>',
+                    link: (scope: IClipboardCopyScope, element: JQuery, attr: ICopyDirectiveAttributes & ng.IAttributes, controller: ng.IController) => {
+                        scope.clipboardCopyController.initialize(attr.target, attr.successMessage, attr.class);
+                    }
+                };
+            }
+
+            initialize(targetId: string, successMessage?: string, cssClass?: string) {
+                this._targetId = targetId;
+                this._successMessage = successMessage;
+                if (typeof cssClass === "string" && (cssClass = cssClass.trim()).length > 0) {
+                    this._cssClass = sys.unique(cssClass.split(sys.whitespaceRe));
+                    if (this._cssClass.indexOf('btn') < 0)
+                        this._cssClass.unshift('btn');
+                    if (!btnStyleCssClassRe.test(cssClass)) {
+                        this._cssClass.push("btn-light");
+                        this._cssClass.push("btn-outline-dark");
+                    }
+                    if (!paddingCssClassRe.test(cssClass))
+                        this._cssClass.push("p-1");
+                } else
+                    this._cssClass = ['btn', 'btn-light', 'btn-outline-dark', 'p-1'];
+            }
+
+            $onInit() { }
+        }
     }
-
-    app.appModule.directive("copyToClipboardButton", ClipboardCopyController.createDirective);
-
-    // #endregion
-
+    appModule.service(clipboard.COPY_SERVICE_NAME, ["$window", clipboard.CopyService]);
+    appModule.directive(clipboard.COPY_DIRECTIVE_NAME, clipboard.ClipboardCopyController.createDirective);
+    
     // #region snInstanceLink directive
 
+    ///**
+    // * Attributes that can be used with the snInstanceLink directive.
+    // *
+    // * @export
+    // * @interface ISnInstanceLinkAttributes
+    // * @example <caption>Example of simple statically defined relative URL.</caption>
+    // * ```
+    // * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+    // * <sn-instance-link relative-url="/sys_user_group_list.do?XML">Group List XML</sn-instance-link>
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://yourinstance.servicenow.com/sys_user_group_list.do?XML" target="_blank">Group List XML</a>
+    // * ```
+    // * @example <caption>Example of statically defined relative URL encoded in nav_to.do query parameter.</caption>
+    // * ```
+    // * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+    // * <sn-instance-link relative-url="/sys_user_group_list.do?XML" to-nav="true">Group List XML</sn-instance-link>
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do%3FXML" target="_blank">Group List XML</a>
+    // * ```
+    // * @example <caption>Example of bound URL model.</caption>
+    // * ```
+    // * <!-- Where modelVar === "/sys_user_group_list.do?XML" and  cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+    // * <sn-instance-link relative-url-model="modelVar">Group List XML</sn-instance-link>
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://yourinstance.servicenow.com/sys_user_group_list.do" target="_blank">Group List XML</a>
+    // * ```
+    // * @example <caption>Example of bound URL model encoded in nav_to.do query parameter.</caption>
+    // * ```
+    // * <!-- Where modelVar === "/sys_user_group_list.do?XML" and  cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+    // * <sn-instance-link relative-url-model="modelVar" to-nav="true">Group List XML</sn-instance-link>
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do%3FXML" target="_blank">Group List XML</a>
+    // * ```
+    // */
+    //export interface ISnInstanceLinkAttributes {
+    //}
+
+    //interface ISnInstanceLinkScope extends ISnInstanceLinkAttributes, ng.IScope {
+    //    href: string;
+    //    linkTarget: string;
+    //}
+
+    //class SnInstanceLinkController implements ng.IController {
+    //    constructor(protected $scope: ISnInstanceLinkScope, protected appConfigData: cfg.Service) {
+    //        $scope.href = '#';
+    //        $scope.linkTarget = "_blank";
+    //        let ctrl: SnInstanceLinkController = this;
+    //        appConfigData.onServiceNowUrlChanged((value: URL) => { ctrl.updateHRef(value); });
+    //        $scope.$watchGroup(['relativeUrlModel', 'relativeUrl', 'toNav'], () => { ctrl.updateHRef(); });
+    //        $scope.$watch('target', () => { $scope.linkTarget = (typeof $scope.target == "string") ? $scope.target : "_blank" });
+    //    }
+    //    updateHRef(value?: URL): void {
+    //        if (sys.asBoolean(this.$scope.toNav)) {
+    //            if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
+    //                this.$scope.href = this.appConfigData.createUrl("sn", "nav_to.do", "uri", this.$scope.relativeUrlModel).href;
+    //            else
+    //                this.$scope.href = this.appConfigData.createUrl("sn", "nav_to.do", "uri", this.$scope.relativeUrl).href;
+    //        } else if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
+    //            this.$scope.href = this.appConfigData.createUrl("sn", this.$scope.relativeUrlModel).href;
+    //        else
+    //            this.$scope.href = this.appConfigData.createUrl("sn", this.$scope.relativeUrl).href;
+    //    }
+    //    $onInit() { }
+    //}
+
+    //app.appModule.directive("snInstanceLink", () => {
+    //    return <ng.IDirective>{
+    //        restrict: "AE",
+    //        controller: ['$scope', cfg.SERVICE_NAME, SnInstanceLinkController],
+    //        scope: { relativeUrl: "@?", relativeUrlModel: "=?", toNav: "@?", target: "@?" },
+    //        replace: true,
+    //        template: '<a ng-href="{{href}}" target="{{linkTarget}}" ng-transclude></a>',
+    //        transclude: true
+    //    }
+    //});
+
+    // #endregion
+    
     /**
-     * Attributes that can be used with the snInstanceLink directive.
-     *
-     * @export
-     * @interface ISnInstanceLinkAttributes
-     * @example <caption>Example of simple statically defined relative URL.</caption>
+     * Namespace for the configUrl directive.
+     * @namespace
+     * @example <caption>Example for simple url text.</caption>
      * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-instance-link relative-url="/sys_group_list.do?XML">Group List XML</sn-instance-link>
+     * <!-- Where cfg.Service#idpUrl() returns "https://idp.f5server.com" -->
+     * <config-url base="idp" />
      * <!-- Transpiled code will be: -->
-     * <a href="https://yourinstance.servicenow.com/sys_group_list.do?XML" target="_blank">Group List XML</a>
+     * https://idp.f5server.com/
      * ```
-     * @example <caption>Example of statically defined relative URL encoded in nav_to.do query parameter.</caption>
+     * @example <caption>Example using directive as attribute.</caption>
      * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-instance-link relative-url="/sys_group_list.do?XML" to-nav="true">Group List XML</sn-instance-link>
+     * <!-- Where cfg.Service#idpUrl() returns "https://idp.f5server.com" -->
+     * <div class="detail" config-url base="idp"></div>
      * <!-- Transpiled code will be: -->
-     * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_group_list.do%3FXML" target="_blank">Group List XML</a>
+     * <div class="detail">https://idp.f5server.com/</div>
      * ```
-     * @example <caption>Example of bound URL model.</caption>
+     * @example <caption>Example with a relative URL.</caption>
      * ```
-     * <!-- Where modelVar === "/sys_group_list.do?XML" and  cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-instance-link relative-url-model="modelVar">Group List XML</sn-instance-link>
+     * <!-- Where cfg.Service#gitServiceUrl() returns "https://github.com/your-root/" -->
+     * <config-url base="git" href="myRepo.git" />
      * <!-- Transpiled code will be: -->
-     * <a href="https://yourinstance.servicenow.com/sys_group_list.do" target="_blank">Group List XML</a>
+     * https://github.com/your-root/myRepo.git
      * ```
-     * @example <caption>Example of bound URL model encoded in nav_to.do query parameter.</caption>
+     * @example <caption>Example for generating a hyperlink.</caption>
      * ```
-     * <!-- Where modelVar === "/sys_group_list.do?XML" and  cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-instance-link relative-url-model="modelVar" to-nav="true">Group List XML</sn-instance-link>
+     * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+     * <config-url base="sn" href="login.do" as-link="true" />
      * <!-- Transpiled code will be: -->
-     * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_group_list.do%3FXML" target="_blank">Group List XML</a>
+     * <a href="https://yourinstance.servicenow.com/login.do" target="_blank">https://yourinstance.servicenow.com/login.do</a>
+     * ```
+     * @example <caption>Example for generating including a query parameter and css classes.</caption>
+     * ```
+     * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+     * <config-url base="sn" href="nav_to.do" q="uri" v="/sys_user_group_list.do" as-link="true" link-class="myClass" />
+     * <!-- Transpiled code will be: -->
+     * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do" target="_blank" class="myClass">https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do</a>
      * ```
      */
-    export interface ISnInstanceLinkAttributes {
+    export namespace configUrlDirective {
         /**
-         * Statically defined URL which is relative to {@link cfg.Service#serviceNowUrl}.
-         *
-         * @type {string}
-         * @memberof ISnInstanceLinkAttributes
+         * Defines the directive name as "configUrl".
+         * @export
+         * @constant {string}
          */
-        relativeUrl?: string;
-
-        /**
-         * Bound URL string model which is relative to {@link cfg.Service#serviceNowUrl}.
-         *
-         * @type {string}
-         * @memberof ISnInstanceLinkAttributes
-         */
-        relativeUrlModel?: string;
+        export const DIRECTIVE_NAME: string = "configUrl";
 
         /**
-         * Indicates whether to encode the relative URL within the uri query parameter of /nav_to.do.
-         *
-         * @type {("true"|"false")}
-         * @memberof ISnInstanceLinkAttributes
+         * Represents attributes that can be used with the configUrl directive.
+         * @export
+         * @interface IDirectiveAttributes
          */
-        toNav?: "true"|"false";
+        export interface IDirectiveAttributes {
+            /**
+             * The name of the base URL setting.
+             * @type {cfg.UrlSettingsNames}
+             * @memberof IDirectiveAttributes
+             * @example <caption>Example that emits the url of ServiceNow instance.</caption>
+             * ```
+             * <config-url base="sn" />
+             * ```
+             * @example <caption>Example that emits the url of git service.</caption>
+             * ```
+             * <config-url base="git" />
+             * ```
+             * @example <caption>Example that emits the url of identity provider.</caption>
+             * ```
+             * <config-url base="idp" />
+             * ```
+             */
+            base: cfg.UrlSettingsNames;
 
-        /**
-         * The value for the _target attribute of the anchor tag.
-         *
-         * @type {string}
-         * @memberof ISnInstanceLinkAttributes
-         */
-        target?: string;
-    }
+            /**
+             * The relative URL.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @example
+             * ```
+             * <!-- Where cfg.Service#gitServiceUrl() returns "https://github.com/your-root/" -->
+             * <config-url base="git" href="myRepo.git" />
+             * <!-- Transpiled code will be: -->
+             * https://github.com/your-root/myRepo.git
+             * ```
+             */
+            href?: string;
 
-    interface ISnInstanceLinkScope extends ISnInstanceLinkAttributes, ng.IScope {
-        href: string;
-        linkTarget: string;
-    }
+            /**
+             * The name of the query parameter to include.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @example
+             * ```
+             * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+             * <config-url base="sn" href="sys_user_group_list.do" q="XML" as-link="true" />
+             * <!-- Transpiled code will be: -->
+             * <a href="https://yourinstance.servicenow.com/sys_user_group_list.do?XML" target="_blank">https://yourinstance.servicenow.com/sys_user_group_list.do?XML</a>
+             * ```
+             */
+            q?: string;
 
-    class SnInstanceLinkController implements ng.IController {
-        constructor(protected $scope: ISnInstanceLinkScope, protected appConfigData: cfg.Service) {
-            $scope.href = '#';
-            $scope.linkTarget = "_blank";
-            let ctrl: SnInstanceLinkController = this;
-            appConfigData.onServiceNowUrlChanged((value: URL) => { ctrl.updateHRef(value); });
-            $scope.$watchGroup(['relativeUrlModel', 'relativeUrl', 'toNav'], () => { ctrl.updateHRef(); });
-            $scope.$watch('target', () => { $scope.linkTarget = (typeof $scope.target == "string") ? $scope.target : "_blank" });
+            /**
+             * The value for the query parameter to be included.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @description This is ignored if {@link IDirectiveAttributes#q} is empty or not defined.
+             * @example
+             * ```
+             * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+             * <config-url base="sn" href="nav_to.do" q="uri" v="/sys_user_group_list.do" as-link="true" link-class="myClass" />
+             * <!-- Transpiled code will be: -->
+             * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do" target="_blank" class="myClass">https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do</a>
+             * ```
+             */
+            v?: string;
+
+            /**
+             * Whether to render as an anchor tag (default is false - render as plain text).
+             * @type {("true" | "false")}
+             * @memberof IDirectiveAttributes
+             * @example
+             * ```
+             * <!-- Where cfg.Service#idpUrl() returns "https://idp.f5server.com" -->
+             * <config-url base="idp" as-link="true" />
+             * <!-- Transpiled code will be: -->
+             * <a href="https://idp.f5server.com/" target="_blank">https://idp.f5server.com/</a>
+             * ```
+             */
+            asLink?: "true" | "false";
+
+            /**
+             * Specifies an alternate target frame.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @description This is ignored if {@link IDirectiveAttributes#asLink} is false or not specified.
+             * @example
+             * ```
+             * <!-- Where cfg.Service#idpUrl() returns "https://idp.f5server.com" -->
+             * <config-url base="idp" as-link="true" target="_parent" />
+             * <!-- Transpiled code will be: -->
+             * <a href="https://idp.f5server.com/" target="_parent">https://idp.f5server.com/</a>
+             * ```
+             */
+            target?: string;
+
+            /**
+             * Define class names for the rendered anchor tag.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @description This is ignored if {@link IDirectiveAttributes#asLink} is false or not specified.
+             * @example
+             * ```
+             * <!-- Where cfg.Service#idpUrl() returns "https://idp.f5server.com" -->
+             * <config-url base="idp" as-link="true" link-class="myClass" />
+             * <!-- Transpiled code will be: -->
+             * <a href="https://idp.f5server.com/" target="_blank" class="myClass">https://idp.f5server.com/</a>
+             * ```
+             */
+            linkClass?: string;
+
+            /**
+             * Bind to a model for class name(s).
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @description This is ignored if {@link IDirectiveAttributes#asLink} is false or not specified.
+             * @example
+             * ```
+             * <!-- Where cfg.Service#idpUrl() returns "https://idp.f5server.com" and $scope.myClass = ["nav", "nav-link"] -->
+             * <config-url base="idp" as-link="true" link-class="p-1" link-class-model="myClass" />
+             * <!-- Transpiled code will be: -->
+             * <a href="https://idp.f5server.com/" target="_blank" class="p-1 nav nav-link">https://idp.f5server.com/</a>
+             * ```
+             */
+            linkClassModel?: string;
         }
-        updateHRef(value?: URL): void {
-            if (sys.asBoolean(this.$scope.toNav)) {
-                if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
-                    this.$scope.href = this.appConfigData.createUrl("serviceNow", "nav_to.do", "uri", this.$scope.relativeUrlModel).href;
+
+        export function createDirective(appConfigData: cfg.Service): ng.IDirective {
+            return <ng.IDirective>{
+                restrict: "AE",
+                link: (scope: IDirectiveAttributes & ng.IScope, element: JQuery, attrs: IDirectiveAttributes & ng.IAttributes) => {
+                    let lastNotifier: [cfg.UrlSettingsNames, cfg.NotifyChangeLink<URL>];
+                    function updateText() {
+                        let url: URL = (typeof scope.q === "string" && scope.q.length > 0) ?
+                            (((typeof scope.v === "string") ? appConfigData.createUrl(lastNotifier[0], scope.href, scope.q, scope.v) :
+                                appConfigData.createUrl(lastNotifier[0], scope.href, scope.q))) : appConfigData.createUrl(lastNotifier[0], scope.href);
+                        let a: JQuery = element.children("a");
+                        if (sys.asBoolean(scope.asLink)) {
+                            if (a.length == 0) {
+                                element.text("");
+                                a = element.add("<a></a>");
+                            }
+                            a.attr("href", url.href);
+                            a.attr("target", (typeof scope.target === "string" && scope.target.length > 0) ? scope.target : "_blank");
+                            let c: string[] = (typeof scope.linkClass === "string" && scope.linkClass.length > 0) ?
+                                sys.unique(((typeof scope.linkClassModel === "string" && scope.linkClassModel.length > 0) ?
+                                    scope.linkClass.split(sys.whitespaceRe).concat(scope.linkClassModel.split(sys.whitespaceRe)) :
+                                    scope.linkClass.split(sys.whitespaceRe)).filter((v: string) => v.length > 0)) :
+                                ((typeof scope.linkClassModel === "string" && scope.linkClassModel.length > 0) ? sys.unique(scope.linkClassModel.split(sys.whitespaceRe).filter((v: string) => v.length > 0)) : []);
+                            if (c.length > 0)
+                                a.attr("class", c.join(" "));
+                            else {
+                                let s: string = a.attr("class");
+                                if (typeof s === "string" && s.length > 0)
+                                    a.removeAttr("class");
+                            }
+                            a.text(url.href);
+                        } else {
+                            if (a.length > 0)
+                                a.remove();
+                            element.text(url.href);
+                        }
+                    }
+                    lastNotifier = [scope.base, appConfigData.notifyUrlChange(scope.base, (newValue: URL, oldValue: URL) => { updateText(); })];
+                    updateText();
+                    scope.$watchGroup(["base", "href", "q", "v", "asLink", "target"], () => {
+                        if (lastNotifier[0] !== scope.base) {
+                            appConfigData.removeUrlChangeNofify(lastNotifier[0], lastNotifier[1]);
+                            lastNotifier[0] = scope.base;
+                            lastNotifier[1] = appConfigData.notifyUrlChange(scope.base, (newValue: URL, oldValue: URL) => { updateText(); });
+                        }
+                        updateText();
+                    });
+                },
+                scope: { base: "@", href: "@?", q: "@?", v: "@?", asLink: "@?", linkClass: "@?", linkClassModel: "=?" }
+            }
+        }
+    }
+    appModule.directive(configUrlDirective.DIRECTIVE_NAME, [cfg.SERVICE_NAME, (appConfigData: cfg.Service) => configUrlDirective.createDirective(appConfigData)]);
+    
+    /**
+     * Namespace for the aConfigLink directive.
+     * @namespace
+     * @example <caption>Example for simple url text.</caption>
+     * ```
+     * <!-- Where cfg.Service#idpUrl() returns "https://idp.f5server.com" -->
+     * <a:config-link base="idp">IDP<a:config-link>
+     * <!-- Transpiled code will be: -->
+     * <a href="https://idp.f5server.com/" target="_blank">IDP</a>
+     * ```
+     * @example <caption>Example with a relative URL.</caption>
+     * ```
+     * <!-- Where cfg.Service#gitServiceUrl() returns "https://github.com/your-root/" -->
+     * <a:config-link base="git" href="myRepo.git">Git Repository<a:config-link>
+     * <!-- Transpiled code will be: -->
+     * <a href="https://github.com/your-root/myRepo.git" target="_blank">Git Repository</a>
+     * ```
+     * @example <caption>Example for generating including a query parameter.</caption>
+     * ```
+     * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+     * <a:config-link base="sn" href="nav_to.do" q="uri" v="/sys_user_group_list.do">Group List<a:config-link>
+     * <!-- Transpiled code will be: -->
+     * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do" target="_blank">Group List</a>
+     * ```
+     * @example <caption>Example for generating including css classes.</caption>
+     * ```
+     * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+     * <a:config-link base="sn" href="nav_to.do" link-class="myClass">Group List<a:config-link>
+     * <!-- Transpiled code will be: -->
+     * <a href="https://yourinstance.servicenow.com/" target="_blank" class="myClass">Group List</a>
+     * ```
+     */
+    export namespace aConfigLinkDirective {
+        /**
+         * Defines the directive name as "aConfigLink".
+         * @export
+         * @constant {string}
+         */
+        export const DIRECTIVE_NAME: string = "aConfigLink";
+
+        const DEFAULT_TARGET = "_blank";
+
+        /**
+         * Represents attributes that can be used with the aConfigLink directive.
+         * @export
+         * @interface IDirectiveAttributes
+         */
+        export interface IDirectiveAttributes {
+            /**
+             * The name of the base URL setting.
+             * @type {cfg.UrlSettingsNames}
+             * @memberof IDirectiveAttributes
+             * @example <caption>Example that emits a link to the ServiceNow instance.</caption>
+             * ```
+             * <a:config-link base="sn">ServiceNow</a:config-link>
+             * ```
+             * @example <caption>Example that emits a link to the git service.</caption>
+             * ```
+             * <a:config-link base="git">Git Service</a:config-link>
+             * ```
+             * @example <caption>Example that emits a link to the identity provider.</caption>
+             * ```
+             * <a:config-link base="idp">Identity Provider</a:config-link>
+             * ```
+             */
+            base: cfg.UrlSettingsNames;
+
+            /**
+             * The relative URL.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @example
+             * ```
+             * <!-- Where cfg.Service#idpUrl() returns "https://idp.f5server.com" -->
+             * <a:config-link base="idp">IDP<a:config-link>
+             * <!-- Transpiled code will be: -->
+             * <a href="https://idp.f5server.com/" target="_blank">IDP</a>
+             * ```
+             */
+            href?: string;
+
+            /**
+             * The name of the query parameter to include.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @example <caption>Example for generating including a query parameter.</caption>
+             * ```
+             * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+             * <a:config-link base="sn" href="sys_user_group_list.do" q="XML" v="/sys_user_group_list.do">Group XML Export<a:config-link>
+             * <!-- Transpiled code will be: -->
+             * <a href="https://yourinstance.servicenow.com/sys_user_group_list.do?XML" target="_blank">Group XML Export</a>
+             * ```
+             */
+            q?: string;
+
+            /**
+             * The value for the query parameter to be included.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @description This is ignored if {@link IDirectiveAttributes#q} is empty or not defined.
+             * @example <caption>Example for generating including a query parameter.</caption>
+             * ```
+             * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+             * <a:config-link base="sn" href="nav_to.do" q="uri" v="/sys_user_group_list.do">Group List<a:config-link>
+             * <!-- Transpiled code will be: -->
+             * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do" target="_blank">Group List</a>
+             * ```
+             */
+            v?: string;
+
+            /**
+             * Specifies an alternate target frame.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @example
+             * ```
+             * <!-- Where cfg.Service#idpUrl() returns "https://idp.f5server.com" -->
+             * <a:config-link base="idp" target="_self">IDP<a:config-link>
+             * <!-- Transpiled code will be: -->
+             * <a href="https://idp.f5server.com/" target="_self">IDP</a>
+             * ```
+             */
+            target?: string;
+
+            /**
+             * Define class names for the rendered anchor tag.
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @example
+             * ```
+             * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+             * <a:config-link base="sn" href="nav_to.do" link-class="myClass">Group List<a:config-link>
+             * <!-- Transpiled code will be: -->
+             * <a href="https://yourinstance.servicenow.com/" target="_blank" class="myClass">Group List</a>
+             * ```
+             */
+            linkClass?: string;
+
+            /**
+             * Bind to a model for class name(s).
+             * @type {string}
+             * @memberof IDirectiveAttributes
+             * @example
+             * ```
+             * <!-- Where cfg.Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" and $scope.myClass = ["nav", "nav-link"] -->
+             * <a:config-link base="sn" href="nav_to.do" link-class="p-1" link-class-model="myClass">Group List<a:config-link>
+             * <!-- Transpiled code will be: -->
+             * <a href="https://yourinstance.servicenow.com/" target="_blank" class="p-1 nav nav-link">Group List</a>
+             * ```
+             */
+            linkClassModel?: string;
+        }
+
+        interface IDirectiveScope extends IDirectiveAttributes, ng.IScope {
+            absHRef: string;
+            linkTarget: string;
+            class: string[];
+        }
+
+        export class Controller implements ng.IController {
+            private _lastNotifier: [cfg.UrlSettingsNames, cfg.NotifyChangeLink<URL>] | undefined;
+            constructor(private $scope: IDirectiveScope, private appConfigData: cfg.Service) {
+                $scope.absHRef = "#";
+                $scope.linkTarget = DEFAULT_TARGET;
+                $scope.class = [];
+                $scope.$watchGroup(["base", "url", "q", "v"], () => {
+                    let ctrl: Controller = this;
+                    if (sys.isNil(this._lastNotifier))
+                        this._lastNotifier = [$scope.base, appConfigData.notifyUrlChange($scope.base, (newValue: URL, oldValue: URL) => { ctrl.updateHref(); })];
+                    else if (this._lastNotifier[0] !== $scope.base) {
+                        appConfigData.removeUrlChangeNofify(this._lastNotifier[0], this._lastNotifier[1]);
+                        this._lastNotifier = [$scope.base, appConfigData.notifyUrlChange($scope.base, (newValue: URL, oldValue: URL) => { ctrl.updateHref(); })];
+                    }
+                });
+                $scope.$watchGroup(["linkClass", "linkClassModel"], () => {
+                    $scope.class = (typeof $scope.linkClass === "string" && $scope.linkClass.length > 0) ?
+                        sys.unique(((typeof $scope.linkClassModel === "string" && $scope.linkClassModel.length > 0) ?
+                            $scope.linkClass.split(sys.whitespaceRe).concat($scope.linkClassModel.split(sys.whitespaceRe)) :
+                            $scope.linkClass.split(sys.whitespaceRe)).filter((v: string) => v.length > 0)) :
+                        ((typeof $scope.linkClassModel === "string" && $scope.linkClassModel.length > 0) ? sys.unique($scope.linkClassModel.split(sys.whitespaceRe).filter((v: string) => v.length > 0)) : []);
+                });
+                $scope.$watch("target", () => {
+                    if (typeof $scope.target === "string")
+                        $scope.linkTarget = $scope.target;
+                    else
+                        $scope.linkTarget = DEFAULT_TARGET;
+                });
+            }
+            updateHref() {
+                if (typeof this.$scope.q === "string" && this.$scope.q.length > 0)
+                    this.$scope.absHRef = ((typeof this.$scope.v === "string") ? this.appConfigData.createUrl(this._lastNotifier[0], this.$scope.href, this.$scope.q, this.$scope.v) :
+                        this.appConfigData.createUrl(this._lastNotifier[0], this.$scope.href, this.$scope.q)).href;
                 else
-                    this.$scope.href = this.appConfigData.createUrl("serviceNow", "nav_to.do", "uri", this.$scope.relativeUrl).href;
-            } else if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
-                this.$scope.href = this.appConfigData.createUrl("serviceNow", this.$scope.relativeUrlModel).href;
-            else
-                this.$scope.href = this.appConfigData.createUrl("serviceNow", this.$scope.relativeUrl).href;
+                    this.$scope.absHRef = this.appConfigData.createUrl(this._lastNotifier[0], this.$scope.href).href;
+            }
+            $onInit() { }
         }
-        $onInit() { }
     }
-
-    app.appModule.directive("snInstanceLink", () => {
+    appModule.directive(aConfigLinkDirective.DIRECTIVE_NAME, () => {
         return <ng.IDirective>{
             restrict: "E",
-            controller: ['$scope', 'appConfigData', SnInstanceLinkController],
-            scope: { relativeUrl: "@?", relativeUrlModel: "=?", toNav: "@?", target: "@?" },
+            controller: [cfg.SERVICE_NAME, aConfigLinkDirective.Controller],
+            scope: { base: "@", href: "@?", q: "@?", v: "@?", linkClass: "@?", linkClassModel: "=?" },
             replace: true,
-            template: '<a ng-href="{{href}}" target="{{linkTarget}}" ng-transclude></a>',
+            template: '<a ng-href="{{absHRef}}" target="{{linkTarget}}" ng-class="class" ng-tranclude></a>',
             transclude: true
         }
     });
-
-    // #endregion
-
-    export namespace configUrlDirective {
-        export const DIRECTIVE_NAME: string = "configUrl";
-
-        export interface IDirectiveAttributes extends ng.IAttributes {
-            base: string,
-            relativeUrl?: string
-        }
-        class Controller implements ng.IController {
-
-        }
-
-        app.appModule.directive(DIRECTIVE_NAME, () => {
-            return <ng.IDirective>{
-                restrict: "E",
-                controller: ['$scope', 'appConfigData', Controller],
-                scope: { relativeUrl: "@?", }
-            }
-        });
-    }
-
-    export namespace aConfigUrlDirective {
-        export const DIRECTIVE_NAME: string = "aConfigUrl";
-    }
-
-    // #region configUrl directive
-
-    // #endregion
-
-    // #region aConfigUrl directive
-
-    // #endregion
-
+    
     // #region snInstanceUrl directive
 
-    /**
-     * Attributes that can be used with the snInstanceUrl directive.
-     *
-     * @export
-     * @interface ISnInstanceUrlAttributes
-     * @example <caption>Example of simple statically defined relative URL.</caption>
-     * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-instance-url relative-url="/sys_group_list.do?XML" />
-     * <!-- Transpiled code will be: -->
-     * <a href="https://yourinstance.servicenow.com/sys_group_list.do?XML" target="_blank">https://yourinstance.servicenow.com/sys_group_list.do?XML</a>
-     * ```
-     * @example <caption>Example of statically defined relative URL encoded in nav_to.do query parameter.</caption>
-     * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-instance-url relative-url="/sys_group_list.do?XML" to-nav="true" />
-     * <!-- Transpiled code will be: -->
-     * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_group_list.do%3FXML" target="_blank">https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_group_list.do%3FXML</a>
-     * ```
-     * @example <caption>Example of bound URL model.</caption>
-     * ```
-     * <!-- Where modelVar === "/sys_group_list.do?XML" and  cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-instance-url relative-url-model="modelVar" />
-     * <!-- Transpiled code will be: -->
-     * <a href="https://yourinstance.servicenow.com/sys_group_list.do" target="_blank">https://yourinstance.servicenow.com/sys_group_list.do</a>
-     * ```
-     * @example <caption>Example of bound URL model encoded in nav_to.do query parameter.</caption>
-     * ```
-     * <!-- Where modelVar === "/sys_group_list.do?XML" and  cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-instance-url relative-url-model="modelVar" to-nav="true" />
-     * <!-- Transpiled code will be: -->
-     * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_group_list.do%3FXML" target="_blank">https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_group_list.do%3FXML</a>
-     * ```
-     */
-    export interface ISnInstanceUrlAttributes {
-        /**
-         * Statically defined URL which is relative to {@link cfg.Service#serviceNowUrl}.
-         *
-         * @type {string}
-         * @memberof ISnInstanceUrlAttributes
-         */
-        relativeUrl?: string;
+    ///**
+    // * Attributes that can be used with the snInstanceUrl directive.
+    // *
+    // * @export
+    // * @interface ISnInstanceUrlAttributes
+    // * @example <caption>Example of simple statically defined relative URL.</caption>
+    // * ```
+    // * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+    // * <sn-instance-url relative-url="/sys_user_group_list.do?XML" />
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://yourinstance.servicenow.com/sys_user_group_list.do?XML" target="_blank">https://yourinstance.servicenow.com/sys_user_group_list.do?XML</a>
+    // * ```
+    // * @example <caption>Example of statically defined relative URL encoded in nav_to.do query parameter.</caption>
+    // * ```
+    // * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+    // * <sn-instance-url relative-url="/sys_user_group_list.do?XML" to-nav="true" />
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do%3FXML" target="_blank">https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do%3FXML</a>
+    // * ```
+    // * @example <caption>Example of bound URL model.</caption>
+    // * ```
+    // * <!-- Where modelVar === "/sys_user_group_list.do?XML" and  cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+    // * <sn-instance-url relative-url-model="modelVar" />
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://yourinstance.servicenow.com/sys_user_group_list.do" target="_blank">https://yourinstance.servicenow.com/sys_user_group_list.do</a>
+    // * ```
+    // * @example <caption>Example of bound URL model encoded in nav_to.do query parameter.</caption>
+    // * ```
+    // * <!-- Where modelVar === "/sys_user_group_list.do?XML" and  cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+    // * <sn-instance-url relative-url-model="modelVar" to-nav="true" />
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do%3FXML" target="_blank">https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do%3FXML</a>
+    // * ```
+    // */
+    //export interface ISnInstanceUrlAttributes {
+    //    /**
+    //     * Statically defined URL which is relative to {@link cfg.Service#serviceNowUrl}.
+    //     *
+    //     * @type {string}
+    //     * @memberof ISnInstanceUrlAttributes
+    //     */
+    //    relativeUrl?: string;
 
-        /**
-         * Bound URL string model which is relative to {@link cfg.Service#serviceNowUrl}.
-         *
-         * @type {string}
-         * @memberof ISnInstanceUrlAttributes
-         */
-        relativeUrlModel?: string;
+    //    /**
+    //     * Bound URL string model which is relative to {@link cfg.Service#serviceNowUrl}.
+    //     *
+    //     * @type {string}
+    //     * @memberof ISnInstanceUrlAttributes
+    //     */
+    //    relativeUrlModel?: string;
 
-        /**
-         * Indicates whether to encode the relative URL within the uri query parameter of /nav_to.do.
-         *
-         * @type {("true"|"false")}
-         * @memberof ISnInstanceUrlAttributes
-         */
-        toNav?: "true" | "false";
+    //    /**
+    //     * Indicates whether to encode the relative URL within the uri query parameter of /nav_to.do.
+    //     *
+    //     * @type {("true"|"false")}
+    //     * @memberof ISnInstanceUrlAttributes
+    //     */
+    //    toNav?: "true" | "false";
 
-        /**
-         * The value for the _target attribute of the anchor tag.
-         *
-         * @type {string}
-         * @memberof ISnInstanceUrlAttributes
-         */
-        target?: string;
-    }
+    //    /**
+    //     * The value for the _target attribute of the anchor tag.
+    //     *
+    //     * @type {string}
+    //     * @memberof ISnInstanceUrlAttributes
+    //     */
+    //    target?: string;
+    //}
 
-    interface ISnInstanceUrlScope extends ISnInstanceUrlAttributes, ng.IScope {
-        href: string;
-        linkTarget: string;
-    }
+    //interface ISnInstanceUrlScope extends ISnInstanceUrlAttributes, ng.IScope {
+    //    href: string;
+    //    linkTarget: string;
+    //}
 
-    class SnInstanceUrlController implements ng.IController {
-        constructor(protected $scope: ISnInstanceUrlScope, protected appConfigData: cfg.Service) {
-            $scope.href = '#';
-            $scope.linkTarget = "_blank";
-            let ctrl: SnInstanceUrlController = this;
-            appConfigData.onServiceNowUrlChanged((value: URL) => { ctrl.updateHRef(value); });
-            $scope.$watchGroup(['relativeUrlModel', 'relativeUrl', 'toNav'], () => { ctrl.updateHRef(); });
-            $scope.$watch('target', () => { $scope.linkTarget = (typeof $scope.target == "string") ? $scope.target : "_blank" });
-        }
-        updateHRef(value?: URL): void {
-            if (sys.asBoolean(this.$scope.toNav)) {
-                if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
-                    this.$scope.href = this.appConfigData.createUrl("serviceNow", "nav_to.do", "uri", this.$scope.relativeUrlModel).href;
-                else
-                    this.$scope.href = this.appConfigData.createUrl("serviceNow", "nav_to.do", "uri", this.$scope.relativeUrl).href;
-            } else if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
-                this.$scope.href = this.appConfigData.createUrl("serviceNow", this.$scope.relativeUrlModel).href;
-            else
-                this.$scope.href = this.appConfigData.createUrl("serviceNow", this.$scope.relativeUrl).href;
-        }
-        $onInit() { }
-    }
+    //class SnInstanceUrlController implements ng.IController {
+    //    constructor(protected $scope: ISnInstanceUrlScope, protected appConfigData: cfg.Service) {
+    //        $scope.href = '#';
+    //        $scope.linkTarget = "_blank";
+    //        let ctrl: SnInstanceUrlController = this;
+    //        appConfigData.onServiceNowUrlChanged((value: URL) => { ctrl.updateHRef(value); });
+    //        $scope.$watchGroup(['relativeUrlModel', 'relativeUrl', 'toNav'], () => { ctrl.updateHRef(); });
+    //        $scope.$watch('target', () => { $scope.linkTarget = (typeof $scope.target == "string") ? $scope.target : "_blank" });
+    //    }
+    //    updateHRef(value?: URL): void {
+    //        if (sys.asBoolean(this.$scope.toNav)) {
+    //            if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
+    //                this.$scope.href = this.appConfigData.createUrl("sn", "nav_to.do", "uri", this.$scope.relativeUrlModel).href;
+    //            else
+    //                this.$scope.href = this.appConfigData.createUrl("sn", "nav_to.do", "uri", this.$scope.relativeUrl).href;
+    //        } else if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
+    //            this.$scope.href = this.appConfigData.createUrl("sn", this.$scope.relativeUrlModel).href;
+    //        else
+    //            this.$scope.href = this.appConfigData.createUrl("sn", this.$scope.relativeUrl).href;
+    //    }
+    //    $onInit() { }
+    //}
 
-    app.appModule.directive("snInstanceUrl", () => {
-        return <ng.IDirective>{
-            restrict: "E",
-            controller: ['$scope', 'appConfigData', SnInstanceUrlController],
-            scope: { relativeUrl: "@?", relativeUrlModel: "=?", toNav: "@?", target: "@?" },
-            replace: true,
-            template: '<a ng-href="{{href}}" target="{{linkTarget}}">{{href}}</a>'
-        }
-    });
-
-    // #endregion
-
-    // #region snNavLink directive
-
-    /**
-     * Attributes that may be used with the snNavLink directive.
-     *
-     * @export
-     * @interface ISnNavLinkAttributes
-     * @extends {ISnInstanceLinkAttributes}
-     * @example <caption>Example of simple statically defined relative URL.</caption>
-     * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-nav-link path-nodes="System LDAP/Data Sources" relative-url="/sys_data_source_list.do" />
-     * <!-- Transpiled code will be: -->
-     * <samp class="navPath">
-     *      <span>
-     *          <var>System LDAP</var>
-     *          &rArr;
-     *      </span>
-     *      <a href="https://yourinstance.servicenow.com/sys_data_source_list.do" target="_blank">
-     *          <var class="targetName">Data Sources</var>
-     *      </a>
-     * </samp>
-     * ```
-     * @example <caption>Example of navigation path with alternate link index.</caption>
-     * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-nav-link path-nodes="System LDAP/Transform Maps/Enterprise User Import" link-index="1" relative-url="/sys_transform_map_list.do" />
-     * <!-- Transpiled code will be: -->
-     * <samp class="navPath">
-     *      <span>
-     *          <var>System LDAP</var>
-     *          &rArr;
-     *      </span>
-     *      <a href="https://yourinstance.servicenow.com/sys_transform_map_list.do" target="_blank">
-     *          <var>Transform Maps</var>
-     *      </a>
-     *      <span>
-     *          &rArr;
-     *          <var class="targetName">Enterprise User Import</var>
-     *      </span>
-     * </samp>
-     * ```
-     * @example <caption>Example of navigation path with alternate node separator.</caption>
-     * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-nav-link path-nodes="Configuration|Identification/Reconciliation|CI Identifiers" node-separator="|" relative-url="/cmdb_identifier_list.do" />
-     * <!-- Transpiled code will be: -->
-     * <samp class="navPath">
-     *      <span>
-     *          <var>Configuration</var>
-     *          &rArr;
-     *          <var>Identification/Reconciliation</var>
-     *          &rArr;
-     *      </span>
-     *      <a href="https://yourinstance.servicenow.com/cmdb_identifier_list.do" target="_blank">
-     *          <var class="targetName">CI Identifiers</var>
-     *      </a>
-     * </samp>
-     * ```
-     * @example <caption>Example of statically defined relative URL encoded in nav_to.do query parameter.</caption>
-     * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-nav-link path-nodes="System LDAP/Data Sources" relative-url="/sys_data_source_list.do" to-nav="true" />
-     * <!-- Transpiled code will be: -->
-     * <samp class="navPath">
-     *      <span>
-     *          <var>System LDAP</var>
-     *          &rArr;
-     *      </span>
-     *      <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_data_source_list.do" target="_blank">
-     *          <var class="targetName">Data Sources</var>
-     *      </a>
-     * </samp>
-     * ```
-     * @example <caption>Example of bound URL model.</caption>
-     * ```
-     * <!-- Where modelVar === "/sys_data_source_list.do" and cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-nav-link path-nodes="System LDAP/Data Sources" relative-url-model="modelVar" />
-     * <!-- Transpiled code will be: -->
-     * <samp class="navPath">
-     *      <span>
-     *          <var>System LDAP</var>
-     *          &rArr;
-     *      </span>
-     *      <a href="https://yourinstance.servicenow.com/sys_data_source_list.do" target="_blank">
-     *          <var class="targetName">Data Sources</var>
-     *      </a>
-     * </samp>
-     * ```
-     * @example <caption>Example of navigation path with no relative URL.</caption>
-     * ```
-     * <!-- Where modelVar === "/sys_group_list.do?XML" and cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-     * <sn-nav-link path-nodes="System Policy/Rules/Caller VIP Lookup Rules" />
-     * <!-- Transpiled code will be -->
-     * <samp class="navPath">
-     *      <span>
-     *          <var>System Policy</var>
-     *          &rArr;
-     *          <var>Rules</var>
-     *          &rArr;
-     *      </span>
-     *      <var class="targetName">Caller VIP Lookup Rules</var>
-     * </samp>
-     * ```
-     */
-    export interface ISnNavLinkAttributes extends ISnInstanceLinkAttributes {
-        pathNodes: string;
-        nodeSeparator?: string;
-        linkIndex?: string
-    }
-
-    interface ISnNavLinkScope extends ISnNavLinkAttributes, ng.IScope {
-        href: string;
-        text: string;
-        hasLink: boolean;
-        leadingSegments: string[];
-        trailingSegments: string[]
-    }
-
-    class SnNavLinkController implements ng.IController {
-        constructor(private $scope: ISnNavLinkScope) {
-            $scope.href = "#";
-            $scope.text = "";
-            $scope.hasLink = false;
-            $scope.leadingSegments = [];
-            $scope.trailingSegments = [];
-            $scope.$watchGroup(['pathNodes', 'nodeSeparator', 'relativeUrlModel', 'relativeUrl'], () => {
-                let nodeSeparator: string = (typeof $scope.nodeSeparator === "string" && $scope.nodeSeparator.length > 0) ? $scope.nodeSeparator : "/";
-                let allSegments: string[] = (typeof $scope.pathNodes === "string" && $scope.pathNodes.length > 0) ?
-                    $scope.pathNodes.split(nodeSeparator).map((value: string) => value.trim()).filter((value: string) => value.length > 0) : [];
-                let index: number = allSegments.length - 1;
-                if ((index = sys.asInt($scope.linkIndex, -1)) > -1 && index < (allSegments.length - 1)) {
-                    $scope.leadingSegments = [];
-                    while ($scope.leadingSegments.length < index)
-                        $scope.leadingSegments.push(allSegments.shift());
-                    $scope.text = allSegments.shift();
-                    $scope.trailingSegments = allSegments;
-                } else {
-                    $scope.trailingSegments = [];
-                    $scope.text = allSegments.pop();
-                    $scope.leadingSegments = allSegments;
-                }
-                if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
-                    this.$scope.href = this.$scope.relativeUrlModel;
-                else if (typeof this.$scope.relativeUrl === "string" && this.$scope.relativeUrl.length > 0)
-                    this.$scope.href = this.$scope.relativeUrl;
-                else
-                    this.$scope.href = "";
-                this.$scope.hasLink = this.$scope.href.length > 0;
-            });
-        }
-        $onInit() { }
-    }
-
-    app.appModule.directive("snNavLink", () => {
-        return <ng.IDirective>{
-            restrict: "E",
-            controller: ['$scope', SnNavLinkController],
-            scope: { relativeUrl: "@?", relativeUrlModel: "=?", toNav: "@?", target: "@?", pathNodes: "@?", nodeSeparator: "@?", linkIndex: "@?" },
-            replace: true,
-            template: '<samp class="navPath"><span ng-repeat="s in leadingSegments"><var>{{s}}</var> &rArr; </span><sn-instance-link ng-show="hasLink" relative-url-model="href" to-nav="{{toNav}}" target="{{target}}"><var class="targetName">{{text}}</var></sn-instance-link><var ng-hide="hasLink" class="targetName">{{text}}</var><span ng-repeat="s in trailingSegments"> &rArr; <var>{{s}}</var></span></samp>'
-        }
-    });
+    //app.appModule.directive("snInstanceUrl", () => {
+    //    return <ng.IDirective>{
+    //        restrict: "E",
+    //        controller: ['$scope', cfg.SERVICE_NAME, SnInstanceUrlController],
+    //        scope: { relativeUrl: "@?", relativeUrlModel: "=?", toNav: "@?", target: "@?" },
+    //        replace: true,
+    //        template: '<a ng-href="{{href}}" target="{{linkTarget}}">{{href}}</a>'
+    //    }
+    //});
 
     // #endregion
 
-    // #region gitInstanceLink directive
+    namespace snNavLink {
+        /**
+         * Defines the directive name as "snNavLink".
+         * @export
+         * @constant {string}
+         */
+        export const DIRECTIVE_NAME: string = "snNavLink";
+
+        /**
+         * Attributes that may be used with the snNavLink directive.
+         *
+         * @export
+         * @interface IDirectiveAttributes
+         * @example <caption>Example of simple statically defined relative URL.</caption>
+         * ```
+         * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+         * <sn-nav-link path-nodes="System LDAP/Data Sources" href="/sys_data_source_list.do" />
+         * <!-- Transpiled code will be: -->
+         * <samp class="navPath">
+         *      <span>
+         *          <var>System LDAP</var>
+         *          &rArr;
+         *      </span>
+         *      <a href="https://yourinstance.servicenow.com/sys_data_source_list.do" target="_blank">
+         *          <var class="targetName">Data Sources</var>
+         *      </a>
+         * </samp>
+         * ```
+         * @example <caption>Example of navigation path with alternate link index.</caption>
+         * ```
+         * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+         * <sn-nav-link path-nodes="System LDAP/Transform Maps/Enterprise User Import" link-index="1" href="/sys_transform_map_list.do" />
+         * <!-- Transpiled code will be: -->
+         * <samp class="navPath">
+         *      <span>
+         *          <var>System LDAP</var>
+         *          &rArr;
+         *      </span>
+         *      <a href="https://yourinstance.servicenow.com/sys_transform_map_list.do" target="_blank">
+         *          <var>Transform Maps</var>
+         *      </a>
+         *      <span>
+         *          &rArr;
+         *          <var class="targetName">Enterprise User Import</var>
+         *      </span>
+         * </samp>
+         * ```
+         * @example <caption>Example of navigation path with alternate node separator.</caption>
+         * ```
+         * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+         * <sn-nav-link path-nodes="Configuration|Identification/Reconciliation|CI Identifiers" node-separator="|" href="/cmdb_identifier_list.do" />
+         * <!-- Transpiled code will be: -->
+         * <samp class="navPath">
+         *      <span>
+         *          <var>Configuration</var>
+         *          &rArr;
+         *          <var>Identification/Reconciliation</var>
+         *          &rArr;
+         *      </span>
+         *      <a href="https://yourinstance.servicenow.com/cmdb_identifier_list.do" target="_blank">
+         *          <var class="targetName">CI Identifiers</var>
+         *      </a>
+         * </samp>
+         * ```
+         * @example <caption>Example of statically defined relative URL encoded in nav_to.do query parameter.</caption>
+         * ```
+         * <!-- Where cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+         * <sn-nav-link path-nodes="System LDAP/Data Sources" href="/sys_data_source_list.do" to-nav="true" />
+         * <!-- Transpiled code will be: -->
+         * <samp class="navPath">
+         *      <span>
+         *          <var>System LDAP</var>
+         *          &rArr;
+         *      </span>
+         *      <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_data_source_list.do" target="_blank">
+         *          <var class="targetName">Data Sources</var>
+         *      </a>
+         * </samp>
+         * ```
+         * @example <caption>Example of bound URL model.</caption>
+         * ```
+         * <!-- Where modelVar === "/sys_data_source_list.do" and cfg.Service.serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+         * <sn-nav-link path-nodes="System LDAP/Data Sources" href-model="modelVar" />
+         * <!-- Transpiled code will be: -->
+         * <samp class="navPath">
+         *      <span>
+         *          <var>System LDAP</var>
+         *          &rArr;
+         *      </span>
+         *      <a href="https://yourinstance.servicenow.com/sys_data_source_list.do" target="_blank">
+         *          <var class="targetName">Data Sources</var>
+         *      </a>
+         * </samp>
+         * ```
+         * @example <caption>Example of navigation path with no relative URL.</caption>
+         * ```
+         * <sn-nav-link path-nodes="System Policy/Rules/Caller VIP Lookup Rules" />
+         * <!-- Transpiled code will be -->
+         * <samp class="navPath">
+         *      <span>
+         *          <var>System Policy</var>
+         *          &rArr;
+         *          <var>Rules</var>
+         *          &rArr;
+         *      </span>
+         *      <var class="targetName">Caller VIP Lookup Rules</var>
+         * </samp>
+         * ```
+         */
+        export interface IDirectiveAttributes {
+            href?: string;
+            hrefModel?: string;
+            toNav?: "true"|"false";
+            target?: string;
+            pathNodes: string;
+            nodeSeparator?: string;
+            linkIndex?: string
+        }
+
+        interface IDirectiveScope extends IDirectiveAttributes, ng.IScope {
+            effectiveHRef: string;
+            text: string;
+            hasLink: boolean;
+            leadingSegments: string[];
+            trailingSegments: string[];
+            q?: string;
+            v?: string;
+        }
+
+        export class Controller implements ng.IController {
+            constructor(private $scope: IDirectiveScope) {
+                $scope.effectiveHRef = "#";
+                $scope.text = "";
+                $scope.hasLink = false;
+                $scope.leadingSegments = [];
+                $scope.trailingSegments = [];
+                $scope.$watchGroup(['toNav', 'pathNodes', 'nodeSeparator', 'hrefModel', 'href'], () => {
+                    let nodeSeparator: string = (typeof $scope.nodeSeparator === "string" && $scope.nodeSeparator.length > 0) ? $scope.nodeSeparator : "/";
+                    let allSegments: string[] = (typeof $scope.pathNodes === "string" && $scope.pathNodes.length > 0) ?
+                        $scope.pathNodes.split(nodeSeparator).map((value: string) => value.trim()).filter((value: string) => value.length > 0) : [];
+                    let index: number = allSegments.length - 1;
+                    if ((index = sys.asInt($scope.linkIndex, -1)) > -1 && index < (allSegments.length - 1)) {
+                        $scope.leadingSegments = [];
+                        while ($scope.leadingSegments.length < index)
+                            $scope.leadingSegments.push(allSegments.shift());
+                        $scope.text = allSegments.shift();
+                        $scope.trailingSegments = allSegments;
+                    } else {
+                        $scope.trailingSegments = [];
+                        $scope.text = allSegments.pop();
+                        $scope.leadingSegments = allSegments;
+                    }
+                    let href: string = (typeof $scope.hrefModel === "string" && $scope.hrefModel.length > 0) ? $scope.hrefModel :
+                        ((typeof $scope.href === "string" && $scope.href.length > 0) ? $scope.href : "");
+                    if (href.length == 0) {
+                        $scope.hasLink = false;
+                        $scope.effectiveHRef = "";
+                        $scope.q = $scope.v = undefined;
+                    } else {
+                        if (sys.asBoolean($scope.toNav)) {
+                            $scope.effectiveHRef = "/nav_to.do";
+                            $scope.q = "uri";
+                            $scope.v = href;
+                        } else {
+                            $scope.q = $scope.v = undefined;
+                            $scope.effectiveHRef = href;
+                        }
+                        $scope.hasLink = true;
+                    }
+                });
+            }
+            $onInit() { }
+        }
+    }
+    appModule.directive(snNavLink.DIRECTIVE_NAME, () => {
+        return <ng.IDirective>{
+            restrict: "E",
+            controller: ['$scope', snNavLink.Controller],
+            scope: { href: "@?", hrefModel: "=?", toNav: "@?", target: "@?", pathNodes: "@?", nodeSeparator: "@?", linkIndex: "@?" },
+            replace: true,
+            template: '<samp class="navPath"><span ng-repeat="s in leadingSegments"><var>{{s}}</var> &rArr; </span><a:config-link ng-show="hasLink" base="sn" href="{{effectiveHRef}}" q="{{q}}" v="{{v}}" target="{{target}}"><var class="targetName">{{text}}</var></a:config-link><var ng-hide="hasLink" class="targetName">{{text}}</var><span ng-repeat="s in trailingSegments"> &rArr; <var>{{s}}</var></span></samp>'
+        }
+    });
     
-    /**
-     * Attributes that can be used with the gitInstanceLink directive.
-     *
-     * @export
-     * @interface IGitInstanceLinkAttributes
-     * @example <caption>Example of simple statically defined relative URL.</caption>
-     * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://github.com/your-instance" -->
-     * <git-instance-link relative-url="x_44813_util.git"></git-instance-link>
-     * <!-- Transpiled code will be: -->
-     * <a href="https://github.com/your-instance/x_44813_util.git" target="_blank">https://github.com/your-instance/x_44813_util.git</a>
-     * @example <caption>Example of bound URL model.</caption>
-     * ```
-     * <!-- Where modelVar === "x_44813_util.git" and  cfg.Service.serviceNowUrl() returns "https://github.com/your-instance" -->
-     * <git-instance-link relative-url-model="modelVar">Group List XML</git-instance-link>
-     * <!-- Transpiled code will be: -->
-     * <a href="https://github.com/your-instance/x_44813_util.git" target="_blank">https://github.com/your-instance/x_44813_util.git</a>
-     * ```
-     * @example <caption>Example with explicit text.</caption>
-     * ```
-     * <!-- Where cfg.Service.serviceNowUrl() returns "https://github.com/your-instance" -->
-     * <git-instance-link relative-url="x_44813_util.git" text="Utility Module"></git-instance-link>
-     * <!-- Transpiled code will be: -->
-     * <a href="https://github.com/your-instance/x_44813_util.git" target="_blank">Utility Module</a>
-     * ```
-     */
-    export interface IGitInstanceLinkAttributes {
-        relativeUrl?: string;
-        relativeUrlModel?: string;
-        text?: string;
-        textModel?: string;
-        target?: string;
-    }
+    // #region gitInstanceLink directive
 
-    interface IGitInstanceLinkScope extends IGitInstanceLinkAttributes, ng.IScope {
-        href: string;
-        linkText: string;
-        linkTarget: string;
-    }
+    ///**
+    // * Attributes that can be used with the gitInstanceLink directive.
+    // *
+    // * @export
+    // * @interface IGitInstanceLinkAttributes
+    // * @example <caption>Example of simple statically defined relative URL.</caption>
+    // * ```
+    // * <!-- Where cfg.Service.serviceNowUrl() returns "https://github.com/your-instance" -->
+    // * <git-instance-link relative-url="x_44813_util.git"></git-instance-link>
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://github.com/your-instance/x_44813_util.git" target="_blank">https://github.com/your-instance/x_44813_util.git</a>
+    // * @example <caption>Example of bound URL model.</caption>
+    // * ```
+    // * <!-- Where modelVar === "x_44813_util.git" and  cfg.Service.serviceNowUrl() returns "https://github.com/your-instance" -->
+    // * <git-instance-link relative-url-model="modelVar">Group List XML</git-instance-link>
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://github.com/your-instance/x_44813_util.git" target="_blank">https://github.com/your-instance/x_44813_util.git</a>
+    // * ```
+    // * @example <caption>Example with explicit text.</caption>
+    // * ```
+    // * <!-- Where cfg.Service.serviceNowUrl() returns "https://github.com/your-instance" -->
+    // * <git-instance-link relative-url="x_44813_util.git" text="Utility Module"></git-instance-link>
+    // * <!-- Transpiled code will be: -->
+    // * <a href="https://github.com/your-instance/x_44813_util.git" target="_blank">Utility Module</a>
+    // * ```
+    // */
+    //export interface IGitInstanceLinkAttributes {
+    //    relativeUrl?: string;
+    //    relativeUrlModel?: string;
+    //    text?: string;
+    //    textModel?: string;
+    //    target?: string;
+    //}
 
-    class GitnInstanceLinkController {
-        constructor(protected $scope: IGitInstanceLinkScope, protected appConfigData: cfg.Service) {
-            $scope.linkText = $scope.href = '';
-            let ctrl: GitnInstanceLinkController = this;
-            appConfigData.onGitServiceUrlChanged((value: URL) => { ctrl.updateHRef(value) });
-            $scope.$watchGroup(['relativeUrlModel', 'relativeUrl'], () => { ctrl.updateHRef() });
-            $scope.$watchGroup(['textModel', 'text', 'href'], () => {
-                $scope.linkText = (typeof $scope.textModel === "string" && $scope.textModel.length > 0) ? $scope.textModel : ((typeof $scope.text === "string" && $scope.text.length > 0) ? $scope.text : $scope.href);
-            });
-            $scope.$watch('target', () => { $scope.linkTarget = (typeof $scope.target == "string") ? $scope.target : "_blank" });
-            $scope.linkText = (typeof $scope.textModel === "string" && $scope.textModel.length > 0) ? $scope.textModel : ((typeof $scope.text === "string" && $scope.text.length > 0) ? $scope.text : $scope.href);
-        }
-        updateHRef(value?: URL): void {
-            if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
-                this.$scope.href = this.appConfigData.createUrl("gitService", this.$scope.relativeUrlModel).href;
-            else if (typeof this.$scope.relativeUrl === "string" && this.$scope.relativeUrl.length > 0)
-                this.$scope.href = this.appConfigData.createUrl("gitService", this.$scope.relativeUrl).href;
-            else
-                this.$scope.href = ((sys.isNil(value)) ? this.appConfigData.gitServiceUrl() : value).href;
-        }
-    }
+    //interface IGitInstanceLinkScope extends IGitInstanceLinkAttributes, ng.IScope {
+    //    href: string;
+    //    linkText: string;
+    //    linkTarget: string;
+    //}
 
-    app.appModule.directive("gitInstanceLink", () => {
-        return <ng.IDirective>{
-            restrict: "E",
-            controller: ['$scope', 'appConfigData', GitnInstanceLinkController],
-            scope: {
-                relativeUrl: "@?",
-                relativeUrlModel: "=?",
-                text: "@?",
-                textModel: "=?",
-                target: "@?"
-            },
-            replace: true,
-            template: '<a ng-href="{{href}}" target="{{linkTarget}}">{{linkText}}</a>'
-        }
-    });
+    //class GitnInstanceLinkController {
+    //    constructor(protected $scope: IGitInstanceLinkScope, protected appConfigData: cfg.Service) {
+    //        $scope.linkText = $scope.href = '';
+    //        let ctrl: GitnInstanceLinkController = this;
+    //        appConfigData.onGitServiceUrlChanged((value: URL) => { ctrl.updateHRef(value) });
+    //        $scope.$watchGroup(['relativeUrlModel', 'relativeUrl'], () => { ctrl.updateHRef() });
+    //        $scope.$watchGroup(['textModel', 'text', 'href'], () => {
+    //            $scope.linkText = (typeof $scope.textModel === "string" && $scope.textModel.length > 0) ? $scope.textModel : ((typeof $scope.text === "string" && $scope.text.length > 0) ? $scope.text : $scope.href);
+    //        });
+    //        $scope.$watch('target', () => { $scope.linkTarget = (typeof $scope.target == "string") ? $scope.target : "_blank" });
+    //        $scope.linkText = (typeof $scope.textModel === "string" && $scope.textModel.length > 0) ? $scope.textModel : ((typeof $scope.text === "string" && $scope.text.length > 0) ? $scope.text : $scope.href);
+    //    }
+    //    updateHRef(value?: URL): void {
+    //        if (typeof this.$scope.relativeUrlModel === "string" && this.$scope.relativeUrlModel.length > 0)
+    //            this.$scope.href = this.appConfigData.createUrl("git", this.$scope.relativeUrlModel).href;
+    //        else if (typeof this.$scope.relativeUrl === "string" && this.$scope.relativeUrl.length > 0)
+    //            this.$scope.href = this.appConfigData.createUrl("git", this.$scope.relativeUrl).href;
+    //        else
+    //            this.$scope.href = ((sys.isNil(value)) ? this.appConfigData.gitServiceUrl() : value).href;
+    //    }
+    //}
+
+    //app.appModule.directive("gitInstanceLink", () => {
+    //    return <ng.IDirective>{
+    //        restrict: "E",
+    //        controller: ['$scope', cfg.SERVICE_NAME, GitnInstanceLinkController],
+    //        scope: {
+    //            relativeUrl: "@?",
+    //            relativeUrlModel: "=?",
+    //            text: "@?",
+    //            textModel: "=?",
+    //            target: "@?"
+    //        },
+    //        replace: true,
+    //        template: '<a ng-href="{{href}}" target="{{linkTarget}}">{{linkText}}</a>'
+    //    }
+    //});
     // #endregion
 
     // #region urlBuilderService
