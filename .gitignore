@@ -20,10 +20,10 @@
 
 # IDE - Visual Studio
 .vs/*
-obj/*
-/PageManager/obj/*
-bin/*
-/PageManager/bin/*
+obj/
+PageManager/obj
+bin/
+PageManager/bin
 *.csproj.user
 *.suo
 *.csproj.CoreCompileInputs.cache
@@ -56,4 +56,3 @@ testem.log
 Thumbs.db
 /packages
 /.vscode
-PageManager/obj/Debug/PageManager.csprojAssemblyReference.cache
