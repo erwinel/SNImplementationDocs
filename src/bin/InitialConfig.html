@@ -1103,7 +1103,9 @@
                                                             </ul>
                                                         </li>
                                                         <li>Click the <samp>Save</samp> button to save changes.</li>
-                                                        <li>Navigate to <em>Properties page .... add or edit custom property.... etc</em></li>
+                                                        <li>Navigate to <sn-nav-link path-nodes="Multi-Provider SSO/Identity Providers" href="/sso_properties_list.do" to-nav="true"></sn-nav-link>, open the identity provider for the load balancer to get its <var>sys_id</var>.</li>
+                                                        <li>Open the <a:config-link base="sn" href="/sys_properties_list.do" to-nav="true"><var class="targetName">System Properties List</var></a:config-link> and change the value of the
+                                                        <var>glide.authenticate.sso.redirect.idp</var> to the <var>sys_id</var> from the previous step.</li>
                                                     </ol>
                                                 </div>
                                             </div>
