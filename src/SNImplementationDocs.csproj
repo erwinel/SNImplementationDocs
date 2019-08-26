@@ -1954,7 +1954,7 @@
     <Content Include="SiteDesignNotes.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="snippets.html">
+    <Content Include="Snippets.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Template\appContent.htm">

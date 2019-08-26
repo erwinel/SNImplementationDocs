@@ -1866,7 +1866,7 @@ namespace app {
             return (arr.length === 1) ? arr[0] : arr.join("/");
         }
     }
-    
+
     appModule.factory(SERVICE_NAME_appConfigData, [SERVICE_NAME_persistentStorageLoader, "$http", '$log', '$document', '$window', appConfigDataService]);
 
     // #endregion
@@ -2100,7 +2100,7 @@ namespace app {
             };
         }
     }
-    
+
     app.appModule.directive(DIRECTIVE_NAME_urlInputDirective, urlInputDirectiveController.createDirective);
 
     // #endregion
@@ -2510,7 +2510,7 @@ namespace app {
 
         $onInit(): void { }
     }
-    
+
     appModule.directive(DIRECTIVE_NAME_appContentDirective, () => {
         return {
             controller: ['$scope', '$log', '$window', SERVICE_NAME_appConfigData, appContentController],
@@ -2671,7 +2671,7 @@ namespace app {
 
         $onInit() { }
     }
-    
+
     appModule.service(SERVICE_NAME_copyToClipboard, ["$window", copyToClipboardService]);
     appModule.directive(DIRECTIVE_NAME_copyToClipboard, copyToClipboardButtonController.createDirective);
 
@@ -2905,150 +2905,150 @@ namespace app {
     // #region aConfigLink directive
 
     /**
-        * Defines the directive name as "aConfigLink".
-        * @export
-        * @constant {string}
-        */
+     * Defines the directive name as "aConfigLink".
+     * @export
+     * @constant {string}
+     */
     export const DIRECTIVE_NAME_aConfigLink: string = "aConfigLink";
 
     const DEFAULT_TARGET = "_blank";
 
     /**
-        * Represents attributes that can be used with the aConfigLink directive.
-        * @export
-        * @interface IDirectiveAttributes
-        * @example <caption>Example for simple url text.</caption>
-        * ```
-        * <!-- Where Service#idpUrl() returns "https://idp.f5server.com" -->
-        * <a:config-link base="idp">IDP<a:config-link>
-        * <!-- Transpiled code will be: -->
-        * <a href="https://idp.f5server.com/" target="_blank">IDP</a>
-        * ```
-        * @example <caption>Example with a relative URL.</caption>
-        * ```
-        * <!-- Where Service#gitServiceUrl() returns "https://github.com/your-root/" -->
-        * <a:config-link base="git" href="myRepo.git">Git Repository<a:config-link>
-        * <!-- Transpiled code will be: -->
-        * <a href="https://github.com/your-root/myRepo.git" target="_blank">Git Repository</a>
-        * ```
-        * @example <caption>Example for generating including a query parameter.</caption>
-        * ```
-        * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-        * <a:config-link base="sn" href="nav_to.do" q="uri" v="/sys_user_group_list.do">Group List<a:config-link>
-        * <!-- Transpiled code will be: -->
-        * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do" target="_blank">Group List</a>
-        * ```
-        * @example <caption>Example for generating including css classes.</caption>
-        * ```
-        * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-        * <a:config-link base="sn" href="nav_to.do" link-class="myClass">Group List<a:config-link>
-        * <!-- Transpiled code will be: -->
-        * <a href="https://yourinstance.servicenow.com/" target="_blank" class="myClass">Group List</a>
-        * ```
-        */
+     * Represents attributes that can be used with the aConfigLink directive.
+     * @export
+     * @interface IDirectiveAttributes
+     * @example <caption>Example for simple url text.</caption>
+     * ```
+     * <!-- Where Service#idpUrl() returns "https://idp.f5server.com" -->
+     * <a:config-link base="idp">IDP<a:config-link>
+     * <!-- Transpiled code will be: -->
+     * <a href="https://idp.f5server.com/" target="_blank">IDP</a>
+     * ```
+     * @example <caption>Example with a relative URL.</caption>
+     * ```
+     * <!-- Where Service#gitServiceUrl() returns "https://github.com/your-root/" -->
+     * <a:config-link base="git" href="myRepo.git">Git Repository<a:config-link>
+     * <!-- Transpiled code will be: -->
+     * <a href="https://github.com/your-root/myRepo.git" target="_blank">Git Repository</a>
+     * ```
+     * @example <caption>Example for generating including a query parameter.</caption>
+     * ```
+     * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+     * <a:config-link base="sn" href="nav_to.do" q="uri" v="/sys_user_group_list.do">Group List<a:config-link>
+     * <!-- Transpiled code will be: -->
+     * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do" target="_blank">Group List</a>
+     * ```
+     * @example <caption>Example for generating including css classes.</caption>
+     * ```
+     * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+     * <a:config-link base="sn" href="nav_to.do" link-class="myClass">Group List<a:config-link>
+     * <!-- Transpiled code will be: -->
+     * <a href="https://yourinstance.servicenow.com/" target="_blank" class="myClass">Group List</a>
+     * ```
+     */
     export interface IAConfigLinkDirectiveAttributes {
         /**
-            * The name of the base URL setting.
-            * @type {UrlSettingsNames}
-            * @memberof IDirectiveAttributes
-            * @example <caption>Example that emits a link to the ServiceNow instance.</caption>
-            * ```
-            * <a:config-link base="sn">ServiceNow</a:config-link>
-            * ```
-            * @example <caption>Example that emits a link to the git service.</caption>
-            * ```
-            * <a:config-link base="git">Git Service</a:config-link>
-            * ```
-            * @example <caption>Example that emits a link to the identity provider.</caption>
-            * ```
-            * <a:config-link base="idp">Identity Provider</a:config-link>
-            * ```
-            */
+         * The name of the base URL setting.
+         * @type {UrlSettingsNames}
+         * @memberof IDirectiveAttributes
+         * @example <caption>Example that emits a link to the ServiceNow instance.</caption>
+         * ```
+         * <a:config-link base="sn">ServiceNow</a:config-link>
+         * ```
+         * @example <caption>Example that emits a link to the git service.</caption>
+         * ```
+         * <a:config-link base="git">Git Service</a:config-link>
+         * ```
+         * @example <caption>Example that emits a link to the identity provider.</caption>
+         * ```
+         * <a:config-link base="idp">Identity Provider</a:config-link>
+         * ```
+         */
         base: UrlSettingsNames;
 
         /**
-            * The relative URL.
-            * @type {string}
-            * @memberof IDirectiveAttributes
-            * @example
-            * ```
-            * <!-- Where Service#idpUrl() returns "https://idp.f5server.com" -->
-            * <a:config-link base="idp">IDP<a:config-link>
-            * <!-- Transpiled code will be: -->
-            * <a href="https://idp.f5server.com/" target="_blank">IDP</a>
-            * ```
-            */
+         * The relative URL.
+         * @type {string}
+         * @memberof IDirectiveAttributes
+         * @example
+         * ```
+         * <!-- Where Service#idpUrl() returns "https://idp.f5server.com" -->
+         * <a:config-link base="idp">IDP<a:config-link>
+         * <!-- Transpiled code will be: -->
+         * <a href="https://idp.f5server.com/" target="_blank">IDP</a>
+         * ```
+         */
         href?: string;
 
         /**
-            * The name of the query parameter to include.
-            * @type {string}
-            * @memberof IDirectiveAttributes
-            * @example <caption>Example for generating including a query parameter.</caption>
-            * ```
-            * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-            * <a:config-link base="sn" href="sys_user_group_list.do" q="XML" v="/sys_user_group_list.do">Group XML Export<a:config-link>
-            * <!-- Transpiled code will be: -->
-            * <a href="https://yourinstance.servicenow.com/sys_user_group_list.do?XML" target="_blank">Group XML Export</a>
-            * ```
-            */
+         * The name of the query parameter to include.
+         * @type {string}
+         * @memberof IDirectiveAttributes
+         * @example <caption>Example for generating including a query parameter.</caption>
+         * ```
+         * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+         * <a:config-link base="sn" href="sys_user_group_list.do" q="XML" v="/sys_user_group_list.do">Group XML Export<a:config-link>
+         * <!-- Transpiled code will be: -->
+         * <a href="https://yourinstance.servicenow.com/sys_user_group_list.do?XML" target="_blank">Group XML Export</a>
+         * ```
+         */
         q?: string;
 
         /**
-            * The value for the query parameter to be included.
-            * @type {string}
-            * @memberof IDirectiveAttributes
-            * @description This is ignored if {@link IDirectiveAttributes#q} is empty or not defined.
-            * @example <caption>Example for generating including a query parameter.</caption>
-            * ```
-            * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-            * <a:config-link base="sn" href="nav_to.do" q="uri" v="/sys_user_group_list.do">Group List<a:config-link>
-            * <!-- Transpiled code will be: -->
-            * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do" target="_blank">Group List</a>
-            * ```
-            */
+         * The value for the query parameter to be included.
+         * @type {string}
+         * @memberof IDirectiveAttributes
+         * @description This is ignored if {@link IDirectiveAttributes#q} is empty or not defined.
+         * @example <caption>Example for generating including a query parameter.</caption>
+         * ```
+         * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+         * <a:config-link base="sn" href="nav_to.do" q="uri" v="/sys_user_group_list.do">Group List<a:config-link>
+         * <!-- Transpiled code will be: -->
+         * <a href="https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_user_group_list.do" target="_blank">Group List</a>
+         * ```
+         */
         v?: string;
 
         /**
-            * Specifies an alternate target frame.
-            * @type {string}
-            * @memberof IDirectiveAttributes
-            * @example
-            * ```
-            * <!-- Where Service#idpUrl() returns "https://idp.f5server.com" -->
-            * <a:config-link base="idp" target="_self">IDP<a:config-link>
-            * <!-- Transpiled code will be: -->
-            * <a href="https://idp.f5server.com/" target="_self">IDP</a>
-            * ```
-            */
+         * Specifies an alternate target frame.
+         * @type {string}
+         * @memberof IDirectiveAttributes
+         * @example
+         * ```
+         * <!-- Where Service#idpUrl() returns "https://idp.f5server.com" -->
+         * <a:config-link base="idp" target="_self">IDP<a:config-link>
+         * <!-- Transpiled code will be: -->
+         * <a href="https://idp.f5server.com/" target="_self">IDP</a>
+         * ```
+         */
         target?: string;
 
         /**
-            * Define class names for the rendered anchor tag.
-            * @type {string}
-            * @memberof IDirectiveAttributes
-            * @example
-            * ```
-            * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
-            * <a:config-link base="sn" href="nav_to.do" link-class="myClass">Group List<a:config-link>
-            * <!-- Transpiled code will be: -->
-            * <a href="https://yourinstance.servicenow.com/" target="_blank" class="myClass">Group List</a>
-            * ```
-            */
+         * Define class names for the rendered anchor tag.
+         * @type {string}
+         * @memberof IDirectiveAttributes
+         * @example
+         * ```
+         * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" -->
+         * <a:config-link base="sn" href="nav_to.do" link-class="myClass">Group List<a:config-link>
+         * <!-- Transpiled code will be: -->
+         * <a href="https://yourinstance.servicenow.com/" target="_blank" class="myClass">Group List</a>
+         * ```
+         */
         linkClass?: string;
 
         /**
-            * Bind to a model for class name(s).
-            * @type {string}
-            * @memberof IDirectiveAttributes
-            * @example
-            * ```
-            * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" and $scope.myClass = ["nav", "nav-link"] -->
-            * <a:config-link base="sn" href="nav_to.do" link-class="p-1" link-class-model="myClass">Group List<a:config-link>
-            * <!-- Transpiled code will be: -->
-            * <a href="https://yourinstance.servicenow.com/" target="_blank" class="p-1 nav nav-link">Group List</a>
-            * ```
-            */
+         * Bind to a model for class name(s).
+         * @type {string}
+         * @memberof IDirectiveAttributes
+         * @example
+         * ```
+         * <!-- Where Service#serviceNowUrl() returns "https://yourinstance.servicenow.com" and $scope.myClass = ["nav", "nav-link"] -->
+         * <a:config-link base="sn" href="nav_to.do" link-class="p-1" link-class-model="myClass">Group List<a:config-link>
+         * <!-- Transpiled code will be: -->
+         * <a href="https://yourinstance.servicenow.com/" target="_blank" class="p-1 nav nav-link">Group List</a>
+         * ```
+         */
         linkClassModel?: string;
     }
 
@@ -3096,7 +3096,7 @@ namespace app {
         }
         $onInit() { }
     }
-    
+
     appModule.directive(DIRECTIVE_NAME_aConfigLink, () => {
         return <ng.IDirective>{
             restrict: "E",
