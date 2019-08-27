@@ -79,45 +79,45 @@ namespace sn {
         private _errorMessages: string[] = [];
         private _infoMessages: string[] = [];
         private _logCache: { level: "debug"|"error"|"warn"|"info", message: string }[] = [];
-        private _service: app.NotificationMessageService | undefined;
+        private _service: notificationMessageService.Service | undefined;
         constructor(private _isInteractive: boolean, private _isLoggedIn: boolean) { }
         isInteractive(): boolean { return this._isInteractive; }
         isLoggedIn(): boolean { return this._isLoggedIn; }
         addErrorMessage(message: any): void {
             this._errorMessages.push(message);
-            let service: app.NotificationMessageService = this._service;
+            let service:notificationMessageService.Service = this._service;
             if (typeof service === "object" && service != null)
-                service.addNotificationMessage(message, "Emulated Glide Session Message", app.NotificationMessageType.error);
+                service.addNotificationMessage(message, "Emulated Glide Session Message", notificationMessageService.NotificationMessageType.error);
         }
         addInfoMessage(message: any): void {
             this._infoMessages.push(message);
-            let service: app.NotificationMessageService = this._service;
+            let service:notificationMessageService.Service = this._service;
             if (typeof service === "object" && service != null)
-                service.addNotificationMessage(message, "Emulated Glide Session Message", app.NotificationMessageType.info);
+                service.addNotificationMessage(message, "Emulated Glide Session Message", notificationMessageService.NotificationMessageType.info);
         }
         debug(message: any): void {
-            let service: app.NotificationMessageService = this._service;
+            let service:notificationMessageService.Service = this._service;
             if (typeof service === "object" && service != null)
                 service.$log.debug({ type: "Emulated Glide Session Log Message", message: message });
             else
                 this._logCache.push({ level: "debug", message: message });
         }
         error(message: any): void {
-            let service: app.NotificationMessageService = this._service;
+            let service:notificationMessageService.Service = this._service;
             if (typeof service === "object" && service != null)
                 service.$log.error({ type: "Emulated Glide Session Log Message", message: message });
             else
                 this._logCache.push({ level: "error", message: message });
         }
         warn(message: any): void {
-            let service: app.NotificationMessageService = this._service;
+            let service:notificationMessageService.Service = this._service;
             if (typeof service === "object" && service != null)
                 service.$log.warn({ type: "Emulated Glide Session Log Message", message: message });
             else
                 this._logCache.push({ level: "warn", message: message });
         }
         info(message: any): void {
-            let service: app.NotificationMessageService = this._service;
+            let service:notificationMessageService.Service = this._service;
             if (typeof service === "object" && service != null)
                 service.$log.info({ type: "Emulated Glide Session Log Message", message: message });
             else
@@ -135,7 +135,7 @@ namespace sn {
                 this._infoMessages = [];
             return result;
         }
-        attachNotificationMessageService(service: app.NotificationMessageService) {
+        attachNotificationMessageService(service:notificationMessageService.Service) {
             this._service = service;
             if ((typeof service !== "object") || service == null)
                 return;
@@ -159,8 +159,8 @@ namespace sn {
                         break;
                 }
             });
-            errorMessages.forEach((message: string) => service.addNotificationMessage(message, "Emulated Glide Session Message", app.NotificationMessageType.error));
-            infoMessages.forEach((message: string) => service.addNotificationMessage(message, "Emulated Glide Session Message", app.NotificationMessageType.info));
+            errorMessages.forEach((message: string) => service.addNotificationMessage(message, "Emulated Glide Session Message", notificationMessageService.NotificationMessageType.error));
+            infoMessages.forEach((message: string) => service.addNotificationMessage(message, "Emulated Glide Session Message", notificationMessageService.NotificationMessageType.info));
         }
     }
 
