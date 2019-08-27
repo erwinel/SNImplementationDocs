@@ -285,13 +285,13 @@ var appConfigLoaderService;
         * @param {persistentStorageLoaderService.Service} persistentStorageLoader - The persistentStorageLegacy service provider.
         * @param {ng.IHttpService} $http - The $http service provider.
         * @param {ng.ILogService} $log - The $log service provider.
-        * @param {ng.IRootScopeService} $root - The $root service provider.
+        * @param {ng.IRootScopeService} $rootScope - The $root service provider.
         * @param {ng.IQService} $q - The $q service provider
         * @memberof appConfigData
         */
-        constructor(persistentStorageLoader, $http, $log, $root, $q) {
+        constructor(persistentStorageLoader, $http, $log, $rootScope, $q) {
             this.$log = $log;
-            this.$root = $root;
+            this.$rootScope = $rootScope;
             this._serviceNowUrl = new URL(appConfigLoaderService.DEFAULT_URL_SERVICENOW);
             this._gitServiceUrl = new URL(appConfigLoaderService.DEFAULT_URL_GIT_SERVICE);
             this._idpUrl = new URL(appConfigLoaderService.DEFAULT_URL_GIT_SERVICE);
@@ -300,7 +300,7 @@ var appConfigLoaderService;
                 persistentStorageLoader: sys.getClassName(persistentStorageLoader),
                 $http: sys.getClassName($http),
                 $log: sys.getClassName($log),
-                $root: sys.getClassName($root),
+                $root: sys.getClassName($rootScope),
                 $q: sys.getClassName($q),
                 additionalArguments: sys.skipFirst(sys.asArray(arguments), 5)
             }, true));
@@ -553,7 +553,7 @@ var appConfigLoaderService;
                     newValue: value,
                     oldValue: oldValue
                 }, true));
-                this.$root.$broadcast(appConfigLoaderService.EVENT_NAME_SERVICENOW, value, oldValue);
+                this.$rootScope.$broadcast(appConfigLoaderService.EVENT_NAME_SERVICENOW, value, oldValue);
                 this.$log.debug(angular.toJson({
                     activity: "appConfigLoaderService.Service#serviceNowUrl: Broadcast event complete",
                     name: appConfigLoaderService.EVENT_NAME_SERVICENOW,
@@ -605,7 +605,7 @@ var appConfigLoaderService;
                     newValue: value,
                     oldValue: oldValue
                 }, true));
-                this.$root.$broadcast(appConfigLoaderService.EVENT_NAME_GIT_SERVICE, value, oldValue);
+                this.$rootScope.$broadcast(appConfigLoaderService.EVENT_NAME_GIT_SERVICE, value, oldValue);
                 this.$log.debug(angular.toJson({
                     activity: "appConfigLoaderService.Service#gitServiceUrl: Broadcast event complete",
                     name: appConfigLoaderService.EVENT_NAME_GIT_SERVICE,
@@ -634,7 +634,7 @@ var appConfigLoaderService;
         idpUrl(value) {
             if (sys.isNil(value))
                 return this._idpUrl;
-            let validated = Service.validateURL(value);
+            let validated = Service.validateURL(value, true);
             if (typeof validated === "string") {
                 this.$log.warn(angular.toJson({
                     reason: "appConfigLoaderService.Service#idpUrl: Error validating URL value",
@@ -657,7 +657,7 @@ var appConfigLoaderService;
                     newValue: value,
                     oldValue: oldValue
                 }, true));
-                this.$root.$broadcast(appConfigLoaderService.EVENT_NAME_IDP, value, oldValue);
+                this.$rootScope.$broadcast(appConfigLoaderService.EVENT_NAME_IDP, value, oldValue);
                 this.$log.debug(angular.toJson({
                     activity: "appConfigLoaderService.Service#idpUrl: Broadcast event complete",
                     name: appConfigLoaderService.EVENT_NAME_IDP,
@@ -730,7 +730,7 @@ var appConfigLoaderService;
         loadNavigationSettings() { return this._loadNavigationSettings; }
     }
     appConfigLoaderService.Service = Service;
-    function getServiceInjectable() { return [persistentStorageLoaderService.SERVICE_NAME, "$http", '$log', '$root', '$q', Service]; }
+    function getServiceInjectable() { return [persistentStorageLoaderService.SERVICE_NAME, "$http", '$log', '$rootScope', '$q', Service]; }
     appConfigLoaderService.getServiceInjectable = getServiceInjectable;
 })(appConfigLoaderService || (appConfigLoaderService = {}));
 var navConfigLoaderService;
@@ -1015,6 +1015,18 @@ var navConfigLoaderService;
                 if (!event.isPropagationStopped)
                     event.stopPropagation();
             }
+        }
+        toJSON() {
+            return {
+                childNavItems: (typeof this._childNavItems === "object" && this._childNavItems !== null) ? this._childNavItems.map((item) => item.toJSON()) : this._childNavItems,
+                id: this._id,
+                linkTitle: this._linkTitle,
+                pageTitle: this._pageTitle,
+                toolTip: this._toolTip,
+                url: this._url,
+                isCurrentPage: this._isCurrentPage,
+                sideNavHeading: this._sideNavHeading
+            };
         }
         /**
         * Creates a navigation menu item objects from navigation menu definition objects.
@@ -3999,7 +4011,7 @@ var app;
                 appConfigLoader: sys.getClassName(appConfigLoader),
                 additionalArguments: sys.skipFirst(sys.asArray(arguments), 2)
             }, true));
-            $scope.absHRef = "#";
+            $scope.absHRef = $scope.href = "";
             $scope.linkTarget = DEFAULT_TARGET;
             $scope.class = [];
             appConfigLoader.$log.debug(angular.toJson({
@@ -4083,7 +4095,7 @@ var app;
                 $scope: sys.getClassName($scope),
                 additionalArguments: sys.skipFirst(sys.asArray(arguments), 1)
             }, true));
-            $scope.effectiveHRef = "#";
+            $scope.effectiveHRef = "";
             $scope.text = "";
             $scope.hasLink = false;
             $scope.leadingSegments = [];

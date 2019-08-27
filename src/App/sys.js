@@ -1544,7 +1544,7 @@ var sys;
         return r;
     }
     sys.getAllClassNames = getAllClassNames;
-    function getClassNamegetClassName(obj) {
+    function getClassName(obj) {
         let t = jQuery.type(obj);
         let n;
         let l;
@@ -1598,9 +1598,9 @@ var sys;
         obj = Object.getPrototypeOf(obj);
         if (isNil(obj))
             return t;
-        n = getClassNamegetClassName(obj);
+        n = getClassName(obj);
         return (n.toLowerCase() === "object") ? t : n;
     }
-    sys.getClassNamegetClassName = getClassNamegetClassName;
+    sys.getClassName = getClassName;
 })(sys || (sys = {}));
 //# sourceMappingURL=sys.js.map

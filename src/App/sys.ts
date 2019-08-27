@@ -1708,7 +1708,7 @@ namespace sys {
         obj = Object.getPrototypeOf(obj);
         if (isNil(obj))
             return t;
-        n = getClassNamegetClassName(obj);
+        n = getClassName(obj);
         return (n.toLowerCase() === "object") ? t : n;
     }
 }

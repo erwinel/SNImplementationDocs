@@ -440,8 +440,7 @@ namespace appConfigLoaderService {
                     value.pathname = "/";
                 else if (!value.pathname.endsWith("/"))
                     value.pathname = value.pathname + "/";
-            }
-            else if (typeof value.pathname === "string" && value.pathname.length > 0) {
+            } else if (typeof value.pathname === "string" && value.pathname.length > 0) {
                 if (value.pathname !== "/")
                     return "Path not allowed";
                 value.pathname = "";
@@ -493,7 +492,7 @@ namespace appConfigLoaderService {
                     newValue: value,
                     oldValue: oldValue
                 }, true));
-                this.$root.$broadcast(EVENT_NAME_SERVICENOW, value, oldValue);
+                this.$rootScope.$broadcast(EVENT_NAME_SERVICENOW, value, oldValue);
                 this.$log.debug(angular.toJson({
                     activity: "appConfigLoaderService.Service#serviceNowUrl: Broadcast event complete",
                     name: EVENT_NAME_SERVICENOW,
@@ -548,7 +547,7 @@ namespace appConfigLoaderService {
                     newValue: value,
                     oldValue: oldValue
                 }, true));
-                this.$root.$broadcast(EVENT_NAME_GIT_SERVICE, value, oldValue);
+                this.$rootScope.$broadcast(EVENT_NAME_GIT_SERVICE, value, oldValue);
                 this.$log.debug(angular.toJson({
                     activity: "appConfigLoaderService.Service#gitServiceUrl: Broadcast event complete",
                     name: EVENT_NAME_GIT_SERVICE,
@@ -580,7 +579,7 @@ namespace appConfigLoaderService {
         idpUrl(value?: URL): URL {
             if (sys.isNil(value))
                 return this._idpUrl;
-            let validated: URL | string = Service.validateURL(value);
+            let validated: URL | string = Service.validateURL(value, true);
             if (typeof validated === "string") {
                 this.$log.warn(angular.toJson({
                     reason: "appConfigLoaderService.Service#idpUrl: Error validating URL value",
@@ -603,7 +602,7 @@ namespace appConfigLoaderService {
                     newValue: value,
                     oldValue: oldValue
                 }, true));
-                this.$root.$broadcast(EVENT_NAME_IDP, value, oldValue);
+                this.$rootScope.$broadcast(EVENT_NAME_IDP, value, oldValue);
                 this.$log.debug(angular.toJson({
                     activity: "appConfigLoaderService.Service#idpUrl: Broadcast event complete",
                     name: EVENT_NAME_IDP,
@@ -684,17 +683,17 @@ namespace appConfigLoaderService {
         * @param {persistentStorageLoaderService.Service} persistentStorageLoader - The persistentStorageLegacy service provider.
         * @param {ng.IHttpService} $http - The $http service provider.
         * @param {ng.ILogService} $log - The $log service provider.
-        * @param {ng.IRootScopeService} $root - The $root service provider.
+        * @param {ng.IRootScopeService} $rootScope - The $root service provider.
         * @param {ng.IQService} $q - The $q service provider
         * @memberof appConfigData
         */
-        constructor(persistentStorageLoader: persistentStorageLoaderService.Service, $http: ng.IHttpService, public $log: ng.ILogService, private $root: ng.IRootScopeService, $q: ng.IQService) {
+        constructor(persistentStorageLoader: persistentStorageLoaderService.Service, $http: ng.IHttpService, public $log: ng.ILogService, private $rootScope: ng.IRootScopeService, $q: ng.IQService) {
             $log.debug(angular.toJson({
                 activity: "appConfigLoaderService.Service#constructor invoked",
                 persistentStorageLoader: sys.getClassName(persistentStorageLoader),
                 $http: sys.getClassName($http),
                 $log: sys.getClassName($log),
-                $root: sys.getClassName($root),
+                $root: sys.getClassName($rootScope),
                 $q: sys.getClassName($q),
                 additionalArguments: sys.skipFirst(sys.asArray(arguments), 5)
             }, true));
@@ -873,7 +872,7 @@ namespace appConfigLoaderService {
         }
     }
 
-    export function getServiceInjectable(): ng.Injectable<Function> { return [persistentStorageLoaderService.SERVICE_NAME, "$http", '$log', '$root', '$q', Service]; }
+    export function getServiceInjectable(): ng.Injectable<Function> { return [persistentStorageLoaderService.SERVICE_NAME, "$http", '$log', '$rootScope', '$q', Service]; }
 }
 
 namespace navConfigLoaderService {
@@ -1194,6 +1193,19 @@ namespace navConfigLoaderService {
                 if (!event.isPropagationStopped)
                     event.stopPropagation();
             }
+        }
+
+        toJSON(): { [key: string]: any } {
+            return {
+                childNavItems: (typeof this._childNavItems === "object" && this._childNavItems !== null) ? this._childNavItems.map((item: NavigationItem) => item.toJSON()) : this._childNavItems,
+                id: this._id,
+                linkTitle: this._linkTitle,
+                pageTitle: this._pageTitle,
+                toolTip: this._toolTip,
+                url: this._url,
+                isCurrentPage: this._isCurrentPage,
+                sideNavHeading: this._sideNavHeading
+            };
         }
 
         /**
@@ -5059,7 +5071,7 @@ namespace app {
                 appConfigLoader: sys.getClassName(appConfigLoader),
                 additionalArguments: sys.skipFirst(sys.asArray(arguments), 2)
             }, true));
-            $scope.absHRef = "#";
+            $scope.absHRef = $scope.href = "";
             $scope.linkTarget = DEFAULT_TARGET;
             $scope.class = [];
             appConfigLoader.$log.debug(angular.toJson({
@@ -5267,7 +5279,7 @@ namespace app {
                 $scope: sys.getClassName($scope),
                 additionalArguments: sys.skipFirst(sys.asArray(arguments), 1)
             }, true));
-            $scope.effectiveHRef = "#";
+            $scope.effectiveHRef = "";
             $scope.text = "";
             $scope.hasLink = false;
             $scope.leadingSegments = [];
