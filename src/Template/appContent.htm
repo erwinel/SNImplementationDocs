@@ -52,8 +52,8 @@
         </div>
     </div>
 </div>
-<div id="setupParametersDialog" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal" role="document">
+<div id="setupParametersDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Setup definitions</h5>
@@ -61,16 +61,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body container-fluid">
-                <div class="form-row">
-                    <div class="form-group col-12">
-                        <url-input ng-model="serviceNowUrl" is-valid="serviceNowUrlIsValid" required="true" label-text="ServiceNow URL" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-12">
-                        <url-input ng-model="gitRepositoryUrl" is-valid="gitRepositoryUrlIsValid" allow-path="true" required="true" label-text="GIT Repository Base URL" />
-                    </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form>
+                        <url-input ng-model="serviceNowUrl" is-valid="serviceNowUrlIsValid" required="true" label-text="ServiceNow URL"></url-input>
+                        <url-input ng-model="gitServiceUrl" is-valid="gitServiceUrlIsValid" allow-path="true" required="true" label-text="GIT Repository Base URL"></url-input>
+                        <url-input ng-model="idpUrl" is-valid="idpUrlIsValid" required="true" label-text="Identity Proivider URL"></url-input>
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
