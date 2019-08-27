@@ -459,8 +459,8 @@ namespace sys {
         return [<T>source];
     }
 
-    export function skipFirst<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any);
-    export function skipFirst<T>(source: Iterable<T>, count: number);
+    export function skipFirst<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[];
+    export function skipFirst<T>(source: Iterable<T>, count: number): T[];
     export function skipFirst<T>(source: Iterable<T>, spec: number | { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[] {
         let result: T[] = [];
         let iterator: Iterator<T> = source[Symbol.iterator]();
@@ -502,8 +502,8 @@ namespace sys {
         return result;
     }
 
-    export function skipLast<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any);
-    export function skipLast<T>(source: Iterable<T>, count: number);
+    export function skipLast<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[];
+    export function skipLast<T>(source: Iterable<T>, count: number): T[];
     export function skipLast<T>(source: Iterable<T>, spec: number | { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[] {
         let result: T[] = reverse(source);
         if (typeof (spec) === 'number') {
@@ -519,8 +519,8 @@ namespace sys {
         return result.reverse();
     }
 
-    export function takeFirst<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any);
-    export function takeFirst<T>(source: Iterable<T>, count: number);
+    export function takeFirst<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[];
+    export function takeFirst<T>(source: Iterable<T>, count: number): T[];
     export function takeFirst<T>(source: Iterable<T>, spec: number | { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[] {
         let result: T[] = [];
         let iterator: Iterator<T> = source[Symbol.iterator]();
@@ -546,8 +546,8 @@ namespace sys {
         return result;
     }
 
-    export function takeLast<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any);
-    export function takeLast<T>(source: Iterable<T>, count: number);
+    export function takeLast<T>(source: Iterable<T>, callbackfn: { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[];
+    export function takeLast<T>(source: Iterable<T>, count: number): T[];
     export function takeLast<T>(source: Iterable<T>, spec: number | { (value: T, index: number, iterable: Iterable<T>): boolean }, thisArg?: any): T[] {
         let result: T[] = reverse(source);
         if (typeof (spec) === 'number')
@@ -1590,5 +1590,125 @@ namespace sys {
                 result.fragment = (isNil(match[uriParseGroup.fragment])) ? '' : match[uriParseGroup.fragment];
         }
         return result;
+    }
+
+    const classNameRe: RegExp = /^\[object\s(.*)\]$/;
+    export function getAllClassNames(obj: any): string[] {
+        let t: string = jQuery.type(obj);
+        let n: string;
+        let l: string;
+        switch (t) {
+            case "array":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && n.toLowerCase() !== "object")
+                    t = n;
+                else
+                    t = "Array";
+                break;
+            case "date":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && n.toLowerCase() !== "object")
+                    t = n;
+                else
+                    t = "Date";
+                break;
+            case "error":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && n.toLowerCase() !== "object")
+                    t = n;
+                else
+                    t = "Error";
+                break;
+            case "regexp":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && n.toLowerCase() !== "object")
+                    t = n;
+                else
+                    t = "RegExp";
+                break;
+            case "object":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n))
+                    t = n;
+                else {
+                    let m: RegExpMatchArray = Object.prototype.toString.call(obj).match(classNameRe);
+                    if (notNilOrEmpty(m))
+                        t = m[1];
+                }
+                break;
+            default:
+                return [t];
+        }
+
+        obj = Object.getPrototypeOf(obj);
+        if (isNil(obj))
+            return [t];
+
+        let r: string[] = getAllClassNames(obj).filter((value: string) => value !== t);
+        if (r.length == 0)
+            return [t];
+        if (t === "object")
+            r.push(t);
+        else
+            r.unshift(t);
+        return r;
+    }
+
+    export function getClassName(obj: any): string {
+        let t: string = jQuery.type(obj);
+        let n: string;
+        let l: string;
+        switch (t) {
+            case "array":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && (l = n.toLowerCase()) !== "array" && l !== "object")
+                    return n;
+                t = "Array";
+                break;
+            case "date":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && (l = n.toLowerCase()) !== "date" && l !== "object")
+                    return n;
+                t = "Date";
+                break;
+            case "error":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && (l = n.toLowerCase()) !== "error" && l !== "object")
+                    return n;
+                t = "Error";
+                break;
+            case "regexp":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && (l = n.toLowerCase()) !== "regexp" && l !== "object")
+                    return n;
+                t = "RegExp";
+                break;
+            case "object":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n)) {
+                    if (n.toLowerCase() !== "object")
+                        return n;
+                    t = (obj instanceof jQuery) ? "jQuery" : n;
+                } else {
+                    let m: RegExpMatchArray = Object.prototype.toString.call(obj).match(classNameRe);
+                    if (notNilOrEmpty(m)) {
+                        if (m[1].toLowerCase() !== "object")
+                            return m[1];
+                        if (obj instanceof jQuery)
+                            t = "jQuery";
+                    }
+                    else if (obj instanceof jQuery)
+                        t = "jQuery";
+                }
+                break;
+            default:
+                return t;
+        }
+
+        obj = Object.getPrototypeOf(obj);
+        if (isNil(obj))
+            return t;
+        n = getClassNamegetClassName(obj);
+        return (n.toLowerCase() === "object") ? t : n;
     }
 }

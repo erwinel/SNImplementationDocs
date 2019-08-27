@@ -21,6 +21,10 @@ var persistentStorageLoaderService;
             this._window = _window;
             this._keys = _keys;
             this._index = 0;
+            _window.console.log(angular.toJson({
+                activity: "persistentStorageLoaderService.SessionStorageEntryEnumerator#constructor invoked",
+                arguments: sys.asArray(arguments)
+            }));
         }
         [Symbol.iterator]() { return this; }
         next() {
@@ -46,6 +50,10 @@ var persistentStorageLoaderService;
             this._window = _window;
             this._keys = _keys;
             this._index = 0;
+            _window.console.log(angular.toJson({
+                activity: "persistentStorageLoaderService.SessionStorageValueEnumerator#constructor invoked",
+                arguments: sys.asArray(arguments)
+            }));
         }
         [Symbol.iterator]() { return this; }
         next() {
@@ -74,6 +82,10 @@ var persistentStorageLoaderService;
     class Service {
         constructor($window) {
             this.$window = $window;
+            $window.console.log(angular.toJson({
+                activity: "persistentStorageLoaderService.Service#constructor invoked",
+                arguments: sys.asArray(arguments)
+            }));
             this[Symbol.toStringTag] = persistentStorageLoaderService.SERVICE_NAME;
             this.check(true);
         }
@@ -212,7 +224,7 @@ var persistentStorageLoaderService;
         }
         setObject(key, value) {
             try {
-                if (typeof (value) === "undefined")
+                if (typeof value === "undefined")
                     this.$window.sessionStorage.setItem(key, "undefined");
                 else
                     this.$window.sessionStorage.setItem(key, angular.toJson(value, false));
@@ -266,6 +278,7 @@ var appConfigLoaderService;
      * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
      */
     appConfigLoaderService.DEFAULT_URL_IDP = "https://myidp.com";
+    const JSON_RELATIVE_URL_APPCONFIGDATA = "./appConfigData.json";
     class Service {
         /**
         * Creates an instance of the appConfigLoader service.
@@ -277,14 +290,28 @@ var appConfigLoaderService;
         * @memberof appConfigData
         */
         constructor(persistentStorageLoader, $http, $log, $root, $q) {
+            this.$log = $log;
             this.$root = $root;
             this._serviceNowUrl = new URL(appConfigLoaderService.DEFAULT_URL_SERVICENOW);
             this._gitServiceUrl = new URL(appConfigLoaderService.DEFAULT_URL_GIT_SERVICE);
             this._idpUrl = new URL(appConfigLoaderService.DEFAULT_URL_GIT_SERVICE);
+            $log.debug(angular.toJson({
+                activity: "appConfigLoaderService.Service#constructor invoked",
+                persistentStorageLoader: sys.getClassName(persistentStorageLoader),
+                $http: sys.getClassName($http),
+                $log: sys.getClassName($log),
+                $root: sys.getClassName($root),
+                $q: sys.getClassName($q),
+                additionalArguments: sys.skipFirst(sys.asArray(arguments), 5)
+            }, true));
             this[Symbol.toStringTag] = appConfigLoaderService.SERVICE_NAME;
             let svc = this;
             let original = persistentStorageLoader.getObject(persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS);
             if (sys.notNil(original)) {
+                $log.debug(angular.toJson({
+                    activity: "appConfigLoaderService.Service#constructor: Loaded original " + persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS,
+                    original: original
+                }, true));
                 if (typeof original !== "object") {
                     $log.warn("Expected object for " + persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS + " setting object; actual is " + (typeof original));
                     original = {};
@@ -336,37 +363,117 @@ var appConfigLoaderService;
             }
             else
                 original = {};
-            let promise = $http.get("./appConfigData.json").then((result) => {
+            $log.debug(angular.toJson({
+                activity: "appConfigLoaderService.Service#constructor: Requesting application configuration data",
+                url: JSON_RELATIVE_URL_APPCONFIGDATA
+            }, true));
+            let promise = $http.get(JSON_RELATIVE_URL_APPCONFIGDATA).then((result) => {
+                $log.debug(angular.toJson({
+                    activity: "appConfigLoaderService.Service#constructor: Application configuration data retrieval response received",
+                    headers: result.headers,
+                    status: result.status,
+                    statusText: result.statusText
+                }, true));
                 return $q((resolve, reject) => {
-                    if (typeof result.data !== "object")
+                    if (typeof result.data !== "object") {
+                        $log.warn(angular.toJson({
+                            activity: "Invalid application configuration retrieval response data",
+                            data: result.data
+                        }, true));
                         reject("Expected object response type, actual is " + (typeof result.data));
-                    else if (result.data == null)
+                    }
+                    else if (result.data == null) {
+                        $log.warn("Application configuration retrieval response data was null");
                         reject("Expected object response type, actual is null");
-                    else
+                    }
+                    else {
+                        $log.debug(angular.toJson({
+                            activity: "appConfigLoaderService.Service#constructor: Accepting application configuration retrieval response data",
+                            data: result.data
+                        }, true));
                         resolve(result.data);
+                    }
                 });
             }, (reason) => {
-                $log.error("Unexpected error making application configuration data request: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
+                $log.error({
+                    activity: "Unexpected error making application configuration data request",
+                    reason: reason
+                }, true);
             });
             this._loadNavigationSettings = promise.then((data) => {
+                $log.debug(angular.toJson({
+                    activity: "appConfigLoaderService.Service#loadNavigationSettings=>then invoked",
+                    navigation: data.navigation
+                }, true));
                 return $q((resolve, reject) => {
-                    if (typeof data.navigation !== "object")
+                    if (typeof data.navigation !== "object") {
+                        $log.warn(angular.toJson({
+                            activity: "Invalid Application Navigation configuration property",
+                            navigation: data.navigation
+                        }, true));
                         reject("Expected object navigation property type, actual is " + (typeof data.navigation));
-                    else if (data.navigation == null)
+                    }
+                    else if (data.navigation == null) {
+                        $log.warn("Application Navigation configuration property was null");
                         reject("Expected object navigation property type, actual is null");
-                    else
+                    }
+                    else {
+                        $log.debug(angular.toJson({
+                            activity: "appConfigLoaderService.Service#loadNavigationSettings=>then: Accepting Application Navigation configuration",
+                            navigation: data.navigation
+                        }, true));
                         resolve(data.navigation);
+                    }
                 });
             });
             promise.then((data) => {
                 function applyUrlSetting(name, cfgValue, settingsValue, defaultValue) {
-                    if ((sys.isNil(settingsValue) || settingsValue.length == 0) && typeof cfgValue === "string" && cfgValue.trim().length > 0)
+                    $log.debug(angular.toJson({
+                        activity: "appConfigLoaderService.Service#constructor: Applying URL setting",
+                        name: name,
+                        cfgValue: cfgValue,
+                        settingsValue: settingsValue,
+                        defaultValue: defaultValue
+                    }, true));
+                    if (sys.notNilOrEmpty(settingsValue))
                         try {
+                            $log.debug(angular.toJson({
+                                activity: "appConfigLoaderService.Service#constructor: Returning value from persistent storage",
+                                name: name,
+                                href: settingsValue
+                            }, true));
                             return new URL(cfgValue);
                         }
                         catch (e) {
-                            $log.error("Error parsing application setting " + name + ": " + e);
+                            $log.warn(angular.toJson({
+                                reason: "Error parsing URL",
+                                name: name,
+                                href: settingsValue,
+                                error: e
+                            }, true));
                         }
+                    if (sys.notNilOrEmpty(cfgValue))
+                        try {
+                            $log.debug(angular.toJson({
+                                activity: "appConfigLoaderService.Service#constructor: Returning value from application configuration settings",
+                                name: name,
+                                href: cfgValue
+                            }, true));
+                            return new URL(cfgValue);
+                        }
+                        catch (e) {
+                            $log.warn(angular.toJson({
+                                reason: "Error parsing URL",
+                                name: name,
+                                href: cfgValue,
+                                error: e
+                            }, true));
+                        }
+                    $log.debug(angular.toJson({
+                        activity: "appConfigLoaderService.Service#constructor: Returning default value",
+                        name: name,
+                        url: defaultValue
+                    }, true));
                     return defaultValue;
                 }
                 ;
@@ -375,8 +482,14 @@ var appConfigLoaderService;
                     gitServiceUrl: this.gitServiceUrl(applyUrlSetting("gitServiceUrl", data.gitServiceUrl, original.gitServiceUrl, this.gitServiceUrl())).href,
                     idpUrl: this.idpUrl(applyUrlSetting("idpUrl", data.idpUrl, original.idpUrl, this.idpUrl())).href
                 };
-                if (original.serviceNowUrl !== settings.serviceNowUrl || original.gitServiceUrl !== settings.gitServiceUrl || original.idpUrl !== settings.idpUrl)
+                if (original.serviceNowUrl !== settings.serviceNowUrl || original.gitServiceUrl !== settings.gitServiceUrl || original.idpUrl !== settings.idpUrl) {
+                    $log.debug(angular.toJson({
+                        activity: "appConfigLoaderService.Service#constructor: Saving URL settings",
+                        original: original,
+                        settings: settings
+                    }, true));
                     persistentStorageLoader.setObject(persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS, settings);
+                }
             });
         }
         static validateURL(value, allowPath = false) {
@@ -418,13 +531,38 @@ var appConfigLoaderService;
             if (sys.isNil(value))
                 return this._serviceNowUrl;
             let validated = Service.validateURL(value);
-            if (typeof validated === "string")
+            if (typeof validated === "string") {
+                this.$log.warn(angular.toJson({
+                    reason: "appConfigLoaderService.Service#serviceNowUrl: Error validating URL value",
+                    message: validated,
+                    value: value
+                }, true));
                 throw new Error(validated);
+            }
             let oldValue = this._serviceNowUrl;
+            this.$log.debug(angular.toJson({
+                reason: "appConfigLoaderService.Service#serviceNowUrl: Comparing URL values",
+                oldValue: oldValue,
+                value: value
+            }, true));
             if (typeof oldValue !== "object" || oldValue.href !== value.href) {
                 this._serviceNowUrl = value;
+                this.$log.debug(angular.toJson({
+                    activity: "appConfigLoaderService.Service#serviceNowUrl: Broadcasting event",
+                    name: appConfigLoaderService.EVENT_NAME_SERVICENOW,
+                    newValue: value,
+                    oldValue: oldValue
+                }, true));
                 this.$root.$broadcast(appConfigLoaderService.EVENT_NAME_SERVICENOW, value, oldValue);
+                this.$log.debug(angular.toJson({
+                    activity: "appConfigLoaderService.Service#serviceNowUrl: Broadcast event complete",
+                    name: appConfigLoaderService.EVENT_NAME_SERVICENOW,
+                    newValue: value,
+                    oldValue: oldValue
+                }, true));
             }
+            else
+                this.$log.debug("appConfigLoaderService.Service#serviceNowUrl: no change");
             return this._serviceNowUrl;
         }
         onServiceNowUrlChanged(scope, cb, thisArg) {
@@ -445,13 +583,38 @@ var appConfigLoaderService;
             if (sys.isNil(value))
                 return this._gitServiceUrl;
             let validated = Service.validateURL(value, true);
-            if (typeof validated === "string")
+            if (typeof validated === "string") {
+                this.$log.warn(angular.toJson({
+                    reason: "appConfigLoaderService.gitServiceUrl#serviceNowUrl: Error validating URL value",
+                    activity: validated,
+                    value: value
+                }, true));
                 throw new Error(validated);
+            }
             let oldValue = this._gitServiceUrl;
+            this.$log.debug(angular.toJson({
+                reason: "appConfigLoaderService.Service#gitServiceUrl: Comparing URL values",
+                oldValue: oldValue,
+                value: value
+            }, true));
             if (typeof oldValue !== "object" || oldValue.href !== value.href) {
                 this._gitServiceUrl = value;
+                this.$log.debug(angular.toJson({
+                    activity: "appConfigLoaderService.Service#gitServiceUrl: Broadcasting event",
+                    name: appConfigLoaderService.EVENT_NAME_GIT_SERVICE,
+                    newValue: value,
+                    oldValue: oldValue
+                }, true));
                 this.$root.$broadcast(appConfigLoaderService.EVENT_NAME_GIT_SERVICE, value, oldValue);
+                this.$log.debug(angular.toJson({
+                    activity: "appConfigLoaderService.Service#gitServiceUrl: Broadcast event complete",
+                    name: appConfigLoaderService.EVENT_NAME_GIT_SERVICE,
+                    newValue: value,
+                    oldValue: oldValue
+                }, true));
             }
+            else
+                this.$log.debug("appConfigLoaderService.Service#gitServiceUrl: no change");
             return this._gitServiceUrl;
         }
         onGitServiceUrlChanged(scope, cb, thisArg) {
@@ -472,13 +635,38 @@ var appConfigLoaderService;
             if (sys.isNil(value))
                 return this._idpUrl;
             let validated = Service.validateURL(value);
-            if (typeof validated === "string")
+            if (typeof validated === "string") {
+                this.$log.warn(angular.toJson({
+                    reason: "appConfigLoaderService.Service#idpUrl: Error validating URL value",
+                    activity: validated,
+                    value: value
+                }, true));
                 throw new Error(validated);
+            }
             let oldValue = this._idpUrl;
+            this.$log.debug(angular.toJson({
+                reason: "appConfigLoaderService.Service#idpUrl: Comparing URL values",
+                oldValue: oldValue,
+                value: value
+            }, true));
             if (typeof oldValue !== "object" || oldValue.href !== value.href) {
                 this._idpUrl = value;
+                this.$log.debug(angular.toJson({
+                    activity: "appConfigLoaderService.Service#idpUrl: Broadcasting event",
+                    name: appConfigLoaderService.EVENT_NAME_IDP,
+                    newValue: value,
+                    oldValue: oldValue
+                }, true));
                 this.$root.$broadcast(appConfigLoaderService.EVENT_NAME_IDP, value, oldValue);
+                this.$log.debug(angular.toJson({
+                    activity: "appConfigLoaderService.Service#idpUrl: Broadcast event complete",
+                    name: appConfigLoaderService.EVENT_NAME_IDP,
+                    newValue: value,
+                    oldValue: oldValue
+                }, true));
             }
+            else
+                this.$log.debug("appConfigLoaderService.Service#idpUrl: no change");
             return this._idpUrl;
         }
         onIdpUrlChanged(scope, cb, thisArg) {
@@ -497,6 +685,13 @@ var appConfigLoaderService;
         * @memberof appConfigData
         */
         createUrl(setting, relativeUrl, queryParameter, queryValue) {
+            this.$log.debug(angular.toJson({
+                activity: "appConfigLoaderService.Service#createUrl invoked",
+                setting: setting,
+                relativeUrl: relativeUrl,
+                queryParameter: queryParameter,
+                queryValue: queryValue
+            }, true));
             let url;
             if (setting === "git")
                 url = this._gitServiceUrl;
@@ -506,6 +701,10 @@ var appConfigLoaderService;
                 url = new URL(relativeUrl, url);
             else
                 url = new URL(url.href);
+            this.$log.debug(angular.toJson({
+                activity: "appConfigLoaderService.Service#createUrl: Got base URL",
+                url: url
+            }, true));
             if (typeof queryParameter === "string" && queryParameter.length > 0) {
                 if (typeof queryValue === "string") {
                     if (url.searchParams.has(queryParameter))
@@ -522,6 +721,10 @@ var appConfigLoaderService;
                         url.search = url.search + "&" + queryParameter;
                 }
             }
+            this.$log.debug(angular.toJson({
+                activity: "appConfigLoaderService.Service#createUrl: returning URL",
+                url: url
+            }, true));
             return url;
         }
         loadNavigationSettings() { return this._loadNavigationSettings; }
@@ -897,15 +1100,29 @@ var navConfigLoaderService;
             this._currentItemClass = DEFAULT_CURRENT_ITEM_CLASS;
             this._selectedItemClass = DEFAULT_SELECTED_ITEM_CLASS;
             this._otherItemClass = DEFAULT_OTHER_ITEM_CLASS;
+            appConfigLoader.$log.debug(angular.toJson({
+                activity: "navConfigLoaderService.Service#constructor invoked",
+                appConfigLoader: sys.getClassName(appConfigLoader),
+                $window: sys.getClassName($window),
+                $document: sys.getClassName($document),
+                $q: sys.getClassName($q),
+                additionalArguments: sys.skipFirst(sys.asArray(arguments), 4)
+            }, true));
             this[Symbol.toStringTag] = navConfigLoaderService.SERVICE_NAME;
             let headElement = $document.find('head').first();
             let titleElement = headElement.find('title');
             if (titleElement.length == 0) {
-                headElement.children().append(titleElement = $('<title></title>'));
+                appConfigLoader.$log.debug("navConfigLoaderService.Service#constructor: Adding title element to document head");
+                headElement.add(titleElement = $('<title></title>'));
                 this._pageTitle = "";
             }
-            else
+            else {
                 this._pageTitle = titleElement.text().trim();
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "navConfigLoaderService.Service#constructor: Got page title",
+                    title: this._pageTitle
+                }, true));
+            }
             try {
                 this._currentPageURL = new URL($window.location.href);
             }
@@ -921,40 +1138,104 @@ var navConfigLoaderService;
                 let arr = navConfigLoaderService.DEFAULT_PAGE_PATH.split("/");
                 segments.push(arr[arr.length - 1]);
             }
+            appConfigLoader.$log.debug(angular.toJson({
+                activity: "navConfigLoaderService.Service#constructor: Got current page URL",
+                currentPageURL: this._currentPageURL,
+                segments: segments
+            }, true));
             this._currentPageURL.pathname = "/" + (this._relativePagePath = (segments.length == 1) ? segments[0] : segments.join("/"));
-            if ((this._currentPageId = headElement.find('meta[name="app:pageId"]').attr("content")).length == 0)
+            appConfigLoader.$log.debug(angular.toJson({
+                activity: "navConfigLoaderService.Service#constructor: Normalized current page URL",
+                currentPageURL: this._currentPageURL
+            }, true));
+            if ((this._currentPageId = headElement.find('meta[name="app:pageId"]').attr("content")).length == 0) {
                 this._currentPageId = toPageId(this._currentPageURL.pathname);
-            if (this._pageTitle.length === 0)
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "navConfigLoaderService.Service#constructor: app:pageId meta element not found - created page ID from path name",
+                    pathname: this._currentPageURL.pathname,
+                    currentPageId: this._currentPageId
+                }, true));
+            }
+            else
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "navConfigLoaderService.Service#constructor: Got page id from app:pageId meta element",
+                    currentPageId: this._currentPageId
+                }, true));
+            if (this._pageTitle.length === 0) {
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "navConfigLoaderService.Service#constructor: Using page id as page title",
+                    pageTitle: this._currentPageId
+                }, true));
                 this._pageTitle = this._currentPageId;
+            }
             let svc = this;
+            appConfigLoader.$log.debug("navConfigLoaderService.Service#constructor: Loading navigation configuration");
             this._loadTopNavItems = appConfigLoader.loadNavigationSettings().then((navConfig) => {
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "navConfigLoaderService.Service#loadTopNavItems=>then invoked",
+                    navConfig: navConfig
+                }, true));
                 return $q((resolve, reject) => {
-                    if (typeof navConfig.items !== "object")
+                    if (typeof navConfig.items !== "object") {
+                        appConfigLoader.$log.warn("Invalid navigation configuration items property type");
                         reject("Expected object items property type; actual is " + (typeof navConfig.items));
-                    else if (navConfig.items === null)
+                    }
+                    else if (navConfig.items === null) {
+                        appConfigLoader.$log.warn("Navigation configuration items property is null");
                         reject("Expected object items property type; actual is null");
+                    }
                     else if (Array.isArray(navConfig.items)) {
                         let items = navConfig.items.filter((i) => { return (typeof i === "object" && i !== null); });
-                        if (items.length == 0)
+                        if (items.length == 0) {
+                            appConfigLoader.$log.warn("Navigation configuration items property is empty");
                             reject("Items property is empty.");
+                        }
                         else
                             try {
+                                appConfigLoader.$log.debug("navConfigLoaderService.Service#loadTopNavItems=>then: Accepting navigation configuration items");
                                 resolve(NavigationItem.createNavItems(svc, items));
                             }
                             catch (e) {
+                                appConfigLoader.$log.error(angular.toJson({
+                                    reason: "Unexpected error importing navigation configuration items",
+                                    error: e
+                                }, true));
                                 reject(e);
                             }
                     }
-                    else
+                    else {
+                        appConfigLoader.$log.warn("Navigation configuration items property is not an array");
                         reject("Items property is not an array");
+                    }
                 });
             });
-            this._loadCurrentItem = this._loadTopNavItems.then((items) => { return NavigationItem.findCurrentItem(items); });
+            this._loadCurrentItem = this._loadTopNavItems.then((items) => {
+                appConfigLoader.$log.debug("navConfigLoaderService.Service#loadCurrentItem=>then Invoked");
+                return NavigationItem.findCurrentItem(items);
+            });
             this._loadPageTitle = this._loadCurrentItem.then((item) => {
-                if (sys.notNil(item) && item.pageTitle.length > 0)
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "navConfigLoaderService.Service#loadPageTitle=>then invoked",
+                    item: item
+                }, true));
+                if (sys.notNil(item) && item.pageTitle.length > 0) {
+                    appConfigLoader.$log.debug(angular.toJson({
+                        activity: "navConfigLoaderService.Service#loadPageTitle=>then: Setting page title",
+                        pageTitle: item.pageTitle
+                    }, true));
                     this._pageTitle = item.pageTitle;
-                else if (this._pageTitle.trim() === titleElement.text().trim())
+                }
+                else if (this._pageTitle.trim() === titleElement.text().trim()) {
+                    appConfigLoader.$log.debug(angular.toJson({
+                        activity: "navConfigLoaderService.Service#loadPageTitle=>then: Returning current page title",
+                        pageTitle: this._pageTitle
+                    }, true));
                     return this._pageTitle;
+                }
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "navConfigLoaderService.Service#loadPageTitle=>then: Setting page title element text and returning current page title",
+                    pageTitle: this._pageTitle
+                }, true));
                 titleElement.text(this._pageTitle);
                 return this._pageTitle;
             });
@@ -1020,24 +1301,39 @@ var appModalPopupService;
     appModalPopupService.JQUERY_SELECTOR_DIALOG = "#appModalPopupDialog";
     class Service {
         constructor(appConfigLoader, $window, $document, $q) {
+            this.appConfigLoader = appConfigLoader;
             this._isVisible = false;
             this._type = "info";
             this._hasThis = false;
+            appConfigLoader.$log.debug(angular.toJson({
+                activity: "appModalPopupService.Service#constructor invoked",
+                appConfigLoader: sys.getClassName(appConfigLoader),
+                $window: sys.getClassName($window),
+                $document: sys.getClassName($document),
+                $q: sys.getClassName($q),
+                additionalArguments: sys.skipFirst(sys.asArray(arguments), 4)
+            }, true));
             this[Symbol.toStringTag] = appModalPopupService.SERVICE_NAME;
             let svc = this;
             this._scope = { buttons: [], class: [], closePopupDialog: (event) => { svc.closePopupDialog(); }, message: "", title: "" };
         }
         showPopupDialog(message, arg1, arg2, arg3, arg4, thisObj) {
+            this.appConfigLoader.$log.debug(angular.toJson({
+                activity: "appModalPopupService.Service#showPopupDialog invoked",
+                arguments: sys.asArray(arguments)
+            }, true));
             let title;
             let buttons;
-            if (this._isVisible)
+            if (this._isVisible) {
+                this.appConfigLoader.$log.debug("appModalPopupService.Service#showPopupDialog: closing popup dialog");
                 this.closePopupDialog();
+            }
             this._type = "info";
-            let hasThis = false;
             this._onClose = undefined;
             if (arguments.length < 2 || typeof arg1 === "string") {
                 this._type = arg1;
                 title = arg2;
+                this._hasThis = false;
             }
             else if (arguments.length > 5) {
                 this._onClose = arg1;
@@ -1045,6 +1341,7 @@ var appModalPopupService;
                 this._type = arg3;
                 title = arg4;
                 this._hasThis = true;
+                this._thisObj = thisObj;
             }
             else {
                 this._onClose = arg1;
@@ -1058,6 +1355,7 @@ var appModalPopupService;
                     this._type = arg3;
                     title = arg4;
                     buttons = arg2;
+                    this._hasThis = false;
                 }
             }
             if (sys.isNilOrWhiteSpace(title)) {
@@ -1123,38 +1421,100 @@ var appModalPopupService;
                 if (!hasDefault)
                     this._scope.buttons[0].class[1] = "btn-primary";
             }
+            this.appConfigLoader.$log.debug(angular.toJson({
+                activity: "appModalPopupService.Service#showPopupDialog: Showing popup dialog",
+                isVisible: this._isVisible,
+                type: this._type,
+                class: this._scope.class,
+                title: this._scope.title,
+                message: this._scope.message,
+                hasThis: this._hasThis,
+                thisObj: sys.getClassName(this._thisObj),
+                onClose: typeof this._onClose,
+                closePopupDialog: typeof this._scope.closePopupDialog,
+                buttons: this._scope.buttons
+            }, true));
             $(appModalPopupService.JQUERY_SELECTOR_DIALOG).modal('show');
         }
         _closePopupDialog(value) {
+            this.appConfigLoader.$log.debug(angular.toJson({
+                activity: "appModalPopupService.Service#_closePopupDialog invoked",
+                isVisible: this._isVisible,
+                type: this._type,
+                class: this._scope.class,
+                title: this._scope.title,
+                message: this._scope.message,
+                hasThis: this._hasThis,
+                thisObj: sys.getClassName(this._thisObj),
+                onClose: typeof this._onClose,
+                closePopupDialog: typeof this._scope.closePopupDialog,
+                buttons: this._scope.buttons
+            }, true));
             $(appModalPopupService.JQUERY_SELECTOR_DIALOG).modal('hide');
-            if (typeof this._onClose !== "function")
+            if (typeof this._onClose !== "function") {
+                this.appConfigLoader.$log.debug("appModalPopupService.Service#_closePopupDialog: No callback method");
                 return;
-            if (arguments.length == 0) {
-                if (this._hasThis)
-                    this._onClose.call(this._thisObj);
-                else
-                    this._onClose();
             }
-            else if (this._hasThis)
+            if (arguments.length == 0) {
+                if (this._hasThis) {
+                    this.appConfigLoader.$log.debug(angular.toJson({
+                        activity: "appModalPopupService.Service#_closePopupDialog: Invoking callback",
+                        thisObj: sys.getClassName(this._thisObj),
+                        arguments: []
+                    }, true));
+                    this._onClose.call(this._thisObj);
+                }
+                else {
+                    this.appConfigLoader.$log.debug(angular.toJson({
+                        activity: "appModalPopupService.Service#_closePopupDialog: Invoking callback",
+                        arguments: []
+                    }, true));
+                    this._onClose();
+                }
+            }
+            else if (this._hasThis) {
+                this.appConfigLoader.$log.debug(angular.toJson({
+                    activity: "appModalPopupService.Service#_closePopupDialog: Invoking callback",
+                    thisObj: sys.getClassName(this._thisObj),
+                    arguments: [value]
+                }, true));
                 this._onClose.call(this._thisObj, value);
-            else
+            }
+            else {
+                this.appConfigLoader.$log.debug(angular.toJson({
+                    activity: "appModalPopupService.Service#_closePopupDialog: Invoking callback",
+                    arguments: [value]
+                }, true));
                 this._onClose(value);
+            }
+            this.appConfigLoader.$log.debug("appModalPopupService.Service#_closePopupDialog: Callback invoked");
         }
         closePopupDialog(value) {
-            if (arguments.length == 0) {
-                let btn = this._scope.buttons.filter((value) => value.isDefault);
-                if (btn.length == 0)
-                    this._closePopupDialog();
+            this.appConfigLoader.$log.debug("appModalPopupService.Service#closePopupDialog invoked");
+            if (this._isVisible) {
+                if (arguments.length == 0) {
+                    let btn = this._scope.buttons.filter((value) => value.isDefault);
+                    if (btn.length == 0)
+                        this._closePopupDialog();
+                    else
+                        this._closePopupDialog(btn[0].value);
+                }
                 else
-                    this._closePopupDialog(btn[0].value);
+                    this._closePopupDialog(value);
             }
             else
-                this._closePopupDialog(value);
+                this.appConfigLoader.$log.debug("appModalPopupService.Service#closePopupDialog: Popup dialog already closed");
         }
         static getDirectiveInjectable() {
+            window.console.debug("Returning directive " + appModalPopupService.DIRECTIVE_NAME);
             return [appModalPopupService.SERVICE_NAME, (appModalPopup) => ({
                     restrict: "E",
                     link: (scope, element, attrs) => {
+                        appModalPopup.appConfigLoader.$log.debug(angular.toJson({
+                            activity: "appModalPopupService." + appModalPopupService.DIRECTIVE_NAME + "#link invoked",
+                            arguments: sys.asArray(arguments),
+                            serviceScope: appModalPopup._scope
+                        }, true));
                         scope.buttons = appModalPopup._scope.buttons;
                         scope.class = appModalPopup._scope.class;
                         scope.closePopupDialog = appModalPopup._scope.closePopupDialog;
@@ -1183,10 +1543,15 @@ var app;
      * @constant {ng.IModule}
      */
     app.appModule = angular.module("app", []);
+    window.console.debug("Creating service " + persistentStorageLoaderService.SERVICE_NAME);
     app.appModule.service(persistentStorageLoaderService.SERVICE_NAME, persistentStorageLoaderService.getServiceInjectable());
+    window.console.debug("Creating service " + appConfigLoaderService.SERVICE_NAME);
     app.appModule.service(appConfigLoaderService.SERVICE_NAME, appConfigLoaderService.getServiceInjectable());
+    window.console.debug("Creating service " + navConfigLoaderService.SERVICE_NAME);
     app.appModule.service(navConfigLoaderService.SERVICE_NAME, navConfigLoaderService.getServiceInjectable());
+    window.console.debug("Creating service " + appModalPopupService.SERVICE_NAME);
     app.appModule.service(appModalPopupService.SERVICE_NAME, appModalPopupService.getServiceInjectable());
+    window.console.debug("Creating directive " + appModalPopupService.DIRECTIVE_NAME);
     app.appModule.directive(appModalPopupService.DIRECTIVE_NAME, appModalPopupService.Service.getDirectiveInjectable());
     // #region Constants
     const DEFAULT_CURRENT_ITEM_CLASS = ["active", "nav-link"];
@@ -2921,6 +3286,10 @@ var app;
             this.$scope = $scope;
             this._isEmpty = true;
             this._invalidFormat = false;
+            window.console.debug(angular.toJson({
+                activity: "app.urlInputDirectiveController#constructor invoked",
+                arguments: sys.asArray(arguments)
+            }, true));
             let ctrl = this;
         }
         validate(value) {
@@ -2999,11 +3368,16 @@ var app;
             return false;
         }
         static createDirective() {
+            window.console.debug("Returning directive " + app.DIRECTIVE_NAME_urlInputDirective);
             return {
                 restrict: "E",
                 controller: ['$scope', urlInputDirectiveController],
                 controllerAs: 'ctrl',
                 link: (scope, element, attrs) => {
+                    window.console.debug(angular.toJson({
+                        activity: "app." + app.DIRECTIVE_NAME_urlInputDirective + "#link invoked",
+                        arguments: sys.asArray(arguments)
+                    }, true));
                     if (typeof scope.textBoxId !== "string" || scope.textBoxId.trim().length == 0) {
                         let i = 0;
                         let id = app.DIRECTIVE_NAME_urlInputDirective + ":" + i++;
@@ -3034,6 +3408,7 @@ var app;
         }
     }
     app.urlInputDirectiveController = urlInputDirectiveController;
+    window.console.debug("Creating directive " + app.DIRECTIVE_NAME_urlInputDirective);
     app.appModule.directive(app.DIRECTIVE_NAME_urlInputDirective, urlInputDirectiveController.createDirective);
     // #endregion
     // #region appContent directive.
@@ -3064,6 +3439,15 @@ var app;
             this.$window = $window;
             this.navConfigLoader = navConfigLoader;
             this.appConfigLoader = appConfigLoader;
+            $log.debug(angular.toJson({
+                activity: "app.appContentController#constructor invoked",
+                $scope: sys.getClassName($scope),
+                $log: sys.getClassName($log),
+                $window: sys.getClassName($window),
+                navConfigLoader: sys.getClassName(navConfigLoader),
+                appConfigLoader: sys.getClassName(appConfigLoader),
+                additionalArguments: sys.skipFirst(sys.asArray(arguments), 5)
+            }, true));
             $scope.serviceNowUrlIsValid = $scope.gitServiceUrlIsValid = $scope.idpUrlIsValid = $scope.setupParametersAreInvalid = true;
             $scope.setupParametersDialogVisible = $scope.showSideMenu = $scope.showBreadcrumbLinks = $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = $scope.popupDialogVisible = false;
             $scope.topNavItems = $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
@@ -3076,24 +3460,105 @@ var app;
             appConfigLoader.onIdpUrlChanged($scope, (url) => { $scope.idpUrl = url.href; });
             $scope.idpUrl = appConfigLoader.idpUrl().href;
             $scope.popupDialogBodyClass = [];
+            $log.debug(angular.toJson({
+                activity: "app.appContentController#constructor: Initialized scope",
+                appContentController: sys.getClassName($scope.appContentController),
+                currentNavItem: $scope.currentNavItem,
+                followingSideNavItems: $scope.followingSideNavItems,
+                gitServiceUrl: $scope.gitServiceUrl,
+                gitServiceUrlIsValid: $scope.gitServiceUrlIsValid,
+                idpUrl: $scope.idpUrl,
+                idpUrlIsValid: $scope.idpUrlIsValid,
+                mainSectionClass: $scope.mainSectionClass,
+                onPopupDialogClose: typeof $scope.onPopupDialogClose,
+                pageTitle: $scope.pageTitle,
+                popupDialogBodyClass: $scope.popupDialogBodyClass,
+                popupDialogButtons: $scope.popupDialogButtons,
+                popupDialogMessage: $scope.popupDialogMessage,
+                popupDialogTitle: $scope.popupDialogTitle,
+                popupDialogVisible: $scope.popupDialogVisible,
+                serviceNowUrl: $scope.serviceNowUrl,
+                serviceNowUrlIsValid: $scope.serviceNowUrlIsValid,
+                setupParametersAreInvalid: $scope.setupParametersAreInvalid,
+                setupParametersDialogVisible: $scope.setupParametersDialogVisible,
+                showBreadcrumbLinks: $scope.showBreadcrumbLinks,
+                showCurrentItem: $scope.showCurrentItem,
+                showSideMenu: $scope.showSideMenu,
+                showSideNavHeading: $scope.showSideNavHeading,
+                showSideNavItems: $scope.showSideNavItems,
+                sideNavBreadcrumbItems: $scope.sideNavBreadcrumbItems,
+                sideNavHeading: $scope.sideNavHeading,
+                sideNavItems: $scope.sideNavItems,
+                topNavItems: $scope.topNavItems
+            }, true));
             this.updateMainSectionClass();
-            navConfigLoader.loadPageTitle().then((title) => $scope.pageTitle = title);
+            navConfigLoader.loadPageTitle().then((title) => {
+                $log.debug(angular.toJson({
+                    activity: "app.appContentController#navConfigLoader#loadPageTitle->then invoked",
+                    title: title
+                }, true));
+                $scope.pageTitle = title;
+            });
             $scope.$watchGroup(['serviceNowUrlIsValid', 'gitServiceUrlIsValid', 'idpUrlIsValid'], () => {
+                $log.debug(angular.toJson({
+                    activity: "app.appContentController#$scope#$watchGroup('serviceNowUrlIsValid', 'gitServiceUrlIsValid', 'idpUrlIsValid')=>listener invoked",
+                    arguments: sys.asArray(arguments),
+                    gitServiceUrl: $scope.gitServiceUrl,
+                    gitServiceUrlIsValid: $scope.gitServiceUrlIsValid,
+                    idpUrl: $scope.idpUrl,
+                    idpUrlIsValid: $scope.idpUrlIsValid,
+                    serviceNowUrl: $scope.serviceNowUrl,
+                    serviceNowUrlIsValid: $scope.serviceNowUrlIsValid,
+                    setupParametersAreInvalid: $scope.setupParametersAreInvalid
+                }, true));
                 let areValid = $scope.serviceNowUrlIsValid && $scope.gitRepositoryBaseUrlIsValid && $scope.idpUrlIsValid;
-                if (areValid !== $scope.setupParametersAreInvalid)
+                if (areValid !== $scope.setupParametersAreInvalid) {
+                    $log.debug(angular.toJson({
+                        activity: "app.appContentController#$scope#$watchGroup('serviceNowUrlIsValid', 'gitServiceUrlIsValid', 'idpUrlIsValid')=>listener: Setting setupParametersAreInvalid",
+                        areValid: areValid
+                    }, true));
                     $scope.setupParametersAreInvalid = areValid;
+                }
             });
             $scope.setupParametersAreInvalid = $scope.serviceNowUrlIsValid && $scope.gitRepositoryBaseUrlIsValid && $scope.idpUrlIsValid;
+            $log.debug(angular.toJson({
+                activity: "app.appContentController#constructor: Updated setupParametersAreInvalid",
+                areValid: $scope.setupParametersAreInvalid
+            }, true));
             navConfigLoader.loadTopNavItems().then((items) => {
+                $log.debug(angular.toJson({
+                    activity: "app.appContentController#navConfigLoader#loadPageTitle->then invoked",
+                    items: items
+                }, true));
                 $scope.topNavItems = items;
             });
             let ctrl = this;
             navConfigLoader.loadCurrentItem().then((currentNavItem) => {
+                $log.debug(angular.toJson({
+                    activity: "app.appContentController#navConfigLoader#loadCurrentItem->then invoked",
+                    currentNavItem: currentNavItem
+                }, true));
                 if (sys.isNil(currentNavItem)) {
                     $scope.showBreadcrumbLinks = $scope.showSideMenu = $scope.showSideNavHeading = $scope.showSideNavItems = $scope.showCurrentItem = false;
                     $scope.sideNavHeading = '';
                     $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
                     $scope.currentNavItem = undefined;
+                    $log.debug(angular.toJson({
+                        activity: "app.appContentController#navConfigLoader#loadCurrentItem->then: currentNavItem is nil - updated scope",
+                        currentNavItem: $scope.currentNavItem,
+                        followingSideNavItems: $scope.followingSideNavItems,
+                        mainSectionClass: $scope.mainSectionClass,
+                        pageTitle: $scope.pageTitle,
+                        showBreadcrumbLinks: $scope.showBreadcrumbLinks,
+                        showCurrentItem: $scope.showCurrentItem,
+                        showSideMenu: $scope.showSideMenu,
+                        showSideNavHeading: $scope.showSideNavHeading,
+                        showSideNavItems: $scope.showSideNavItems,
+                        sideNavBreadcrumbItems: $scope.sideNavBreadcrumbItems,
+                        sideNavHeading: $scope.sideNavHeading,
+                        sideNavItems: $scope.sideNavItems,
+                        topNavItems: $scope.topNavItems
+                    }, true));
                 }
                 else {
                     if (currentNavItem.isNestedNavItem) {
@@ -3105,6 +3570,22 @@ var app;
                             $scope.followingSideNavItems = currentNavItem.followingSiblings();
                             $scope.showSideNavHeading = ($scope.sideNavHeading = parentNavItem.sideNavHeading.trim()).length > 0;
                             $scope.currentNavItem = currentNavItem;
+                            $log.debug(angular.toJson({
+                                activity: "app.appContentController#navConfigLoader#loadCurrentItem->then: currentNavItem is nested with sibling - updated scope",
+                                currentNavItem: $scope.currentNavItem,
+                                followingSideNavItems: $scope.followingSideNavItems,
+                                mainSectionClass: $scope.mainSectionClass,
+                                pageTitle: $scope.pageTitle,
+                                showBreadcrumbLinks: $scope.showBreadcrumbLinks,
+                                showCurrentItem: $scope.showCurrentItem,
+                                showSideMenu: $scope.showSideMenu,
+                                showSideNavHeading: $scope.showSideNavHeading,
+                                showSideNavItems: $scope.showSideNavItems,
+                                sideNavBreadcrumbItems: $scope.sideNavBreadcrumbItems,
+                                sideNavHeading: $scope.sideNavHeading,
+                                sideNavItems: $scope.sideNavItems,
+                                topNavItems: $scope.topNavItems
+                            }, true));
                         }
                         else {
                             $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = false;
@@ -3112,6 +3593,22 @@ var app;
                             $scope.showSideMenu = $scope.showBreadcrumbLinks;
                             $scope.sideNavHeading = '';
                             $scope.currentNavItem = undefined;
+                            $log.debug(angular.toJson({
+                                activity: "app.appContentController#navConfigLoader#loadCurrentItem->then: currentNavItem is nested - updated scope",
+                                currentNavItem: $scope.currentNavItem,
+                                followingSideNavItems: $scope.followingSideNavItems,
+                                mainSectionClass: $scope.mainSectionClass,
+                                pageTitle: $scope.pageTitle,
+                                showBreadcrumbLinks: $scope.showBreadcrumbLinks,
+                                showCurrentItem: $scope.showCurrentItem,
+                                showSideMenu: $scope.showSideMenu,
+                                showSideNavHeading: $scope.showSideNavHeading,
+                                showSideNavItems: $scope.showSideNavItems,
+                                sideNavBreadcrumbItems: $scope.sideNavBreadcrumbItems,
+                                sideNavHeading: $scope.sideNavHeading,
+                                sideNavItems: $scope.sideNavItems,
+                                topNavItems: $scope.topNavItems
+                            }, true));
                         }
                     }
                     else {
@@ -3122,17 +3619,52 @@ var app;
                         if ($scope.showSideMenu) {
                             $scope.showSideNavHeading = ($scope.sideNavHeading = currentNavItem.sideNavHeading.trim()).length > 0;
                             $scope.sideNavItems = currentNavItem.childNavItems;
+                            $log.debug(angular.toJson({
+                                activity: "app.appContentController#navConfigLoader#loadCurrentItem->then: currentNavItem is top level with sidenav - updated scope",
+                                currentNavItem: $scope.currentNavItem,
+                                followingSideNavItems: $scope.followingSideNavItems,
+                                mainSectionClass: $scope.mainSectionClass,
+                                pageTitle: $scope.pageTitle,
+                                showBreadcrumbLinks: $scope.showBreadcrumbLinks,
+                                showCurrentItem: $scope.showCurrentItem,
+                                showSideMenu: $scope.showSideMenu,
+                                showSideNavHeading: $scope.showSideNavHeading,
+                                showSideNavItems: $scope.showSideNavItems,
+                                sideNavBreadcrumbItems: $scope.sideNavBreadcrumbItems,
+                                sideNavHeading: $scope.sideNavHeading,
+                                sideNavItems: $scope.sideNavItems,
+                                topNavItems: $scope.topNavItems
+                            }, true));
                         }
                         else {
                             $scope.sideNavItems = [];
                             $scope.sideNavHeading = '';
                             $scope.showSideNavHeading = $scope.showSideNavItems = false;
+                            $log.debug(angular.toJson({
+                                activity: "app.appContentController#navConfigLoader#loadCurrentItem->then: currentNavItem is top level - updated scope",
+                                currentNavItem: $scope.currentNavItem,
+                                followingSideNavItems: $scope.followingSideNavItems,
+                                mainSectionClass: $scope.mainSectionClass,
+                                pageTitle: $scope.pageTitle,
+                                showBreadcrumbLinks: $scope.showBreadcrumbLinks,
+                                showCurrentItem: $scope.showCurrentItem,
+                                showSideMenu: $scope.showSideMenu,
+                                showSideNavHeading: $scope.showSideNavHeading,
+                                showSideNavItems: $scope.showSideNavItems,
+                                sideNavBreadcrumbItems: $scope.sideNavBreadcrumbItems,
+                                sideNavHeading: $scope.sideNavHeading,
+                                sideNavItems: $scope.sideNavItems,
+                                topNavItems: $scope.topNavItems
+                            }, true));
                         }
                     }
                 }
                 ctrl.updateMainSectionClass();
             }, (reason) => {
-                $log.error("Error loading application settings: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
+                $log.error(angular.toJson({
+                    message: "Error loading application settings",
+                    reason: reason
+                }, true));
                 $window.alert("Unexpected error loading application settings. See browser log for more detail.");
             });
         }
@@ -3141,6 +3673,11 @@ var app;
                 this.$scope.mainSectionClass = ["container-fluid", "col-8", "col-lg-9"];
             else
                 this.$scope.mainSectionClass = ["container-fluid", "col-12"];
+            this.$log.debug(angular.toJson({
+                activity: "app.appContentController#updateMainSectionClass: Updated main section css",
+                showSideMenu: this.$scope.showSideMenu,
+                mainSectionClass: this.$scope.mainSectionClass
+            }, true));
         }
         /**
          * Opens the edit dialog for setup parameters.
@@ -3149,8 +3686,22 @@ var app;
          * @memberof Controller
          */
         openSetupParametersEditDialog(event) {
+            this.$log.debug(angular.toJson({
+                activity: "app.appContentController#openSetupParametersEditDialog invoked",
+                gitServiceUrl: this.$scope.gitServiceUrl,
+                gitServiceUrlIsValid: this.$scope.gitServiceUrlIsValid,
+                idpUrl: this.$scope.idpUrl,
+                idpUrlIsValid: this.$scope.idpUrlIsValid,
+                serviceNowUrl: this.$scope.serviceNowUrl,
+                serviceNowUrlIsValid: this.$scope.serviceNowUrlIsValid,
+                setupParametersAreInvalid: this.$scope.setupParametersAreInvalid,
+                setupParametersDialogVisible: this.$scope.setupParametersDialogVisible
+            }, true));
             sys.preventEventDefault(event);
-            if (!this.$scope.setupParametersDialogVisible) {
+            if (this.$scope.setupParametersDialogVisible)
+                this.$log.debug("app.appContentController#openSetupParametersEditDialog: Setup parameters dialog already open");
+            else {
+                this.$log.debug("app.appContentController#openSetupParametersEditDialog: Showing dialog");
                 $("#setupParametersDialog").modal('show');
                 this.$scope.setupParametersDialogVisible = true;
             }
@@ -3163,11 +3714,25 @@ var app;
          * @memberof Controller
          */
         closeSetupParametersEditDialog(event, accept) {
+            this.$log.debug(angular.toJson({
+                activity: "app.appContentController#closeSetupParametersEditDialog invoked",
+                gitServiceUrl: this.$scope.gitServiceUrl,
+                gitServiceUrlIsValid: this.$scope.gitServiceUrlIsValid,
+                idpUrl: this.$scope.idpUrl,
+                idpUrlIsValid: this.$scope.idpUrlIsValid,
+                serviceNowUrl: this.$scope.serviceNowUrl,
+                serviceNowUrlIsValid: this.$scope.serviceNowUrlIsValid,
+                setupParametersAreInvalid: this.$scope.setupParametersAreInvalid,
+                setupParametersDialogVisible: this.$scope.setupParametersDialogVisible
+            }, true));
             sys.preventEventDefault(event);
             if (this.$scope.setupParametersDialogVisible) {
+                this.$log.debug("app.appContentController#closeSetupParametersEditDialog: Hiding dialog");
                 $("#setupParametersDialog").modal('hide');
                 this.$scope.setupParametersDialogVisible = false;
             }
+            else
+                this.$log.debug("app.appContentController#closeSetupParametersEditDialog: Setup parameters dialog already hidden");
         }
         /**
          * Closes the main modal popup dialog.
@@ -3192,7 +3757,9 @@ var app;
         $onInit() { }
     }
     app.appContentController = appContentController;
+    window.console.debug("Creating directive " + app.DIRECTIVE_NAME_appContentDirective);
     app.appModule.directive(app.DIRECTIVE_NAME_appContentDirective, () => {
+        window.console.debug("Returning directive " + app.DIRECTIVE_NAME_appContentDirective);
         return {
             controller: ['$scope', '$log', '$window', navConfigLoaderService.SERVICE_NAME, appConfigLoaderService.SERVICE_NAME, appContentController],
             controllerAs: 'appContentController',
@@ -3224,6 +3791,11 @@ var app;
     class copyToClipboardService {
         constructor($window) {
             this.$window = $window;
+            $window.console.debug(angular.toJson({
+                activity: "app.copyToClipboardService#constructor invoked",
+                $window: sys.getClassName($window),
+                additionalArguments: sys.skipFirst(sys.asArray(arguments), 1)
+            }, true));
             this[Symbol.toStringTag] = app.SERVICE_NAME_copyToClipboard;
         }
         copy(element, successMsg) {
@@ -3251,6 +3823,12 @@ var app;
         constructor($scope, copyToClipboardService) {
             this.$scope = $scope;
             this.copyToClipboardService = copyToClipboardService;
+            copyToClipboardService.$window.console.debug(angular.toJson({
+                activity: "app.copyToClipboardButtonController#constructor invoked",
+                $scope: sys.getClassName($scope),
+                copyToClipboardService: sys.getClassName(copyToClipboardService),
+                additionalArguments: sys.skipFirst(sys.asArray(arguments), 2)
+            }, true));
         }
         get cssClass() { return this._cssClass; }
         get targetId() { return this._targetId; }
@@ -3263,6 +3841,7 @@ var app;
             }
         }
         static createDirective() {
+            window.console.debug("Returning directive " + app.DIRECTIVE_NAME_copyToClipboard);
             return {
                 restrict: "E",
                 controllerAs: "ctrl",
@@ -3275,6 +3854,12 @@ var app;
             };
         }
         initialize(targetId, successMessage, cssClass) {
+            this.copyToClipboardService.$window.console.debug(angular.toJson({
+                activity: "app.copyToClipboardButtonController#initialize invoked",
+                targetId: targetId,
+                successMessage: successMessage,
+                cssClass: cssClass
+            }, true));
             this._targetId = targetId;
             this._successMessage = successMessage;
             if (typeof cssClass === "string" && (cssClass = cssClass.trim()).length > 0) {
@@ -3294,7 +3879,9 @@ var app;
         $onInit() { }
     }
     app.copyToClipboardButtonController = copyToClipboardButtonController;
+    window.console.debug("Creating service " + app.SERVICE_NAME_copyToClipboard);
     app.appModule.service(app.SERVICE_NAME_copyToClipboard, ["$window", copyToClipboardService]);
+    window.console.debug("Creating directive " + app.DIRECTIVE_NAME_copyToClipboard);
     app.appModule.directive(app.DIRECTIVE_NAME_copyToClipboard, copyToClipboardButtonController.createDirective);
     // #endregion
     // #region configUrl directive
@@ -3304,60 +3891,95 @@ var app;
      * @constant {string}
      */
     app.DIRECTIVE_NAME_configUrl = "configUrl";
-    app.appModule.directive(app.DIRECTIVE_NAME_configUrl, [appConfigLoaderService.SERVICE_NAME, (appConfigLoader) => {
-            return {
-                restrict: "AE",
-                link: (scope, element, attrs) => {
-                    function updateText() {
-                        let url = (typeof scope.q === "string" && scope.q.length > 0) ?
-                            (((typeof scope.v === "string") ? appConfigLoader.createUrl(scope.base, scope.href, scope.q, scope.v) :
-                                appConfigLoader.createUrl(scope.base, scope.href, scope.q))) : appConfigLoader.createUrl(scope.base, scope.href);
-                        let a = element.children("a");
-                        if (sys.asBoolean(scope.asLink)) {
-                            if (a.length == 0) {
-                                element.text("");
-                                a = element.add("<a></a>");
-                            }
-                            a.attr("href", url.href);
-                            a.attr("target", (typeof scope.target === "string" && scope.target.length > 0) ? scope.target : "_blank");
-                            let c = (typeof scope.linkClass === "string" && scope.linkClass.length > 0) ?
-                                sys.unique(((typeof scope.linkClassModel === "string" && scope.linkClassModel.length > 0) ?
-                                    scope.linkClass.split(sys.whitespaceRe).concat(scope.linkClassModel.split(sys.whitespaceRe)) :
-                                    scope.linkClass.split(sys.whitespaceRe)).filter((v) => v.length > 0)) :
-                                ((typeof scope.linkClassModel === "string" && scope.linkClassModel.length > 0) ? sys.unique(scope.linkClassModel.split(sys.whitespaceRe).filter((v) => v.length > 0)) : []);
-                            if (c.length > 0)
-                                a.attr("class", c.join(" "));
-                            else {
-                                let s = a.attr("class");
-                                if (typeof s === "string" && s.length > 0)
-                                    a.removeAttr("class");
-                            }
-                            a.text(url.href);
+    function getConfigUrlDirectiveDirective(appConfigLoader) {
+        appConfigLoader.$log.debug(angular.toJson({
+            activity: "Returning directive " + app.DIRECTIVE_NAME_configUrl,
+            appConfigLoader: sys.getClassName(appConfigLoader),
+            additionalArguments: sys.skipFirst(sys.asArray(arguments), 1)
+        }, true));
+        return {
+            restrict: "AE",
+            link: (scope, element, attrs) => {
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "app." + app.DIRECTIVE_NAME_configUrl + "#link invoked",
+                    arguments: sys.asArray(arguments)
+                }, true));
+                function updateText() {
+                    appConfigLoader.$log.debug(angular.toJson({
+                        activity: "app." + app.DIRECTIVE_NAME_configUrl + "#link: Updating text",
+                        element: element.serialize(),
+                        base: scope.base,
+                        href: scope.href,
+                        q: scope.q,
+                        v: scope.v,
+                        asLink: scope.asLink,
+                        target: scope.target,
+                        linkClass: scope.linkClass,
+                        linkClassModel: scope.linkClassModel
+                    }, true));
+                    let url = (typeof scope.q === "string" && scope.q.length > 0) ?
+                        (((typeof scope.v === "string") ? appConfigLoader.createUrl(scope.base, scope.href, scope.q, scope.v) :
+                            appConfigLoader.createUrl(scope.base, scope.href, scope.q))) : appConfigLoader.createUrl(scope.base, scope.href);
+                    let a = element.children("a");
+                    if (sys.asBoolean(scope.asLink)) {
+                        if (a.length == 0) {
+                            element.text("");
+                            a = element.add("<a></a>");
                         }
+                        a.attr("href", url.href);
+                        a.attr("target", (typeof scope.target === "string" && scope.target.length > 0) ? scope.target : "_blank");
+                        let c = (typeof scope.linkClass === "string" && scope.linkClass.length > 0) ?
+                            sys.unique(((typeof scope.linkClassModel === "string" && scope.linkClassModel.length > 0) ?
+                                scope.linkClass.split(sys.whitespaceRe).concat(scope.linkClassModel.split(sys.whitespaceRe)) :
+                                scope.linkClass.split(sys.whitespaceRe)).filter((v) => v.length > 0)) :
+                            ((typeof scope.linkClassModel === "string" && scope.linkClassModel.length > 0) ? sys.unique(scope.linkClassModel.split(sys.whitespaceRe).filter((v) => v.length > 0)) : []);
+                        if (c.length > 0)
+                            a.attr("class", c.join(" "));
                         else {
-                            if (a.length > 0)
-                                a.remove();
-                            element.text(url.href);
+                            let s = a.attr("class");
+                            if (typeof s === "string" && s.length > 0)
+                                a.removeAttr("class");
                         }
+                        a.text(url.href);
                     }
-                    appConfigLoader.onServiceNowUrlChanged(scope, (value) => {
-                        if (scope.base === "sn")
-                            updateText();
-                    });
-                    appConfigLoader.onGitServiceUrlChanged(scope, (value) => {
-                        if (scope.base === "git")
-                            updateText();
-                    });
-                    appConfigLoader.onIdpUrlChanged(scope, (value) => {
-                        if (scope.base === "idp")
-                            updateText();
-                    });
-                    updateText();
-                    scope.$watchGroup(["base", "href", "q", "v", "asLink", "target"], () => { updateText(); });
-                },
-                scope: { base: "@", href: "@?", q: "@?", v: "@?", asLink: "@?", linkClass: "@?", linkClassModel: "=?" }
-            };
-        }]);
+                    else {
+                        if (a.length > 0)
+                            a.remove();
+                        element.text(url.href);
+                    }
+                    appConfigLoader.$log.debug(angular.toJson({
+                        activity: "app." + app.DIRECTIVE_NAME_configUrl + "#link: Text updated",
+                        element: element.serialize(),
+                        base: scope.base,
+                        href: scope.href,
+                        q: scope.q,
+                        v: scope.v,
+                        asLink: scope.asLink,
+                        target: scope.target,
+                        linkClass: scope.linkClass,
+                        linkClassModel: scope.linkClassModel
+                    }, true));
+                }
+                appConfigLoader.onServiceNowUrlChanged(scope, (value) => {
+                    if (scope.base === "sn")
+                        updateText();
+                });
+                appConfigLoader.onGitServiceUrlChanged(scope, (value) => {
+                    if (scope.base === "git")
+                        updateText();
+                });
+                appConfigLoader.onIdpUrlChanged(scope, (value) => {
+                    if (scope.base === "idp")
+                        updateText();
+                });
+                updateText();
+                scope.$watchGroup(["base", "href", "q", "v", "asLink", "target"], () => { updateText(); });
+            },
+            scope: { base: "@", href: "@?", q: "@?", v: "@?", asLink: "@?", linkClass: "@?", linkClassModel: "=?" }
+        };
+    }
+    window.console.debug("Creating directive " + app.DIRECTIVE_NAME_configUrl);
+    app.appModule.directive(app.DIRECTIVE_NAME_configUrl, [appConfigLoaderService.SERVICE_NAME, getConfigUrlDirectiveDirective]);
     // #endregion
     // #region aConfigLink directive
     /**
@@ -3371,9 +3993,28 @@ var app;
         constructor($scope, appConfigLoader) {
             this.$scope = $scope;
             this.appConfigLoader = appConfigLoader;
+            appConfigLoader.$log.debug(angular.toJson({
+                activity: "app.aConfigLinkController#constructor invoked",
+                $scope: sys.getClassName($scope),
+                appConfigLoader: sys.getClassName(appConfigLoader),
+                additionalArguments: sys.skipFirst(sys.asArray(arguments), 2)
+            }, true));
             $scope.absHRef = "#";
             $scope.linkTarget = DEFAULT_TARGET;
             $scope.class = [];
+            appConfigLoader.$log.debug(angular.toJson({
+                activity: "app.aConfigLinkController#constructor: Initialized scope",
+                base: $scope.base,
+                href: $scope.href,
+                q: $scope.q,
+                v: $scope.v,
+                absHRef: $scope.absHRef,
+                linkTarget: $scope.linkTarget,
+                target: $scope.target,
+                class: $scope.class,
+                linkClass: $scope.linkClass,
+                linkClassModel: $scope.linkClassModel
+            }, true));
             let ctrl = this;
             $scope.$watchGroup(["base", "url", "q", "v"], () => { ctrl.updateHref(); });
             $scope.$watchGroup(["linkClass", "linkClassModel"], () => {
@@ -3382,12 +4023,22 @@ var app;
                         $scope.linkClass.split(sys.whitespaceRe).concat($scope.linkClassModel.split(sys.whitespaceRe)) :
                         $scope.linkClass.split(sys.whitespaceRe)).filter((v) => v.length > 0)) :
                     ((typeof $scope.linkClassModel === "string" && $scope.linkClassModel.length > 0) ? sys.unique($scope.linkClassModel.split(sys.whitespaceRe).filter((v) => v.length > 0)) : []);
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "app.aConfigLinkController#constructor: Set class",
+                    linkClass: $scope.linkClass,
+                    linkClassModel: $scope.linkClassModel,
+                    class: $scope.class
+                }, true));
             });
             $scope.$watch("target", () => {
                 if (typeof $scope.target === "string")
                     $scope.linkTarget = $scope.target;
                 else
                     $scope.linkTarget = DEFAULT_TARGET;
+                appConfigLoader.$log.debug(angular.toJson({
+                    activity: "app.aConfigLinkController#constructor: Set target",
+                    linkTarget: $scope.linkTarget
+                }, true));
             });
         }
         updateHref() {
@@ -3396,11 +4047,17 @@ var app;
                     this.appConfigLoader.createUrl(this.$scope.base, this.$scope.href, this.$scope.q)).href;
             else
                 this.$scope.absHRef = this.appConfigLoader.createUrl(this.$scope.base, this.$scope.href).href;
+            this.appConfigLoader.$log.debug(angular.toJson({
+                activity: "app.aConfigLinkController#constructor: Set absHRef",
+                absHRef: this.$scope.absHRef
+            }, true));
         }
         $onInit() { }
     }
     app.aConfigLinkController = aConfigLinkController;
+    window.console.debug("Creating directive " + app.DIRECTIVE_NAME_aConfigLink);
     app.appModule.directive(app.DIRECTIVE_NAME_aConfigLink, () => {
+        window.console.debug("Returning directive " + app.DIRECTIVE_NAME_aConfigLink);
         return {
             restrict: "E",
             controller: ['$scope', appConfigLoaderService.SERVICE_NAME, aConfigLinkController],
@@ -3421,12 +4078,49 @@ var app;
     class snNavLinkController {
         constructor($scope) {
             this.$scope = $scope;
+            window.console.debug(angular.toJson({
+                activity: "app.snNavLinkController#constructor invoked",
+                $scope: sys.getClassName($scope),
+                additionalArguments: sys.skipFirst(sys.asArray(arguments), 1)
+            }, true));
             $scope.effectiveHRef = "#";
             $scope.text = "";
             $scope.hasLink = false;
             $scope.leadingSegments = [];
             $scope.trailingSegments = [];
+            window.console.debug(angular.toJson({
+                activity: "app.snNavLinkController#constructor: Initialized scope",
+                effectiveHRef: $scope.effectiveHRef,
+                hasLink: $scope.hasLink,
+                href: $scope.href,
+                leadingSegments: $scope.leadingSegments,
+                absHlinkIndexRef: $scope.linkIndex,
+                nodeSeparator: $scope.nodeSeparator,
+                pathNodes: $scope.pathNodes,
+                q: $scope.q,
+                v: $scope.v,
+                target: $scope.target,
+                text: $scope.text,
+                toNav: $scope.toNav,
+                trailingSegments: $scope.trailingSegments
+            }, true));
             $scope.$watchGroup(['toNav', 'pathNodes', 'nodeSeparator', 'hrefModel', 'href'], () => {
+                window.console.debug(angular.toJson({
+                    activity: "app.snNavLinkController#$scope$watchGroup()=>listener invoked",
+                    effectiveHRef: $scope.effectiveHRef,
+                    hasLink: $scope.hasLink,
+                    href: $scope.href,
+                    leadingSegments: $scope.leadingSegments,
+                    absHlinkIndexRef: $scope.linkIndex,
+                    nodeSeparator: $scope.nodeSeparator,
+                    pathNodes: $scope.pathNodes,
+                    q: $scope.q,
+                    v: $scope.v,
+                    target: $scope.target,
+                    text: $scope.text,
+                    toNav: $scope.toNav,
+                    trailingSegments: $scope.trailingSegments
+                }, true));
                 let nodeSeparator = (typeof $scope.nodeSeparator === "string" && $scope.nodeSeparator.length > 0) ? $scope.nodeSeparator : "/";
                 let allSegments = (typeof $scope.pathNodes === "string" && $scope.pathNodes.length > 0) ?
                     $scope.pathNodes.split(nodeSeparator).map((value) => value.trim()).filter((value) => value.length > 0) : [];
@@ -3462,12 +4156,30 @@ var app;
                     }
                     $scope.hasLink = true;
                 }
+                window.console.debug(angular.toJson({
+                    activity: "app.snNavLinkController#$scope$watchGroup()=>listener: Updated scope",
+                    effectiveHRef: $scope.effectiveHRef,
+                    hasLink: $scope.hasLink,
+                    href: $scope.href,
+                    leadingSegments: $scope.leadingSegments,
+                    absHlinkIndexRef: $scope.linkIndex,
+                    nodeSeparator: $scope.nodeSeparator,
+                    pathNodes: $scope.pathNodes,
+                    q: $scope.q,
+                    v: $scope.v,
+                    target: $scope.target,
+                    text: $scope.text,
+                    toNav: $scope.toNav,
+                    trailingSegments: $scope.trailingSegments
+                }, true));
             });
         }
         $onInit() { }
     }
     app.snNavLinkController = snNavLinkController;
+    window.console.debug("Creating directive " + app.DIRECTIVE_NAME_snNavLink);
     app.appModule.directive(app.DIRECTIVE_NAME_snNavLink, () => {
+        window.console.debug("Returning directive " + app.DIRECTIVE_NAME_snNavLink);
         return {
             restrict: "E",
             controller: ['$scope', snNavLinkController],
