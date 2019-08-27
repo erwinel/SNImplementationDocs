@@ -2,78 +2,20 @@
 /// <reference path="../Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
-/**
- * The main application namespace
- * @namespace
- */
-var app;
-(function (app) {
+var persistentStorageLoaderService;
+(function (persistentStorageLoaderService) {
     /**
-     * The main module for this app.
-     * @export
-     * @constant {ng.IModule}
-     */
-    app.appModule = angular.module("app", []);
-    // #region Constants
-    const DEFAULT_CURRENT_ITEM_CLASS = ["active", "nav-link"];
-    const DEFAULT_SELECTED_ITEM_CLASS = ["active", "nav-link"];
-    const DEFAULT_OTHER_ITEM_CLASS = ["nav-link"];
-    /**
-     *
-     * @export
-     * @enum {string}
-     */
-    let cssValidationClass;
-    (function (cssValidationClass) {
-        cssValidationClass["isValid"] = "is-valid";
-        cssValidationClass["isInvalid"] = "is-invalid";
-    })(cssValidationClass = app.cssValidationClass || (app.cssValidationClass = {}));
-    /**
-     *
-     *
-     * @export
-     * @enum {string}
-     */
-    let cssFeedbackClass;
-    (function (cssFeedbackClass) {
-        cssFeedbackClass["isValid"] = "valid-feedback";
-        cssFeedbackClass["isInvalid"] = "invalid-feedback";
-    })(cssFeedbackClass = app.cssFeedbackClass || (app.cssFeedbackClass = {}));
-    /**
-     *
-     *
-     * @export
-     * @enum {string}
-     */
-    let cssAlertClass;
-    (function (cssAlertClass) {
-        cssAlertClass["alert"] = "alert";
-        cssAlertClass["danger"] = "alert-danger";
-        cssAlertClass["dark"] = "alert-dark";
-        cssAlertClass["dismissible"] = "alert-dismissible";
-        cssAlertClass["info"] = "alert-info";
-        cssAlertClass["heading"] = "alert-heading";
-        cssAlertClass["light"] = "alert-light";
-        cssAlertClass["link"] = "alert-link";
-        cssAlertClass["primary"] = "alert-primary";
-        cssAlertClass["secondary"] = "alert-secondary";
-        cssAlertClass["success"] = "alert-success";
-        cssAlertClass["warning"] = "alert-warning";
-    })(cssAlertClass = app.cssAlertClass || (app.cssAlertClass = {}));
-    // #endregion
-    // #region persistentStorageLoader Service.
-    /**
-     * Defines the service name as "persistentStorageLoaderService".
+     * Defines the service name as "persistentStorageLoader".
      * @export
      * @constant {string}
      */
-    app.SERVICE_NAME_persistentStorageLoader = "persistentStorageLoader";
+    persistentStorageLoaderService.SERVICE_NAME = "persistentStorageLoader";
     /**
      * The session storage key used by the {@link Service} for storing URL configuration information.
      * @export
      * @constant {string}
      */
-    app.STORAGEKEY_URL_CONFIG_SETTINGS = "UrlConfig";
+    persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS = "UrlConfig";
     class SessionStorageEntryEnumerator {
         constructor(_window, _keys) {
             this._window = _window;
@@ -82,12 +24,12 @@ var app;
         }
         [Symbol.iterator]() { return this; }
         next() {
-            if (this._window.persistentStorageLoader.length !== this._keys.length)
+            if (this._window.persistentStorageLegacy.length !== this._keys.length)
                 this._index = this._keys.length;
             else if (this._index < this._keys.length) {
                 try {
                     let key = this._keys[this._index];
-                    let value = this._window.persistentStorageLoader.getItem(key);
+                    let value = this._window.persistentStorageLegacy.getItem(key);
                     if (sys.notNil(value))
                         return { done: false, value: [key, value] };
                     this._index = this._keys.length;
@@ -107,11 +49,11 @@ var app;
         }
         [Symbol.iterator]() { return this; }
         next() {
-            if (this._window.persistentStorageLoader.length !== this._keys.length)
+            if (this._window.persistentStorageLegacy.length !== this._keys.length)
                 this._index = this._keys.length;
             else if (this._index < this._keys.length) {
                 try {
-                    let value = this._window.persistentStorageLoader.getItem(this._keys[this._index]);
+                    let value = this._window.persistentStorageLegacy.getItem(this._keys[this._index]);
                     if (sys.notNil(value))
                         return { done: false, value: value };
                     this._index = this._keys.length;
@@ -129,10 +71,10 @@ var app;
      * @class Service
      * @implements {Map<string, string>}
      */
-    class persistentStorageLoaderService {
+    class Service {
         constructor($window) {
             this.$window = $window;
-            this[Symbol.toStringTag] = app.SERVICE_NAME_persistentStorageLoader;
+            this[Symbol.toStringTag] = persistentStorageLoaderService.SERVICE_NAME;
             this.check(true);
         }
         /**
@@ -288,44 +230,350 @@ var app;
         }
         values() { return new SessionStorageValueEnumerator(this.$window, this._allKeys); }
     }
-    app.persistentStorageLoaderService = persistentStorageLoaderService;
-    app.appModule.service(app.SERVICE_NAME_persistentStorageLoader, ["$window", persistentStorageLoaderService]);
-    // #endregion
-    // #region appConfigData Service
+    persistentStorageLoaderService.Service = Service;
+    function getServiceInjectable() { return ["$window", Service]; }
+    persistentStorageLoaderService.getServiceInjectable = getServiceInjectable;
+})(persistentStorageLoaderService || (persistentStorageLoaderService = {}));
+var appConfigLoaderService;
+(function (appConfigLoaderService) {
     /**
-    * Defines the service name as "appConfigData".
-    * @export
-    * @constant {string}
-    */
-    app.SERVICE_NAME_appConfigData = "appConfigData";
-    /**
-    * The relative path of the default page.
-    * @export
-    * @constant {string}
-    * @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
-    */
-    app.DEFAULT_PAGE_PATH = "index.html";
+     * Defines the service name as "appConfigLoader".
+     * @export
+     * @constant {string}
+     */
+    appConfigLoaderService.SERVICE_NAME = "appConfigLoader";
+    appConfigLoaderService.EVENT_NAME_SERVICENOW = "appConfigLoader:urlChange:sn";
+    appConfigLoaderService.EVENT_NAME_GIT_SERVICE = "appConfigLoader:urlChange:git";
+    appConfigLoaderService.EVENT_NAME_IDP = "appConfigLoader:urlChange:idp";
     /**
     * The default root absolute URL of the target ServiceNow instance.
     * @export
     * @constant {string}
     * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
     */
-    app.DEFAULT_URL_SERVICENOW = "https://inscomscd.service-now.com";
+    appConfigLoaderService.DEFAULT_URL_SERVICENOW = "https://inscomscd.service-now.com";
     /**
     * The default root absolute URL of the remote GIT repository service.
     * @export
     * @constant {string}
     * @description - This MUST be an absolute URL and MUST NOT contain a URL query or fragment. If this contains an explicit path (which is usually the case), the path must end with a "/".
     */
-    app.DEFAULT_URL_GIT_SERVICE = "https://github.com/erwinel/";
+    appConfigLoaderService.DEFAULT_URL_GIT_SERVICE = "https://github.com/erwinel/";
     /**
-    * The default root absolute URL of the SAML identity provider to be used by ServiceNow.
+     * The default root absolute URL of the SAML identity provider to be used by ServiceNow.
+     * @export
+     * @constant {string}
+     * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
+     */
+    appConfigLoaderService.DEFAULT_URL_IDP = "https://myidp.com";
+    class Service {
+        /**
+        * Creates an instance of the appConfigLoader service.
+        * @param {persistentStorageLoaderService.Service} persistentStorageLoader - The persistentStorageLegacy service provider.
+        * @param {ng.IHttpService} $http - The $http service provider.
+        * @param {ng.ILogService} $log - The $log service provider.
+        * @param {ng.IRootScopeService} $root - The $root service provider.
+        * @param {ng.IQService} $q - The $q service provider
+        * @memberof appConfigData
+        */
+        constructor(persistentStorageLoader, $http, $log, $root, $q) {
+            this.$root = $root;
+            this._serviceNowUrl = new URL(appConfigLoaderService.DEFAULT_URL_SERVICENOW);
+            this._gitServiceUrl = new URL(appConfigLoaderService.DEFAULT_URL_GIT_SERVICE);
+            this._idpUrl = new URL(appConfigLoaderService.DEFAULT_URL_GIT_SERVICE);
+            this[Symbol.toStringTag] = appConfigLoaderService.SERVICE_NAME;
+            let svc = this;
+            let original = persistentStorageLoader.getObject(persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS);
+            if (sys.notNil(original)) {
+                if (typeof original !== "object") {
+                    $log.warn("Expected object for " + persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS + " setting object; actual is " + (typeof original));
+                    original = {};
+                }
+                else {
+                    if (sys.notNil(original.serviceNowUrl)) {
+                        if (typeof original.serviceNowUrl !== "string") {
+                            $log.warn("Expected string for serviceNowUrl setting value; actual is " + (typeof original.serviceNowUrl));
+                            original.serviceNowUrl = "";
+                        }
+                        else
+                            try {
+                                this.serviceNowUrl(new URL(original.serviceNowUrl));
+                            }
+                            catch (e) {
+                                $log.error("Error parsing application setting " + name + ": " + e);
+                                original.serviceNowUrl = "";
+                            }
+                    }
+                    if (sys.notNil(original.gitServiceUrl)) {
+                        if (typeof original.gitServiceUrl !== "string") {
+                            $log.warn("Expected string for gitServiceUrl setting value; actual is " + (typeof original.gitServiceUrl));
+                            original.gitServiceUrl = "";
+                        }
+                        else
+                            try {
+                                this.gitServiceUrl(new URL(original.gitServiceUrl));
+                            }
+                            catch (e) {
+                                $log.error("Error parsing application setting " + name + ": " + e);
+                                original.gitServiceUrl = "";
+                            }
+                    }
+                    if (sys.notNil(original.idpUrl)) {
+                        if (typeof original.idpUrl !== "string") {
+                            $log.warn("Expected string for idpUrl setting value; actual is " + (typeof original.idpUrl));
+                            original.idpUrl = "";
+                        }
+                        else
+                            try {
+                                this.gitServiceUrl(new URL(original.idpUrl));
+                            }
+                            catch (e) {
+                                $log.error("Error parsing application setting " + name + ": " + e);
+                                original.idpUrl = "";
+                            }
+                    }
+                }
+            }
+            else
+                original = {};
+            let promise = $http.get("./appConfigData.json").then((result) => {
+                return $q((resolve, reject) => {
+                    if (typeof result.data !== "object")
+                        reject("Expected object response type, actual is " + (typeof result.data));
+                    else if (result.data == null)
+                        reject("Expected object response type, actual is null");
+                    else
+                        resolve(result.data);
+                });
+            }, (reason) => {
+                $log.error("Unexpected error making application configuration data request: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
+            });
+            this._loadNavigationSettings = promise.then((data) => {
+                return $q((resolve, reject) => {
+                    if (typeof data.navigation !== "object")
+                        reject("Expected object navigation property type, actual is " + (typeof data.navigation));
+                    else if (data.navigation == null)
+                        reject("Expected object navigation property type, actual is null");
+                    else
+                        resolve(data.navigation);
+                });
+            });
+            promise.then((data) => {
+                function applyUrlSetting(name, cfgValue, settingsValue, defaultValue) {
+                    if ((sys.isNil(settingsValue) || settingsValue.length == 0) && typeof cfgValue === "string" && cfgValue.trim().length > 0)
+                        try {
+                            return new URL(cfgValue);
+                        }
+                        catch (e) {
+                            $log.error("Error parsing application setting " + name + ": " + e);
+                        }
+                    return defaultValue;
+                }
+                ;
+                let settings = {
+                    serviceNowUrl: this.serviceNowUrl(applyUrlSetting("serviceNowUrl", data.serviceNowUrl, original.serviceNowUrl, this.serviceNowUrl())).href,
+                    gitServiceUrl: this.gitServiceUrl(applyUrlSetting("gitServiceUrl", data.gitServiceUrl, original.gitServiceUrl, this.gitServiceUrl())).href,
+                    idpUrl: this.idpUrl(applyUrlSetting("idpUrl", data.idpUrl, original.idpUrl, this.idpUrl())).href
+                };
+                if (original.serviceNowUrl !== settings.serviceNowUrl || original.gitServiceUrl !== settings.gitServiceUrl || original.idpUrl !== settings.idpUrl)
+                    persistentStorageLoader.setObject(persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS, settings);
+            });
+        }
+        static validateURL(value, allowPath = false) {
+            if (!(typeof value === "object" && value !== null && value instanceof URL))
+                return "Value is not a URL";
+            value = new URL(value.href);
+            if (allowPath) {
+                if (typeof value.pathname !== "string" || value.pathname.length == 0)
+                    value.pathname = "/";
+                else if (!value.pathname.endsWith("/"))
+                    value.pathname = value.pathname + "/";
+            }
+            else if (typeof value.pathname === "string" && value.pathname.length > 0) {
+                if (value.pathname !== "/")
+                    return "Path not allowed";
+                value.pathname = "";
+            }
+            if (typeof value.search === "string" && value.search.length > 0) {
+                if (value.search !== "?")
+                    return "Query parameters not allowed";
+                value.search = "";
+            }
+            if (typeof value.hash === "string" && value.hash.length > 0) {
+                if (value.hash !== "#")
+                    return "Fragment not allowed";
+                value.hash = "";
+            }
+            return value;
+        }
+        /**
+        * Gets or sets the base URL for the target ServiceNow instance.
+        *
+        * @param {URL} [value] - Optionally specify new value for base URL of the target ServiceNow instance.
+        * @returns {URL}
+        * @memberof appConfigData
+        * @description Changes in this value cause any callbacks specified through {@link appConfigData#onServiceNowUrlChanged} to be invoked.
+        */
+        serviceNowUrl(value) {
+            if (sys.isNil(value))
+                return this._serviceNowUrl;
+            let validated = Service.validateURL(value);
+            if (typeof validated === "string")
+                throw new Error(validated);
+            let oldValue = this._serviceNowUrl;
+            if (typeof oldValue !== "object" || oldValue.href !== value.href) {
+                this._serviceNowUrl = value;
+                this.$root.$broadcast(appConfigLoaderService.EVENT_NAME_SERVICENOW, value, oldValue);
+            }
+            return this._serviceNowUrl;
+        }
+        onServiceNowUrlChanged(scope, cb, thisArg) {
+            if (arguments.length > 2)
+                scope.$on(appConfigLoaderService.EVENT_NAME_SERVICENOW, (event, newValue, oldValue) => { cb.call(thisArg, newValue, oldValue); });
+            else
+                scope.$on(appConfigLoaderService.EVENT_NAME_SERVICENOW, (event, newValue, oldValue) => { cb(newValue, oldValue); });
+        }
+        /**
+        * Gets or sets the base URL for the GIT repository service being used by the target ServiceNow instance.
+        *
+        * @param {URL} [value] - Optionally specify new value for base URL of the GIT repository service being used by the target ServiceNow instance.
+        * @returns {URL}
+        * @memberof appConfigData
+        * @description Changes in this value cause any callbacks specified through {@link appConfigData#onGitRepositoryUrlChanged} to be invoked.
+        */
+        gitServiceUrl(value) {
+            if (sys.isNil(value))
+                return this._gitServiceUrl;
+            let validated = Service.validateURL(value, true);
+            if (typeof validated === "string")
+                throw new Error(validated);
+            let oldValue = this._gitServiceUrl;
+            if (typeof oldValue !== "object" || oldValue.href !== value.href) {
+                this._gitServiceUrl = value;
+                this.$root.$broadcast(appConfigLoaderService.EVENT_NAME_GIT_SERVICE, value, oldValue);
+            }
+            return this._gitServiceUrl;
+        }
+        onGitServiceUrlChanged(scope, cb, thisArg) {
+            if (arguments.length > 2)
+                scope.$on(appConfigLoaderService.EVENT_NAME_GIT_SERVICE, (event, newValue, oldValue) => { cb.call(thisArg, newValue, oldValue); });
+            else
+                scope.$on(appConfigLoaderService.EVENT_NAME_GIT_SERVICE, (event, newValue, oldValue) => { cb(newValue, oldValue); });
+        }
+        /**
+        * Gets or sets the base URL of the Identity provider to be used by ServiceNow.
+        *
+        * @param {URL} [value] - Optionally specify new value for base URL of the Identity provider to be used by ServiceNow.
+        * @returns {URL}
+        * @memberof appConfigData
+        * @description Changes in this value cause any callbacks specified through {@link appConfigData#onIdpUrlChanged} to be invoked.
+        */
+        idpUrl(value) {
+            if (sys.isNil(value))
+                return this._idpUrl;
+            let validated = Service.validateURL(value);
+            if (typeof validated === "string")
+                throw new Error(validated);
+            let oldValue = this._idpUrl;
+            if (typeof oldValue !== "object" || oldValue.href !== value.href) {
+                this._idpUrl = value;
+                this.$root.$broadcast(appConfigLoaderService.EVENT_NAME_IDP, value, oldValue);
+            }
+            return this._idpUrl;
+        }
+        onIdpUrlChanged(scope, cb, thisArg) {
+            if (arguments.length > 2)
+                scope.$on(appConfigLoaderService.EVENT_NAME_IDP, (event, newValue, oldValue) => { cb.call(thisArg, newValue, oldValue); });
+            else
+                scope.$on(appConfigLoaderService.EVENT_NAME_IDP, (event, newValue, oldValue) => { cb(newValue, oldValue); });
+        }
+        /**
+        * Creates a URL that is relative to a configuration setting URL base value.
+        * @param {UrlSettingsNames} setting - The name of the URL setting.
+        * @param {string} [relativeUrl] - The relative URL string.
+        * @param {string} [queryParameter] - The name of the query parameter to add to the result URL.
+        * @param {string} [queryValue] - The value of the query parameter to add to the result URL.
+        * @returns {URL} A URL that is relative to the configuration settings URL base value.
+        * @memberof appConfigData
+        */
+        createUrl(setting, relativeUrl, queryParameter, queryValue) {
+            let url;
+            if (setting === "git")
+                url = this._gitServiceUrl;
+            else
+                url = sys.makeDirectoryUrl((setting == "sn") ? this._serviceNowUrl : this._idpUrl);
+            if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".")
+                url = new URL(relativeUrl, url);
+            else
+                url = new URL(url.href);
+            if (typeof queryParameter === "string" && queryParameter.length > 0) {
+                if (typeof queryValue === "string") {
+                    if (url.searchParams.has(queryParameter))
+                        url.searchParams.set(queryParameter, queryValue);
+                    else
+                        url.searchParams.append(queryParameter, queryValue);
+                }
+                else {
+                    if (url.searchParams.has(queryParameter))
+                        url.searchParams.delete(queryParameter);
+                    if (typeof url.search !== "string" || url.search.length == 0 || url.search === "?")
+                        url.search = "?" + queryParameter;
+                    else
+                        url.search = url.search + "&" + queryParameter;
+                }
+            }
+            return url;
+        }
+        loadNavigationSettings() { return this._loadNavigationSettings; }
+    }
+    appConfigLoaderService.Service = Service;
+    function getServiceInjectable() { return [persistentStorageLoaderService.SERVICE_NAME, "$http", '$log', '$root', '$q', Service]; }
+    appConfigLoaderService.getServiceInjectable = getServiceInjectable;
+})(appConfigLoaderService || (appConfigLoaderService = {}));
+var navConfigLoaderService;
+(function (navConfigLoaderService) {
+    /**
+     * Defines the service name as "navConfigLoader".
+     * @export
+     * @constant {string}
+     */
+    navConfigLoaderService.SERVICE_NAME = "navConfigLoader";
+    /**
+    * The relative path of the default page.
     * @export
     * @constant {string}
-    * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
+    * @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
     */
-    app.DEFAULT_URL_IDP = "https://myidp.com";
+    navConfigLoaderService.DEFAULT_PAGE_PATH = "index.html";
+    const DEFAULT_CURRENT_ITEM_CLASS = ["active", "nav-link"];
+    const DEFAULT_SELECTED_ITEM_CLASS = ["active", "nav-link"];
+    const DEFAULT_OTHER_ITEM_CLASS = ["nav-link"];
+    /**
+    * Converts a URL path to a fallback (default) page ID.
+    * @static
+    * @param {string} path - The URL Path to convert.
+    * @returns {string} The fallback page ID for the given URL path.
+    * @memberof appConfigData
+    */
+    function toPageId(path) {
+        let arr;
+        let i;
+        if (typeof path !== "string" || path.length == 0 || path == "/" || (arr = path.split("/").filter((value) => value.length > 0)).length === 0)
+            arr = navConfigLoaderService.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
+        let n = arr.pop();
+        if ((i = n.lastIndexOf(".")) < 1 || i === n.length - 1) {
+            let a = navConfigLoaderService.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
+            arr.push(n);
+            n = a[a.length - 1];
+            if ((i = n.lastIndexOf(".")) < 0) {
+                arr.push(n);
+                return arr.join("/");
+            }
+        }
+        arr.push(n.substr(0, i));
+        return (arr.length === 1) ? arr[0] : arr.join("/");
+    }
+    navConfigLoaderService.toPageId = toPageId;
     /**
     * Represents a menu navigation item.
     *
@@ -348,7 +596,7 @@ var app;
             this._pageTitle = (typeof navDef.pageTitle === "string") ? navDef.pageTitle.trim() : "";
             this._toolTip = (typeof navDef.toolTip === "string") ? navDef.toolTip.trim() : ((this._pageTitle != this._linkTitle) ? this._pageTitle : "");
             if (typeof navDef.id !== "string" || (this._id = navDef.id).length === 0)
-                this._id = appConfigDataService.toPageId(this._url);
+                this._id = toPageId(this._url);
             if (this._id === _appConfigData.currentPageId())
                 this._isCurrentPage = true;
             this._childNavItems = NavigationItem.createNavItems(_appConfigData, navDef.items);
@@ -571,7 +819,7 @@ var app;
         * @static
         * @param {appConfigDataService} appConfigData - The application configuration data service provider.
         * @param {INavigationDefinition[]} [items] - Defines the navigation menu items to be created.
-        * @returns {ReadonlyArray<NavigationItem>} The navigation menu item objects.
+        * @returns {NavigationItem[]} The navigation menu item objects.
         * @memberof NavigationItem
         */
         static createNavItems(appConfigData, items) {
@@ -643,106 +891,13 @@ var app;
             return result;
         }
     }
-    app.NavigationItem = NavigationItem;
-    /**
-    * Represents a registered settings value change notification.
-    * @export
-    * @class NotifyChangeLink
-    * @template T - The type of value to be notified for changes.
-    */
-    class NotifyChangeLink {
-        constructor(parent, onChange, thisObj) {
-            this._id = Symbol();
-            if (sys.isNil(parent.last))
-                parent.first = parent.last = this;
-            else
-                (this._previous = parent.last)._previous = this;
-            this._args = (arguments.length > 2) ? [onChange, thisObj] : [onChange];
-        }
-        static raiseChange(parent, newValue, oldValue) {
-            if (sys.notNil(parent.first))
-                NotifyChangeLink.__raiseChange(parent.first, newValue, oldValue);
-        }
-        static remove(parent, item) {
-            if (!(typeof parent === "object" && parent !== null && sys.notNil(parent.first) && typeof item === "object" && item !== null && item instanceof NotifyChangeLink))
-                return false;
-            if (sys.isNil(item._next)) {
-                if (item._id !== parent.last._id)
-                    return false;
-                parent.last = item._previous;
-                if (sys.isNil(parent.last))
-                    parent.first = undefined;
-                else
-                    item._previous = parent.last._next = undefined;
-            }
-            else if (sys.isNil(item._previous)) {
-                if (item._id !== parent.first._id)
-                    return false;
-                parent.first = item._next;
-                if (sys.isNil(parent.first))
-                    parent.last = undefined;
-                else
-                    item._next = parent.first._previous = undefined;
-            }
-            else {
-                let first = item;
-                do {
-                    first = first._previous;
-                } while (sys.notNil(first._previous));
-                if (first._id !== parent.first._id)
-                    return false;
-                (item._next._previous = item._previous)._next = item._next;
-                item._next = item._previous = undefined;
-            }
-            return true;
-        }
-        static __raiseChange(item, newValue, oldValue) {
-            let next = item._next;
-            try {
-                if (item._args.length > 1)
-                    item._args[0].call(item._args[1], newValue, oldValue);
-                else
-                    item._args[0](newValue, oldValue);
-            }
-            finally {
-                if (sys.notNil(next))
-                    NotifyChangeLink.__raiseChange(next, newValue, oldValue);
-            }
-        }
-    }
-    app.NotifyChangeLink = NotifyChangeLink;
-    /**
-    * Class which implements the appConfigData service.
-    * @export
-    * @class appConfigData
-    */
-    class appConfigDataService {
-        // #endregion
-        /**
-        * Creates an instance of the appConfigData service.
-        * @param {persistentStorageLoaderService} persistentStorageLoader - The persistentStorageLoader service provider.
-        * @param {ng.IHttpService} $http - The $http service provider.
-        * @param {ng.ILogService} $log - The $log service provider.
-        * @param {ng.IDocumentService} $document - The $document service provider.
-        * @param {ng.IWindowService} $window - The $window service provider
-        * @memberof appConfigData
-        */
-        constructor(persistentStorageLoader, $http, $log, $document, $window) {
-            this.persistentStorageLoader = persistentStorageLoader;
-            this.$log = $log;
-            this.$window = $window;
-            this._serviceNowUrl = new URL(app.DEFAULT_URL_SERVICENOW);
-            this._gitServiceUrl = new URL(app.DEFAULT_URL_GIT_SERVICE);
-            this._idpUrl = new URL(app.DEFAULT_URL_GIT_SERVICE);
+    navConfigLoaderService.NavigationItem = NavigationItem;
+    class Service {
+        constructor(appConfigLoader, $window, $document, $q) {
             this._currentItemClass = DEFAULT_CURRENT_ITEM_CLASS;
             this._selectedItemClass = DEFAULT_SELECTED_ITEM_CLASS;
             this._otherItemClass = DEFAULT_OTHER_ITEM_CLASS;
-            this._topNavItems = [];
-            this._serviceNowUrlChangeNotify = {};
-            this._gitServiceUrlChangeNotify = {};
-            this._idpUrlChangeNotify = {};
-            this._pageTitleChangeNotify = {};
-            this[Symbol.toStringTag] = app.SERVICE_NAME_appConfigData;
+            this[Symbol.toStringTag] = navConfigLoaderService.SERVICE_NAME;
             let headElement = $document.find('head').first();
             let titleElement = headElement.find('title');
             if (titleElement.length == 0) {
@@ -757,594 +912,2001 @@ var app;
             catch (_a) {
                 // Just in case
                 this._currentPageURL = new URL("http://localhost");
-                this._currentPageURL.pathname = app.DEFAULT_PAGE_PATH;
+                this._currentPageURL.pathname = navConfigLoaderService.DEFAULT_PAGE_PATH;
             }
             let segments = (typeof this._currentPageURL.pathname !== "string" || this._currentPageURL.pathname.length == 0 || this._currentPageURL.pathname == "/") ? [] : this._currentPageURL.pathname.split("/").filter((n) => n.length > 0);
             if (segments.length == 0)
-                segments = app.DEFAULT_PAGE_PATH.split("/");
+                segments = navConfigLoaderService.DEFAULT_PAGE_PATH.split("/");
             else if (!(/\.html?$/i).test(segments[segments.length - 1])) {
-                let arr = app.DEFAULT_PAGE_PATH.split("/");
+                let arr = navConfigLoaderService.DEFAULT_PAGE_PATH.split("/");
                 segments.push(arr[arr.length - 1]);
             }
             this._currentPageURL.pathname = "/" + (this._relativePagePath = (segments.length == 1) ? segments[0] : segments.join("/"));
             if ((this._currentPageId = headElement.find('meta[name="app:pageId"]').attr("content")).length == 0)
-                this._currentPageId = appConfigDataService.toPageId(this._currentPageURL.pathname);
+                this._currentPageId = toPageId(this._currentPageURL.pathname);
             if (this._pageTitle.length === 0)
                 this._pageTitle = this._currentPageId;
             let svc = this;
-            this._promise = $http.get("./appConfigData.json").then((result) => {
-                if (typeof result.data !== "object")
-                    sys.logResponse(result, $log, "Expected object response type, actual is " + (typeof result.data), true);
-                else if (result.data == null) {
-                    if (sys.toHttpResponseStatusCode(result) === sys.HttpResponseStatusCode.noContent)
-                        $log.warn("Response object was null.");
-                }
-                else {
-                    svc.applySettings(result.data);
-                    if (this._pageTitle.trim() !== titleElement.text().trim())
-                        titleElement.text(this._pageTitle);
-                    return;
-                }
-                result;
-                svc.applySettings();
-            }, (reason) => {
-                $log.error("Unexpected error making application configuration data request: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
+            this._loadTopNavItems = appConfigLoader.loadNavigationSettings().then((navConfig) => {
+                return $q((resolve, reject) => {
+                    if (typeof navConfig.items !== "object")
+                        reject("Expected object items property type; actual is " + (typeof navConfig.items));
+                    else if (navConfig.items === null)
+                        reject("Expected object items property type; actual is null");
+                    else if (Array.isArray(navConfig.items)) {
+                        let items = navConfig.items.filter((i) => { return (typeof i === "object" && i !== null); });
+                        if (items.length == 0)
+                            reject("Items property is empty.");
+                        else
+                            try {
+                                resolve(NavigationItem.createNavItems(svc, items));
+                            }
+                            catch (e) {
+                                reject(e);
+                            }
+                    }
+                    else
+                        reject("Items property is not an array");
+                });
+            });
+            this._loadCurrentItem = this._loadTopNavItems.then((items) => { return NavigationItem.findCurrentItem(items); });
+            this._loadPageTitle = this._loadCurrentItem.then((item) => {
+                if (sys.notNil(item) && item.pageTitle.length > 0)
+                    this._pageTitle = item.pageTitle;
+                else if (this._pageTitle.trim() === titleElement.text().trim())
+                    return this._pageTitle;
+                titleElement.text(this._pageTitle);
+                return this._pageTitle;
             });
         }
-        // #region Getter/Setter methods
         /**
         * Gets the current page ID.
         *
         * @returns {string} The value of the "content" attribute for the html meta tag with the name attribute of "app:pageId".
-        * @memberof appConfigData
+        * @memberof navConfigLoaderService.Service
         */
         currentPageId() { return this._currentPageId; }
         /**
         * Gets relative path to the current page.
         *
         * @returns {string}
-        * @memberof appConfigData
+        * @memberof navConfigLoaderService.Service
         */
         pagePath() { return this._relativePagePath; }
         /**
-        * Gets or sets the title of the current page
-        *
-        * @param {string} [value] - The optional value to set for the page title.
-        * @returns {string} The title of the current apge.
-        * @memberof appConfigData
-        */
-        pageTitle(value) {
-            let oldValue = this._pageTitle;
-            if (typeof value === "string" && value.trim().length > 0 && value !== oldValue) {
-                this._pageTitle = value;
-                this.raiseTitleChanged(value, oldValue);
-            }
-            return this._pageTitle;
-        }
-        /**
         * Gets the CSS class names to apply to navigation menu items that are ancestors of the item that represents the current page.
         *
-        * @returns {ReadonlyArray<string>}
-        * @memberof appConfigData
+        * @returns {string[]}
+        * @memberof navConfigLoaderService.Service
         */
         currentItemClass() { return this._currentItemClass; }
         /**
         * Gets the CSS class names to apply to the navigation menu item that represents the current page.
         *
-        * @returns {ReadonlyArray<string>}
-        * @memberof appConfigData
+        * @returns {string[]}
+        * @memberof navConfigLoaderService.Service
         */
         selectedItemClass() { return this._selectedItemClass; }
         /**
         * Gets the CSS class names to apply to the navigation menu item that do not represent the current page or any of its ancestors.
         *
-        * @returns {ReadonlyArray<string>}
-        * @memberof appConfigData
+        * @returns {string[]}
+        * @memberof navConfigLoaderService.Service
         */
         otherItemClass() { return this._otherItemClass; }
         /**
         * Gets the navigation menu items that appear in the primary navigation menu.
         *
-        * @returns {ReadonlyArray<NavigationItem>}
-        * @memberof appConfigData
+        * @returns {ng.IPromise<NavigationItem[]>}
+        * @memberof navConfigLoaderService.Service
         */
-        topNavItems() { return this._topNavItems; }
-        static validateURL(value, allowPath = false) {
-            if (!(typeof value === "object" && value !== null && value instanceof URL))
-                return "Value is not a URL";
-            value = new URL(value.href);
-            if (allowPath) {
-                if (typeof value.pathname !== "string" || value.pathname.length == 0)
-                    value.pathname = "/";
-                else if (!value.pathname.endsWith("/"))
-                    value.pathname = value.pathname + "/";
-            }
-            else if (typeof value.pathname === "string" && value.pathname.length > 0) {
-                if (value.pathname !== "/")
-                    return "Path not allowed";
-                value.pathname = "";
-            }
-            if (typeof value.search === "string" && value.search.length > 0) {
-                if (value.search !== "?")
-                    return "Query parameters not allowed";
-                value.search = "";
-            }
-            if (typeof value.hash === "string" && value.hash.length > 0) {
-                if (value.hash !== "#")
-                    return "Fragment not allowed";
-                value.hash = "";
-            }
-            return value;
+        loadTopNavItems() { return this._loadTopNavItems; }
+        loadPageTitle() { return this._loadPageTitle; }
+        loadCurrentItem() { return this._loadCurrentItem; }
+    }
+    navConfigLoaderService.Service = Service;
+    function getServiceInjectable() { return [appConfigLoaderService.SERVICE_NAME, '$window', '$document', '$q', Service]; }
+    navConfigLoaderService.getServiceInjectable = getServiceInjectable;
+})(navConfigLoaderService || (navConfigLoaderService = {}));
+var appModalPopupService;
+(function (appModalPopupService) {
+    /**
+     * Defines the service name as "appModalPopup".
+     * @export
+     * @constant {string}
+    */
+    appModalPopupService.SERVICE_NAME = "appModalPopup";
+    appModalPopupService.DIRECTIVE_NAME = "appModalPopupDialog";
+    appModalPopupService.JQUERY_SELECTOR_DIALOG = "#appModalPopupDialog";
+    class Service {
+        constructor(appConfigLoader, $window, $document, $q) {
+            this._isVisible = false;
+            this._type = "info";
+            this._hasThis = false;
+            this[Symbol.toStringTag] = appModalPopupService.SERVICE_NAME;
+            let svc = this;
+            this._scope = { buttons: [], class: [], closePopupDialog: (event) => { svc.closePopupDialog(); }, message: "", title: "" };
         }
-        /**
-        * Gets or sets the base URL for the target ServiceNow instance.
-        *
-        * @param {URL} [value] - Optionally specify new value for base URL of the target ServiceNow instance.
-        * @returns {URL}
-        * @memberof appConfigData
-        * @description Changes in this value cause any callbacks specified through {@link appConfigData#onServiceNowUrlChanged} to be invoked.
-        */
-        serviceNowUrl(value) {
-            if (sys.isNil(value))
-                return this._serviceNowUrl;
-            let validated = appConfigDataService.validateURL(value);
-            if (typeof validated === "string")
-                throw new Error(validated);
-            let oldValue = this._serviceNowUrl;
-            if (typeof oldValue !== "object" || oldValue.href !== value.href) {
-                this._serviceNowUrl = value;
-                this.raiseServiceNowUrlChanged(value, oldValue);
+        showPopupDialog(message, arg1, arg2, arg3, arg4, thisObj) {
+            let title;
+            let buttons;
+            if (this._isVisible)
+                this.closePopupDialog();
+            this._type = "info";
+            let hasThis = false;
+            this._onClose = undefined;
+            if (arguments.length < 2 || typeof arg1 === "string") {
+                this._type = arg1;
+                title = arg2;
             }
-            return this._serviceNowUrl;
-        }
-        /**
-        * Gets or sets the base URL for the GIT repository service being used by the target ServiceNow instance.
-        *
-        * @param {URL} [value] - Optionally specify new value for base URL of the GIT repository service being used by the target ServiceNow instance.
-        * @returns {URL}
-        * @memberof appConfigData
-        * @description Changes in this value cause any callbacks specified through {@link appConfigData#onGitRepositoryUrlChanged} to be invoked.
-        */
-        gitServiceUrl(value) {
-            if (sys.isNil(value))
-                return this._gitServiceUrl;
-            let validated = appConfigDataService.validateURL(value, true);
-            if (typeof validated === "string")
-                throw new Error(validated);
-            let oldValue = this._gitServiceUrl;
-            if (typeof oldValue !== "object" || oldValue.href !== value.href) {
-                this._gitServiceUrl = value;
-                this.raiseGitServiceUrlChanged(value, oldValue);
+            else if (arguments.length > 5) {
+                this._onClose = arg1;
+                buttons = arg2;
+                this._type = arg3;
+                title = arg4;
+                this._hasThis = true;
             }
-            return this._gitServiceUrl;
-        }
-        /**
-        * Gets or sets the base URL of the Identity provider to be used by ServiceNow.
-        *
-        * @param {URL} [value] - Optionally specify new value for base URL of the Identity provider to be used by ServiceNow.
-        * @returns {URL}
-        * @memberof appConfigData
-        * @description Changes in this value cause any callbacks specified through {@link appConfigData#onIdpUrlChanged} to be invoked.
-        */
-        idpUrl(value) {
-            if (sys.isNil(value))
-                return this._idpUrl;
-            let validated = appConfigDataService.validateURL(value);
-            if (typeof validated === "string")
-                throw new Error(validated);
-            let oldValue = this._idpUrl;
-            if (typeof oldValue !== "object" || oldValue.href !== value.href) {
-                this._idpUrl = value;
-                this.raiseIdpUrlChanged(value, oldValue);
-            }
-            return this._idpUrl;
-        }
-        /**
-        * Creates a URL that is relative to a configuration setting URL base value.
-        * @param {UrlSettingsNames} setting - The name of the URL setting.
-        * @param {string} [relativeUrl] - The relative URL string.
-        * @param {string} [queryParameter] - The name of the query parameter to add to the result URL.
-        * @param {string} [queryValue] - The value of the query parameter to add to the result URL.
-        * @returns {URL} A URL that is relative to the configuration settings URL base value.
-        * @memberof appConfigData
-        */
-        createUrl(setting, relativeUrl, queryParameter, queryValue) {
-            let url;
-            if (setting === "git")
-                url = this._gitServiceUrl;
-            else
-                url = sys.makeDirectoryUrl((setting == "sn") ? this._serviceNowUrl : this._idpUrl);
-            if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".")
-                url = new URL(relativeUrl, url);
-            else
-                url = new URL(url.href);
-            if (typeof queryParameter === "string" && queryParameter.length > 0) {
-                if (typeof queryValue === "string") {
-                    if (url.searchParams.has(queryParameter))
-                        url.searchParams.set(queryParameter, queryValue);
-                    else
-                        url.searchParams.append(queryParameter, queryValue);
+            else {
+                this._onClose = arg1;
+                if (arguments.length < 3 || typeof arg2 === "string" || sys.isNil(arg2)) {
+                    this._type = arg2;
+                    title = arg3;
+                    thisObj = arg4;
+                    this._hasThis = (arg2.length == 5);
                 }
                 else {
-                    if (url.searchParams.has(queryParameter))
-                        url.searchParams.delete(queryParameter);
-                    if (typeof url.search !== "string" || url.search.length == 0 || url.search === "?")
-                        url.search = "?" + queryParameter;
-                    else
-                        url.search = url.search + "&" + queryParameter;
+                    this._type = arg3;
+                    title = arg4;
+                    buttons = arg2;
                 }
             }
-            return url;
-        }
-        showMainModalPopupDialog(message, title, type, buttons, onClose, thisArg) {
-            let callback = this._showMainModalPopupDialogCallback;
-            if (typeof callback === "function") {
-                if (arguments.length > 5)
-                    callback(message, title, type, buttons, (result) => callback.call(thisArg, result));
-                else
-                    callback(message, title, type, buttons, onClose);
-            }
-        }
-        onShowMainModalPopupDialog(callback, thisArg) {
-            if (typeof callback !== "function")
-                return;
-            let showMainModalPopupDialogCallback = this._showMainModalPopupDialogCallback;
-            if (arguments.length > 1) {
-                if (typeof showMainModalPopupDialogCallback === "function")
-                    this._showMainModalPopupDialogCallback = (message, title, type, buttons, onClose) => {
-                        try {
-                            showMainModalPopupDialogCallback(title, message, type, buttons, onClose);
-                        }
-                        finally {
-                            callback.call(thisArg, message, title, type, buttons, onClose);
-                        }
-                    };
-                else
-                    this._showMainModalPopupDialogCallback = (message, title, type, buttons, onClose) => {
-                        callback.call(thisArg, message, title, type, buttons, onClose);
-                    };
-            }
-            else if (typeof showMainModalPopupDialogCallback === "function")
-                this._showMainModalPopupDialogCallback = (message, title, type, buttons, onClose) => {
-                    try {
-                        showMainModalPopupDialogCallback(message, title, type, buttons, onClose);
-                    }
-                    finally {
-                        callback(message, title, type, buttons, onClose);
-                    }
-                };
-            else
-                this._showMainModalPopupDialogCallback = callback;
-        }
-        /**
-        * Closes the main modal popup dialog.
-        *
-        * @param {*} [result] - Result value to apply.
-        * @memberof appConfigData
-        */
-        closeMainModalPopupDialog(result) {
-            let callback = this._hideMainModalPopupDialogCallback;
-            if (typeof callback === "function")
-                callback(result);
-        }
-        onCloseMainModalPopupDialog(callback, thisArg) {
-            if (typeof callback !== "function")
-                return;
-            let hideMainModalPopupDialogCallback = this._hideMainModalPopupDialogCallback;
-            if (arguments.length > 1) {
-                if (typeof hideMainModalPopupDialogCallback === "function")
-                    this._hideMainModalPopupDialogCallback = (result) => {
-                        try {
-                            hideMainModalPopupDialogCallback(result);
-                        }
-                        finally {
-                            callback.call(thisArg, result);
-                        }
-                    };
-                else
-                    this._hideMainModalPopupDialogCallback = (result) => {
-                        callback.call(thisArg, result);
-                    };
-            }
-            else if (typeof hideMainModalPopupDialogCallback === "function")
-                this._hideMainModalPopupDialogCallback = (result) => {
-                    try {
-                        hideMainModalPopupDialogCallback(result);
-                    }
-                    finally {
-                        callback(result);
-                    }
-                };
-            else
-                this._hideMainModalPopupDialogCallback = callback;
-        }
-        notifyServiceNowUrlChange(onChange, thisObj) {
-            if (arguments.length > 1)
-                return new NotifyChangeLink(this._serviceNowUrlChangeNotify, onChange, thisObj);
-            return new NotifyChangeLink(this._serviceNowUrlChangeNotify, onChange);
-        }
-        /**
-        * Unregister a notification callback to no longer be notified of changes to {@link appConfigData#serviceNowUrl}.
-        * @param {NotifyChangeLink<URL>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
-        * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#serviceNowUrl}.
-        * @memberof appConfigData
-        */
-        removeServiceNowUrlChangeNotify(notifier) { return NotifyChangeLink.remove(this._serviceNowUrlChangeNotify, notifier); }
-        onServiceNowUrlChanged(callback, thisArg) {
-            if (typeof callback !== "function")
-                return;
-            let serviceNowUrlChangedCallback = this._serviceNowUrlChangedCallback;
-            if (arguments.length > 1) {
-                if (typeof serviceNowUrlChangedCallback === "function")
-                    this._serviceNowUrlChangedCallback = (value) => { try {
-                        serviceNowUrlChangedCallback(value);
-                    }
-                    finally {
-                        callback.call(thisArg, value);
-                    } };
-                else
-                    this._serviceNowUrlChangedCallback = (value) => { callback.call(thisArg, value); };
-                callback.call(thisArg, this._serviceNowUrl);
-                return;
-            }
-            if (typeof serviceNowUrlChangedCallback === "function")
-                this._serviceNowUrlChangedCallback = (value) => { try {
-                    serviceNowUrlChangedCallback(value);
+            if (sys.isNilOrWhiteSpace(title)) {
+                switch (this._type) {
+                    case 'warning':
+                        this._scope.title = 'Warning';
+                        break;
+                    case 'danger':
+                        this._scope.title = 'Critical';
+                        break;
+                    case 'success':
+                        this._scope.title = 'Success';
+                        break;
+                    default:
+                        this._scope.title = 'Notice';
+                        this._type = "info";
+                        break;
                 }
-                finally {
-                    callback(value);
-                } };
+            }
             else
-                this._serviceNowUrlChangedCallback = callback;
-            callback(this._serviceNowUrl);
-        }
-        raiseServiceNowUrlChanged(newValue, oldValue) {
-            NotifyChangeLink.raiseChange(this._serviceNowUrlChangeNotify, newValue, oldValue);
-            let callback = this._serviceNowUrlChangedCallback;
-            if (typeof callback === "function")
-                callback(this._serviceNowUrl);
-        }
-        notifyGitServiceUrlChange(onChange, thisObj) {
-            if (arguments.length > 1)
-                return new NotifyChangeLink(this._gitServiceUrlChangeNotify, onChange, thisObj);
-            return new NotifyChangeLink(this._gitServiceUrlChangeNotify, onChange);
-        }
-        /**
-        * Unregister a notification callback to no longer be notified of changes to {@link appConfigData#gitServiceUrl}.
-        * @param {NotifyChangeLink<URL>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
-        * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#gitServiceUrl}.
-        * @memberof appConfigData
-        */
-        removeGitServiceUrlChangeNotify(notifier) { return NotifyChangeLink.remove(this._gitServiceUrlChangeNotify, notifier); }
-        onGitServiceUrlChanged(callback, thisArg) {
-            if (typeof callback !== "function")
-                return;
-            let gitRepositoryUrlChangedCallback = this._gitServiceUrlChangedCallback;
-            if (arguments.length > 1) {
-                if (typeof gitRepositoryUrlChangedCallback === "function")
-                    this._gitServiceUrlChangedCallback = (value) => { try {
-                        gitRepositoryUrlChangedCallback(value);
-                    }
-                    finally {
-                        callback.call(thisArg, value);
-                    } };
-                else
-                    this._gitServiceUrlChangedCallback = (value) => { callback.call(thisArg, value); };
-                callback.call(thisArg, this._serviceNowUrl);
-                return;
+                this._scope.title = title;
+            this._scope.message = message;
+            switch (this._type) {
+                case 'warning':
+                    this._scope.class = ['alert', 'alert-warning'];
+                    break;
+                case 'danger':
+                    this._scope.class = ['alert', 'alert-danger'];
+                    break;
+                case 'success':
+                    this._scope.class = ['alert', 'alert-success'];
+                    break;
+                default:
+                    this._scope.class = ['alert', 'alert-info'];
+                    break;
             }
-            if (typeof gitRepositoryUrlChangedCallback === "function")
-                this._gitServiceUrlChangedCallback = (value) => { try {
-                    gitRepositoryUrlChangedCallback(value);
-                }
-                finally {
-                    callback(value);
-                } };
-            else
-                this._gitServiceUrlChangedCallback = callback;
-            callback(this._gitServiceUrl);
-        }
-        raiseGitServiceUrlChanged(newValue, oldValue) {
-            NotifyChangeLink.raiseChange(this._gitServiceUrlChangeNotify, newValue, oldValue);
-            let callback = this._gitServiceUrlChangedCallback;
-            if (typeof callback === "function")
-                callback(this._gitServiceUrl);
-        }
-        notifyIdpUrlChange(onChange, thisObj) {
-            if (arguments.length > 1)
-                return new NotifyChangeLink(this._idpUrlChangeNotify, onChange, thisObj);
-            return new NotifyChangeLink(this._idpUrlChangeNotify, onChange);
-        }
-        /**
-        * Unregister a notification callback to no longer be notified of changes to {@link appConfigData#idpUrl}.
-        * @param {NotifyChangeLink<URL>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
-        * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#idpUrl}.
-        * @memberof appConfigData
-        */
-        removeIdpUrlChangeNotify(notifier) { return NotifyChangeLink.remove(this._idpUrlChangeNotify, notifier); }
-        onIdpUrlChanged(callback, thisArg) {
-            if (typeof callback !== "function")
-                return;
-            let idpChangedCallback = this._idpUrlChangedCallback;
-            if (arguments.length > 1) {
-                if (typeof idpChangedCallback === "function")
-                    this._idpUrlChangedCallback = (value) => { try {
-                        idpChangedCallback(value);
-                    }
-                    finally {
-                        callback.call(thisArg, value);
-                    } };
-                else
-                    this._idpUrlChangedCallback = (value) => { callback.call(thisArg, value); };
-                callback.call(thisArg, this._idpUrl);
-                return;
-            }
-            if (typeof idpChangedCallback === "function")
-                this._idpUrlChangedCallback = (value) => { try {
-                    idpChangedCallback(value);
-                }
-                finally {
-                    callback(value);
-                } };
-            else
-                this._idpUrlChangedCallback = callback;
-            callback(this._idpUrl);
-        }
-        raiseIdpUrlChanged(newValue, oldValue) {
-            NotifyChangeLink.raiseChange(this._idpUrlChangeNotify, newValue, oldValue);
-            let callback = this._idpUrlChangedCallback;
-            if (typeof callback === "function")
-                callback(this._idpUrl);
-        }
-        notifyUrlChange(setting, onChange, thisObj) {
-            if (setting === "sn") {
-                if (arguments.length > 2)
-                    return this.notifyServiceNowUrlChange(onChange, thisObj);
-                return this.notifyServiceNowUrlChange(onChange);
-            }
-            if (setting == "git") {
-                if (arguments.length > 2)
-                    return this.notifyGitServiceUrlChange(onChange, thisObj);
-                return this.notifyGitServiceUrlChange(onChange);
-            }
-            if (setting !== "idp")
-                throw new Error("Invalid setting name");
-            if (arguments.length > 2)
-                return this.notifyIdpUrlChange(onChange, thisObj);
-            return this.notifyIdpUrlChange(onChange);
-        }
-        /**
-        * Unregister a notification callback to no longer be notified of changes to a URL setting.
-        * @param {UrlSettingsNames} setting - The name of the URL setting.
-        * @param {NotifyChangeLink<URL>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
-        * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#idpUrl}.
-        * @memberof appConfigData
-        */
-        removeUrlChangeNofify(setting, notifier) {
-            if (setting === "sn")
-                return this.removeServiceNowUrlChangeNotify(notifier);
-            if (setting === "git")
-                return this.removeGitServiceUrlChangeNotify(notifier);
-            return setting === "idp" && this.removeIdpUrlChangeNotify(notifier);
-        }
-        notifyPageTitleChange(onChange, thisObj) {
-            if (arguments.length > 1)
-                return new NotifyChangeLink(this._pageTitleChangeNotify, onChange, thisObj);
-            return new NotifyChangeLink(this._pageTitleChangeNotify, onChange);
-        }
-        /**
-        * Unregister a notification callback to no longer be notified of changes to {@link appConfigData#pageTitle}.
-        * @param {NotifyChangeLink<string>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
-        * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#idpUrl}.
-        * @memberof appConfigData
-        */
-        removePageTitleChangeNotify(notifier) { return NotifyChangeLink.remove(this._pageTitleChangeNotify, notifier); }
-        onTitleChanged(callback, thisArg) {
-            if (typeof callback !== "function")
-                return;
-            let pageTitleChangedCallback = this._pageTitleChangedCallback;
-            if (arguments.length > 1) {
-                if (typeof pageTitleChangedCallback === "function")
-                    this._pageTitleChangedCallback = (value) => { try {
-                        pageTitleChangedCallback(value);
-                    }
-                    finally {
-                        callback.call(thisArg, value);
-                    } };
-                else
-                    this._pageTitleChangedCallback = (value) => { callback.call(thisArg, value); };
-                callback.call(thisArg, this._serviceNowUrl);
-                return;
-            }
-            if (typeof pageTitleChangedCallback === "function")
-                this._pageTitleChangedCallback = (value) => { try {
-                    pageTitleChangedCallback(value);
-                }
-                finally {
-                    callback(value);
-                } };
-            else
-                this._pageTitleChangedCallback = callback;
-            callback(this._pageTitle);
-        }
-        raiseTitleChanged(newValue, oldValue) {
-            NotifyChangeLink.raiseChange(this._pageTitleChangeNotify, newValue, oldValue);
-            let callback = this._pageTitleChangedCallback;
-            if (typeof callback === "function")
-                callback(this._pageTitle);
-        }
-        onSettingsLoaded(successCallback, errorCallback, thisArg) {
             let svc = this;
-            this._promise.then(() => {
-                if (arguments.length > 2)
-                    successCallback.call(thisArg, svc);
+            if (sys.isNil(buttons) || (buttons = buttons.filter((value) => sys.notNil)).length == 0)
+                this._scope.buttons = [{
+                        displayText: "OK", isDefault: false, closePopupDialog: (event) => {
+                            sys.preventEventDefault(event, true);
+                            svc._closePopupDialog();
+                        }, class: ["btn", "btn-primary"]
+                    }];
+            else {
+                let hasDefault = false;
+                this._scope.buttons = buttons.map((value) => {
+                    if (hasDefault)
+                        return {
+                            displayText: value.displayText, value: value.value, isDefault: false, closePopupDialog: (event) => {
+                                sys.preventEventDefault(event, true);
+                                svc._closePopupDialog(value.value);
+                            }, class: ["btn", "btn-secondary"]
+                        };
+                    hasDefault = value.isDefault === true;
+                    return {
+                        displayText: value.displayText, value: value.value, isDefault: hasDefault, closePopupDialog: (event) => {
+                            sys.preventEventDefault(event, true);
+                            svc._closePopupDialog(value.value);
+                        }, class: ["btn", (hasDefault) ? "btn-primary" : "btn-secondary"]
+                    };
+                });
+                if (!hasDefault)
+                    this._scope.buttons[0].class[1] = "btn-primary";
+            }
+            $(appModalPopupService.JQUERY_SELECTOR_DIALOG).modal('show');
+        }
+        _closePopupDialog(value) {
+            $(appModalPopupService.JQUERY_SELECTOR_DIALOG).modal('hide');
+            if (typeof this._onClose !== "function")
+                return;
+            if (arguments.length == 0) {
+                if (this._hasThis)
+                    this._onClose.call(this._thisObj);
                 else
-                    successCallback(svc);
-            }, (reason) => {
-                if (typeof errorCallback === "function") {
-                    if (arguments.length > 2)
-                        errorCallback.call(thisArg, reason, svc);
-                    else
-                        errorCallback(reason, svc);
-                }
-            });
-        }
-        applySettings(appJson) {
-            let settings = this.persistentStorageLoader.getObject(app.STORAGEKEY_URL_CONFIG_SETTINGS);
-            if (typeof settings === "object" && settings !== null) {
-                if (typeof settings.serviceNowUrl === "string" && settings.serviceNowUrl.length > 0)
-                    this.serviceNowUrl(new URL(settings.serviceNowUrl));
-                else if (typeof appJson === "object" && appJson !== null && typeof appJson.serviceNowUrl === "string" && appJson.serviceNowUrl.length > 0)
-                    this.serviceNowUrl(new URL(appJson.serviceNowUrl));
-                if (typeof settings.gitServiceUrl === "string" && settings.gitServiceUrl.length > 0)
-                    this.gitServiceUrl(new URL(settings.gitServiceUrl));
-                else if (typeof appJson === "object" && appJson !== null && typeof appJson.gitServiceUrl === "string" && appJson.gitServiceUrl.length > 0)
-                    this.gitServiceUrl(new URL(appJson.gitServiceUrl));
+                    this._onClose();
             }
-            else if (typeof appJson === "object" && appJson !== null) {
-                if (typeof appJson.serviceNowUrl === "string" && appJson.serviceNowUrl.length > 0)
-                    this.serviceNowUrl(new URL(appJson.serviceNowUrl));
-                if (typeof appJson.gitServiceUrl === "string" && appJson.gitServiceUrl.length > 0)
-                    this.gitServiceUrl(new URL(appJson.gitServiceUrl));
-            }
-            this.persistentStorageLoader.setObject(app.STORAGEKEY_URL_CONFIG_SETTINGS, settings);
-            if (typeof appJson === "object" && appJson !== null && typeof appJson.navigation === "object" && appJson.navigation !== null)
-                this._topNavItems = NavigationItem.createNavItems(this, appJson.navigation.items);
+            else if (this._hasThis)
+                this._onClose.call(this._thisObj, value);
             else
-                this._topNavItems = NavigationItem.createNavItems(this);
-            let current = NavigationItem.findCurrentItem(this.topNavItems());
-            if (sys.notNil(current) && current.pageTitle.length > 0)
-                this.pageTitle(current.pageTitle);
+                this._onClose(value);
         }
-        /**
-        * Converts a URL path to a fallback (default) page ID.
-        * @static
-        * @param {string} path - The URL Path to convert.
-        * @returns {string} The fallback page ID for the given URL path.
-        * @memberof appConfigData
-        */
-        static toPageId(path) {
-            let arr;
-            let i;
-            if (typeof path !== "string" || path.length == 0 || path == "/" || (arr = path.split("/").filter((value) => value.length > 0)).length === 0)
-                arr = app.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
-            let n = arr.pop();
-            if ((i = n.lastIndexOf(".")) < 1 || i === n.length - 1) {
-                let a = app.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
-                arr.push(n);
-                n = a[a.length - 1];
-                if ((i = n.lastIndexOf(".")) < 0) {
-                    arr.push(n);
-                    return arr.join("/");
-                }
+        closePopupDialog(value) {
+            if (arguments.length == 0) {
+                let btn = this._scope.buttons.filter((value) => value.isDefault);
+                if (btn.length == 0)
+                    this._closePopupDialog();
+                else
+                    this._closePopupDialog(btn[0].value);
             }
-            arr.push(n.substr(0, i));
-            return (arr.length === 1) ? arr[0] : arr.join("/");
+            else
+                this._closePopupDialog(value);
+        }
+        static getDirectiveInjectable() {
+            return [appModalPopupService.SERVICE_NAME, (appModalPopup) => ({
+                    restrict: "E",
+                    link: (scope, element, attrs) => {
+                        scope.buttons = appModalPopup._scope.buttons;
+                        scope.class = appModalPopup._scope.class;
+                        scope.closePopupDialog = appModalPopup._scope.closePopupDialog;
+                        scope.message = appModalPopup._scope.message;
+                        scope.title = appModalPopup._scope.title;
+                        appModalPopup._scope = scope;
+                    },
+                    scope: true,
+                    templateUrl: "Template/" + appModalPopupService.SERVICE_NAME + ".htm"
+                })];
         }
     }
-    app.appConfigDataService = appConfigDataService;
-    app.appModule.factory(app.SERVICE_NAME_appConfigData, [app.SERVICE_NAME_persistentStorageLoader, "$http", '$log', '$document', '$window', appConfigDataService]);
+    appModalPopupService.Service = Service;
+    function getServiceInjectable() { return [appConfigLoaderService.SERVICE_NAME, '$window', '$document', '$q', Service]; }
+    appModalPopupService.getServiceInjectable = getServiceInjectable;
+})(appModalPopupService || (appModalPopupService = {}));
+/**
+ * The main application namespace
+ * @namespace
+ */
+var app;
+(function (app) {
+    /**
+     * The main module for this app.
+     * @export
+     * @constant {ng.IModule}
+     */
+    app.appModule = angular.module("app", []);
+    app.appModule.service(persistentStorageLoaderService.SERVICE_NAME, persistentStorageLoaderService.getServiceInjectable());
+    app.appModule.service(appConfigLoaderService.SERVICE_NAME, appConfigLoaderService.getServiceInjectable());
+    app.appModule.service(navConfigLoaderService.SERVICE_NAME, navConfigLoaderService.getServiceInjectable());
+    app.appModule.service(appModalPopupService.SERVICE_NAME, appModalPopupService.getServiceInjectable());
+    app.appModule.directive(appModalPopupService.DIRECTIVE_NAME, appModalPopupService.Service.getDirectiveInjectable());
+    // #region Constants
+    const DEFAULT_CURRENT_ITEM_CLASS = ["active", "nav-link"];
+    const DEFAULT_SELECTED_ITEM_CLASS = ["active", "nav-link"];
+    const DEFAULT_OTHER_ITEM_CLASS = ["nav-link"];
+    /**
+     *
+     * @export
+     * @enum {string}
+     */
+    let cssValidationClass;
+    (function (cssValidationClass) {
+        cssValidationClass["isValid"] = "is-valid";
+        cssValidationClass["isInvalid"] = "is-invalid";
+    })(cssValidationClass = app.cssValidationClass || (app.cssValidationClass = {}));
+    /**
+     *
+     *
+     * @export
+     * @enum {string}
+     */
+    let cssFeedbackClass;
+    (function (cssFeedbackClass) {
+        cssFeedbackClass["isValid"] = "valid-feedback";
+        cssFeedbackClass["isInvalid"] = "invalid-feedback";
+    })(cssFeedbackClass = app.cssFeedbackClass || (app.cssFeedbackClass = {}));
+    /**
+     *
+     *
+     * @export
+     * @enum {string}
+     */
+    let cssAlertClass;
+    (function (cssAlertClass) {
+        cssAlertClass["alert"] = "alert";
+        cssAlertClass["danger"] = "alert-danger";
+        cssAlertClass["dark"] = "alert-dark";
+        cssAlertClass["dismissible"] = "alert-dismissible";
+        cssAlertClass["info"] = "alert-info";
+        cssAlertClass["heading"] = "alert-heading";
+        cssAlertClass["light"] = "alert-light";
+        cssAlertClass["link"] = "alert-link";
+        cssAlertClass["primary"] = "alert-primary";
+        cssAlertClass["secondary"] = "alert-secondary";
+        cssAlertClass["success"] = "alert-success";
+        cssAlertClass["warning"] = "alert-warning";
+    })(cssAlertClass = app.cssAlertClass || (app.cssAlertClass = {}));
     // #endregion
+    //// #region persistentStorageLegacy Service.
+    ///**
+    // * Defines the service name as "persistentStorageLegacyService".
+    // * @export
+    // * @constant {string}
+    // */
+    //export const SERVICE_NAME_persistentStorageLegacy: string = "persistentStorageLegacy";
+    ///**
+    // * The session storage key used by the {@link Service} for storing URL configuration information.
+    // * @export
+    // * @constant {string}
+    // */
+    //export const STORAGEKEY_URL_CONFIG_SETTINGS: string = "UrlConfig";
+    //class SessionStorageEntryEnumerator implements IterableIterator<[string, string]> {
+    //    private _index: number = 0;
+    //    constructor(private _window: ng.IWindowService, private _keys: string[]) { }
+    //    [Symbol.iterator](): IterableIterator<[string, string]> { return this; }
+    //    next(): IteratorResult<[string, string]> {
+    //        if (this._window.persistentStorageLegacy.length !== this._keys.length)
+    //            this._index = this._keys.length;
+    //        else if (this._index < this._keys.length) {
+    //            try {
+    //                let key: string = this._keys[this._index];
+    //                let value: string = this._window.persistentStorageLegacy.getItem(key);
+    //                if (sys.notNil(value))
+    //                    return { done: false, value: [key, value] };
+    //                this._index = this._keys.length;
+    //            } catch { this._index = this._keys.length; }
+    //        }
+    //        return { done: true, value: undefined };
+    //    }
+    //}
+    //class SessionStorageValueEnumerator implements IterableIterator<string> {
+    //    private _index: number = 0;
+    //    constructor(private _window: ng.IWindowService, private _keys: string[]) { }
+    //    [Symbol.iterator](): IterableIterator<string> { return this; }
+    //    next(): IteratorResult<string> {
+    //        if (this._window.persistentStorageLegacy.length !== this._keys.length)
+    //            this._index = this._keys.length;
+    //        else if (this._index < this._keys.length) {
+    //            try {
+    //                let value: string = this._window.persistentStorageLegacy.getItem(this._keys[this._index]);
+    //                if (sys.notNil(value))
+    //                    return { done: false, value: value };
+    //                this._index = this._keys.length;
+    //            } catch { this._index = this._keys.length; }
+    //        }
+    //        return { done: true, value: undefined };
+    //    }
+    //}
+    ///**
+    // * Implements the persistentStorageLegacy service.
+    // * @export
+    // * @class Service
+    // * @implements {Map<string, string>}
+    // */
+    //export class persistentStorageLegacyService implements Map<string, string> {
+    //    private _allKeys: string[];
+    //    private _parsedKeys: string[];
+    //    private _parsedObjects: (any | null | undefined)[];
+    //    [Symbol.toStringTag]: string;
+    //    /**
+    //     * The number of settings values being stored.
+    //     * @readonly
+    //     * @type {number}
+    //     * @memberof Service
+    //     */
+    //    get size(): number { return this.$window.sessionStorage.length; }
+    //    constructor(private $window: ng.IWindowService) {
+    //        this[Symbol.toStringTag] = SERVICE_NAME_persistentStorageLegacy;
+    //        this.check(true);
+    //    }
+    //    private check(forceRefresh: boolean = false) {
+    //        if (!forceRefresh && this.$window.sessionStorage.length == this._allKeys.length)
+    //            return;
+    //        this._allKeys = [];
+    //        this._parsedKeys = [];
+    //        this._parsedObjects = [];
+    //        for (let i: number = 0; i < this.$window.sessionStorage.length; i++)
+    //            this._allKeys.push(this.$window.sessionStorage.key(i));
+    //    }
+    //    clear(): void {
+    //        this.$window.sessionStorage.clear();
+    //        this._allKeys = [];
+    //        this._parsedKeys = [];
+    //        this._parsedObjects = [];
+    //    }
+    //    delete(key: string): boolean {
+    //        this.check();
+    //        this.$window.sessionStorage.removeItem(key);
+    //        let i: number = this._parsedKeys.indexOf(key);
+    //        if (i < 0)
+    //            return false;
+    //        if (i == 0) {
+    //            this._parsedKeys.shift();
+    //            this._parsedObjects.shift();
+    //        } else if (i == (this._parsedKeys.length - 1)) {
+    //            this._parsedKeys.pop();
+    //            this._parsedObjects.pop();
+    //        } else {
+    //            this._parsedKeys.splice(i, 1);
+    //            this._parsedObjects.splice(i, 1);
+    //        }
+    //    }
+    //    entries(): IterableIterator<[string, string]> { return new SessionStorageEntryEnumerator(this.$window, this._allKeys); }
+    //    [Symbol.iterator](): IterableIterator<[string, string]> { return this.entries(); }
+    //    forEach(callbackfn: (value: string, key: string, map: persistentStorageLegacyService) => void, thisArg?: any): void {
+    //        this.check();
+    //        if (typeof (thisArg) === "undefined")
+    //            this._allKeys.forEach((key: string, index: number) => {
+    //                if (index < this._allKeys.length && this._allKeys[index] === key) {
+    //                    let value: string | undefined;
+    //                    try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
+    //                    if (sys.notNil(value))
+    //                        callbackfn(value, key, this);
+    //                }
+    //            }, this);
+    //        else
+    //            this._allKeys.forEach((key: string, index: number) => {
+    //                if (index < this._allKeys.length && this._allKeys[index] === key) {
+    //                    let value: string | undefined;
+    //                    try { value = this.$window.sessionStorage.getItem(key); } catch { /* okay to ignore */ }
+    //                    if (sys.notNil(value))
+    //                        callbackfn.call(thisArg, value, key, this);
+    //                }
+    //            }, this);
+    //    }
+    //    get(key: string): string | null {
+    //        this.check();
+    //        try {
+    //            if (this._allKeys.indexOf(key) > -1)
+    //                return this.$window.sessionStorage.getItem(key);
+    //        } catch { /* okay to ignore */ }
+    //        return null;
+    //    }
+    //    getKeys(): string[] {
+    //        this.check();
+    //        return Array.from(this._allKeys);
+    //    }
+    //    getObject<T>(key: string): T | undefined {
+    //        this.check();
+    //        let i: number = this._parsedKeys.indexOf(key);
+    //        if (i > -1)
+    //            return <T>this._parsedObjects[i];
+    //        try {
+    //            let json: string = this.$window.sessionStorage.getItem(key);
+    //            if (!sys.isNilOrEmpty(json)) {
+    //                let result: T | undefined;
+    //                if (json !== "undefined")
+    //                    result = <T>(ng.fromJson(json));
+    //                this._parsedKeys.push(key);
+    //                this._parsedObjects.push(result);
+    //                return result;
+    //            }
+    //        } catch { }
+    //    }
+    //    has(key: string): boolean {
+    //        this.check();
+    //        return this._allKeys.indexOf(key) > -1;
+    //    }
+    //    keys(): IterableIterator<string> {
+    //        this.check();
+    //        return Array.from(this._allKeys).values();
+    //    }
+    //    set(key: string, value: string): any | undefined {
+    //        try {
+    //            if (sys.isNil(value))
+    //                this.$window.sessionStorage.removeItem(key);
+    //            else
+    //                this.$window.sessionStorage.setItem(key, value);
+    //            let i: number = this._parsedKeys.indexOf(key);
+    //            if (i == 0) {
+    //                this._parsedKeys.shift();
+    //                this._parsedObjects.shift();
+    //            } else if (i == (this._parsedKeys.length - 1)) {
+    //                this._parsedKeys.pop();
+    //                this._parsedObjects.pop();
+    //            } else if (i < this._parsedKeys.length) {
+    //                this._parsedKeys.splice(i, 1);
+    //                this._parsedObjects.splice(i, 1);
+    //            }
+    //        } catch (e) { return e; }
+    //    }
+    //    setObject<T>(key: string, value: T | undefined): any | undefined {
+    //        try {
+    //            if (typeof (value) === "undefined")
+    //                this.$window.sessionStorage.setItem(key, "undefined");
+    //            else
+    //                this.$window.sessionStorage.setItem(key, angular.toJson(value, false));
+    //            let i: number = this._parsedKeys.indexOf(key);
+    //            if (i < 0) {
+    //                this._parsedKeys.push(key);
+    //                this._parsedObjects.push(value);
+    //            } else
+    //                this._parsedObjects[i] = value;
+    //        } catch (e) { return e; }
+    //    }
+    //    values(): IterableIterator<string> { return new SessionStorageValueEnumerator(this.$window, this._allKeys); }
+    //}
+    //appModule.service(SERVICE_NAME_persistentStorageLegacy, ["$window", persistentStorageLegacyService]);
+    //// #endregion
+    //// #region appConfigData Service
+    ///**
+    //* Defines the service name as "appConfigData".
+    //* @export
+    //* @constant {string}
+    //*/
+    //export const SERVICE_NAME_appConfigData: string = "appConfigData";
+    ///**
+    //* The relative path of the default page.
+    //* @export
+    //* @constant {string}
+    //* @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
+    //*/
+    //export const DEFAULT_PAGE_PATH: string = "index.html";
+    ///**
+    //* The default root absolute URL of the target ServiceNow instance.
+    //* @export
+    //* @constant {string}
+    //* @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
+    //*/
+    //export const DEFAULT_URL_SERVICENOW: string = "https://inscomscd.service-now.com";
+    ///**
+    //* The default root absolute URL of the remote GIT repository service.
+    //* @export
+    //* @constant {string}
+    //* @description - This MUST be an absolute URL and MUST NOT contain a URL query or fragment. If this contains an explicit path (which is usually the case), the path must end with a "/".
+    //*/
+    //export const DEFAULT_URL_GIT_SERVICE: string = "https://github.com/erwinel/";
+    ///**
+    //* The default root absolute URL of the SAML identity provider to be used by ServiceNow.
+    //* @export
+    //* @constant {string}
+    //* @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
+    //*/
+    //export const DEFAULT_URL_IDP: string = "https://myidp.com";
+    ///**
+    //* Contains service URL definitions.
+    //* @export
+    //* @interface IUrlConfigSettings
+    //*/
+    //export interface IUrlConfigSettings {
+    //    /**
+    //    * The base URL for the target ServiceNow instance.
+    //    * @type {string}
+    //    * @memberof IUrlConfigSettings
+    //    */
+    //    serviceNowUrl: string;
+    //    /**
+    //    * The base URL for the target remote GIT repository service.
+    //    * @type {string}
+    //    * @memberof IUrlConfigSettings
+    //    */
+    //    gitServiceUrl: string;
+    //    /**
+    //    * The base URL for the SAML identity provider to be used by ServiceNow.
+    //    * @type {string}
+    //    * @memberof IUrlConfigSettings
+    //    */
+    //    idpUrl: string;
+    //}
+    ///**
+    //* Defines the URL setting names supported by the appConfigData service.
+    //* @export
+    //* @typedef {('sn' | 'git' | 'idp')} UrlSettingsNames
+    //*/
+    //export type UrlSettingsNames = 'sn' | 'git' | 'idp';
+    ///**
+    //* Defines a navigation menu item.
+    //* @interface INavigationDefinition
+    //*/
+    //interface INavigationDefinition {
+    //    /**
+    //    * Unique identifier of navigation menu item.
+    //    *
+    //    * @type {string}
+    //    * @memberof INavigationDefinition
+    //    */
+    //    id?: string;
+    //    /**
+    //    * Relative target URL of navigation menu item.
+    //    *
+    //    * @type {string}
+    //    * @memberof INavigationDefinition
+    //    */
+    //    url: string;
+    //    /**
+    //    * Display text for navigation menu item.
+    //    *
+    //    * @type {string}
+    //    * @memberof INavigationDefinition
+    //    */
+    //    linkTitle: string;
+    //    /**
+    //    * Page title for navigation menu item.
+    //    *
+    //    * @type {string}
+    //    * @memberof INavigationDefinition
+    //    */
+    //    pageTitle?: string;
+    //    /**
+    //    * Tooltip to use for navigation menu item.
+    //    *
+    //    * @type {string}
+    //    * @memberof INavigationDefinition
+    //    */
+    //    toolTip?: string;
+    //    /**
+    //    * Heading text for child menu items that are displayed in the secondary navigation menu.
+    //    *
+    //    * @type {string}
+    //    * @memberof INavigationDefinition
+    //    */
+    //    sideNavHeading?: string;
+    //    /**
+    //    * Child navigation menu items for the current navigation item, which gets displayed in the secondary navigation menu.
+    //    *
+    //    * @type {INavigationDefinition[]}
+    //    * @memberof INavigationDefinition
+    //    */
+    //    items?: INavigationDefinition[];
+    //}
+    ///**
+    //* Represents the {@link IAppConfigJSON#navigation} property in the appConfigData.json file.
+    //* @interface INavigationJSON
+    //*/
+    //interface INavigationJSON {
+    //    /**
+    //    * CSS class names to be applied to any of the ancestor navigation menu items of the item that corresponds to the current page.
+    //    *
+    //    * @type {string[]}
+    //    * @memberof INavigationJSON
+    //    */
+    //    currentItemClass: string[];
+    //    /**
+    //    * CSS class names to be applied to the navigation menu item that corresponds to the current page.
+    //    *
+    //    * @type {string[]}
+    //    * @memberof INavigationJSON
+    //    */
+    //    selectedItemClass: string[];
+    //    /**
+    //    * CSS class names to be applied to the navigation menu items that do no correspond to the current page or any of its ancestor items.
+    //    *
+    //    * @type {string[]}
+    //    * @memberof INavigationJSON
+    //    */
+    //    otherItemClass: string[];
+    //    /**
+    //    * Top-leve navigation menu items.
+    //    *
+    //    * @type {INavigationDefinition[]}
+    //    * @memberof INavigationDefinition
+    //    */
+    //    items: INavigationDefinition[];
+    //}
+    ///**
+    //* Represents the contents of the appConfigData.json file.
+    //*
+    //* @interface IAppConfigJSON
+    //* @description The file represented by this interface is asynchronously loaded by the appConfigData service.
+    //*/
+    //interface IAppConfigJSON extends IUrlConfigSettings {
+    //    /**
+    //        * Navigation menu settings.
+    //        *
+    //        * @type {INavigationJSON}
+    //        * @memberof IAppConfigJSON
+    //        */
+    //    navigation: INavigationJSON;
+    //}
+    ///**
+    //* Represents a menu navigation item.
+    //*
+    //* @export
+    //* @class NavigationItem
+    //*/
+    //export class NavigationItem {
+    //    private _id: string;
+    //    private _linkTitle: string;
+    //    private _pageTitle: string;
+    //    private _toolTip: string;
+    //    private _sideNavHeading: string;
+    //    private _url: string;
+    //    private _isCurrentPage?: boolean;
+    //    private _previousNavItem: NavigationItem | undefined;
+    //    private _nextNavItem: NavigationItem | undefined;
+    //    private _parentNavItem: NavigationItem | undefined;
+    //    private _childNavItems: ReadonlyArray<NavigationItem>;
+    //    /**
+    //    * The unique identifier of the navigation menu item.
+    //    *
+    //    * @readonly
+    //    * @type {string}
+    //    * @memberof NavigationItem
+    //    */
+    //    get id(): string { return this._id; }
+    //    /**
+    //    * The display text for the current navigation menu item.
+    //    *
+    //    * @readonly
+    //    * @type {string}
+    //    * @memberof NavigationItem
+    //    */
+    //    get linkTitle(): string { return this._linkTitle; }
+    //    /**
+    //    * The title of the page that corresponds to the current navigation menu item.
+    //    *
+    //    * @readonly
+    //    * @type {string}
+    //    * @memberof NavigationItem
+    //    */
+    //    get pageTitle(): string { return this._pageTitle; }
+    //    /**
+    //    * The tooltip for the current navigation menu item.
+    //    *
+    //    * @readonly
+    //    * @type {string}
+    //    * @memberof NavigationItem
+    //    */
+    //    get toolTip(): string { return this._toolTip; }
+    //    /**
+    //    * The secondary navigation heading text for child navigation menu items.
+    //    *
+    //    * @readonly
+    //    * @type {string}
+    //    * @memberof NavigationItem
+    //    */
+    //    get sideNavHeading(): string { return this._sideNavHeading; }
+    //    /**
+    //    * The navigation menu hyperlink for the current item.
+    //    *
+    //    * @readonly
+    //    * @type {string}
+    //    * @memberof NavigationItem
+    //    */
+    //    get navMenuHref(): string { return (this.hasOrIsCurrentPage) ? "#" : this._url; }
+    //    /**
+    //    * The relative URL of the current navigation menu item.
+    //    *
+    //    * @readonly
+    //    * @type {string}
+    //    * @memberof NavigationItem
+    //    */
+    //    get url(): string { return this._url; }
+    //    /**
+    //    * Indicates whether the current navigation menu item represents the current page.
+    //    *
+    //    * @readonly
+    //    * @type {boolean}
+    //    * @memberof NavigationItem
+    //    */
+    //    get isCurrentPage(): boolean { return this._isCurrentPage === true; }
+    //    /**
+    //    * Indicates whether the current navigation menu item represents the current page or the parent of the current page.
+    //    *
+    //    * @readonly
+    //    * @type {boolean}
+    //    * @memberof NavigationItem
+    //    */
+    //    get hasOrIsCurrentPage(): boolean { return typeof this._isCurrentPage === "boolean"; }
+    //    /**
+    //    * Indicates whether the current navigation menu item represents an ancestor of the current page.
+    //    *
+    //    * @readonly
+    //    * @type {boolean}
+    //    * @memberof NavigationItem
+    //    */
+    //    get hasCurrentPage(): boolean { return this._isCurrentPage === false; }
+    //    /**
+    //    * The CSS class names to be applied to the anchor tag.
+    //    *
+    //    * @readonly
+    //    * @type {ReadonlyArray<string>}
+    //    * @memberof NavigationItem
+    //    */
+    //    get anchorCssClass(): ReadonlyArray<string> { return (this.isCurrentPage) ? this._appConfigData.currentItemClass() : ((this.hasOrIsCurrentPage) ? this._appConfigData.selectedItemClass() : this._appConfigData.otherItemClass()); }
+    //    /**
+    //    * The child navigation menu items to display within the secondary navigation menu.
+    //    *
+    //    * @readonly
+    //    * @type {ReadonlyArray<NavigationItem>}
+    //    * @memberof NavigationItem
+    //    */
+    //    get childNavItems(): ReadonlyArray<NavigationItem> { return this._childNavItems; }
+    //    /**
+    //    * Indicates whether the current navigation menu item has child menu items.
+    //    *
+    //    * @readonly
+    //    * @type {boolean}
+    //    * @memberof NavigationItem
+    //    */
+    //    get hasChildNavItem(): boolean { return this._childNavItems.length > 0; }
+    //    /**
+    //    * Indicates whether the current navigation menu item has sibling items that share the same parent menu item.
+    //    *
+    //    * @readonly
+    //    * @type {boolean}
+    //    * @memberof NavigationItem
+    //    */
+    //    get hasSiblingNavItem(): boolean { return sys.notNil(this._previousNavItem) || sys.notNil(this._nextNavItem); }
+    //    /**
+    //    * Indicates whether the current navigation menu item is a child item of another.
+    //    *
+    //    * @readonly
+    //    * @type {boolean}
+    //    * @memberof NavigationItem
+    //    */
+    //    get isNestedNavItem(): boolean { return sys.notNil(this._parentNavItem) }
+    //    /**
+    //    * Navigation menu items to be displayed as nested items within the secondary navigation menu.
+    //    *
+    //    * @readonly
+    //    * @type {ReadonlyArray<NavigationItem>}
+    //    * @memberof NavigationItem
+    //    */
+    //    get nestedSideNavChildItems(): ReadonlyArray<NavigationItem> { return (this.showNestedSideNavChildItems) ? this._childNavItems : []; }
+    //    /**
+    //    * Indicates whether the current navigation menu item represents the current page, is being displayed within the secondary navigation menu, and has child items.
+    //    *
+    //    * @readonly
+    //    * @type {boolean}
+    //    * @memberof NavigationItem
+    //    */
+    //    get showNestedSideNavChildItems(): boolean { return this.isCurrentPage && this.isNestedNavItem && this.hasChildNavItem && !this.hasSiblingNavItem; }
+    //    /**
+    //    * Gets the parent navigation menu item.
+    //    *
+    //    * @readonly
+    //    * @type {(NavigationItem | undefined)}
+    //    * @memberof NavigationItem
+    //    */
+    //    get parentNavItem(): NavigationItem | undefined { return this._parentNavItem; }
+    //    /**
+    //    * Creates an instance of NavigationItem.
+    //    *
+    //    * @param {appConfigDataService} _appConfigData - The appConfigData service provider.
+    //    * @param {INavigationDefinition} navDef - The navigation menu item definition.
+    //    * @memberof NavigationItem
+    //    */
+    //    constructor(private _appConfigData: appConfigDataService, navDef: INavigationDefinition) {
+    //        this._url = navDef.url;
+    //        this._sideNavHeading = (typeof navDef.sideNavHeading === "string") ? navDef.sideNavHeading.trim() : "";
+    //        this._linkTitle = (typeof navDef.linkTitle === "string" && navDef.linkTitle.length > 0) ? navDef.linkTitle : navDef.url;
+    //        this._pageTitle = (typeof navDef.pageTitle === "string") ? navDef.pageTitle.trim() : "";
+    //        this._toolTip = (typeof navDef.toolTip === "string") ? navDef.toolTip.trim() : ((this._pageTitle != this._linkTitle) ? this._pageTitle : "");
+    //        if (typeof navDef.id !== "string" || (this._id = navDef.id).length === 0)
+    //            this._id = appConfigDataService.toPageId(this._url);
+    //        if (this._id === _appConfigData.currentPageId())
+    //            this._isCurrentPage = true;
+    //        this._childNavItems = NavigationItem.createNavItems(_appConfigData, navDef.items);
+    //        this._childNavItems.forEach((item: NavigationItem) => { item._parentNavItem = this; }, this);
+    //        if (this.isCurrentPage)
+    //            this.getAncestorNavItems().forEach((item: NavigationItem) => { item._isCurrentPage = false; });
+    //    }
+    //    /**
+    //    * Gets preceding sibling items for the current menu navigation item.
+    //    *
+    //    * @returns {NavigationItem[]}
+    //    * @memberof NavigationItem
+    //    */
+    //    precedingSiblings(): NavigationItem[] {
+    //        if (typeof this._previousNavItem === "undefined")
+    //            return [];
+    //        let result: NavigationItem[] = this._previousNavItem.precedingSiblings();
+    //        result.push(this._previousNavItem);
+    //        return result;
+    //    }
+    //    /**
+    //    * Gets following sibling items for the current menu navigation item.
+    //    *
+    //    * @returns {NavigationItem[]}
+    //    * @memberof NavigationItem
+    //    */
+    //    followingSiblings(): NavigationItem[] {
+    //        let result: NavigationItem[] = [];
+    //        for (let i: NavigationItem = this._nextNavItem; typeof i !== "undefined"; i = i._nextNavItem)
+    //            result.push(i);
+    //        return result;
+    //    }
+    //    /**
+    //    * Gets all ancestor navigation menu items.
+    //    *
+    //    * @returns {NavigationItem[]}
+    //    * @memberof NavigationItem
+    //    */
+    //    getAncestorNavItems(): NavigationItem[] {
+    //        let result: NavigationItem[] = [];
+    //        for (let i: NavigationItem = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
+    //            result.unshift(i);
+    //        return result;
+    //    }
+    //    /**
+    //    * Gets ancestor navigation menu items that do not appear in the primary navigation menu.
+    //    *
+    //    * @returns {NavigationItem[]}
+    //    * @memberof NavigationItem
+    //    */
+    //    getBreadcrumbLinks(): NavigationItem[] {
+    //        let result: NavigationItem[] = [];
+    //        if (sys.notNil(this._parentNavItem) && sys.notNil(this._parentNavItem._parentNavItem))
+    //            for (let i: NavigationItem = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
+    //                result.unshift(i);
+    //        return result;
+    //    }
+    //    /**
+    //    * Handles the menu item click event.
+    //    *
+    //    * @param {BaseJQueryEventObject} [event]
+    //    * @memberof NavigationItem
+    //    * @description The purpose of this member is to prevent the default action for the navigation menu item that represents the current page.
+    //    */
+    //    onClick(event?: BaseJQueryEventObject): void {
+    //        if (this.isCurrentPage && sys.notNil(event)) {
+    //            if (!event.isDefaultPrevented)
+    //                event.preventDefault();
+    //            if (!event.isPropagationStopped)
+    //                event.stopPropagation();
+    //        }
+    //    }
+    //    /**
+    //    * Creates a navigation menu item objects from navigation menu definition objects.
+    //    *
+    //    * @static
+    //    * @param {appConfigDataService} appConfigData - The application configuration data service provider.
+    //    * @param {INavigationDefinition[]} [items] - Defines the navigation menu items to be created.
+    //    * @returns {ReadonlyArray<NavigationItem>} The navigation menu item objects.
+    //    * @memberof NavigationItem
+    //    */
+    //    static createNavItems(appConfigData: appConfigDataService, items?: INavigationDefinition[]): ReadonlyArray<NavigationItem> {
+    //        if (typeof items !== "object" || items === null)
+    //            return [];
+    //        let result: NavigationItem[] = items.filter((value: INavigationDefinition) => typeof value === "object" && value !== null).map((value: INavigationDefinition) => new NavigationItem(appConfigData, value));
+    //        if (result.length > 0) {
+    //            let previous: NavigationItem = result[0];
+    //            for (let i: number = 1; i < result.length; i++)
+    //                previous = (result[0]._previousNavItem = previous)._nextNavItem = result[0];
+    //        }
+    //        return result;
+    //    }
+    //    /**
+    //    * Finds the navigation menu item that represents the current page.
+    //    *
+    //    * @static
+    //    * @param {ReadonlyArray<NavigationItem>} items - Navigation menu items to recursively search.
+    //    * @returns {(NavigationItem | undefined)} The navigation menu item that represents the current page or undefined if none are found that represent the current page.
+    //    * @memberof NavigationItem
+    //    */
+    //    static findCurrentItem(items: ReadonlyArray<NavigationItem>): NavigationItem | undefined {
+    //        if (items.length == 0)
+    //            return undefined;
+    //        if (items.length == 1)
+    //            return (items[0].isCurrentPage) ? items[0] : this.findCurrentItem(items[0]._childNavItems);
+    //        for (let i: number = 0; i < items.length; i++) {
+    //            if (items[i].hasOrIsCurrentPage)
+    //                return (items[i].isCurrentPage) ? items[i] : this.findCurrentItem(items[i]._childNavItems);
+    //        }
+    //    }
+    //    /**
+    //    * Creates an array of ancestor navigation menu items to be displayed as breadcrumb links.
+    //    *
+    //    * @static
+    //    * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
+    //    * @returns {ReadonlyArray<NavigationItem>}
+    //    * @memberof NavigationItem
+    //    */
+    //    static createSideNavBreadcrumbItems(current?: NavigationItem): ReadonlyArray<NavigationItem> {
+    //        if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
+    //            return [];
+    //        let result: NavigationItem[] = [];
+    //        while (typeof (current = current._parentNavItem)._parentNavItem !== "undefined")
+    //            result.unshift(current);
+    //        return result;
+    //    }
+    //    /**
+    //    * Creates an array of sibling navigation menu items.
+    //    *
+    //    * @static
+    //    * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
+    //    * @returns {ReadonlyArray<NavigationItem>}
+    //    * @memberof NavigationItem
+    //    */
+    //    static createSideNavSiblingItems(current?: NavigationItem): ReadonlyArray<NavigationItem> {
+    //        if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
+    //            return [];
+    //        let result: NavigationItem[] = [current];
+    //        if (typeof current._previousNavItem === "undefined") {
+    //            if (typeof current._nextNavItem === "undefined")
+    //                return [];
+    //        } else
+    //            for (let item: NavigationItem | undefined = current._previousNavItem; typeof item != "undefined"; item = item._previousNavItem)
+    //                result.unshift(item);
+    //        for (let item: NavigationItem | undefined = current._nextNavItem; typeof item != "undefined"; item = item._nextNavItem)
+    //            result.push(item);
+    //        return result;
+    //    }
+    //}
+    ///**
+    //* Severity of message for the modal dialog.
+    //* @typedef {('info' | 'warning' | 'danger' | 'primary' | 'success')} DialogMessageType
+    //*/
+    //export type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';export type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
+    //* Defines a button to be displayed in a modal popup dialog.
+    //*
+    //* @export
+    //* @interface IPopupDialogButtonDefinition
+    //* @template T The type of value returned when the associated button is clicked.
+    //*/
+    //export interface IPopupDialogButtonDefinition<T> {
+    //    /**
+    //    * Value to be returned when the associated button is clicked.
+    //    *
+    //    * @type {T}
+    //    * @memberof IPopupDialogButtonDefinition
+    //    */
+    //    value: T;
+    //    /**
+    //    * The text to be displayed for the button.
+    //    *
+    //    * @type {string}
+    //    * @memberof IPopupDialogButtonDefinition
+    //    */
+    //    displayText: string;
+    //}
+    ///**
+    //* Callback for displaying a modal popup dialog.
+    //*
+    //* @export
+    //* @typedef {(this: TThis, message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<TResult>[], onClose?: { (result?: TResult): void; })} ITHisPopupDialogShowCallback
+    //* @template TThis - Type of object to use as the "this" object when invoking the callback.
+    //* @template TResult - The type of result value to be produced by the modal dialog.
+    //* @this {TThis}
+    //* @param {string} message - The message text for the modal popup.
+    //* @param {string} [title] - The title for the modal popup.
+    //* @param {DialogMessageType} [type] - The type (severity) of the modal popup.
+    //* @param {IPopupDialogButtonDefinition<TResult>[]} [buttons] - The buttons to display for the modal popup, which closes the modal dialog and defines the result value.
+    //* @param {{ (result?: TResult): void; }} [onClose] - The callback to invoke when the modal popup dialog is closed.
+    //*/
+    //export interface ITHisPopupDialogShowCallback<TThis, TResult> {
+    //    (this: TThis, message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<TResult>[], onClose?: { (result?: TResult): void; }): void;
+    //}
+    ///**
+    //* Callback for displaying a modal popup dialog.
+    //* @export
+    //* @typedef {{ (message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: { (result?: T): void; }): void; }} IPopupDialogShowCallback
+    //* @template T - The type of result value to be produced by the modal dialog.
+    //* @param {string} message - The message text for the modal popup.
+    //* @param {string} [title] - The title for the modal popup.
+    //* @param {DialogMessageType} [type] - The type (severity) of the modal popup.
+    //* @param {IPopupDialogButtonDefinition<T>[]} [buttons] - The buttons to display for the modal popup, which closes the modal dialog and defines the result value.
+    //* @param {{ (result?: T): void; }} [onClose] - The callback to invoke when the modal popup dialog is closed.
+    //* @description - This is used within the {@link Controller} when the main modal popup dialog is displayed.
+    //*/
+    //export interface IPopupDialogShowCallback<T> { (message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: { (result?: T): void; }): void; }
+    ///**
+    //* Callback for notifying changes to a settings value.
+    //* @export
+    //* @typedef {(this: TThis, newValue: TValue, oldValue: TValue)} IThisNotifyValueChange
+    //* @template TValue - The type of value that was changed.
+    //* @template TThis - Type of object to use as the "this" object when invoking the callback.
+    //* @this {TThis}
+    //* @param {TValue} newValue - The new value after the change.
+    //* @param {TValue} oldValue - The previous value before the change.
+    //*/
+    //export interface IThisNotifyValueChange<TValue, TThis> { (this: TThis, newValue: TValue, oldValue: TValue): void; }
+    ///**
+    //* Callback for notifying changes to a settings value.
+    //* @export
+    //* @typedef {(newValue: T, oldValue: T)} INotifyValueChange
+    //* @template T - The type of value that was changed.
+    //* @param {T} newValue - The new value after the change.
+    //* @param {T} oldValue - The previous value before the change.
+    //*/
+    //export interface INotifyValueChange<T> { (newValue: T, oldValue: T): void; }
+    //export interface IChangeLinkParent<T> { first?: NotifyChangeLink<T>; last?: NotifyChangeLink<T>; }
+    ///**
+    //* Represents a registered settings value change notification.
+    //* @export
+    //* @class NotifyChangeLink
+    //* @template T - The type of value to be notified for changes.
+    //*/
+    //export class NotifyChangeLink<T> {
+    //    private _id: symbol = Symbol();
+    //    private _previous?: NotifyChangeLink<T>;
+    //    private _next?: NotifyChangeLink<T>;
+    //    private _args: [INotifyValueChange<T>] | [IThisNotifyValueChange<T, any>, any];
+    //    constructor(parent: IChangeLinkParent<T>, onChange: INotifyValueChange<T>);
+    //    constructor(parent: IChangeLinkParent<T>, onChange: IThisNotifyValueChange<T, any>, thisObj: any);
+    //    constructor(parent: IChangeLinkParent<T>, onChange: INotifyValueChange<T> | IThisNotifyValueChange<T, any>, thisObj?: any) {
+    //        if (sys.isNil(parent.last))
+    //            parent.first = parent.last = this;
+    //        else
+    //            (this._previous = parent.last)._previous = this;
+    //        this._args = (arguments.length > 2) ? [onChange, thisObj] : [onChange];
+    //    }
+    //    static raiseChange<T>(parent: IChangeLinkParent<T>, newValue: T, oldValue: T): void {
+    //        if (sys.notNil(parent.first))
+    //            NotifyChangeLink.__raiseChange<T>(parent.first, newValue, oldValue);
+    //    }
+    //    static remove<T>(parent: IChangeLinkParent<T>, item: NotifyChangeLink<T>): boolean {
+    //        if (!(typeof parent === "object" && parent !== null && sys.notNil(parent.first) && typeof item === "object" && item !== null && item instanceof NotifyChangeLink))
+    //            return false;
+    //        if (sys.isNil(item._next)) {
+    //            if (item._id !== parent.last._id)
+    //                return false;
+    //            parent.last = item._previous;
+    //            if (sys.isNil(parent.last))
+    //                parent.first = undefined;
+    //            else
+    //                item._previous = parent.last._next = undefined;
+    //        } else if (sys.isNil(item._previous)) {
+    //            if (item._id !== parent.first._id)
+    //                return false;
+    //            parent.first = item._next;
+    //            if (sys.isNil(parent.first))
+    //                parent.last = undefined;
+    //            else
+    //                item._next = parent.first._previous = undefined;
+    //        } else {
+    //            let first: NotifyChangeLink<T> = item;
+    //            do { first = first._previous; } while (sys.notNil(first._previous));
+    //            if (first._id !== parent.first._id)
+    //                return false;
+    //            (item._next._previous = item._previous)._next = item._next;
+    //            item._next = item._previous = undefined;
+    //        }
+    //        return true;
+    //    }
+    //    private static __raiseChange<T>(item: NotifyChangeLink<T>, newValue: T, oldValue: T): void {
+    //        let next: NotifyChangeLink<T> | undefined = item._next;
+    //        try {
+    //            if (item._args.length > 1)
+    //                item._args[0].call(item._args[1], newValue, oldValue);
+    //            else
+    //                item._args[0](newValue, oldValue);
+    //        } finally {
+    //            if (sys.notNil(next))
+    //                NotifyChangeLink.__raiseChange<T>(next, newValue, oldValue);
+    //        }
+    //    }
+    //}
+    ///**
+    //* Class which implements the appConfigData service.
+    //* @export
+    //* @class appConfigData
+    //*/
+    //export class appConfigDataService {
+    //    // #region Private properties
+    //    private _currentPageId: string;
+    //    private _currentPageURL: URL;
+    //    private _promise: ng.IPromise<void>;
+    //    private _serviceNowUrl: URL = new URL(DEFAULT_URL_SERVICENOW);
+    //    private _gitServiceUrl: URL = new URL(DEFAULT_URL_GIT_SERVICE);
+    //    private _idpUrl: URL = new URL(DEFAULT_URL_GIT_SERVICE);
+    //    private _relativePagePath: string;
+    //    private _pageTitle: string;
+    //    private _currentItemClass: ReadonlyArray<string> = DEFAULT_CURRENT_ITEM_CLASS;
+    //    private _selectedItemClass: ReadonlyArray<string> = DEFAULT_SELECTED_ITEM_CLASS;
+    //    private _otherItemClass: ReadonlyArray<string> = DEFAULT_OTHER_ITEM_CLASS;
+    //    private _topNavItems: ReadonlyArray<NavigationItem> = [];
+    //    private _serviceNowUrlChangeNotify: IChangeLinkParent<URL> = {};
+    //    private _gitServiceUrlChangeNotify: IChangeLinkParent<URL> = {};
+    //    private _idpUrlChangeNotify: IChangeLinkParent<URL> = {};
+    //    private _pageTitleChangeNotify: IChangeLinkParent<string> = {};
+    //    /**
+    //    * @todo - Remove method when no longer used.
+    //    */
+    //    private _serviceNowUrlChangedCallback: { (value: URL): void; } | undefined;
+    //    /**
+    //    * @todo - Remove method when no longer used.
+    //    */
+    //    private _gitServiceUrlChangedCallback: { (value: URL): void; } | undefined;
+    //    /**
+    //    * @todo - Remove method when no longer used.
+    //    */
+    //    private _idpUrlChangedCallback: { (value: URL): void; } | undefined;
+    //    /**
+    //    * @todo - Remove method when no longer used.
+    //    */
+    //    private _pageTitleChangedCallback: { (value: string): void; } | undefined;
+    //    private _showMainModalPopupDialogCallback: IPopupDialogShowCallback<any> | undefined;
+    //    private _hideMainModalPopupDialogCallback: { (result?: any): void } | undefined;
+    //    // #endregion
+    //    [Symbol.toStringTag]: string;
+    //    // #region Getter/Setter methods
+    //    /**
+    //    * Gets the current page ID.
+    //    *
+    //    * @returns {string} The value of the "content" attribute for the html meta tag with the name attribute of "app:pageId".
+    //    * @memberof appConfigData
+    //    */
+    //    currentPageId(): string { return this._currentPageId; }
+    //    /**
+    //    * Gets relative path to the current page.
+    //    *
+    //    * @returns {string}
+    //    * @memberof appConfigData
+    //    */
+    //    pagePath(): string { return this._relativePagePath; }
+    //    /**
+    //    * Gets or sets the title of the current page
+    //    *
+    //    * @param {string} [value] - The optional value to set for the page title.
+    //    * @returns {string} The title of the current apge.
+    //    * @memberof appConfigData
+    //    */
+    //    pageTitle(value?: string): string {
+    //        let oldValue: string = this._pageTitle;
+    //        if (typeof value === "string" && value.trim().length > 0 && value !== oldValue) {
+    //            this._pageTitle = value;
+    //            this.raiseTitleChanged(value, oldValue);
+    //        }
+    //        return this._pageTitle;
+    //    }
+    //    /**
+    //    * Gets the CSS class names to apply to navigation menu items that are ancestors of the item that represents the current page.
+    //    *
+    //    * @returns {ReadonlyArray<string>}
+    //    * @memberof appConfigData
+    //    */
+    //    currentItemClass(): ReadonlyArray<string> { return this._currentItemClass; }
+    //    /**
+    //    * Gets the CSS class names to apply to the navigation menu item that represents the current page.
+    //    *
+    //    * @returns {ReadonlyArray<string>}
+    //    * @memberof appConfigData
+    //    */
+    //    selectedItemClass(): ReadonlyArray<string> { return this._selectedItemClass; }
+    //    /**
+    //    * Gets the CSS class names to apply to the navigation menu item that do not represent the current page or any of its ancestors.
+    //    *
+    //    * @returns {ReadonlyArray<string>}
+    //    * @memberof appConfigData
+    //    */
+    //    otherItemClass(): ReadonlyArray<string> { return this._otherItemClass; }
+    //    /**
+    //    * Gets the navigation menu items that appear in the primary navigation menu.
+    //    *
+    //    * @returns {ReadonlyArray<NavigationItem>}
+    //    * @memberof appConfigData
+    //    */
+    //    topNavItems(): ReadonlyArray<NavigationItem> { return this._topNavItems; }
+    //    static validateURL(value: URL, allowPath: boolean = false): URL | string {
+    //        if (!(typeof value === "object" && value !== null && value instanceof URL))
+    //            return "Value is not a URL";
+    //        value = new URL(value.href);
+    //        if (allowPath) {
+    //            if (typeof value.pathname !== "string" || value.pathname.length == 0)
+    //                value.pathname = "/";
+    //            else if (!value.pathname.endsWith("/"))
+    //                value.pathname = value.pathname + "/";
+    //        }
+    //        else if (typeof value.pathname === "string" && value.pathname.length > 0) {
+    //            if (value.pathname !== "/")
+    //                return "Path not allowed";
+    //            value.pathname = "";
+    //        }
+    //        if (typeof value.search === "string" && value.search.length > 0) {
+    //            if (value.search !== "?")
+    //                return "Query parameters not allowed";
+    //            value.search = "";
+    //        }
+    //        if (typeof value.hash === "string" && value.hash.length > 0) {
+    //            if (value.hash !== "#")
+    //                return "Fragment not allowed";
+    //            value.hash = "";
+    //        }
+    //        return value;
+    //    }
+    //    /**
+    //    * Gets or sets the base URL for the target ServiceNow instance.
+    //    *
+    //    * @param {URL} [value] - Optionally specify new value for base URL of the target ServiceNow instance.
+    //    * @returns {URL}
+    //    * @memberof appConfigData
+    //    * @description Changes in this value cause any callbacks specified through {@link appConfigData#onServiceNowUrlChanged} to be invoked.
+    //    */
+    //    serviceNowUrl(value?: URL): URL {
+    //        if (sys.isNil(value))
+    //            return this._serviceNowUrl;
+    //        let validated: URL | string = appConfigDataService.validateURL(value);
+    //        if (typeof validated === "string")
+    //            throw new Error(validated);
+    //        let oldValue: URL = this._serviceNowUrl;
+    //        if (typeof oldValue !== "object" || oldValue.href !== value.href) {
+    //            this._serviceNowUrl = value;
+    //            this.raiseServiceNowUrlChanged(value, oldValue);
+    //        }
+    //        return this._serviceNowUrl;
+    //    }
+    //    /**
+    //    * Gets or sets the base URL for the GIT repository service being used by the target ServiceNow instance.
+    //    *
+    //    * @param {URL} [value] - Optionally specify new value for base URL of the GIT repository service being used by the target ServiceNow instance.
+    //    * @returns {URL}
+    //    * @memberof appConfigData
+    //    * @description Changes in this value cause any callbacks specified through {@link appConfigData#onGitRepositoryUrlChanged} to be invoked.
+    //    */
+    //    gitServiceUrl(value?: URL): URL {
+    //        if (sys.isNil(value))
+    //            return this._gitServiceUrl;
+    //        let validated: URL | string = appConfigDataService.validateURL(value, true);
+    //        if (typeof validated === "string")
+    //            throw new Error(validated);
+    //        let oldValue: URL = this._gitServiceUrl;
+    //        if (typeof oldValue !== "object" || oldValue.href !== value.href) {
+    //            this._gitServiceUrl = value;
+    //            this.raiseGitServiceUrlChanged(value, oldValue);
+    //        }
+    //        return this._gitServiceUrl;
+    //    }
+    //    /**
+    //    * Gets or sets the base URL of the Identity provider to be used by ServiceNow.
+    //    *
+    //    * @param {URL} [value] - Optionally specify new value for base URL of the Identity provider to be used by ServiceNow.
+    //    * @returns {URL}
+    //    * @memberof appConfigData
+    //    * @description Changes in this value cause any callbacks specified through {@link appConfigData#onIdpUrlChanged} to be invoked.
+    //    */
+    //    idpUrl(value?: URL): URL {
+    //        if (sys.isNil(value))
+    //            return this._idpUrl;
+    //        let validated: URL | string = appConfigDataService.validateURL(value);
+    //        if (typeof validated === "string")
+    //            throw new Error(validated);
+    //        let oldValue: URL = this._idpUrl;
+    //        if (typeof oldValue !== "object" || oldValue.href !== value.href) {
+    //            this._idpUrl = value;
+    //            this.raiseIdpUrlChanged(value, oldValue);
+    //        }
+    //        return this._idpUrl;
+    //    }
+    //    /**
+    //    * Creates a URL that is relative to a configuration setting URL base value.
+    //    * @param {UrlSettingsNames} setting - The name of the URL setting.
+    //    * @param {string} [relativeUrl] - The relative URL string.
+    //    * @param {string} [queryParameter] - The name of the query parameter to add to the result URL.
+    //    * @param {string} [queryValue] - The value of the query parameter to add to the result URL.
+    //    * @returns {URL} A URL that is relative to the configuration settings URL base value.
+    //    * @memberof appConfigData
+    //    */
+    //    createUrl(setting: UrlSettingsNames, relativeUrl?: string, queryParameter?: string, queryValue?: string): URL {
+    //        let url: URL;
+    //        if (setting === "git")
+    //            url = this._gitServiceUrl;
+    //        else
+    //            url = sys.makeDirectoryUrl((setting == "sn") ? this._serviceNowUrl : this._idpUrl);
+    //        if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".")
+    //            url = new URL(relativeUrl, url);
+    //        else
+    //            url = new URL(url.href);
+    //        if (typeof queryParameter === "string" && queryParameter.length > 0) {
+    //            if (typeof queryValue === "string") {
+    //                if (url.searchParams.has(queryParameter))
+    //                    url.searchParams.set(queryParameter, queryValue);
+    //                else
+    //                    url.searchParams.append(queryParameter, queryValue);
+    //            } else {
+    //                if (url.searchParams.has(queryParameter))
+    //                    url.searchParams.delete(queryParameter);
+    //                if (typeof url.search !== "string" || url.search.length == 0 || url.search === "?")
+    //                    url.search = "?" + queryParameter;
+    //                else
+    //                    url.search = url.search + "&" + queryParameter;
+    //            }
+    //        }
+    //        return url;
+    //    }
+    //    // #endregion
+    //    /**
+    //    * Creates an instance of the appConfigData service.
+    //    * @param {persistentStorageLoaderService.Service} persistentStorageLoader - The persistentStorageLegacy service provider.
+    //    * @param {ng.IHttpService} $http - The $http service provider.
+    //    * @param {ng.ILogService} $log - The $log service provider.
+    //    * @param {ng.IDocumentService} $document - The $document service provider.
+    //    * @param {ng.IWindowService} $window - The $window service provider
+    //    * @memberof appConfigData
+    //    */
+    //    constructor(private persistentStorageLoader: persistentStorageLoaderService.Service, $http: ng.IHttpService, private $log: ng.ILogService, $document: ng.IDocumentService, private $window: ng.IWindowService) {
+    //        this[Symbol.toStringTag] = SERVICE_NAME_appConfigData;
+    //        let headElement: JQuery = $document.find('head').first();
+    //        let titleElement: JQuery = headElement.find('title');
+    //        if (titleElement.length == 0) {
+    //            headElement.children().append(titleElement = $('<title></title>'));
+    //            this._pageTitle = "";
+    //        } else
+    //            this._pageTitle = titleElement.text().trim();
+    //        try { this._currentPageURL = new URL($window.location.href); } catch {
+    //            // Just in case
+    //            this._currentPageURL = new URL("http://localhost");
+    //            this._currentPageURL.pathname = DEFAULT_PAGE_PATH;
+    //        }
+    //        let segments: string[] = (typeof this._currentPageURL.pathname !== "string" || this._currentPageURL.pathname.length == 0 || this._currentPageURL.pathname == "/") ? [] : this._currentPageURL.pathname.split("/").filter((n: string) => n.length > 0);
+    //        if (segments.length == 0)
+    //            segments = DEFAULT_PAGE_PATH.split("/");
+    //        else if (!(/\.html?$/i).test(segments[segments.length - 1])) {
+    //            let arr: string[] = DEFAULT_PAGE_PATH.split("/");
+    //            segments.push(arr[arr.length - 1]);
+    //        }
+    //        this._currentPageURL.pathname = "/" + (this._relativePagePath = (segments.length == 1) ? segments[0] : segments.join("/"));
+    //        if ((this._currentPageId = headElement.find('meta[name="app:pageId"]').attr("content")).length == 0)
+    //            this._currentPageId = appConfigDataService.toPageId(this._currentPageURL.pathname);
+    //        if (this._pageTitle.length === 0)
+    //            this._pageTitle = this._currentPageId;
+    //        let svc: appConfigDataService = this;
+    //        this._promise = $http.get("./appConfigData.json").then((result: ng.IHttpPromiseCallbackArg<IAppConfigJSON>) => {
+    //            if (typeof result.data !== "object")
+    //                sys.logResponse(result, $log, "Expected object response type, actual is " + (typeof result.data), true);
+    //            else if (result.data == null) {
+    //                if (sys.toHttpResponseStatusCode(result) === sys.HttpResponseStatusCode.noContent)
+    //                    $log.warn("Response object was null.");
+    //            }
+    //            else {
+    //                svc.applySettings(result.data);
+    //                if (this._pageTitle.trim() !== titleElement.text().trim())
+    //                    titleElement.text(this._pageTitle);
+    //                return;
+    //            }
+    //            result
+    //            svc.applySettings();
+    //        }, (reason: any) => {
+    //            $log.error("Unexpected error making application configuration data request: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
+    //        });
+    //    }
+    //    // #region Application modal popup methods
+    //    /**
+    //    * Displays the main application modal dialog box.
+    //    *
+    //    * @template TThis - The "this" object to use for the onClose callback method.
+    //    * @template TResult - The type of result value produced by the modal dialog.
+    //    * @param {string} message - The message to display in the modal dialog.
+    //    * @param {(string | undefined)} title - The title of the modal dialog.
+    //    * @param {(DialogMessageType | undefined)} type - The message type (severity) of the modal dailog.
+    //    * @param {(IPopupDialogButtonDefinition<TResult>[] | undefined)} buttons - The option buttons to display in the modal dailog.
+    //    * @param {({ (this: TThis, result?: TResult): void; } | undefined)} onClose - The callback to invoke when the dialog box is closed.
+    //    * @param {TThis} thisArg - The object to use as the "this" object when onClose is invoked.
+    //    * @memberof appConfigData
+    //    * @description This invokes the callback specified through the {@link appConfigData#onShowMainModalPopupDialog} method by the {@link Controller} during its construction.
+    //    */
+    //    showMainModalPopupDialog<TThis, TResult>(message: string, title: string | undefined, type: DialogMessageType | undefined, buttons: IPopupDialogButtonDefinition<TResult>[] | undefined,
+    //        onClose: { (this: TThis, result?: TResult): void; } | undefined, thisArg: TThis): void;
+    //    /**
+    //    * Displays the main application modal dialog box
+    //    *
+    //    * @template T - The type of result value produced by the modal dialog.
+    //    * @param {string} message - The message to display in the modal dialog.
+    //    * @param {string} [title] - The title of the modal dialog.
+    //    * @param {DialogMessageType} [type] - The message type (severity) of the modal dailog.
+    //    * @param {IPopupDialogButtonDefinition<T>[]} [buttons] - The option buttons to display in the modal dailog.
+    //    * @param {{ (result?: T): void; }} [onClose] - The callback to invoke when the dialog box is closed.
+    //    * @memberof appConfigData
+    //    * @description This invokes the callback specified through the {@link appConfigData#onShowMainModalPopupDialog} method by the {@link Controller} during its construction.
+    //    */
+    //    showMainModalPopupDialog<T>(message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: { (result?: T): void; }): void;
+    //    showMainModalPopupDialog(message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<any>[], onClose?: { (result?: any): void; }, thisArg?: any): void {
+    //        let callback: IPopupDialogShowCallback<any> | undefined = this._showMainModalPopupDialogCallback;
+    //        if (typeof callback === "function") {
+    //            if (arguments.length > 5)
+    //                callback(message, title, type, buttons, (result?: any) => callback.call(thisArg, result));
+    //            else
+    //                callback(message, title, type, buttons, onClose);
+    //        }
+    //    }
+    //    /**
+    //    * Specifies a callback to invoke when the main modal popup dialog is to be displayed.
+    //    *
+    //    * @param {ITHisPopupDialogShowCallback<TThis, TResult>} callback - The callback to invoke when the main modal popup dialog is to be displayed.
+    //    * @param {TThis} thisArg - The object to use as the "this" object when the callback is invoked.
+    //    * @memberof appConfigData
+    //    */
+    //    onShowMainModalPopupDialog<TThis, TResult>(callback: ITHisPopupDialogShowCallback<TThis, TResult>, thisArg: TThis): void;
+    //    /**
+    //    * Specifies a callback to invoke when the main modal popup dialog is to be displayed.
+    //    *
+    //    * @param {IPopupDialogShowCallback<T>} callback - The callback to invoke when the main modal popup dialog is to be displayed.
+    //    * @memberof appConfigData
+    //    * @description - The {@link Controller} invokes this method during its construction to specify the callback that will actually display the popup dialog.
+    //    */
+    //    onShowMainModalPopupDialog<T>(callback: IPopupDialogShowCallback<T>): void;
+    //    onShowMainModalPopupDialog(callback: IPopupDialogShowCallback<any> | ITHisPopupDialogShowCallback<any, any>, thisArg?: any): void {
+    //        if (typeof callback !== "function")
+    //            return;
+    //        let showMainModalPopupDialogCallback: IPopupDialogShowCallback<any> | undefined = this._showMainModalPopupDialogCallback;
+    //        if (arguments.length > 1) {
+    //            if (typeof showMainModalPopupDialogCallback === "function")
+    //                this._showMainModalPopupDialogCallback = (message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<any>[], onClose?: { (result?: any): void; }) => {
+    //                    try { showMainModalPopupDialogCallback(title, message, type, buttons, onClose); }
+    //                    finally { callback.call(thisArg, message, title, type, buttons, onClose); }
+    //                };
+    //            else
+    //                this._showMainModalPopupDialogCallback = (message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<any>[], onClose?: { (result?: any): void; }) => {
+    //                    callback.call(thisArg, message, title, type, buttons, onClose);
+    //                };
+    //        } else if (typeof showMainModalPopupDialogCallback === "function")
+    //            this._showMainModalPopupDialogCallback = (message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<any>[], onClose?: { (result?: any): void; }) => {
+    //                try { showMainModalPopupDialogCallback(message, title, type, buttons, onClose); }
+    //                finally { callback(message, title, type, buttons, onClose); }
+    //            };
+    //        else
+    //            this._showMainModalPopupDialogCallback = callback;
+    //    }
+    //    /**
+    //    * Closes the main modal popup dialog.
+    //    *
+    //    * @param {*} [result] - Result value to apply.
+    //    * @memberof appConfigData
+    //    */
+    //    closeMainModalPopupDialog(result?: any): void {
+    //        let callback: { (result?: any): void } | undefined = this._hideMainModalPopupDialogCallback;
+    //        if (typeof callback === "function")
+    //            callback(result);
+    //    }
+    //    /**
+    //    * Specifies a callback to invoke when the main modal popup dialog is to be closed.
+    //    *
+    //    * @template TThis - The type of object used as the "this" object when the callback is invoked.
+    //    * @template TResult - The type of result value for the modal popup dialog.
+    //    * @param {{ (this: TThis, result?: TResult): void }} callback - The callback to invoke when the main modal popup dialog is to be closed.
+    //    * @param {TThis} thisArg - The object to use as the "this" object when the callback is invoked.
+    //    * @memberof appConfigData
+    //    */
+    //    onCloseMainModalPopupDialog<TThis, TResult>(callback: { (this: TThis, result?: TResult): void }, thisArg: TThis): void;
+    //    /**
+    //    * Specifies a callback to invoke when the main modal popup dialog is to be closed.
+    //    *
+    //    * @template T - The type of result value for the modal popup dialog.
+    //    * @param {{ (result?: T): void }} callback - The callback to invoke when the main modal popup dialog is to be closed.
+    //    * @memberof appConfigData
+    //    * @description - The {@link Controller} invokes this method during its construction to specify the callback that will actually close the popup dialog.
+    //    */
+    //    onCloseMainModalPopupDialog<T>(callback: { (result?: T): void }): void;
+    //    onCloseMainModalPopupDialog(callback: { (result?: any): void } | { (this: any, result?: any): void }, thisArg?: any): void {
+    //        if (typeof callback !== "function")
+    //            return;
+    //        let hideMainModalPopupDialogCallback: { (result?: any): void } | undefined = this._hideMainModalPopupDialogCallback;
+    //        if (arguments.length > 1) {
+    //            if (typeof hideMainModalPopupDialogCallback === "function")
+    //                this._hideMainModalPopupDialogCallback = (result?: any) => {
+    //                    try { hideMainModalPopupDialogCallback(result); }
+    //                    finally { callback.call(thisArg, result); }
+    //                };
+    //            else
+    //                this._hideMainModalPopupDialogCallback = (result?: any) => {
+    //                    callback.call(thisArg, result);
+    //                };
+    //        } else if (typeof hideMainModalPopupDialogCallback === "function")
+    //            this._hideMainModalPopupDialogCallback = (result?: any) => {
+    //                try { hideMainModalPopupDialogCallback(result); }
+    //                finally { callback(result); }
+    //            };
+    //        else
+    //            this._hideMainModalPopupDialogCallback = callback;
+    //    }
+    //    // #endregion
+    //    // #region URL setting value change methods
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of {@link appConfigData#serviceNowUrl} has changed.
+    //    * @param {INotifyValueChange<URL>} onChange - The callback to invoke when the value of {@link appConfigData#serviceNowUrl} has changed.
+    //    * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+    //    * @memberof appConfigData
+    //    */
+    //    notifyServiceNowUrlChange(onChange: INotifyValueChange<URL>): NotifyChangeLink<URL>;
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of {@link appConfigData#serviceNowUrl} has changed.
+    //    * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+    //    * @param {IThisNotifyValueChange<URL, T>} onChange - The callback to invoke when the value of {@link appConfigData#serviceNowUrl} has changed.
+    //    * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+    //    * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+    //    * @memberof appConfigData
+    //    */
+    //    notifyServiceNowUrlChange<T>(onChange: IThisNotifyValueChange<URL, T>, thisObj: T): NotifyChangeLink<URL>;
+    //    notifyServiceNowUrlChange(onChange: INotifyValueChange<URL> | IThisNotifyValueChange<URL, any>, thisObj?: any): NotifyChangeLink<URL> {
+    //        if (arguments.length > 1)
+    //            return new NotifyChangeLink<URL>(this._serviceNowUrlChangeNotify, onChange, thisObj);
+    //        return new NotifyChangeLink<URL>(this._serviceNowUrlChangeNotify, onChange);
+    //    }
+    //    /**
+    //    * Unregister a notification callback to no longer be notified of changes to {@link appConfigData#serviceNowUrl}.
+    //    * @param {NotifyChangeLink<URL>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
+    //    * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#serviceNowUrl}.
+    //    * @memberof appConfigData
+    //    */
+    //    removeServiceNowUrlChangeNotify(notifier: NotifyChangeLink<URL>): boolean { return NotifyChangeLink.remove<URL>(this._serviceNowUrlChangeNotify, notifier); }
+    //    /**
+    //    * Specifies a callback to invoke when the value of {@link appConfigData#serviceNowUrl} has changed.
+    //    * @deprecated - Use {@link appConfigData#notifyServiceNowUrlChange}, instead.
+    //    * @todo - Remove method when no longer used.
+    //    * @template T - The type of object used as the "this" object when the callback is invoked.
+    //    * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link appConfigData#serviceNowUrl} has changed.
+    //    * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
+    //    * @memberof appConfigData
+    //    */
+    //    onServiceNowUrlChanged<T>(callback: { (this: T, value: URL): void; }, thisArg: T): void;
+    //    /**
+    //    * Specifies a callback to invoke when the value of {@link appConfigData#serviceNowUrl} has changed.
+    //    * @deprecated - Use {@link appConfigData#notifyServiceNowUrlChange}, instead.
+    //    * @todo - Remove method when no longer used.
+    //    * @param {{ (value: URL): void; }} callback - The callback to invoke when the value of {@link appConfigData#serviceNowUrl} has changed.
+    //    * @memberof appConfigData
+    //    */
+    //    onServiceNowUrlChanged(callback: { (value: URL): void; }): void;
+    //    onServiceNowUrlChanged(callback: { (value: URL): void; }, thisArg?: any): void {
+    //        if (typeof callback !== "function")
+    //            return;
+    //        let serviceNowUrlChangedCallback: { (value: URL): void; } | undefined = this._serviceNowUrlChangedCallback;
+    //        if (arguments.length > 1) {
+    //            if (typeof serviceNowUrlChangedCallback === "function")
+    //                this._serviceNowUrlChangedCallback = (value: URL) => { try { serviceNowUrlChangedCallback(value); } finally { callback.call(thisArg, value); } };
+    //            else
+    //                this._serviceNowUrlChangedCallback = (value: URL) => { callback.call(thisArg, value); };
+    //            callback.call(thisArg, this._serviceNowUrl);
+    //            return;
+    //        }
+    //        if (typeof serviceNowUrlChangedCallback === "function")
+    //            this._serviceNowUrlChangedCallback = (value: URL) => { try { serviceNowUrlChangedCallback(value); } finally { callback(value); } };
+    //        else
+    //            this._serviceNowUrlChangedCallback = callback;
+    //        callback(this._serviceNowUrl);
+    //    }
+    //    private raiseServiceNowUrlChanged(newValue: URL, oldValue: URL): void {
+    //        NotifyChangeLink.raiseChange<URL>(this._serviceNowUrlChangeNotify, newValue, oldValue);
+    //        let callback: { (value: URL): void; } = this._serviceNowUrlChangedCallback;
+    //        if (typeof callback === "function")
+    //            callback(this._serviceNowUrl);
+    //    }
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of {@link appConfigData#gitServiceUrl} has changed.
+    //    * @param {INotifyValueChange<URL>} onChange - The callback to invoke when the value of {@link appConfigData#gitServiceUrl} has changed.
+    //    * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+    //    * @memberof appConfigData
+    //    */
+    //    notifyGitServiceUrlChange(onChange: INotifyValueChange<URL>): NotifyChangeLink<URL>;
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of {@link Service#gitappConfigDataUrl} has changed.
+    //    * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+    //    * @param {IThisNotifyValueChange<URL, T>} onChange - The callback to invoke when the value of {@link Service#gitappConfigDataUrl} has changed.
+    //    * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+    //    * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+    //    * @memberof Service
+    //    */
+    //    notifyGitServiceUrlChange<T>(onChange: IThisNotifyValueChange<URL, T>, thisObj: T): NotifyChangeLink<URL>;
+    //    notifyGitServiceUrlChange(onChange: INotifyValueChange<URL> | IThisNotifyValueChange<URL, any>, thisObj?: any): NotifyChangeLink<URL> {
+    //        if (arguments.length > 1)
+    //            return new NotifyChangeLink<URL>(this._gitServiceUrlChangeNotify, onChange, thisObj);
+    //        return new NotifyChangeLink<URL>(this._gitServiceUrlChangeNotify, onChange);
+    //    }
+    //    /**
+    //    * Unregister a notification callback to no longer be notified of changes to {@link appConfigData#gitServiceUrl}.
+    //    * @param {NotifyChangeLink<URL>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
+    //    * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#gitServiceUrl}.
+    //    * @memberof appConfigData
+    //    */
+    //    removeGitServiceUrlChangeNotify(notifier: NotifyChangeLink<URL>): boolean { return NotifyChangeLink.remove<URL>(this._gitServiceUrlChangeNotify, notifier); }
+    //    /**
+    //    * Specifies a callback to invoke when the value of {@link appConfigData#gitRepositoryUrl} has changed.
+    //    * @deprecated - Use {@link appConfigData#notifyGitServiceUrlChange}, instead.
+    //    * @todo - Remove method when no longer used.
+    //    * @template T - The type of object used as the "this" object when the callback is invoked.
+    //    * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link appConfigData#gitRepositoryUrl} has changed.
+    //    * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
+    //    * @memberof appConfigData
+    //    */
+    //    onGitServiceUrlChanged<T>(callback: { (this: T, value: URL): void; }, thisArg: T): void;
+    //    /**
+    //    * Specifies a callback to invoke when the value of {@link appConfigData#gitRepositoryUrl} has changed.
+    //    * @deprecated - Use {@link appConfigData#notifyGitServiceUrlChange}, instead.
+    //    * @todo - Remove method when no longer used.
+    //    * @param {{ (value: URL): void; }} callback - The callback to invoke when the value of {@link appConfigData#gitRepositoryUrl} has changed.
+    //    * @memberof appConfigData
+    //    */
+    //    onGitServiceUrlChanged(callback: { (value: URL): void; }): void;
+    //    onGitServiceUrlChanged(callback: { (value: URL): void; }, thisArg?: any): void {
+    //        if (typeof callback !== "function")
+    //            return;
+    //        let gitRepositoryUrlChangedCallback: { (value: URL): void; } | undefined = this._gitServiceUrlChangedCallback;
+    //        if (arguments.length > 1) {
+    //            if (typeof gitRepositoryUrlChangedCallback === "function")
+    //                this._gitServiceUrlChangedCallback = (value: URL) => { try { gitRepositoryUrlChangedCallback(value); } finally { callback.call(thisArg, value); } };
+    //            else
+    //                this._gitServiceUrlChangedCallback = (value: URL) => { callback.call(thisArg, value); };
+    //            callback.call(thisArg, this._serviceNowUrl);
+    //            return;
+    //        }
+    //        if (typeof gitRepositoryUrlChangedCallback === "function")
+    //            this._gitServiceUrlChangedCallback = (value: URL) => { try { gitRepositoryUrlChangedCallback(value); } finally { callback(value); } };
+    //        else
+    //            this._gitServiceUrlChangedCallback = callback;
+    //        callback(this._gitServiceUrl);
+    //    }
+    //    private raiseGitServiceUrlChanged(newValue: URL, oldValue: URL): void {
+    //        NotifyChangeLink.raiseChange<URL>(this._gitServiceUrlChangeNotify, newValue, oldValue);
+    //        let callback: { (value: URL): void; } = this._gitServiceUrlChangedCallback;
+    //        if (typeof callback === "function")
+    //            callback(this._gitServiceUrl);
+    //    }
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of {@link appConfigData#idpUrl} has changed.
+    //    * @param {INotifyValueChange<URL>} onChange - The callback to invoke when the value of {@link appConfigData#idpUrl} has changed.
+    //    * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+    //    * @memberof appConfigData
+    //    */
+    //    notifyIdpUrlChange(onChange: INotifyValueChange<URL>): NotifyChangeLink<URL>;
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of {@link appConfigData#idpUrl} has changed.
+    //    * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+    //    * @param {IThisNotifyValueChange<URL, T>} onChange - The callback to invoke when the value of {@link appConfigData#idpUrl} has changed.
+    //    * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+    //    * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+    //    * @memberof appConfigData
+    //    */
+    //    notifyIdpUrlChange<T>(onChange: IThisNotifyValueChange<URL, T>, thisObj: T): NotifyChangeLink<URL>;
+    //    notifyIdpUrlChange(onChange: INotifyValueChange<URL> | IThisNotifyValueChange<URL, any>, thisObj?: any): NotifyChangeLink<URL> {
+    //        if (arguments.length > 1)
+    //            return new NotifyChangeLink<URL>(this._idpUrlChangeNotify, onChange, thisObj);
+    //        return new NotifyChangeLink<URL>(this._idpUrlChangeNotify, onChange);
+    //    }
+    //    /**
+    //    * Unregister a notification callback to no longer be notified of changes to {@link appConfigData#idpUrl}.
+    //    * @param {NotifyChangeLink<URL>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
+    //    * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#idpUrl}.
+    //    * @memberof appConfigData
+    //    */
+    //    removeIdpUrlChangeNotify(notifier: NotifyChangeLink<URL>): boolean { return NotifyChangeLink.remove<URL>(this._idpUrlChangeNotify, notifier); }
+    //    /**
+    //    * Specifies a callback to invoke when the value of {@link appConfigData#idpUrl} has changed.
+    //    * @deprecated - Use {@link appConfigData#notifyIdpUrlChange}, instead.
+    //    * @todo - Remove method when no longer used.
+    //    * @template T - The type of object used as the "this" object when the callback is invoked.
+    //    * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link appConfigData#idpUrl} has changed.
+    //    * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
+    //    * @memberof appConfigData
+    //    */
+    //    onIdpUrlChanged<T>(callback: { (this: T, value: URL): void; }, thisArg: T): void;
+    //    /**
+    //    * Specifies a callback to invoke when the value of {@link appConfigData#idpUrl} has changed.
+    //    * @deprecated - Use {@link appConfigData#notifyIdpUrlChange}, instead.
+    //    * @todo - Remove method when no longer used.
+    //    * @param {{ (value: URL): void; }} callback - The callback to invoke when the value of {@link appConfigData#idpUrl} has changed.
+    //    * @memberof appConfigData
+    //    */
+    //    onIdpUrlChanged(callback: { (value: URL): void; }): void;
+    //    onIdpUrlChanged(callback: { (value: URL): void; }, thisArg?: any): void {
+    //        if (typeof callback !== "function")
+    //            return;
+    //        let idpChangedCallback: { (value: URL): void; } | undefined = this._idpUrlChangedCallback;
+    //        if (arguments.length > 1) {
+    //            if (typeof idpChangedCallback === "function")
+    //                this._idpUrlChangedCallback = (value: URL) => { try { idpChangedCallback(value); } finally { callback.call(thisArg, value); } };
+    //            else
+    //                this._idpUrlChangedCallback = (value: URL) => { callback.call(thisArg, value); };
+    //            callback.call(thisArg, this._idpUrl);
+    //            return;
+    //        }
+    //        if (typeof idpChangedCallback === "function")
+    //            this._idpUrlChangedCallback = (value: URL) => { try { idpChangedCallback(value); } finally { callback(value); } };
+    //        else
+    //            this._idpUrlChangedCallback = callback;
+    //        callback(this._idpUrl);
+    //    }
+    //    private raiseIdpUrlChanged(newValue: URL, oldValue: URL): void {
+    //        NotifyChangeLink.raiseChange<URL>(this._idpUrlChangeNotify, newValue, oldValue);
+    //        let callback: { (value: URL): void; } = this._idpUrlChangedCallback;
+    //        if (typeof callback === "function")
+    //            callback(this._idpUrl);
+    //    }
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of URL setting has changed.
+    //    * @param {UrlSettingsNames} setting - The name of the URL setting.
+    //    * @param {INotifyValueChange<URL>} onChange - The callback to invoke when the corresponding {@link URL} has changed.
+    //    * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+    //    * @memberof appConfigData
+    //    */
+    //    notifyUrlChange(setting: UrlSettingsNames, onChange: INotifyValueChange<URL>): NotifyChangeLink<URL>;
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of URL setting has changed.
+    //    * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+    //    * @param {UrlSettingsNames} setting - The name of the URL setting.
+    //    * @param {IThisNotifyValueChange<URL, T>} onChange - The callback to invoke when the corresponding {@link URL} has changed.
+    //    * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+    //    * @returns {NotifyChangeLink<URL>} An object that can be used to un-register the change notification.
+    //    * @memberof appConfigData
+    //    */
+    //    notifyUrlChange<T>(setting: UrlSettingsNames, onChange: IThisNotifyValueChange<URL, T>, thisObj: T): NotifyChangeLink<URL>;
+    //    notifyUrlChange(setting: UrlSettingsNames, onChange: INotifyValueChange<URL> | IThisNotifyValueChange<URL, any>, thisObj?: any): NotifyChangeLink<URL> {
+    //        if (setting === "sn") {
+    //            if (arguments.length > 2)
+    //                return this.notifyServiceNowUrlChange(onChange, thisObj);
+    //            return this.notifyServiceNowUrlChange(onChange);
+    //        }
+    //        if (setting == "git") {
+    //            if (arguments.length > 2)
+    //                return this.notifyGitServiceUrlChange(onChange, thisObj);
+    //            return this.notifyGitServiceUrlChange(onChange);
+    //        }
+    //        if (setting !== "idp")
+    //            throw new Error("Invalid setting name");
+    //        if (arguments.length > 2)
+    //            return this.notifyIdpUrlChange(onChange, thisObj);
+    //        return this.notifyIdpUrlChange(onChange);
+    //    }
+    //    /**
+    //    * Unregister a notification callback to no longer be notified of changes to a URL setting.
+    //    * @param {UrlSettingsNames} setting - The name of the URL setting.
+    //    * @param {NotifyChangeLink<URL>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
+    //    * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#idpUrl}.
+    //    * @memberof appConfigData
+    //    */
+    //    removeUrlChangeNofify(setting: UrlSettingsNames, notifier: NotifyChangeLink<URL>): boolean {
+    //        if (setting === "sn")
+    //            return this.removeServiceNowUrlChangeNotify(notifier);
+    //        if (setting === "git")
+    //            return this.removeGitServiceUrlChangeNotify(notifier);
+    //        return setting === "idp" && this.removeIdpUrlChangeNotify(notifier);
+    //    }
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of {@link appConfigData#pageTitle} has changed.
+    //    * @param {INotifyValueChange<string>} onChange - The callback to invoke when the value of {@link appConfigData#pageTitle} has changed.
+    //    * @returns {NotifyChangeLink<string>} An object that can be used to un-register the change notification.
+    //    * @memberof appConfigData
+    //    */
+    //    notifyPageTitleChange(onChange: INotifyValueChange<string>): NotifyChangeLink<string>;
+    //    /**
+    //    * Registers a notification callback that will be invoked when the value of {@link appConfigData#pageTitle} has changed.
+    //    * @template T - The type of object that will be used as the "this" object when the callback is invoked.
+    //    * @param {IThisNotifyValueChange<string, T>} onChange - The callback to invoke when the value of {@link appConfigData#pageTitle} has changed.
+    //    * @param {T} thisObj - The object that will be the "this" object when the callback is invoked.
+    //    * @returns {NotifyChangeLink<string>} An object that can be used to un-register the change notification.
+    //    * @memberof appConfigData
+    //    */
+    //    notifyPageTitleChange<T>(onChange: IThisNotifyValueChange<string, T>, thisObj: T): NotifyChangeLink<string>;
+    //    notifyPageTitleChange(onChange: INotifyValueChange<string> | IThisNotifyValueChange<string, any>, thisObj?: any): NotifyChangeLink<string> {
+    //        if (arguments.length > 1)
+    //            return new NotifyChangeLink<string>(this._pageTitleChangeNotify, onChange, thisObj);
+    //        return new NotifyChangeLink<string>(this._pageTitleChangeNotify, onChange);
+    //    }
+    //    /**
+    //    * Unregister a notification callback to no longer be notified of changes to {@link appConfigData#pageTitle}.
+    //    * @param {NotifyChangeLink<string>} notifier - The {@see NotifyChangeLink} that represents the registered notifcation callback.
+    //    * @returns {boolean} true if the notification callback was un-registered or false if the notification callback was not registered for changes to {@link appConfigData#idpUrl}.
+    //    * @memberof appConfigData
+    //    */
+    //    removePageTitleChangeNotify(notifier: NotifyChangeLink<string>): boolean { return NotifyChangeLink.remove<string>(this._pageTitleChangeNotify, notifier); }
+    //    /**
+    //    * Specifies a callback to invoke when the value of {@link appConfigData#pageTitle} has changed.
+    //    * @deprecated - Use {@link appConfigData#notifyPageTitleChange}, instead.
+    //    * @todo - Remove method when no longer used.
+    //    * @template T - The type of object used as the "this" object when the callback is invoked.
+    //    * @param {{ (this: T, value: URL): void; }} callback - The callback to invoke when the value of {@link appConfigData#pageTitle} has changed.
+    //    * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
+    //    * @memberof appConfigData
+    //    */
+    //    onTitleChanged<T>(callback: { (this: T, value: string): void; }, thisArg: T): void;
+    //    /**
+    //    * Specifies a callback to invoke when the value of {@link appConfigData#pageTitle} has changed.
+    //    * @deprecated - Use {@link appConfigData#notifyPageTitleChange}, instead.
+    //    * @todo - Remove method when no longer used.
+    //    * @param {{ (value: string): void; }} callback - The callback to invoke when the value of {@link appConfigData#pageTitle} has changed.
+    //    * @memberof appConfigData
+    //    */
+    //    onTitleChanged(callback: { (value: string): void; }): void;
+    //    onTitleChanged(callback: { (value: string): void; }, thisArg?: any): void {
+    //        if (typeof callback !== "function")
+    //            return;
+    //        let pageTitleChangedCallback: { (value: string): void; } | undefined = this._pageTitleChangedCallback;
+    //        if (arguments.length > 1) {
+    //            if (typeof pageTitleChangedCallback === "function")
+    //                this._pageTitleChangedCallback = (value: string) => { try { pageTitleChangedCallback(value); } finally { callback.call(thisArg, value); } };
+    //            else
+    //                this._pageTitleChangedCallback = (value: string) => { callback.call(thisArg, value); };
+    //            callback.call(thisArg, this._serviceNowUrl);
+    //            return;
+    //        }
+    //        if (typeof pageTitleChangedCallback === "function")
+    //            this._pageTitleChangedCallback = (value: string) => { try { pageTitleChangedCallback(value); } finally { callback(value); } };
+    //        else
+    //            this._pageTitleChangedCallback = callback;
+    //        callback(this._pageTitle);
+    //    }
+    //    private raiseTitleChanged(newValue: string, oldValue: string): void {
+    //        NotifyChangeLink.raiseChange<string>(this._pageTitleChangeNotify, newValue, oldValue);
+    //        let callback: { (value: string): void; } = this._pageTitleChangedCallback;
+    //        if (typeof callback === "function")
+    //            callback(this._pageTitle);
+    //    }
+    //    // #endregion
+    //    /**
+    //    * Specifies callback(s) to invoke when settings have been loaded from appConfigData.json.
+    //    * @template T - The type of object used as the "this" object when the callback is invoked.
+    //    * @param {{ (this: T, svc: appConfigDataService): void; }} successCallback - The callback to invoke when settings have been successfully loaded.
+    //    * @param {({ (this: T, reason: any, svc: appConfigDataService): void; } | undefined)} errorCallback - The callback to invoke when there was an error loading settings from appConfigData.json.
+    //    * @param {T} thisArg - The object to use as the "this" object when the callback is invoked.
+    //    * @memberof appConfigData
+    //    */
+    //    onSettingsLoaded<T>(successCallback: { (this: T, svc: appConfigDataService): void; }, errorCallback: { (this: T, reason: any, svc: appConfigDataService): void; } | undefined, thisArg: T): void;
+    //    /**
+    //    * Specifies callback(s) to invoke when settings have been loaded from appConfigData.json.
+    //    *
+    //    * @param {{ (svc: appConfigDataService): void; }} successCallback - The callback to invoke when settings have been successfully loaded.
+    //    * @param {{ (reason: any, svc: appConfigDataService): void; }} [errorCallback] - The callback to invoke when there was an error loading settings from appConfigData.json.
+    //    * @memberof appConfigData
+    //    */
+    //    onSettingsLoaded(successCallback: { (svc: appConfigDataService): void; }, errorCallback?: { (reason: any, svc: appConfigDataService): void; }): void;
+    //    onSettingsLoaded(successCallback: { (svc: appConfigDataService): void; }, errorCallback?: { (reason: any, svc: appConfigDataService): void; }, thisArg?: any): void {
+    //        let svc: appConfigDataService = this;
+    //        this._promise.then(() => {
+    //            if (arguments.length > 2)
+    //                successCallback.call(thisArg, svc);
+    //            else
+    //                successCallback(svc);
+    //        }, (reason: any) => {
+    //            if (typeof errorCallback === "function") {
+    //                if (arguments.length > 2)
+    //                    errorCallback.call(thisArg, reason, svc);
+    //                else
+    //                    errorCallback(reason, svc);
+    //            }
+    //        });
+    //    }
+    //    private applySettings(appJson?: IAppConfigJSON): void {
+    //        let settings: IUrlConfigSettings | undefined = this.persistentStorageLoader.getObject<IUrlConfigSettings>(persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS);
+    //        if (typeof settings === "object" && settings !== null) {
+    //            if (typeof settings.serviceNowUrl === "string" && settings.serviceNowUrl.length > 0)
+    //                this.serviceNowUrl(new URL(settings.serviceNowUrl));
+    //            else if (typeof appJson === "object" && appJson !== null && typeof appJson.serviceNowUrl === "string" && appJson.serviceNowUrl.length > 0)
+    //                this.serviceNowUrl(new URL(appJson.serviceNowUrl));
+    //            if (typeof settings.gitServiceUrl === "string" && settings.gitServiceUrl.length > 0)
+    //                this.gitServiceUrl(new URL(settings.gitServiceUrl));
+    //            else if (typeof appJson === "object" && appJson !== null && typeof appJson.gitServiceUrl === "string" && appJson.gitServiceUrl.length > 0)
+    //                this.gitServiceUrl(new URL(appJson.gitServiceUrl));
+    //        } else if (typeof appJson === "object" && appJson !== null) {
+    //            if (typeof appJson.serviceNowUrl === "string" && appJson.serviceNowUrl.length > 0)
+    //                this.serviceNowUrl(new URL(appJson.serviceNowUrl));
+    //            if (typeof appJson.gitServiceUrl === "string" && appJson.gitServiceUrl.length > 0)
+    //                this.gitServiceUrl(new URL(appJson.gitServiceUrl));
+    //        }
+    //        this.persistentStorageLoader.setObject(persistentStorageLoaderService.STORAGEKEY_URL_CONFIG_SETTINGS, settings);
+    //        if (typeof appJson === "object" && appJson !== null && typeof appJson.navigation === "object" && appJson.navigation !== null)
+    //            this._topNavItems = NavigationItem.createNavItems(this, appJson.navigation.items);
+    //        else
+    //            this._topNavItems = NavigationItem.createNavItems(this);
+    //        let current: NavigationItem | undefined = NavigationItem.findCurrentItem(this.topNavItems());
+    //        if (sys.notNil(current) && current.pageTitle.length > 0)
+    //            this.pageTitle(current.pageTitle);
+    //    }
+    //    /**
+    //    * Converts a URL path to a fallback (default) page ID.
+    //    * @static
+    //    * @param {string} path - The URL Path to convert.
+    //    * @returns {string} The fallback page ID for the given URL path.
+    //    * @memberof appConfigData
+    //    */
+    //    static toPageId(path: string): string {
+    //        let arr: string[];
+    //        let i: number;
+    //        if (typeof path !== "string" || path.length == 0 || path == "/" || (arr = path.split("/").filter((value: string) => value.length > 0)).length === 0)
+    //            arr = DEFAULT_PAGE_PATH.split("/").filter((value: string) => value.length > 0);
+    //        let n: string = arr.pop();
+    //        if ((i = n.lastIndexOf(".")) < 1 || i === n.length - 1) {
+    //            let a: string[] = DEFAULT_PAGE_PATH.split("/").filter((value: string) => value.length > 0);
+    //            arr.push(n);
+    //            n = a[a.length - 1];
+    //            if ((i = n.lastIndexOf(".")) < 0) {
+    //                arr.push(n);
+    //                return arr.join("/");
+    //            }
+    //        }
+    //        arr.push(n.substr(0, i));
+    //        return (arr.length === 1) ? arr[0] : arr.join("/");
+    //    }
+    //}
+    //appModule.factory(SERVICE_NAME_appConfigData, [persistentStorageLoaderService.SERVICE_NAME, "$http", '$log', '$document', '$window', appConfigDataService]);
+    //// #endregion
     // #region urlInput directive
     /**
      * Defines the directive name as "urlInput".
@@ -1496,82 +3058,37 @@ var app;
          * @param {appConfigDataService} appConfigData - The appConfigData service.
          * @memberof Controller
          */
-        constructor($scope, $log, $window, appConfigData) {
+        constructor($scope, $log, $window, navConfigLoader, appConfigLoader) {
             this.$scope = $scope;
             this.$log = $log;
             this.$window = $window;
-            this.appConfigData = appConfigData;
-            $scope.serviceNowUrlIsValid = $scope.gitRepositoryUrlIsValid = $scope.setupParametersAreInvalid = true;
+            this.navConfigLoader = navConfigLoader;
+            this.appConfigLoader = appConfigLoader;
+            $scope.serviceNowUrlIsValid = $scope.gitServiceUrlIsValid = $scope.idpUrlIsValid = $scope.setupParametersAreInvalid = true;
             $scope.setupParametersDialogVisible = $scope.showSideMenu = $scope.showBreadcrumbLinks = $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = $scope.popupDialogVisible = false;
             $scope.topNavItems = $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
             $scope.popupDialogButtons = [];
             $scope.sideNavHeading = $scope.popupDialogTitle = $scope.popupDialogMessage = '';
-            $scope.pageTitle = appConfigData.pageTitle();
-            $scope.serviceNowUrl = appConfigData.serviceNowUrl().href;
-            $scope.gitRepositoryUrl = appConfigData.gitServiceUrl().href;
+            appConfigLoader.onServiceNowUrlChanged($scope, (url) => { $scope.serviceNowUrl = url.href; });
+            $scope.serviceNowUrl = appConfigLoader.serviceNowUrl().href;
+            appConfigLoader.onGitServiceUrlChanged($scope, (url) => { $scope.gitServiceUrl = url.href; });
+            $scope.gitServiceUrl = appConfigLoader.gitServiceUrl().href;
+            appConfigLoader.onIdpUrlChanged($scope, (url) => { $scope.idpUrl = url.href; });
+            $scope.idpUrl = appConfigLoader.idpUrl().href;
             $scope.popupDialogBodyClass = [];
             this.updateMainSectionClass();
-            $scope.$watchGroup(['serviceNowUrlIsValid', 'gitRepositoryBaseUrlIsValid'], () => {
-                let areValid = $scope.serviceNowUrlIsValid && $scope.gitRepositoryBaseUrlIsValid;
+            navConfigLoader.loadPageTitle().then((title) => $scope.pageTitle = title);
+            $scope.$watchGroup(['serviceNowUrlIsValid', 'gitServiceUrlIsValid', 'idpUrlIsValid'], () => {
+                let areValid = $scope.serviceNowUrlIsValid && $scope.gitRepositoryBaseUrlIsValid && $scope.idpUrlIsValid;
                 if (areValid !== $scope.setupParametersAreInvalid)
                     $scope.setupParametersAreInvalid = areValid;
             });
-            appConfigData.onShowMainModalPopupDialog((message, title, type, buttons, onClose) => {
-                if ($scope.popupDialogVisible) {
-                    $('#mainModalPopupDialog').modal('hide');
-                    $scope.popupDialogVisible = false;
-                    if (typeof $scope.onPopupDialogClose === "function")
-                        $scope.onPopupDialogClose();
-                }
-                $scope.popupDialogMessage = message;
-                $scope.onClose = onClose;
-                if (typeof buttons !== "object" || buttons === null || ($scope.popupDialogButtons = buttons.filter(b => typeof b === "object" && b !== null)).length === 0)
-                    $scope.popupDialogButtons = [{ displayText: "Close", onClick: (event) => { $scope.appContentController.closePopupDialog(event); } }];
-                else
-                    $scope.popupDialogButtons.forEach((value) => {
-                        value.onClick = (event) => $scope.appContentController.closePopupDialog(event, value.value);
-                    });
-                if (sys.isNilOrWhiteSpace(title)) {
-                    switch (type) {
-                        case 'warning':
-                            $scope.popupDialogTitle = 'Warning';
-                            break;
-                        case 'danger':
-                            $scope.popupDialogTitle = 'Critical';
-                            break;
-                        case 'success':
-                            $scope.popupDialogTitle = 'Success';
-                            break;
-                        default:
-                            $scope.popupDialogTitle = 'Notice';
-                            type = "info";
-                            break;
-                    }
-                }
-                else
-                    $scope.popupDialogTitle = title;
-                $scope.popupDialogBodyClass = ['modal-body', 'alert', 'alert-' + type];
-                $('#mainModalPopupDialog').modal('show');
-                $scope.setupParametersDialogVisible = true;
+            $scope.setupParametersAreInvalid = $scope.serviceNowUrlIsValid && $scope.gitRepositoryBaseUrlIsValid && $scope.idpUrlIsValid;
+            navConfigLoader.loadTopNavItems().then((items) => {
+                $scope.topNavItems = items;
             });
-            appConfigData.onCloseMainModalPopupDialog((result) => {
-                if ($scope.popupDialogVisible) {
-                    $('#mainModalPopupDialog').modal('hide');
-                    $scope.popupDialogVisible = false;
-                    if (typeof $scope.onPopupDialogClose === "function") {
-                        if (arguments.length > 0)
-                            $scope.onPopupDialogClose(result);
-                        else
-                            $scope.onPopupDialogClose();
-                    }
-                }
-            });
-            appConfigData.onTitleChanged((value) => { $scope.pageTitle = value; });
-            appConfigData.onServiceNowUrlChanged((value) => { $scope.serviceNowUrl = value.href; });
-            appConfigData.onGitServiceUrlChanged((value) => { $scope.gitRepositoryBaseUrl = value.href; });
-            appConfigData.onSettingsLoaded(() => {
-                $scope.topNavItems = appConfigData.topNavItems();
-                let currentNavItem = NavigationItem.findCurrentItem($scope.topNavItems);
+            let ctrl = this;
+            navConfigLoader.loadCurrentItem().then((currentNavItem) => {
                 if (sys.isNil(currentNavItem)) {
                     $scope.showBreadcrumbLinks = $scope.showSideMenu = $scope.showSideNavHeading = $scope.showSideNavItems = $scope.showCurrentItem = false;
                     $scope.sideNavHeading = '';
@@ -1613,11 +3130,11 @@ var app;
                         }
                     }
                 }
-                this.updateMainSectionClass();
+                ctrl.updateMainSectionClass();
             }, (reason) => {
                 $log.error("Error loading application settings: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
                 $window.alert("Unexpected error loading application settings. See browser log for more detail.");
-            }, this);
+            });
         }
         updateMainSectionClass() {
             if (this.$scope.showSideMenu)
@@ -1677,7 +3194,7 @@ var app;
     app.appContentController = appContentController;
     app.appModule.directive(app.DIRECTIVE_NAME_appContentDirective, () => {
         return {
-            controller: ['$scope', '$log', '$window', app.SERVICE_NAME_appConfigData, appContentController],
+            controller: ['$scope', '$log', '$window', navConfigLoaderService.SERVICE_NAME, appConfigLoaderService.SERVICE_NAME, appContentController],
             controllerAs: 'appContentController',
             restrict: "E",
             scope: true,
@@ -1787,15 +3304,14 @@ var app;
      * @constant {string}
      */
     app.DIRECTIVE_NAME_configUrl = "configUrl";
-    app.appModule.directive(app.DIRECTIVE_NAME_configUrl, [app.SERVICE_NAME_appConfigData, (appConfigData) => {
+    app.appModule.directive(app.DIRECTIVE_NAME_configUrl, [appConfigLoaderService.SERVICE_NAME, (appConfigLoader) => {
             return {
                 restrict: "AE",
                 link: (scope, element, attrs) => {
-                    let lastNotifier;
                     function updateText() {
                         let url = (typeof scope.q === "string" && scope.q.length > 0) ?
-                            (((typeof scope.v === "string") ? appConfigData.createUrl(lastNotifier[0], scope.href, scope.q, scope.v) :
-                                appConfigData.createUrl(lastNotifier[0], scope.href, scope.q))) : appConfigData.createUrl(lastNotifier[0], scope.href);
+                            (((typeof scope.v === "string") ? appConfigLoader.createUrl(scope.base, scope.href, scope.q, scope.v) :
+                                appConfigLoader.createUrl(scope.base, scope.href, scope.q))) : appConfigLoader.createUrl(scope.base, scope.href);
                         let a = element.children("a");
                         if (sys.asBoolean(scope.asLink)) {
                             if (a.length == 0) {
@@ -1824,16 +3340,20 @@ var app;
                             element.text(url.href);
                         }
                     }
-                    lastNotifier = [scope.base, appConfigData.notifyUrlChange(scope.base, (newValue, oldValue) => { updateText(); })];
-                    updateText();
-                    scope.$watchGroup(["base", "href", "q", "v", "asLink", "target"], () => {
-                        if (lastNotifier[0] !== scope.base) {
-                            appConfigData.removeUrlChangeNofify(lastNotifier[0], lastNotifier[1]);
-                            lastNotifier[0] = scope.base;
-                            lastNotifier[1] = appConfigData.notifyUrlChange(scope.base, (newValue, oldValue) => { updateText(); });
-                        }
-                        updateText();
+                    appConfigLoader.onServiceNowUrlChanged(scope, (value) => {
+                        if (scope.base === "sn")
+                            updateText();
                     });
+                    appConfigLoader.onGitServiceUrlChanged(scope, (value) => {
+                        if (scope.base === "git")
+                            updateText();
+                    });
+                    appConfigLoader.onIdpUrlChanged(scope, (value) => {
+                        if (scope.base === "idp")
+                            updateText();
+                    });
+                    updateText();
+                    scope.$watchGroup(["base", "href", "q", "v", "asLink", "target"], () => { updateText(); });
                 },
                 scope: { base: "@", href: "@?", q: "@?", v: "@?", asLink: "@?", linkClass: "@?", linkClassModel: "=?" }
             };
@@ -1848,21 +3368,14 @@ var app;
     app.DIRECTIVE_NAME_aConfigLink = "aConfigLink";
     const DEFAULT_TARGET = "_blank";
     class aConfigLinkController {
-        constructor($scope, appConfigData) {
+        constructor($scope, appConfigLoader) {
             this.$scope = $scope;
-            this.appConfigData = appConfigData;
+            this.appConfigLoader = appConfigLoader;
             $scope.absHRef = "#";
             $scope.linkTarget = DEFAULT_TARGET;
             $scope.class = [];
-            $scope.$watchGroup(["base", "url", "q", "v"], () => {
-                let ctrl = this;
-                if (sys.isNil(this._lastNotifier))
-                    this._lastNotifier = [$scope.base, appConfigData.notifyUrlChange($scope.base, (newValue, oldValue) => { ctrl.updateHref(); })];
-                else if (this._lastNotifier[0] !== $scope.base) {
-                    appConfigData.removeUrlChangeNofify(this._lastNotifier[0], this._lastNotifier[1]);
-                    this._lastNotifier = [$scope.base, appConfigData.notifyUrlChange($scope.base, (newValue, oldValue) => { ctrl.updateHref(); })];
-                }
-            });
+            let ctrl = this;
+            $scope.$watchGroup(["base", "url", "q", "v"], () => { ctrl.updateHref(); });
             $scope.$watchGroup(["linkClass", "linkClassModel"], () => {
                 $scope.class = (typeof $scope.linkClass === "string" && $scope.linkClass.length > 0) ?
                     sys.unique(((typeof $scope.linkClassModel === "string" && $scope.linkClassModel.length > 0) ?
@@ -1879,10 +3392,10 @@ var app;
         }
         updateHref() {
             if (typeof this.$scope.q === "string" && this.$scope.q.length > 0)
-                this.$scope.absHRef = ((typeof this.$scope.v === "string") ? this.appConfigData.createUrl(this._lastNotifier[0], this.$scope.href, this.$scope.q, this.$scope.v) :
-                    this.appConfigData.createUrl(this._lastNotifier[0], this.$scope.href, this.$scope.q)).href;
+                this.$scope.absHRef = ((typeof this.$scope.v === "string") ? this.appConfigLoader.createUrl(this.$scope.base, this.$scope.href, this.$scope.q, this.$scope.v) :
+                    this.appConfigLoader.createUrl(this.$scope.base, this.$scope.href, this.$scope.q)).href;
             else
-                this.$scope.absHRef = this.appConfigData.createUrl(this._lastNotifier[0], this.$scope.href).href;
+                this.$scope.absHRef = this.appConfigLoader.createUrl(this.$scope.base, this.$scope.href).href;
         }
         $onInit() { }
     }
@@ -1890,7 +3403,7 @@ var app;
     app.appModule.directive(app.DIRECTIVE_NAME_aConfigLink, () => {
         return {
             restrict: "E",
-            controller: ['$scope', app.SERVICE_NAME_appConfigData, aConfigLinkController],
+            controller: ['$scope', appConfigLoaderService.SERVICE_NAME, aConfigLinkController],
             scope: { base: "@", href: "@?", q: "@?", v: "@?", linkClass: "@?", linkClassModel: "=?" },
             replace: true,
             template: '<a ng-href="{{absHRef}}" target="{{linkTarget}}" ng-class="class" ng-transclude></a>',

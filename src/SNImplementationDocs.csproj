@@ -1960,6 +1960,7 @@
     <Content Include="Template\appContent.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Template\appModalPopup.htm" />
     <Content Include="Template\collapsibleCardL0.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1982,9 +1983,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Template\regexGroupContent.htm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Test.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="theme.css">
@@ -2080,7 +2078,6 @@
     <TypeScriptCompile Include="App\sys.ts" />
     <TypeScriptCompile Include="App\regexTester.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="App\Test.ts" />
     <TypeScriptCompile Include="App\uriBuilder.ts" />
   </ItemGroup>
   <ItemGroup>
