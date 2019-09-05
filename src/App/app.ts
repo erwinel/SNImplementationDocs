@@ -2916,14 +2916,14 @@ namespace app {
         class?: string;
 
         /**
-         * ID of element containing text to be copied.
+         * The id of the element containing text to be copied.
          * @type {string}
          * @memberof ICopyDirectiveAttributes
          */
         target: string;
 
         /**
-         * Message to display after text succssfully copied to clipboard.
+         * Message to display after text is succssfully copied to clipboard.
          * @type {string}
          * @memberof ICopyDirectiveAttributes
          */
