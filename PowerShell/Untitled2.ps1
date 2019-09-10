@@ -548,6 +548,7 @@ Function Read-ChoiceOption {
         
     )
 }
+
 [System.UriBuilder]$SourceUri = Read-ServiceNowUrl;
 while ($null -ne $SourceUri) {
     $Query = $SourceUri.Query | Parse-UriQueryString;
@@ -561,6 +562,6 @@ $SourceUri = $BaseUri;
 
 <#
 https://inscomscd.service-now.com/nav_to.do?uri=%2F$system_properties_ui.do%3Fsysparm_title%3DSystem%2520Configuration%26sysparm_category%3DSystem%2520Configuration
-https://inscomscd.service-now.com/nav_to.do?uri=%2F$system_properties_ui.do%3Fsysparm_title%3DSystem%2520Configuration%26sysparm_category%3DSystem%2520Configuration
+https://inscomscd.service-now.com/nav_to.do?uri=%2Fsc_req_item_list.do%3Fsysparm_query%3Dactive%253Dtrue%255Ecat_item%253D0100afe1dba4bb00683b300f7c96197a%26sysparm_first_row%3D1%26sysparm_view%3D
 #>
 

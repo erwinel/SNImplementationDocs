@@ -2065,6 +2065,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="webcolors.json" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="App\accordionGroup.ts" />

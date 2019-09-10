@@ -128,13 +128,9 @@ Function Add-SourceNode {
         }
     }
 }
-$Code = @'
-<copy-to-clipboard-button target="idOfElementContainingCodeAsInnerText" success-message="Code copied"></copy-to-clipboard-button>
-<code class="pre-scrollable multi-line" id="idOfElementContainingCodeAsInnerText">Multi-Line
-Text</code>
-'@;
+$Code = [System.Windows.Clipboard]::GetText();
 [Xml]$XmlDocument = '<code />';
-$XmlDocument.PreserveWhitespace = $true;
+$XmlDocument.PreserveWhitespace = $false;
 $Fragment = $XmlDocument.CreateDocumentFragment();
 $Fragment.InnerXml = $Code;
 $Fragment.ChildNodes | Add-SourceNode -Target $XmlDocument.DocumentElement;
