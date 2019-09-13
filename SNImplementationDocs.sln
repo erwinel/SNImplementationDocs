@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SNImplementationDocs", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnUriBuilder", "PowerShell\SnUriBuilder\SnUriBuilder.csproj", "{B12B2284-3394-43C7-B31E-17EE6A4A143C}"
 EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "SnServerDev", "SnServerDev\SnServerDev.njsproj", "{E0AD85D1-6E97-4DFE-BE12-237EC88117CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B12B2284-3394-43C7-B31E-17EE6A4A143C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B12B2284-3394-43C7-B31E-17EE6A4A143C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B12B2284-3394-43C7-B31E-17EE6A4A143C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0AD85D1-6E97-4DFE-BE12-237EC88117CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0AD85D1-6E97-4DFE-BE12-237EC88117CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0AD85D1-6E97-4DFE-BE12-237EC88117CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0AD85D1-6E97-4DFE-BE12-237EC88117CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

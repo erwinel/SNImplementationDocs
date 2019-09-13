@@ -1,0 +1,12 @@
+{
+  "name": "sn-server-dev",
+  "version": "0.0.0",
+  "description": "SnServerDev",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.14"
+  }
+}
