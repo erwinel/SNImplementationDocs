@@ -71,7 +71,14 @@
                         <div class="detail">
                             Load and apply the <a href="downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
                             <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
-                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+                            <!--
+
+
+if (gs.getUserID() == current.sys_id || gs.getUser().hasRoles())
+    answer = true;
+else
+    answer = false;
+                                        -->
                         </div>
                     </div>
                 </div>

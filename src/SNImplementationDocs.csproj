@@ -1931,9 +1931,6 @@
     <Content Include="lib\twitter-bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="lib\twitter-bootstrap\js\bootstrap.js" />
     <Content Include="lib\twitter-bootstrap\js\bootstrap.min.js" />
-    <Content Include="PowerShell\pagetemplate.xml" />
-    <Content Include="PowerShell\sys_properties_config.html" />
-    <Content Include="PowerShell\sys_properties_list.xml" />
     <Content Include="RegexTester.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1943,14 +1940,11 @@
     <Content Include="ServiceCatalog.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ServiceNowScripts\ADPhotoTransformScript.js" />
-    <Content Include="ServiceNowScripts\live_profile_update.js" />
     <Content Include="libman.json" />
-    <Content Include="PowerShell\GZip.ps1" />
-    <Content Include="PowerShell\html.dtd" />
-    <Content Include="PowerShell\MaintainPages.ps1" />
-    <Content Include="PowerShell\ManagePropertiesJSON.ps1" />
-    <Content Include="PowerShell\sys_properties_config.json" />
+    <Content Include="ServiceNowScripts\ADPhotoTransformScript.js" />
+    <Content Include="ServiceNowScripts\IncidentCallerProfileIncomplete.htm" />
+    <Content Include="ServiceNowScripts\live_profile_update.js" />
+    <Content Include="ServiceNowScripts\RequestedForProfileIncomplete.htm" />
     <Content Include="SiteDesignNotes.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2057,7 +2051,6 @@
     <None Include="packages.config" />
     <Content Include="tsconfig-old.json" />
     <Content Include="tslint.json" />
-    <Content Include="PowerShell\GenerateImageCatalogJSON.ps1" />
     <Content Include="tsconfig.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2080,6 +2073,9 @@
     <TypeScriptCompile Include="App\regexTester.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="App\uriBuilder.ts" />
+    <TypeScriptCompile Include="ServiceNowScripts\aclRuleCurrentUserOrUserAdmin.ts" />
+    <TypeScriptCompile Include="ServiceNowScripts\ServiceNow.d.ts" />
+    <TypeScriptCompile Include="ServiceNowScripts\validateUserProfileCompliance.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

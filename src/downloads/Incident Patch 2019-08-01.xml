@@ -1,0 +1,1114 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2019-09-12 23:18:40">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description>Updated incident that needs to move to production</description>
+<inserted/>
+<name>Incident 2019-08-01 2019</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date/>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>50b4a33cdb0f7f00683b300f7c9619c2</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8e79f8e6dbf73700b53f341f7c9619b3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_6be8a730db4f7f00683b300f7c961933</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value/><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field/><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>false</mandatory><map_to_field>false</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>topContainerEnd</name><order>800</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text/><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference/><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>6be8a730db4f7f00683b300f7c961933</sys_id><sys_mod_count>0</sys_mod_count><sys_name>topContainerEnd</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_6be8a730db4f7f00683b300f7c961933</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table/><tooltip/><type>20</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=6be8a730db4f7f00683b300f7c961933"/><fx_price action="delete_multiple" query="id=6be8a730db4f7f00683b300f7c961933"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>6be8a730db4f7f00683b300f7c961933</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>63e8a730db4f7f00683b300f7c961935</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>6be8a730db4f7f00683b300f7c961933</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>2be8a730db4f7f00683b300f7c961934</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>329449183</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>0279f8e6dbf73700b53f341f7c9619b5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835db00000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name/>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>2be8a730424f7f00207315752f98fa38</update_guid>
+<update_guid_history>2be8a730424f7f00207315752f98fa38:329449183</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_efe8a730db4f7f00683b300f7c961982</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>100</order><question display_value="What affect does this have on productivity?">afe8a730db4f7f00683b300f7c961950</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>efe8a730db4f7f00683b300f7c961982</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Unspecified / Unknown</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_efe8a730db4f7f00683b300f7c961982</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>Unspecified / Unknown</text><value>0</value></question_choice><fx_price action="delete_multiple" query="id=efe8a730db4f7f00683b300f7c961982"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>efe8a730db4f7f00683b300f7c961982</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>23e8a730db4f7f00683b300f7c961984</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>efe8a730db4f7f00683b300f7c961982</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>e7e8a730db4f7f00683b300f7c961983</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>-1144067352</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>0279f8e6dbf73700b53f341f7c9619b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e8360720000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Unspecified / Unknown</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>63e8a730f94f7f0017f3b3ca10d44285</update_guid>
+<update_guid_history>63e8a730f94f7f0017f3b3ca10d44285:-1144067352</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_27e8a730db4f7f00683b300f7c961939</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value/><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field>caller_id</field><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>false</mandatory><map_to_field>true</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>caller_id</name><order>1100</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>If this is being submitted on behalf of someone else, you can select the person here; otherwise, you can leave this blank.</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference>sys_user</reference><reference_qual>emailISNOTEMPTY^EQ</reference_qual><reference_qual_condition table="sys_user">emailISNOTEMPTY^EQ<item endquery="false" field="email" goto="false" newquery="false" operator="ISNOTEMPTY" or="false" value=""/><item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/></reference_qual_condition><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>27e8a730db4f7f00683b300f7c961939</sys_id><sys_mod_count>0</sys_mod_count><sys_name>If this is being submitted on behalf of someone else, you can select the person here; otherwise, you can leave this blank.</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_27e8a730db4f7f00683b300f7c961939</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table/><tooltip/><type>8</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=27e8a730db4f7f00683b300f7c961939"/><fx_price action="delete_multiple" query="id=27e8a730db4f7f00683b300f7c961939"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>27e8a730db4f7f00683b300f7c961939</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>2fe8a730db4f7f00683b300f7c96193a</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>27e8a730db4f7f00683b300f7c961939</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>e3e8a730db4f7f00683b300f7c96193a</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>-2108670070</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>0679f8e6dbf73700b53f341f7c9619b4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835dfe0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>If this is being submitted on behalf of someone else, you can select the person here; otherwise, you</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>a7e8a730544f7f005e15a53dd32dfa3e</update_guid>
+<update_guid_history>a7e8a730544f7f005e15a53dd32dfa3e:-2108670070</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_a3e8a730db4f7f00683b300f7c96198c</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>100</order><question display_value="How widespread is this incident?">63e8a730db4f7f00683b300f7c961945</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>a3e8a730db4f7f00683b300f7c96198c</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Unspecified / Unknown</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_a3e8a730db4f7f00683b300f7c96198c</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>Unspecified / Unknown</text><value>0</value></question_choice><fx_price action="delete_multiple" query="id=a3e8a730db4f7f00683b300f7c96198c"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>a3e8a730db4f7f00683b300f7c96198c</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>e3e8a730db4f7f00683b300f7c96198d</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>a3e8a730db4f7f00683b300f7c96198c</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>abe8a730db4f7f00683b300f7c96198c</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>-1120090735</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>0679f8e6dbf73700b53f341f7c9619b7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e8360df0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Unspecified / Unknown</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>27e8a730014f7f00c4e8dd25d23a458e</update_guid>
+<update_guid_history>27e8a730014f7f00c4e8dd25d23a458e:-1120090735</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_producer_9fe827fcdb0f7f00683b300f7c961907</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sc_cat_item_producer"&gt;&lt;sc_cat_item_producer action="DELETE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;availability&gt;on_both&lt;/availability&gt;&lt;billable&gt;false&lt;/billable&gt;&lt;can_cancel&gt;true&lt;/can_cancel&gt;&lt;category/&gt;&lt;cost&gt;0&lt;/cost&gt;&lt;custom_cart/&gt;&lt;delivery_plan display_value="DEFAULT"&gt;523da512c611228900811a37c97c2014&lt;/delivery_plan&gt;&lt;delivery_plan_script/&gt;&lt;delivery_time&gt;1970-01-03 00:00:00&lt;/delivery_time&gt;&lt;description&gt;&lt;![CDATA[&lt;p&gt;&lt;span style="color: #808080; font-family: arial, helvetica, sans-serif; font-size: medium;"&gt;Request assistance with an issue you are having. An incident record will be created and managed through to successful resolution. You will also be notified of progress.&lt;/span&gt;&lt;/p&gt;]]&gt;&lt;/description&gt;&lt;entitlement_script/&gt;&lt;group/&gt;&lt;hide_sp&gt;false&lt;/hide_sp&gt;&lt;icon&gt;38a5a89ddb157740b53f341f7c96196a&lt;/icon&gt;&lt;ignore_price&gt;true&lt;/ignore_price&gt;&lt;image/&gt;&lt;list_price&gt;0&lt;/list_price&gt;&lt;location/&gt;&lt;meta/&gt;&lt;mobile_hide_price&gt;false&lt;/mobile_hide_price&gt;&lt;mobile_picture/&gt;&lt;mobile_picture_type&gt;use_desktop_picture&lt;/mobile_picture_type&gt;&lt;model/&gt;&lt;name&gt;Copy of Submit an Incident&lt;/name&gt;&lt;no_cart&gt;false&lt;/no_cart&gt;&lt;no_order&gt;false&lt;/no_order&gt;&lt;no_order_now&gt;false&lt;/no_order_now&gt;&lt;no_proceed_checkout&gt;false&lt;/no_proceed_checkout&gt;&lt;no_quantity&gt;false&lt;/no_quantity&gt;&lt;no_search&gt;false&lt;/no_search&gt;&lt;omit_price&gt;false&lt;/omit_price&gt;&lt;order&gt;0&lt;/order&gt;&lt;ordered_item_link/&gt;&lt;picture&gt;3cc9a730db4f7f00683b300f7c9619f4&lt;/picture&gt;&lt;post_insert_script/&gt;&lt;preview&gt;JavaScript: popupOpenStandard("com.glideapp.servicecatalog_cat_item_view.do?v=1&amp;amp;sysparm_id=9fe827fcdb0f7f00683b300f7c961907&amp;amp;sysparm_preview=true", "summary");&lt;/preview&gt;&lt;price&gt;0&lt;/price&gt;&lt;recurring_frequency/&gt;&lt;recurring_price&gt;0&lt;/recurring_price&gt;&lt;redirect_url&gt;generated_record&lt;/redirect_url&gt;&lt;roles/&gt;&lt;sc_catalogs/&gt;&lt;sc_ic_item_staging/&gt;&lt;sc_ic_version/&gt;&lt;script&gt;&lt;![CDATA[var caller_id = gs.getUserID();
+if (JSUtil.nil(producer.caller_id))
+	current.caller_id = caller_id;
+var parent_table = RP.getParameterValue('sysparm_parent_table');
+if (JSUtil.notNil(parent_table)) {
+	var parent_map = new GlideRecord('request_parent_mapping');
+	parent_map.addQuery('parent_table', parent_table);
+	parent_map.query();
+	if (parent_map.next())
+		var requested_for_field = parent_map.getValue('requested_for_field');
+	var parentGR = new GlideRecord(parent_table);
+	parentGR.addQuery('sys_id', RP.getParameterValue('sysparm_parent_sys_id'));
+	parentGR.query();
+	if (parentGR.next())
+		current.caller_id = caller_id = parentGR.getValue(requested_for_field);
+}
+current.contact_type = 'self-service';
+var callerGr = new GlideRecord('sys_user');
+callerGr.addQuery('sys_id', caller_id);
+callerGr.query();
+var isVIP = (callerGr.next() &amp;&amp; callerGr.vip);
+var users_impacted = parseInt(producer.users_impacted);
+current.u_is_mission_related = (producer.is_mission_related == "Yes");
+var comments = "User selected the following incident submission options:\n\nMission Related: " + producer.is_mission_related + "\nUsers Affected: ";
+switch (users_impacted) {
+	case 1:
+		comments = comments + "More than 100 people";
+		break;
+	case 2:
+		comments = comments + "50 to 100 people";
+		break;
+	case 3:
+		comments = comments + "10 to 49 people";
+		break;
+	case 4:
+		comments = comments + "Less than 10 people";
+		break;
+	default:
+		notes = notes + "Unspecified / Unknown";
+		break;
+}
+notes = notes + "\nProductivity Impact: ";
+var productivity_impact = parseInt(producer.productivity_impact);
+switch (productivity_impact) {
+	case 1:
+		current.comments = comments + "Complete work stoppage";
+		break;
+	case 2:
+		current.comments = comments + "Partial work stoppage";
+		break;
+	case 3:
+		current.comments = comments + "Effects execution of time-sensitive activities";
+		break;
+	case 4:
+		current.comments = comments + "Currently using a work-around / alternate method to perform affected duties";
+		break;
+	default:
+		current.comments = comments + "Unspecified / Unknown";
+		break;
+}
+if (users_impacted &lt; 1) {
+	if (productivity_impact &lt; 1)
+		productivity_impact = users_impacted = (isVIP) ? 2 : ((current.u_is_mission_related) ? 3 : 4);
+	else
+		users_impacted = productivity_impact;
+} else if (productivity_impact &lt; 1)
+	productivity_impact = users_impacted;
+
+current.impact = Math.round(((isVIP) ? ((current.u_is_mission_related) ? (productivity_impact + users_impacted) :
+	(productivity_impact + users_impacted) * 1.125) :
+	(productivity_impact + users_impacted) * ((current.u_is_mission_related) ? 1.25 : 1.375)) / (11.0 / 3.0));
+current.urgency = Math.round((productivity_impact + ((isVIP) ? ((current.u_is_mission_related) ? 1 : 2) : ((current.u_is_mission_related) ? 3 : 4))) * 0.35);
+current.setValue('u_vip_priority', isVIP);
+var gr = new GlideRecord('u_vip_priority_lookup_matcher_rules');
+gr.addActiveQuery();
+gr.addQuery('u_impact', current.impact);
+gr.addQuery('u_urgency', current.urgency);
+gr.addQuery('u_is_mission_related', current.u_is_mission_related);
+gr.addQuery('u_vip_priority', isVIP);
+gr.query();
+if (gr.next() &amp;&amp; gr.u_incident_priority &gt; 0)
+	current.priority = gr.u_incident_priority;
+else
+	gs.warn("Failed to get priority for query { u_impact = " + current.impact + ", u_urgency = " + current.urgency + ", u_is_mission_related = " + current.u_is_mission_related + ", u_vip_priority = " + current.vip + " }");
+	
+var incRPUtil = new LinkRecordProducerToIncident();
+incRPUtil.linkRecordProducerToParentIncident(RP.getParameterValue('sysparm_parent_sys_id'), current);]]&gt;&lt;/script&gt;&lt;short_description&gt;Copy of Submit an Incident record to report and request assistance with an issue you are having&lt;/short_description&gt;&lt;show_variable_help_on_load&gt;false&lt;/show_variable_help_on_load&gt;&lt;start_closed&gt;false&lt;/start_closed&gt;&lt;sys_class_name&gt;sc_cat_item_producer&lt;/sys_class_name&gt;&lt;sys_created_by&gt;daves&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-08-01 18:48:46&lt;/sys_created_on&gt;&lt;sys_id&gt;9fe827fcdb0f7f00683b300f7c961907&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;Copy of Submit an Incident&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sc_cat_item_producer_9fe827fcdb0f7f00683b300f7c961907&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;daves&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-08-01 18:54:20&lt;/sys_updated_on&gt;&lt;table_name&gt;incident&lt;/table_name&gt;&lt;template/&gt;&lt;type&gt;item&lt;/type&gt;&lt;use_sc_layout&gt;true&lt;/use_sc_layout&gt;&lt;vendor/&gt;&lt;view&gt;ess&lt;/view&gt;&lt;visible_bundle&gt;true&lt;/visible_bundle&gt;&lt;visible_guide&gt;true&lt;/visible_guide&gt;&lt;visible_standalone&gt;true&lt;/visible_standalone&gt;&lt;workflow/&gt;&lt;/sc_cat_item_producer&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=9fe827fcdb0f7f00683b300f7c961907"/&gt;&lt;fx_price action="delete_multiple" query="id=9fe827fcdb0f7f00683b300f7c961907"/&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-1353241361</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>0679f8e6dbf73700b53f341f7c9619ba</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4ea09cf60000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table>incident</table>
+<target_name>Copy of Submit an Incident</target_name>
+<type>Record Producer</type>
+<update_domain>global</update_domain>
+<update_guid>1730f3b4454f7f00f23693a6378e5fda</update_guid>
+<update_guid_history>1730f3b4454f7f00f23693a6378e5fda:-1353241361,bbdee374a34f7f001a422f2f1eba870c:-2124133947,b83a6770a84f7f00038258f81a6b36a0:275328848,70c9ef30cc4f7f00a6318c9307afcbc3:105912812,7cc9a730d84f7f0044e2db66d00601f8:-1558893760,93e8a730ab4f7f00a68055c1600d1f19:442552210</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_27e8a730db4f7f00683b300f7c961992</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>500</order><question display_value="What affect does this have on productivity?">afe8a730db4f7f00683b300f7c961950</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>27e8a730db4f7f00683b300f7c961992</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Currently using a work-around / alternate method to perform affected duties</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_27e8a730db4f7f00683b300f7c961992</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>Currently using a work-around / alternate method to perform affected duties</text><value>4</value></question_choice><fx_price action="delete_multiple" query="id=27e8a730db4f7f00683b300f7c961992"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>27e8a730db4f7f00683b300f7c961992</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>67e8a730db4f7f00683b300f7c961993</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>27e8a730db4f7f00683b300f7c961992</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>2fe8a730db4f7f00683b300f7c961992</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>56441680</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>0a79f8e6dbf73700b53f341f7c9619b6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e83611d0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Currently using a work-around / alternate method to perform affected duties</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>a7e8a730f64f7f009bf3e13071b6f694</update_guid>
+<update_guid_history>a7e8a730f64f7f009bf3e13071b6f694:56441680</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_category_01b437cddb917740b53f341f7c9619f8</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_category"><sc_cat_item_category action="DELETE"><sc_cat_item display_value="Submit an Incident">ad5323e6db81ff00b53f341f7c961997</sc_cat_item><sc_category display_value="Incident Test">c6e3bb05db11f740683b300f7c9619f7</sc_category><sys_class_name>sc_cat_item_category</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-05-07 14:28:51</sys_created_on><sys_id>01b437cddb917740b53f341f7c9619f8</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Incident Test.Submit an Incident</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_cat_item_category_01b437cddb917740b53f341f7c9619f8</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-05-07 14:28:51</sys_updated_on></sc_cat_item_category></record_update>]]></payload>
+<payload_hash>2117689013</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>0a79f8e6dbf73700b53f341f7c9619b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e88748c0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Incident Test.Submit an Incident</target_name>
+<type>Catalog Item Category</type>
+<update_domain>global</update_domain>
+<update_guid>703a6770254f7f00f285d543d5eddcb4</update_guid>
+<update_guid_history>703a6770254f7f00f285d543d5eddcb4:2117689013,cdb437cd17917740645cf5ff0ffe6afa:-664720575</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_afe8a730db4f7f00683b300f7c961950</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value>0</default_value><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field/><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>true</mandatory><map_to_field>false</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>productivity_impact</name><order>400</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>What affect does this have on productivity?</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference/><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>afe8a730db4f7f00683b300f7c961950</sys_id><sys_mod_count>0</sys_mod_count><sys_name>What affect does this have on productivity?</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_afe8a730db4f7f00683b300f7c961950</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table/><tooltip/><type>3</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=afe8a730db4f7f00683b300f7c961950"/><fx_price action="delete_multiple" query="id=afe8a730db4f7f00683b300f7c961950"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>afe8a730db4f7f00683b300f7c961950</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>27e8a730db4f7f00683b300f7c96196b</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>afe8a730db4f7f00683b300f7c961950</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>ebe8a730db4f7f00683b300f7c96196a</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>1270538905</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>0e79f8e6dbf73700b53f341f7c9619b5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835f490000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>What affect does this have on productivity?</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>63e8a7304a4f7f00b650b73a46e7306f</update_guid>
+<update_guid_history>63e8a7304a4f7f00b650b73a46e7306f:1270538905</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_7242bfb4db4f7f00683b300f7c9619fd</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item"><sc_cat_item action="DELETE"><active>true</active><availability>on_both</availability><billable>false</billable><category/><cost>0</cost><custom_cart/><delivery_plan display_value="DEFAULT">523da512c611228900811a37c97c2014</delivery_plan><delivery_plan_script/><delivery_time>1970-01-03 00:00:00</delivery_time><description/><entitlement_script/><group display_value="Service Desk" name="Service Desk">d625dccec0a8016700a222a0f7900d06</group><hide_sp>false</hide_sp><icon/><ignore_price>true</ignore_price><image/><list_price>0</list_price><location/><meta/><mobile_hide_price>false</mobile_hide_price><mobile_picture/><mobile_picture_type>use_desktop_picture</mobile_picture_type><model/><name>Incident Replacement</name><no_cart>false</no_cart><no_order>false</no_order><no_order_now>false</no_order_now><no_proceed_checkout>false</no_proceed_checkout><no_quantity>false</no_quantity><no_search>false</no_search><omit_price>false</omit_price><order>0</order><ordered_item_link/><picture/><preview>JavaScript: popupOpenStandard("com.glideapp.servicecatalog_cat_item_view.do?v=1&amp;sysparm_id=7242bfb4db4f7f00683b300f7c9619fd&amp;sysparm_preview=true", "summary");</preview><price>0</price><recurring_frequency/><recurring_price>0</recurring_price><roles/><sc_catalogs/><sc_ic_item_staging/><sc_ic_version/><short_description/><show_variable_help_on_load>false</show_variable_help_on_load><start_closed>false</start_closed><sys_class_name>sc_cat_item</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 19:29:42</sys_created_on><sys_id>7242bfb4db4f7f00683b300f7c9619fd</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Incident Replacement</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_cat_item_7242bfb4db4f7f00683b300f7c9619fd</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 19:29:42</sys_updated_on><template/><type>item</type><use_sc_layout>true</use_sc_layout><vendor/><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><workflow/></sc_cat_item><sys_translated_text action="delete_multiple" query="documentkey=7242bfb4db4f7f00683b300f7c9619fd"/><fx_price action="delete_multiple" query="id=7242bfb4db4f7f00683b300f7c9619fd"/></record_update>]]></payload>
+<payload_hash>1643801602</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>0e79f8e6dbf73700b53f341f7c9619b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4eaa031f0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Incident Replacement</target_name>
+<type>Catalog Item</type>
+<update_domain>global</update_domain>
+<update_guid>7992ff38244f7f00d32ed2eb211836c3</update_guid>
+<update_guid_history>7992ff38244f7f00d32ed2eb211836c3:1643801602,7a42ffb4174f7f0006de788f30bdcc01:1619248162</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_a3e8a730db4f7f00683b300f7c961976</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>500</order><question display_value="How widespread is this incident?">63e8a730db4f7f00683b300f7c961945</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>a3e8a730db4f7f00683b300f7c961976</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Less than 10 people</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_a3e8a730db4f7f00683b300f7c961976</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>Less than 10 people</text><value>4</value></question_choice><fx_price action="delete_multiple" query="id=a3e8a730db4f7f00683b300f7c961976"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>a3e8a730db4f7f00683b300f7c961976</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>e7e8a730db4f7f00683b300f7c961977</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>a3e8a730db4f7f00683b300f7c961976</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>afe8a730db4f7f00683b300f7c961976</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>-1699957999</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>4279f8e6dbf73700b53f341f7c9619b7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835fd40000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Less than 10 people</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>2fe8a730ea4f7f00e5095d7cab143b78</update_guid>
+<update_guid_history>2fe8a730ea4f7f00e5095d7cab143b78:-1699957999</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_category_90327738db4f7f00683b300f7c961951</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_category"><sc_cat_item_category action="DELETE"><sc_cat_item display_value="Incident Replacement">a9c07bb4db4f7f00683b300f7c9619c7</sc_cat_item><sc_category display_value="Incident">e8821fd4db49bb00683b300f7c961935</sc_category><sys_class_name>sc_cat_item_category</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 19:29:15</sys_created_on><sys_id>90327738db4f7f00683b300f7c961951</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Incident.Incident Replacement</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_cat_item_category_90327738db4f7f00683b300f7c961951</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 19:29:15</sys_updated_on></sc_cat_item_category></record_update>]]></payload>
+<payload_hash>427042759</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>4279f8e6dbf73700b53f341f7c9619ba</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4eab09f80000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Incident.Incident Replacement</target_name>
+<type>Catalog Item Category</type>
+<update_domain>global</update_domain>
+<update_guid>12d237785d4f7f0003dc3d628c98cf86</update_guid>
+<update_guid_history>12d237785d4f7f0003dc3d628c98cf86:427042759,543277387b4f7f004c713d6c87a44353:-295482029</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_23e8a730db4f7f00683b300f7c961986</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>200</order><question display_value="What affect does this have on productivity?">afe8a730db4f7f00683b300f7c961950</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>23e8a730db4f7f00683b300f7c961986</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Complete work stoppage</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_23e8a730db4f7f00683b300f7c961986</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>Complete work stoppage</text><value>1</value></question_choice><fx_price action="delete_multiple" query="id=23e8a730db4f7f00683b300f7c961986"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>23e8a730db4f7f00683b300f7c961986</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>63e8a730db4f7f00683b300f7c961987</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>23e8a730db4f7f00683b300f7c961986</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>2be8a730db4f7f00683b300f7c961986</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>1871669804</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>4679f8e6dbf73700b53f341f7c9619b6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e8360950000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Complete work stoppage</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>a3e8a730464f7f00ce57e21e5c6e2088</update_guid>
+<update_guid_history>a3e8a730464f7f00ce57e21e5c6e2088:1871669804</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_catalog_90323bf4db4f7f00683b300f7c9619ac</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_catalog"><sc_cat_item_catalog action="DELETE"><sc_cat_item display_value="Incident Replacement">a9c07bb4db4f7f00683b300f7c9619c7</sc_cat_item><sc_catalog display_value="Service Catalog">e0d08b13c3330100c8b837659bba8fb4</sc_catalog><sys_class_name>sc_cat_item_catalog</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 19:29:15</sys_created_on><sys_id>90323bf4db4f7f00683b300f7c9619ac</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Service Catalog.Incident Replacement</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_cat_item_catalog_90323bf4db4f7f00683b300f7c9619ac</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 19:29:15</sys_updated_on></sc_cat_item_catalog></record_update>]]></payload>
+<payload_hash>404367943</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>4679f8e6dbf73700b53f341f7c9619b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4eab0a570000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Service Catalog.Incident Replacement</target_name>
+<type>Catalog Items Catalog</type>
+<update_domain>global</update_domain>
+<update_guid>1ed23778134f7f001e20c286325dd78a</update_guid>
+<update_guid_history>1ed23778134f7f001e20c286325dd78a:404367943,d4323bf4ab4f7f008db98e3213fe98ae:433433683</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_a3e8a730db4f7f00683b300f7c96193f</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field>category</choice_field><choice_table>incident</choice_table><create_roles/><default_html_value/><default_value>inquiry</default_value><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field>category</field><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>true</mandatory><map_to_field>true</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>category</name><order>600</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>If known, please select the incident category.</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference/><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>a3e8a730db4f7f00683b300f7c96193f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>If known, please select the incident category.</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_a3e8a730db4f7f00683b300f7c96193f</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table/><tooltip/><type>5</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>advanced</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=a3e8a730db4f7f00683b300f7c96193f"/><fx_price action="delete_multiple" query="id=a3e8a730db4f7f00683b300f7c96193f"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>a3e8a730db4f7f00683b300f7c96193f</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>abe8a730db4f7f00683b300f7c961940</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>a3e8a730db4f7f00683b300f7c96193f</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>63e8a730db4f7f00683b300f7c961940</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>723571578</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>4a79f8e6dbf73700b53f341f7c9619b5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835e530000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>If known, please select the incident category.</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>67e8a730894f7f0068bf2874ef312544</update_guid>
+<update_guid_history>67e8a730894f7f0068bf2874ef312544:723571578</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_6240b7b4db4f7f00683b300f7c961914</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item"><sc_cat_item action="DELETE"><active>true</active><availability>on_both</availability><billable>false</billable><category/><cost>0</cost><custom_cart/><delivery_plan display_value="DEFAULT">523da512c611228900811a37c97c2014</delivery_plan><delivery_plan_script/><delivery_time>1970-01-03 00:00:00</delivery_time><description/><entitlement_script/><group display_value="Service Desk" name="Service Desk">d625dccec0a8016700a222a0f7900d06</group><hide_sp>false</hide_sp><icon/><ignore_price>true</ignore_price><image/><list_price>0</list_price><location/><meta/><mobile_hide_price>false</mobile_hide_price><mobile_picture/><mobile_picture_type>use_desktop_picture</mobile_picture_type><model/><name>Incident Replacement</name><no_cart>false</no_cart><no_order>false</no_order><no_order_now>false</no_order_now><no_proceed_checkout>false</no_proceed_checkout><no_quantity>false</no_quantity><no_search>false</no_search><omit_price>false</omit_price><order>0</order><ordered_item_link/><picture/><preview>JavaScript: popupOpenStandard("com.glideapp.servicecatalog_cat_item_view.do?v=1&amp;sysparm_id=6240b7b4db4f7f00683b300f7c961914&amp;sysparm_preview=true", "summary");</preview><price>0</price><recurring_frequency/><recurring_price>0</recurring_price><roles/><sc_catalogs/><sc_ic_item_staging/><sc_ic_version/><short_description/><show_variable_help_on_load>false</show_variable_help_on_load><start_closed>false</start_closed><sys_class_name>sc_cat_item</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 19:22:55</sys_created_on><sys_id>6240b7b4db4f7f00683b300f7c961914</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Incident Replacement</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_cat_item_6240b7b4db4f7f00683b300f7c961914</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 19:22:55</sys_updated_on><template/><type>item</type><use_sc_layout>true</use_sc_layout><vendor/><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><workflow/></sc_cat_item><sys_translated_text action="delete_multiple" query="documentkey=6240b7b4db4f7f00683b300f7c961914"/><fx_price action="delete_multiple" query="id=6240b7b4db4f7f00683b300f7c961914"/></record_update>]]></payload>
+<payload_hash>-2089074345</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>4a79f8e6dbf73700b53f341f7c9619b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4ea97d770000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Incident Replacement</target_name>
+<type>Catalog Item</type>
+<update_domain>global</update_domain>
+<update_guid>a572bb38114f7f00895eac53331ce14e</update_guid>
+<update_guid_history>a572bb38114f7f00895eac53331ce14e:-2089074345,6bb0bb74e24f7f00b01fdbe309df5311:-1583334886</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_63e8a730db4f7f00683b300f7c96194b</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value/><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field/><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>false</mandatory><map_to_field>false</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>topContainerSplit</name><order>500</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text/><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference/><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>63e8a730db4f7f00683b300f7c96194b</sys_id><sys_mod_count>0</sys_mod_count><sys_name>topContainerSplit</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_63e8a730db4f7f00683b300f7c96194b</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table/><tooltip/><type>24</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=63e8a730db4f7f00683b300f7c96194b"/><fx_price action="delete_multiple" query="id=63e8a730db4f7f00683b300f7c96194b"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>63e8a730db4f7f00683b300f7c96194b</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>6be8a730db4f7f00683b300f7c96194c</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>63e8a730db4f7f00683b300f7c96194b</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>23e8a730db4f7f00683b300f7c96194c</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>1259058852</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>4e79f8e6dbf73700b53f341f7c9619b4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835ef50000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name/>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>a3e8a730db4f7f00e8cfe3387feee650</update_guid>
+<update_guid_history>a3e8a730db4f7f00e8cfe3387feee650:1259058852</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_ebe8a730db4f7f00683b300f7c961979</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>400</order><question display_value="What affect does this have on productivity?">afe8a730db4f7f00683b300f7c961950</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>ebe8a730db4f7f00683b300f7c961979</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Effects execution of time-sensitive activities</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_ebe8a730db4f7f00683b300f7c961979</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>Effects execution of time-sensitive activities</text><value>3</value></question_choice><fx_price action="delete_multiple" query="id=ebe8a730db4f7f00683b300f7c961979"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>ebe8a730db4f7f00683b300f7c961979</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>2fe8a730db4f7f00683b300f7c96197a</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>ebe8a730db4f7f00683b300f7c961979</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>e3e8a730db4f7f00683b300f7c96197a</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>-667995782</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>4e79f8e6dbf73700b53f341f7c9619b7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e8360020000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Effects execution of time-sensitive activities</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>afe8a730014f7f00f27486bf2a35517b</update_guid>
+<update_guid_history>afe8a730014f7f00f27486bf2a35517b:-667995782</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_dfe8a730db4f7f00683b300f7c961921</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value/><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field>description</field><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>false</mandatory><map_to_field>true</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>description</name><order>1000</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>If necessary, you can provide more detailed description of the incident, here.</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference/><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>dfe8a730db4f7f00683b300f7c961921</sys_id><sys_mod_count>0</sys_mod_count><sys_name>If necessary, you can provide more detailed description of the incident, here.</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_dfe8a730db4f7f00683b300f7c961921</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table/><tooltip/><type>2</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=dfe8a730db4f7f00683b300f7c961921"/><fx_price action="delete_multiple" query="id=dfe8a730db4f7f00683b300f7c961921"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>dfe8a730db4f7f00683b300f7c961921</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>d7e8a730db4f7f00683b300f7c961923</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>dfe8a730db4f7f00683b300f7c961921</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>9fe8a730db4f7f00683b300f7c961922</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>411366475</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8279f8e6dbf73700b53f341f7c9619b6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835ccf0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>If necessary, you can provide more detailed description of the incident, here.</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>53e8a730ca4f7f00074efa5c43b95127</update_guid>
+<update_guid_history>53e8a730ca4f7f00074efa5c43b95127:411366475</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_catalog_50537778db4f7f00683b300f7c9619a3</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_catalog"><sc_cat_item_catalog action="INSERT_OR_UPDATE"><sc_cat_item display_value="Submit an Incident">ad5323e6db81ff00b53f341f7c961997</sc_cat_item><sc_catalog display_value="Service Catalog">e0d08b13c3330100c8b837659bba8fb4</sc_catalog><sys_class_name>sc_cat_item_catalog</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 19:34:11</sys_created_on><sys_id>50537778db4f7f00683b300f7c9619a3</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Service Catalog.Submit an Incident</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_cat_item_catalog_50537778db4f7f00683b300f7c9619a3</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 19:34:11</sys_updated_on></sc_cat_item_catalog></record_update>]]></payload>
+<payload_hash>1033680584</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8279f8e6dbf73700b53f341f7c9619b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4eaced5b0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Service Catalog.Submit an Incident</target_name>
+<type>Catalog Items Catalog</type>
+<update_domain>global</update_domain>
+<update_guid>90537f789a4f7f00c1d1e5f89c9a232d</update_guid>
+<update_guid_history>90537f789a4f7f00c1d1e5f89c9a232d:1033680584</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_9fe8a730db4f7f00683b300f7c96191a</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value/><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field>u_network</field><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label>name</lookup_label><lookup_price/><lookup_table>x_44813_phys_net_network</lookup_table><lookup_unique>false</lookup_unique><lookup_value>sys_id</lookup_value><macro/><mandatory>true</mandatory><map_to_field>true</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>u_network</name><order>300</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>Please select the associated network</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference>x_44813_phys_net_network</reference><reference_qual>operational_status=1^EQ</reference_qual><reference_qual_condition table="x_44813_phys_net_network">operational_status=1^EQ<item endquery="false" field="operational_status" goto="false" newquery="false" operator="=" or="false" value="1"/><item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/></reference_qual_condition><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>9fe8a730db4f7f00683b300f7c96191a</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Please select the associated network</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_9fe8a730db4f7f00683b300f7c96191a</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table/><tooltip/><type>8</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=9fe8a730db4f7f00683b300f7c96191a"/><fx_price action="delete_multiple" query="id=9fe8a730db4f7f00683b300f7c96191a"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>9fe8a730db4f7f00683b300f7c96191a</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>d7e8a730db4f7f00683b300f7c96191d</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>9fe8a730db4f7f00683b300f7c96191a</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>9fe8a730db4f7f00683b300f7c96191c</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>486779964</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8679f8e6dbf73700b53f341f7c9619b5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835c7c0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Please select the associated network</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>dfe8a730644f7f00fbb1926355cb1a20</update_guid>
+<update_guid_history>dfe8a730644f7f00fbb1926355cb1a20:486779964</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_category_c6e3bb05db11f740683b300f7c9619f7</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_category"><sc_category action="INSERT_OR_UPDATE"><active>true</active><description>Change this later</description><entitlement_script/><header_icon/><homepage_image>325e6b34db4f7f00683b300f7c9619ff</homepage_image><homepage_renderer display_value="Category Items">47ebe8aa3742300054b6a3549dbe5dfa</homepage_renderer><icon>5c0c6815db557740b53f341f7c96192b</icon><image/><location/><mobile_hide_description>false</mobile_hide_description><mobile_picture/><mobile_subcategory_render_type>card</mobile_subcategory_render_type><module/><order>0</order><parent/><roles/><sc_catalog/><show_in_cms>false</show_in_cms><sys_class_name>sc_category</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-05-07 14:27:39</sys_created_on><sys_id>c6e3bb05db11f740683b300f7c9619f7</sys_id><sys_mod_count>6</sys_mod_count><sys_name>Incident Test</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_category_c6e3bb05db11f740683b300f7c9619f7</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 19:12:30</sys_updated_on><title>Incident Test</title></sc_category><sys_translated_text action="delete_multiple" query="documentkey=c6e3bb05db11f740683b300f7c9619f7"/><sys_attachment action="INSERT_OR_UPDATE"><average_image_color>#fddfac</average_image_color><chunk_size_bytes>734003</chunk_size_bytes><compressed>true</compressed><content_type>image/png</content_type><encryption_context/><file_name>homepage_image</file_name><image_height>92</image_height><image_width>92</image_width><size_bytes>3822</size_bytes><size_compressed>3845</size_compressed><state/><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 19:12:30</sys_created_on><sys_id>325e6b34db4f7f00683b300f7c9619ff</sys_id><sys_mod_count>2</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 19:12:30</sys_updated_on><table_name>ZZ_YYsc_category</table_name><table_sys_id>c6e3bb05db11f740683b300f7c9619f7</table_sys_id></sys_attachment><sys_attachment_doc action="INSERT_OR_UPDATE"><data>H4sIAAAAAAAAAA==</data><length>16</length><position>0</position><sys_attachment display_value="homepage_image" sys_id="325e6b34db4f7f00683b300f7c9619ff">325e6b34db4f7f00683b300f7c9619ff</sys_attachment><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 19:12:30</sys_created_on><sys_id>725e6b34db4f7f00683b300f7c9619ff</sys_id></sys_attachment_doc><sys_attachment_doc action="INSERT_OR_UPDATE"><data>Ae4OEfGJUE5HDQoaCgAAAA1JSERSAAAAXAAAAFwIBgAAAOPv0lgAAAABc1JHQgCuzhzpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOxAAADsQBlSsOGwAADoNJREFUeF7tnAmQFNUZx/99zO6y7LIgwkJQlls5lCOCIMKCYADxCoVK8IioJCQh0RAkJYZSQiRVakWJhQnBCmgRRREokKAcoggqqOFQuSQCcshyLHuyx0x3v3zf67fZCwRm3vQuyfyoZed93TPd8+/vfe/7Xr9eQxBIEBim+p0gIBKCB0xC8IBJCB4wCcEDJiF4wCQED5iE4AGTEDxgEoIHzEUpOM9FXKzzEfV2LkVEiiBOboHI2QCRvxM4fRCiJEfaUV4AeGFylyQgpTEMOx1okAkjLQtGs2tgNr8OaNoDhpWsPq3+UK8EF+FCeLv+Cu/AYoii/UCk0BfVtOlMLfljGAbtSR2Tf9GZC3j0H79w/R8vQj8OkNQIZpNuMNreCevKh/z31wPqheBezka425+COLQKCDUErAakKYkrhWVlLxD6SvJCsPhOqfxtthkFs9sj5P191U51Q50K7uWsh7t5CkTe5yRyKjlhSnQCnwvhkfOXSfGN5v1g9Z0Fs+lVamOw1IngovQ43PX3wjuyFki+BAaHjXgIXRP2fK+cxoA8mG3vgDVwHsV/6k0BErjg7u65cD+ZQkemBnt1EELXQH5lpxiwU2H1mw2r7Si1Jf4EKriz5jZ4h1fTgEaZBcXoukbw4Fp+CmaXX8Du+5yyxpdgBHfLEVnaE+L0IRihRnrCB5+2hs+RX59CjEGDaWjkOmWNH3EXnGOm88YVlD8XqnipQyTKQFwaACkk6bp4IlIMo/EVCN32iTLGh7hWmsIpgbOoi36xKRSYHSfIz5WeHit00YxQGhVYu+Esv14Z40NcBXfeHgpRnqtNbEk4H1aH+yjm/hFmi2y6qFR56oBFp2LJO7UNERpr4kXcBHfevxcidzt5DhUymsQWbhhGwzaURz8r2/awFTA8l8IWVZiaMJIbUwG2Eu7Wp5RFL3ER3KMT9r5+jTymMbU0ic2ho/QE7BuXKIuPPXgh2XNUSw9GSjO422bAy9upLPrQLzjFV2fDeCDlUtlNtRE+Bbv7YzSwXakMPkbWLZRHj4WgUKMNg2QJpcN5b4wy6EO74M6nv5WTTobGySJBaaWRejnMPjOVpTpm9ksUujIotESUJXZk9Vv4b3i7X1IWPWgVXJR8C7H3ZfKONG3eLUNJuAD2kMXKUhselO3+cymfzvf31wGfP9UMztYZ1Gv1jRFaBXc/f9Yf2HROhVIlaHefCqPmZFMNYY2sm2C2/xH1Lk1ZCyG/R/lJuLteVJbY0Sa4cErh7aMBzOasRA8ylKS1g/n9J5VFUZYL582uqlGJnT1fhgJZsutAenka3J2zlSF29Al+cJn0Rl1zJDI0sHcPf1tZKnHfvw9e/i44H/xUWSqxf7CCLshxbaHFMGygaB+8k/9SltjQJri3/02t3s2pnt3rDzDSWyuDj7dvMdwj7wBprWhA+xvEya1qi4+R2ZcKo3GyQNICe7mdCvHVfGWIDW1zKeGXG8nuZ3BKFSM8JWA0zEJoVHUx+ZZa+O/0+Vy58kDGt9xoYAvdfVTtUEnk1dbk5RSSzJCyRI/Mfho0R9KoL5QlerR4uFfwFeWDJJIOsYUHgz7LHkI9pgbOyiF0xsmwukyCNWAurE7jIYpy4G78udqjEo7nHOtrDq7RIAfPwgMQ/HkxokVwcWwjoOEOeUXctnpOh5HRXll93L0L4B5eh9DNH8PqPYPCxr2wrnse9tB/wN3+F3jfrld7+hitboDV8X6IiI7QQmHFEBA0bsSKFsGRTx7Od9ZjxS2D2fQamD2oeKqCoJLe3fQwhY8QjGY9lNXHbDUcSG1AA+k9tbzZGsgFUVNNBZEJcWq7eh09ejy8+ICMp7Hgz3GXw76BUssauO//mHbwYzby9yqrj5f/ubxQIpIHd8NPlLUSGZpKKGtR7ajgGo4GT1F80G/HgB7BudiIJX7LUJJLoeJpyj4uU0Yfb8cceEdXk6dS9Uopp3t4ldriIw6vlYMoT5S5e16C+PY9tcXHyOxDMX+i/PzokYrTDzlFjOgJKTF+jPAolGR0hdW1xuAXLoK7+VdASnO/bTWgtPAN/7XCO/RPElylo6mZcN69039dBav/C3IuhgupqGGHKol9VlKT4NF3WBlKIqdhj6zumUxkxUCIUMPK7IfGCVFE4wXtL3EpNhfukXaGswkhwnDXjZXtqtiDX6X3FfvHiwZ+X3JT1YgePYJzcRBt+lV6HFaf5+jLZCiDj7fzRYi8L2BQ0VGBXInFaw6PrJPXWORukVMK/70gskihUvybJRCHqleovObQ7kyhJZaCSENioEVwsyFVg1F4jiBPNTP7Uyj5mbIoTufA2TxZFhu1IHGdrb+Hu34c3A8eApLSqvUvuc4lKQORDZSjO2Fl9TH7PkOhpc2FhxZ2pnrl4Rkd6YQubMJIdm0vDOuG6jGZibw7mjw1pdJzFcItgdnmToR++CmsQfNgj/4CZpNeMkupiqwuIwV0QR5QlkrsGxfRAJpHx7/QHilgXtJNvY4eLYIbl/aU4p0v8qvSAGRTKDFooKuK9+ULECc/qRZKfOhdTjn1hodV28fs+giFiQLVqgKV/N7+VyG+WakMPkYTHpwnXXhoIQcxLrlaNaJHT0jJHEBKkYefr9dwKGmRDbNL9bxZnD4K55PfUFbSTFmqQqGCB82c6ot1xOF3yG1rXhwVWhpkIvIeZS01Tsvq+zSFwazzDi2CagAj5VK5/jxWtE1eRZb3gyj8mmqTJGU5MzKUUPkeuvsE5c7pyuoTeaUZRPlJUuQsgxOfquPC7DAGRovryHvfgndwDcXs7xjMIg7Mlv1h37pRGXxE7g5EllHPpIt7rvWNcmBucT1CNy5TlujRJjjf7XG3Pqnu1J8ZeaiyY7AHvQaz3R3Kqig9Ce/4R/7tue+CP8PlNd/knWYKefe5Vr+SmOFTMFqNoOKpek9wt8yQ69LZe88KHY/X1lhUsVqtb1bG6NEmuCg5isgbNHgmNao12FXAFanZfCDs4W8pS93Dd468suPUM888+cbhhKccZI/UcHNFT5ZCGKktYX5vcK2MoQK+7WUYSbBvoAKkHmEPo0qVQtyZ/Y5sDmVGbe/UIjajTXDGvHqKn63UPHluUxy0B79GPaB63K5z0tvA7jtbpoo1kReBPNzq/piyxI721bORFdlUIX5JaR3FVznhQ9Ah+CBGaiu6INwDtB4yRugcrQZyxrPa3SE+Z6cYZuvbaMx5RRljR7vgXt4OOMuurR3L+QtwPKxXYldgkNjVMx25XtGLIHTHLrn0TRfaBWecjx+Bt2eun7GcI+Wql7BzcGbS5xkqkn6pjHqIi+BMmNeNUAoon0y7yOA5HqNpL4RGvqss+tA6aFYlNGIVZSwR6pr61vsFAa8co/gCOw5iM3ET3Gh4GeXbVHbzHLTGtXnxRDoHZVm8PCNegTBugjNmZj9Y2S/L21v+gFlfoZjNns0Fzoi15CzVFx/pJG4xvCr8qKCzeqR6CDb2hTl64fSPpwlshG5aB6NJF2WPD4EIzngnPoXzznB6JWggbUBHrgfZC2cjkSKZ9oVu/UjOLsabwARn+CkFZ/XNECc+I29vQprrKZcvHBKaxxUKdWbrW2ANXRK3mF2TQAWvwN3xZ7if/Y6OblJF2jBYb5deXUhpVDqsvs/BaneX2hAMdSI4I8rz4G6cAO/Am/LLy7UlPIbHQ3wWmefheVo3XACz269h93laxu2gqTPBKxClOeTt00j4JRToafDip4tJiLNN8V4I/n1TSvUcEpouqpl1K+xr/0SvNS6rvkDqXPAKRLhIrvf29r0mnwjmWTp5c4EXxMupUUP+OxP+F+D/6UfNgUhvtpIp67gK5hUPwGx/zznvRgVBvRG8Kuz14ugG8vqlEEVf088+X0ReGXCmIopDAw/ALHB6OxiXkMiXj4TRcjD46eL6RL0UvCa8QJ9jr3wWkypX35sroIGXReW/UsF5fj3w4u/iohD8f4m4lvYJapMQPGASggdMQvCASQgeMAnBAyZQwffs2YO1a9eq1vnD71u9erVqVWfAgAHIydH7B2riSaCCb9u2DUuXLlWt86egoABHjhxRreqUl5cjmj82yeXH2LG1H02JN4EKHgqFkJLi38VfuXIldu/ejenTp2PixIk4deqUtDO5ubl4/PHH8eCDD2LNmjVo0aIFWrZsqbYC8+fPx7hx42RvSUvjx819wYuKijBt2jQ8+uijyM/313+vWrVKHmfGjBnyOMePH5f2559/XvacqVOnYuvWGo+YxxOuNINi8eLFYtKkSfL15MmTxfDhwwV5r9i8ebNo3769tO/fv190795d7NixQ5w+fVqQcGLJkiWCxJfbSSBBwsnXK1asEFlZWSIvL0/uO3ToUGkvLS0VgwYNkq+feOIJMWTIELnPli1b/nucXbt2iYEDB4q9e/fKcwiKOhs06djSgxs1aoQ+ffrA8zxpnzNnDqZMmYIuXbogNTUVGRkZ0oMresbrr7+OWbNmydcjR45Es2bNYNs2li9fLj9r9uzZmDdvnvRkElhuu//++9G4cWP07NkTycnJMkSR8HJbhw4d5PuCok6zFMepfC7INP1TiUQisKyz33rjC1MzZnO7uLgYnTt3xvjx4zF69Ghs2rQJvXr1kjG+6nEq3ss2vuhBE6jgLCYLwJSVlcl2BRQSZHvChAmYOXOm9M5jx47h8OHDUhjen7n99ttlD+B4vWDBAhnveduYMWNkvKZQJD330KFDcn/eFg5XPn9UUlIiL1qFp3N8r7o93lhPEup13GHP5QGQuzGL0qlTJzRv7j8amJSUhN69e8sQMWLECCxcuBAffvghMjMz0bFjR2nn38OGDcOBAwewaNEiZGdng2I12rVrh/T0dNx1113yIvBgyh7co0cPOVDz8fi4DLf5OHy8bt26Ye7cubLN7w+CxPRswNRpDP9/JCF4wCQED5iE4AGTEDxgEoIHTELwgEkIHjAJwQMmIXigAP8Bmy75yMdUxd0AAAAASUVORK5CYIJRwGnL7g4AAA==</data><length>5116</length><position>1</position><sys_attachment display_value="homepage_image" sys_id="325e6b34db4f7f00683b300f7c9619ff">325e6b34db4f7f00683b300f7c9619ff</sys_attachment><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 19:12:30</sys_created_on><sys_id>f25e6b34db4f7f00683b300f7c9619ff</sys_id></sys_attachment_doc></record_update>]]></payload>
+<payload_hash>69392401</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8679f8e6dbf73700b53f341f7c9619b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e9912c60000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Incident Test</target_name>
+<type>Category</type>
+<update_domain>global</update_domain>
+<update_guid>fa5eab34e74f7f00bcd412aaff1ebb0b</update_guid>
+<update_guid_history>fa5eab34e74f7f00bcd412aaff1ebb0b:69392401,ba5eab34e54f7f0019cb4f6ff682ce01:-45239612,881a2770724f7f0081f7a4c4c1b68c53:1971630617,2f0a2770a74f7f007de83de633b24a42:-585606202,429c2055c45577407bbe7b8ec66a1602:1241567144,e80c68154c557740afa8301ce71b3f3c:-1524458447,940c6815ea55774044b3a305dfae7130:149893219,60fb28151c557740f4dac1af5fa12a7c:2013208366,a8fb2815d055774009de9d8c33330a63:-1993703979,2803209d9415774035fc4793a808163e:2145365355,a0032c5d7a1577403e814546e7816ed9:1886183091,00f2ec5d2015774004bf1ef935137d5b:-561701217,636433455c11f740db1309c6efa3c769:158695377</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_63e8a730db4f7f00683b300f7c961945</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value>0</default_value><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field/><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>true</mandatory><map_to_field>false</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>users_impacted</name><order>700</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>How widespread is this incident?</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference/><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>63e8a730db4f7f00683b300f7c961945</sys_id><sys_mod_count>0</sys_mod_count><sys_name>How widespread is this incident?</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_63e8a730db4f7f00683b300f7c961945</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table/><tooltip/><type>3</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=63e8a730db4f7f00683b300f7c961945"/><fx_price action="delete_multiple" query="id=63e8a730db4f7f00683b300f7c961945"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>63e8a730db4f7f00683b300f7c961945</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>6be8a730db4f7f00683b300f7c961946</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>63e8a730db4f7f00683b300f7c961945</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>23e8a730db4f7f00683b300f7c961946</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>1766852019</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8a79f8e6dbf73700b53f341f7c9619b4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835eac0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>How widespread is this incident?</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>67e8a7305e4f7f00d3f6bcc073b4444a</update_guid>
+<update_guid_history>67e8a7305e4f7f00d3f6bcc073b4444a:1766852019</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_e3e8a730db4f7f00683b300f7c96198f</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>300</order><question display_value="What affect does this have on productivity?">afe8a730db4f7f00683b300f7c961950</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>e3e8a730db4f7f00683b300f7c96198f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Partial work stoppage</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_e3e8a730db4f7f00683b300f7c96198f</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>Partial work stoppage</text><value>2</value></question_choice><fx_price action="delete_multiple" query="id=e3e8a730db4f7f00683b300f7c96198f"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>e3e8a730db4f7f00683b300f7c96198f</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>27e8a730db4f7f00683b300f7c961990</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>e3e8a730db4f7f00683b300f7c96198f</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>ebe8a730db4f7f00683b300f7c96198f</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>1705197740</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8a79f8e6dbf73700b53f341f7c9619b7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e8361000000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Partial work stoppage</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>67e8a730eb4f7f00509ebb1574cc2491</update_guid>
+<update_guid_history>67e8a730eb4f7f00509ebb1574cc2491:1705197740</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_app_module_07a4c1e1db9df740683b300f7c9619b9</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module"><sys_app_module action="INSERT_OR_UPDATE"><active>true</active><application display_value="Self-Service">08771d0cc0a8016401f604303b94b999</application><assessment/><content_page/><device_type/><filter/><hint/><homepage/><image/><link_type>DIRECT</link_type><map_page/><mobile_title>Request</mobile_title><mobile_view_name>Mobile</mobile_view_name><name/><order>54</order><override_menu_roles>false</override_menu_roles><query>catalog_home.do?sysparm_view=catalog_default</query><report/><roles>itil_admin</roles><sys_class_name>sys_app_module</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-05-08 15:26:27</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>07a4c1e1db9df740683b300f7c9619b9</sys_id><sys_mod_count>4</sys_mod_count><sys_name>Request</sys_name><sys_overrides/><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_app_module_07a4c1e1db9df740683b300f7c9619b9</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 19:38:43</sys_updated_on><timeline_page/><title>Request</title><u_icon_2/><uncancelable>false</uncancelable><view_name/><window_name/></sys_app_module></record_update>]]></payload>
+<payload_hash>-2137237481</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8a79f8e6dbf73700b53f341f7c9619ba</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4eb114f30000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Request</target_name>
+<type>Module</type>
+<update_domain>global</update_domain>
+<update_guid>f6547bb8c44f7f001d7b8de896b9f622</update_guid>
+<update_guid_history>f6547bb8c44f7f001d7b8de896b9f622:-2137237481,9af337b8e84f7f0014d58912c8d200ac:-2052580392,f454267dd21d3b403cfbba3e999c45f9:-1043703224,446d0e6153513b402f7fe9618d6576e0:1555483827,2a7b81e1849df7406fe1ff93883eb664:585813151</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_6fe8a730db4f7f00683b300f7c96197c</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>200</order><question display_value="How widespread is this incident?">63e8a730db4f7f00683b300f7c961945</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>6fe8a730db4f7f00683b300f7c96197c</sys_id><sys_mod_count>0</sys_mod_count><sys_name>More than 100 people</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_6fe8a730db4f7f00683b300f7c96197c</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>More than 100 people</text><value>1</value></question_choice><fx_price action="delete_multiple" query="id=6fe8a730db4f7f00683b300f7c96197c"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>6fe8a730db4f7f00683b300f7c96197c</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>afe8a730db4f7f00683b300f7c96197d</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>6fe8a730db4f7f00683b300f7c96197c</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>67e8a730db4f7f00683b300f7c96197d</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>1427374241</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8e79f8e6dbf73700b53f341f7c9619b6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e83602a0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>More than 100 people</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>efe8a7300a4f7f00cbf79a74a535a27e</update_guid>
+<update_guid_history>efe8a7300a4f7f00cbf79a74a535a27e:1427374241</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_category_53e8a730db4f7f00683b300f7c961913</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_category"><sc_cat_item_category action="DELETE"><sc_cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</sc_cat_item><sc_category display_value="Incident Test">c6e3bb05db11f740683b300f7c9619f7</sc_category><sys_class_name>sc_cat_item_category</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:46</sys_created_on><sys_id>53e8a730db4f7f00683b300f7c961913</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Incident Test.Copy of Submit an Incident</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_cat_item_category_53e8a730db4f7f00683b300f7c961913</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:46</sys_updated_on></sc_cat_item_category></record_update>]]></payload>
+<payload_hash>1814579885</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>8e79f8e6dbf73700b53f341f7c9619b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e8873500000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Incident Test.Copy of Submit an Incident</target_name>
+<type>Catalog Item Category</type>
+<update_domain>global</update_domain>
+<update_guid>b43a6770704f7f004b22a36a786c87a2</update_guid>
+<update_guid_history>b43a6770704f7f004b22a36a786c87a2:1814579885,13e8a730374f7f002daf541410870b16:303923001</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_6fe8a730db4f7f00683b300f7c96196f</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value>No</default_value><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field/><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>true</mandatory><map_to_field>false</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>is_mission_related</name><order>900</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>Is this mission-related?</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference/><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>6fe8a730db4f7f00683b300f7c96196f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Is this mission-related?</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_6fe8a730db4f7f00683b300f7c96196f</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table/><tooltip/><type>1</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=6fe8a730db4f7f00683b300f7c96196f"/><fx_price action="delete_multiple" query="id=6fe8a730db4f7f00683b300f7c96196f"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>6fe8a730db4f7f00683b300f7c96196f</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>67e8a730db4f7f00683b300f7c961971</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>6fe8a730db4f7f00683b300f7c96196f</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>2fe8a730db4f7f00683b300f7c961970</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>162272199</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>c279f8e6dbf73700b53f341f7c9619b5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835f990000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Is this mission-related?</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>a3e8a7307d4f7f00246f142ef1718a75</update_guid>
+<update_guid_history>a3e8a7307d4f7f00246f142ef1718a75:162272199</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_category_4a745e3bdb707b00683b300f7c9619fc</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_category"><sc_category action="INSERT_OR_UPDATE"><active>true</active><description>Something is broken or not working properly. </description><entitlement_script/><header_icon/><homepage_image>aceb6415db557740b53f341f7c9619e2</homepage_image><homepage_renderer display_value="Category Items">47ebe8aa3742300054b6a3549dbe5dfa</homepage_renderer><icon>92db2415db557740b53f341f7c9619fd</icon><image/><location/><mobile_hide_description>false</mobile_hide_description><mobile_picture/><mobile_subcategory_render_type>list</mobile_subcategory_render_type><module/><order>0</order><parent/><roles/><sc_catalog display_value="Service Catalog">e0d08b13c3330100c8b837659bba8fb4</sc_catalog><show_in_cms>false</show_in_cms><sys_class_name>sc_category</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-04-21 00:04:59</sys_created_on><sys_id>4a745e3bdb707b00683b300f7c9619fc</sys_id><sys_mod_count>5</sys_mod_count><sys_name>Report an Incident</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_category_4a745e3bdb707b00683b300f7c9619fc</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-05-07 18:29:56</sys_updated_on><title>Report an Incident</title></sc_category><sys_translated_text action="delete_multiple" query="documentkey=4a745e3bdb707b00683b300f7c9619fc"/></record_update>]]></payload>
+<payload_hash>1595348834</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>c279f8e6dbf73700b53f341f7c9619b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4eb79b3d0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Report an Incident</target_name>
+<type>Category</type>
+<update_domain>global</update_domain>
+<update_guid>dff5ff3cb74f7f0018f8ff2352d2e908</update_guid>
+<update_guid_history>dff5ff3cb74f7f0018f8ff2352d2e908:1595348834,c7f5bf3c2e4f7f006fc43c1d7aad37e0:1609327161,6cebe415d45577405a174abe52c9591a:-1983655013,e0eb641514557740fac99d39b6a161e6:-1529287567,12dba415205577403200caabecee2e8c:-200249144,5adb64155e5577407d3e2d2a92ed7400:-2050306756,63cb6415c2557740ae2b520074be16eb:1009364770,03cb6415325577400ed2359cf60a10e1:1863532973,4e162dd38ec93340719a0615d70bacfe:-1868377637,06a22d1338c93340b983bd488bc60503:-1868377637,cea2e513a4c933405322683f4d1a27d7:1984550281,b4955a7b2d707b005bfba3355558507d:2057034600,b8955a7b66707b00bacf93dd1a2a6067:1340265279,3e8516f703707b00c816a896a7616005:-816760026</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_5fe8a730db4f7f00683b300f7c961927</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value/><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field>short_description</field><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>true</mandatory><map_to_field>true</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>short_description</name><order>100</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>Please provide a short description of the incident</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference/><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>5fe8a730db4f7f00683b300f7c961927</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Please provide a short description of the incident</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_5fe8a730db4f7f00683b300f7c961927</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table/><tooltip/><type>6</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width>100</variable_width><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=5fe8a730db4f7f00683b300f7c961927"/><fx_price action="delete_multiple" query="id=5fe8a730db4f7f00683b300f7c961927"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>5fe8a730db4f7f00683b300f7c961927</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>57e8a730db4f7f00683b300f7c961929</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>5fe8a730db4f7f00683b300f7c961927</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>1fe8a730db4f7f00683b300f7c961928</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>-1220817398</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>c679f8e6dbf73700b53f341f7c9619b4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835d1b0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Please provide a short description of the incident</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>dfe8a730254f7f005604779e7dedb02c</update_guid>
+<update_guid_history>dfe8a730254f7f005604779e7dedb02c:-1220817398</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_afe8a730db4f7f00683b300f7c96197f</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>400</order><question display_value="How widespread is this incident?">63e8a730db4f7f00683b300f7c961945</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>afe8a730db4f7f00683b300f7c96197f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>10 to 49 people</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_afe8a730db4f7f00683b300f7c96197f</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>10 to 49 people</text><value>3</value></question_choice><fx_price action="delete_multiple" query="id=afe8a730db4f7f00683b300f7c96197f"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>afe8a730db4f7f00683b300f7c96197f</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>efe8a730db4f7f00683b300f7c961980</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>afe8a730db4f7f00683b300f7c96197f</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>a7e8a730db4f7f00683b300f7c961980</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>-1815312175</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>c679f8e6dbf73700b53f341f7c9619b7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e83604e0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>10 to 49 people</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>23e8a730384f7f00f43fa85869300982</update_guid>
+<update_guid_history>23e8a730384f7f00f43fa85869300982:-1815312175</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_producer_ad5323e6db81ff00b53f341f7c961997</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sc_cat_item_producer"&gt;&lt;sc_cat_item_producer action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;availability&gt;on_both&lt;/availability&gt;&lt;billable&gt;false&lt;/billable&gt;&lt;can_cancel&gt;true&lt;/can_cancel&gt;&lt;category display_value="Report an Incident"&gt;4a745e3bdb707b00683b300f7c9619fc&lt;/category&gt;&lt;cost&gt;0&lt;/cost&gt;&lt;custom_cart/&gt;&lt;delivery_plan display_value="DEFAULT"&gt;523da512c611228900811a37c97c2014&lt;/delivery_plan&gt;&lt;delivery_plan_script/&gt;&lt;delivery_time&gt;1970-01-03 00:00:00&lt;/delivery_time&gt;&lt;description&gt;&lt;![CDATA[&lt;p&gt;&lt;span style="color: #808080; font-family: arial, helvetica, sans-serif; font-size: medium;"&gt;Request assistance with an issue you are having. An incident record will be created and managed through to successful resolution. You will also be notified of progress.&lt;/span&gt;&lt;/p&gt;]]&gt;&lt;/description&gt;&lt;entitlement_script/&gt;&lt;group/&gt;&lt;hide_sp&gt;false&lt;/hide_sp&gt;&lt;icon&gt;38a5a89ddb157740b53f341f7c96196a&lt;/icon&gt;&lt;ignore_price&gt;true&lt;/ignore_price&gt;&lt;image/&gt;&lt;list_price&gt;0&lt;/list_price&gt;&lt;location/&gt;&lt;meta/&gt;&lt;mobile_hide_price&gt;false&lt;/mobile_hide_price&gt;&lt;mobile_picture/&gt;&lt;mobile_picture_type&gt;use_desktop_picture&lt;/mobile_picture_type&gt;&lt;model/&gt;&lt;name&gt;Submit an Incident&lt;/name&gt;&lt;no_cart&gt;false&lt;/no_cart&gt;&lt;no_order&gt;false&lt;/no_order&gt;&lt;no_order_now&gt;false&lt;/no_order_now&gt;&lt;no_proceed_checkout&gt;false&lt;/no_proceed_checkout&gt;&lt;no_quantity&gt;false&lt;/no_quantity&gt;&lt;no_search&gt;false&lt;/no_search&gt;&lt;omit_price&gt;false&lt;/omit_price&gt;&lt;order&gt;0&lt;/order&gt;&lt;ordered_item_link/&gt;&lt;picture&gt;e3637b38db4f7f00683b300f7c961947&lt;/picture&gt;&lt;post_insert_script/&gt;&lt;preview&gt;JavaScript: popupOpenStandard("com.glideapp.servicecatalog_cat_item_view.do?v=1&amp;amp;sysparm_id=ad5323e6db81ff00b53f341f7c961997&amp;amp;sysparm_preview=true", "summary");&lt;/preview&gt;&lt;price&gt;0&lt;/price&gt;&lt;recurring_frequency/&gt;&lt;recurring_price&gt;0&lt;/recurring_price&gt;&lt;redirect_url&gt;generated_record&lt;/redirect_url&gt;&lt;roles/&gt;&lt;sc_catalogs&gt;e0d08b13c3330100c8b837659bba8fb4&lt;/sc_catalogs&gt;&lt;sc_ic_item_staging/&gt;&lt;sc_ic_version/&gt;&lt;script&gt;&lt;![CDATA[var caller_id = gs.getUserID();
+if (JSUtil.nil(producer.caller_id))
+	current.caller_id = caller_id;
+var parent_table = RP.getParameterValue('sysparm_parent_table');
+if (JSUtil.notNil(parent_table)) {
+	var parent_map = new GlideRecord('request_parent_mapping');
+	parent_map.addQuery('parent_table', parent_table);
+	parent_map.query();
+	if (parent_map.next())
+		var requested_for_field = parent_map.getValue('requested_for_field');
+	var parentGR = new GlideRecord(parent_table);
+	parentGR.addQuery('sys_id', RP.getParameterValue('sysparm_parent_sys_id'));
+	parentGR.query();
+	if (parentGR.next())
+		current.caller_id = caller_id = parentGR.getValue(requested_for_field);
+}
+current.contact_type = 'self-service';
+var callerGr = new GlideRecord('sys_user');
+callerGr.addQuery('sys_id', caller_id);
+callerGr.query();
+var isVIP = (callerGr.next() &amp;&amp; callerGr.vip);
+var users_impacted = parseInt(producer.users_impacted);
+current.u_is_mission_related = (producer.is_mission_related == "Yes");
+var comments = "User selected the following incident submission options:\n\nMission Related: " + producer.is_mission_related + "\nUsers Affected: ";
+switch (users_impacted) {
+	case 1:
+		comments = comments + "More than 100 people";
+		break;
+	case 2:
+		comments = comments + "50 to 100 people";
+		break;
+	case 3:
+		comments = comments + "10 to 49 people";
+		break;
+	case 4:
+		comments = comments + "Less than 10 people";
+		break;
+	default:
+		notes = notes + "Unspecified / Unknown";
+		break;
+}
+notes = notes + "\nProductivity Impact: ";
+var productivity_impact = parseInt(producer.productivity_impact);
+switch (productivity_impact) {
+	case 1:
+		current.comments = comments + "Complete work stoppage";
+		break;
+	case 2:
+		current.comments = comments + "Partial work stoppage";
+		break;
+	case 3:
+		current.comments = comments + "Effects execution of time-sensitive activities";
+		break;
+	case 4:
+		current.comments = comments + "Currently using a work-around / alternate method to perform affected duties";
+		break;
+	default:
+		current.comments = comments + "Unspecified / Unknown";
+		break;
+}
+if (users_impacted &lt; 1) {
+	if (productivity_impact &lt; 1)
+		productivity_impact = users_impacted = (isVIP) ? 2 : ((current.u_is_mission_related) ? 3 : 4);
+	else
+		users_impacted = productivity_impact;
+} else if (productivity_impact &lt; 1)
+	productivity_impact = users_impacted;
+
+current.impact = Math.round(((isVIP) ? ((current.u_is_mission_related) ? (productivity_impact + users_impacted) :
+	(productivity_impact + users_impacted) * 1.125) :
+	(productivity_impact + users_impacted) * ((current.u_is_mission_related) ? 1.25 : 1.375)) / (11.0 / 3.0));
+current.urgency = Math.round((productivity_impact + ((isVIP) ? ((current.u_is_mission_related) ? 1 : 2) : ((current.u_is_mission_related) ? 3 : 4))) * 0.35);
+current.setValue('u_vip_priority', isVIP);
+var gr = new GlideRecord('u_vip_priority_lookup_matcher_rules');
+gr.addActiveQuery();
+gr.addQuery('u_impact', current.impact);
+gr.addQuery('u_urgency', current.urgency);
+gr.addQuery('u_is_mission_related', current.u_is_mission_related);
+gr.addQuery('u_vip_priority', isVIP);
+gr.query();
+if (gr.next() &amp;&amp; gr.u_incident_priority &gt; 0)
+	current.priority = gr.u_incident_priority;
+else
+	gs.warn("Failed to get priority for query { u_impact = " + current.impact + ", u_urgency = " + current.urgency + ", u_is_mission_related = " + current.u_is_mission_related + ", u_vip_priority = " + current.vip + " }");
+	
+var incRPUtil = new LinkRecordProducerToIncident();
+incRPUtil.linkRecordProducerToParentIncident(RP.getParameterValue('sysparm_parent_sys_id'), current);]]&gt;&lt;/script&gt;&lt;short_description&gt;Submit an Incident record to report and request assistance with an issue you are having&lt;/short_description&gt;&lt;show_variable_help_on_load&gt;false&lt;/show_variable_help_on_load&gt;&lt;start_closed&gt;false&lt;/start_closed&gt;&lt;sys_class_name&gt;sc_cat_item_producer&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-04-29 18:54:31&lt;/sys_created_on&gt;&lt;sys_id&gt;ad5323e6db81ff00b53f341f7c961997&lt;/sys_id&gt;&lt;sys_mod_count&gt;29&lt;/sys_mod_count&gt;&lt;sys_name&gt;Submit an Incident&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sc_cat_item_producer_ad5323e6db81ff00b53f341f7c961997&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;daves&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-08-01 19:34:40&lt;/sys_updated_on&gt;&lt;table_name&gt;incident&lt;/table_name&gt;&lt;template/&gt;&lt;type&gt;item&lt;/type&gt;&lt;use_sc_layout&gt;true&lt;/use_sc_layout&gt;&lt;vendor/&gt;&lt;view&gt;ess&lt;/view&gt;&lt;visible_bundle&gt;true&lt;/visible_bundle&gt;&lt;visible_guide&gt;true&lt;/visible_guide&gt;&lt;visible_standalone&gt;true&lt;/visible_standalone&gt;&lt;workflow/&gt;&lt;/sc_cat_item_producer&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=ad5323e6db81ff00b53f341f7c961997"/&gt;&lt;fx_price action="delete_multiple" query="id=ad5323e6db81ff00b53f341f7c961997"/&gt;&lt;fx_price action="INSERT_OR_UPDATE"&gt;&lt;amount&gt;0&lt;/amount&gt;&lt;currency display_value="USD"&gt;USD&lt;/currency&gt;&lt;field&gt;price&lt;/field&gt;&lt;id&gt;ad5323e6db81ff00b53f341f7c961997&lt;/id&gt;&lt;parent/&gt;&lt;reference_amount&gt;0&lt;/reference_amount&gt;&lt;reference_currency display_value="USD"&gt;USD&lt;/reference_currency&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-04-29 18:54:31&lt;/sys_created_on&gt;&lt;sys_id&gt;7ac4aba6db81ff00b53f341f7c961970&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-04-29 18:54:31&lt;/sys_updated_on&gt;&lt;table&gt;sc_cat_item_producer&lt;/table&gt;&lt;type&gt;calculated&lt;/type&gt;&lt;/fx_price&gt;&lt;fx_price action="INSERT_OR_UPDATE"&gt;&lt;amount&gt;0&lt;/amount&gt;&lt;currency display_value="USD"&gt;USD&lt;/currency&gt;&lt;field&gt;recurring_price&lt;/field&gt;&lt;id&gt;ad5323e6db81ff00b53f341f7c961997&lt;/id&gt;&lt;parent/&gt;&lt;reference_amount&gt;0&lt;/reference_amount&gt;&lt;reference_currency display_value="USD"&gt;USD&lt;/reference_currency&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-04-29 18:54:32&lt;/sys_created_on&gt;&lt;sys_id&gt;fec4aba6db81ff00b53f341f7c961971&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-04-29 18:54:32&lt;/sys_updated_on&gt;&lt;table&gt;sc_cat_item_producer&lt;/table&gt;&lt;type&gt;calculated&lt;/type&gt;&lt;/fx_price&gt;&lt;/record_update&gt;</payload>
+<payload_hash>685896082</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>c679f8e6dbf73700b53f341f7c9619ba</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4eb67bdf0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table>incident</table>
+<target_name>Submit an Incident</target_name>
+<type>Record Producer</type>
+<update_domain>global</update_domain>
+<update_guid>95b5bb3c6d4f7f00f8457e484d73b915</update_guid>
+<update_guid_history>95b5bb3c6d4f7f00f8457e484d73b915:685896082,e763ff784e4f7f008effbb4c96a2181b:1179794905,a3637b38594f7f005236eb5c2f388c4b:452954660,a4537f78434f7f0002db0e88183ae534:1033351896,4ef2fbf49e4f7f001a85d423c7178073:274967784,743a6770054f7f00a14fd4f4892775b2:-1382942149,38a52011b0557740c7c7dd019be7bd00:-1200949860,b4a5ecdd291577404f5bdeafd337cff4:868235008,cab32c9df5157740c325c8a34b351fa0:117870532,a1b3a89d69157740e47311c6229040ff:681555926,1933649d90157740779f37e7db8449d7:859906021,59f037cd3c91774033eeecb0c4c7a4e7:-1641814312,a11fef4d37917740a59e1c0b9b924973:39246153,a420562f474db340b6cdd676e91dc392:-475034833,4a9bb25f118d334085a7509f10194b6d:1307802851,fd39fa9bec8d3340365fae4f521117eb:423743583,e547be5b818d33404cdb8fdf56cbfd81:-374722407,7fd771537c0d3340c1572ee2be51a7e0:-1561120977,77d3b59f74c9334095a6a3fba5c696ff:657312969,91033d5f98c933401ad5153c1705632a:-1182161377,8644a1939dc933409e5c832acd84b0e2:657312969,37d3ad53efc9334063018d7f84329923:-1561120977,b3d3a95328c93340ecfb41398fd867d6:-1463392184,abd3ad5379c93340aff114c9fa10460c:-1363712612,67d3295394c93340362f347a929e42da:240205347,b7c36d5385c93340d4d8b54fe5ea932a:409103073,33c32d53d3c93340971ac03d56fda1af:-1308171693,23b32d5321c93340b12f59a342efdd52:-1306226806,2bb32d531ac93340902cc97bfd6cd246:-360784421,afcf098b1f0133407bfdcf5ec32e634c:-974405051,97360943660133407beef6aedaa06d58:965329828,3d14fbb6c20dff0054b63884bc9b9a99:-1982722929,8db13bfab00dff00da76b6460ff29fab:2024601629,727eb5b62f09ff0094bc46d80de25150:-1069759547,dd2bb936ff09ff00a848394ced5c85df:-102017109,8f98fdb2ee09ff004292eed204286300:-156052669,f1d1f1fed9c5ff00f6909847089a4066:2117265018,78a37b62b4c1ff00cb710a1662e0ab6f:1127178717,8bc4afe6bf81ff00f9fe8f561a427ac1:2092132569</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>question_choice_63e8a730db4f7f00683b300f7c961989</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="question_choice"><question_choice action="INSERT_OR_UPDATE"><misc>0</misc><order>300</order><question display_value="How widespread is this incident?">63e8a730db4f7f00683b300f7c961945</question><rec_misc>0</rec_misc><sys_class_name>question_choice</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>63e8a730db4f7f00683b300f7c961989</sys_id><sys_mod_count>0</sys_mod_count><sys_name>50 to 100 people</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>question_choice_63e8a730db4f7f00683b300f7c961989</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><text>50 to 100 people</text><value>2</value></question_choice><fx_price action="delete_multiple" query="id=63e8a730db4f7f00683b300f7c961989"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>misc</field><id>63e8a730db4f7f00683b300f7c961989</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>a3e8a730db4f7f00683b300f7c96198a</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_misc</field><id>63e8a730db4f7f00683b300f7c961989</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:48</sys_created_on><sys_id>6be8a730db4f7f00683b300f7c961989</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:48</sys_updated_on><table>question_choice</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>1411419241</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>ca79f8e6dbf73700b53f341f7c9619b6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e8360b50000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>50 to 100 people</target_name>
+<type>Question Choice</type>
+<update_domain>global</update_domain>
+<update_guid>e3e8a730f34f7f007cca3188fd67a88b</update_guid>
+<update_guid_history>e3e8a730f34f7f007cca3188fd67a88b:1411419241</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_category_10537f78db4f7f00683b300f7c96192e</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_category"><sc_cat_item_category action="INSERT_OR_UPDATE"><sc_cat_item display_value="Submit an Incident">ad5323e6db81ff00b53f341f7c961997</sc_cat_item><sc_category display_value="Report an Incident">4a745e3bdb707b00683b300f7c9619fc</sc_category><sys_class_name>sc_cat_item_category</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 19:34:11</sys_created_on><sys_id>10537f78db4f7f00683b300f7c96192e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Report an Incident.Submit an Incident</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sc_cat_item_category_10537f78db4f7f00683b300f7c96192e</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 19:34:11</sys_updated_on></sc_cat_item_category></record_update>]]></payload>
+<payload_hash>921835813</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>ca79f8e6dbf73700b53f341f7c9619b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4eaced860000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Report an Incident.Submit an Incident</target_name>
+<type>Catalog Item Category</type>
+<update_domain>global</update_domain>
+<update_guid>e4537f78dd4f7f003b01d83bf211b630</update_guid>
+<update_guid_history>e4537f78dd4f7f003b01d83bf211b630:921835813</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_dbe8a730db4f7f00683b300f7c96192d</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Copy of Submit an Incident">9fe827fcdb0f7f00683b300f7c961907</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value/><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field/><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>2down</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>false</mandatory><map_to_field>false</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>topContainerStart</name><order>200</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text/><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table>incident</record_producer_table><reference/><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>dbe8a730db4f7f00683b300f7c96192d</sys_id><sys_mod_count>0</sys_mod_count><sys_name>topContainerStart</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_dbe8a730db4f7f00683b300f7c96192d</sys_update_name><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table/><tooltip/><type>19</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=dbe8a730db4f7f00683b300f7c96192d"/><fx_price action="delete_multiple" query="id=dbe8a730db4f7f00683b300f7c96192d"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>dbe8a730db4f7f00683b300f7c96192d</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>d3e8a730db4f7f00683b300f7c96192f</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>dbe8a730db4f7f00683b300f7c96192d</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>daves</sys_created_by><sys_created_on>2019-08-01 18:48:47</sys_created_on><sys_id>9be8a730db4f7f00683b300f7c96192e</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>daves</sys_updated_by><sys_updated_on>2019-08-01 18:48:47</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>275941242</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>ce79f8e6dbf73700b53f341f7c9619b5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4e835d6a0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name/>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>5fe8a730c34f7f008c95256897f90832</update_guid>
+<update_guid_history>5fe8a730c34f7f008c95256897f90832:275941242</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_a9c07bb4db4f7f00683b300f7c9619c7</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sc_cat_item"&gt;&lt;sc_cat_item action="DELETE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;availability&gt;on_desktop&lt;/availability&gt;&lt;billable&gt;false&lt;/billable&gt;&lt;category display_value="Incident"&gt;e8821fd4db49bb00683b300f7c961935&lt;/category&gt;&lt;cost&gt;0&lt;/cost&gt;&lt;custom_cart/&gt;&lt;delivery_plan display_value="DEFAULT"&gt;523da512c611228900811a37c97c2014&lt;/delivery_plan&gt;&lt;delivery_plan_script/&gt;&lt;delivery_time&gt;1970-01-03 00:00:00&lt;/delivery_time&gt;&lt;description&gt;&lt;![CDATA[&lt;p&gt;&lt;span style="text-align: left; color: #808080; text-transform: none; text-indent: 0px; letter-spacing: normal; font-family: arial,helvetica,sans-serif; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; word-spacing: 0px; display: inline; white-space: normal; orphans: 2; float: none; -webkit-text-stroke-width: 0px; background-color: transparent;"&gt;Request assistance with an issue you are having. An incident record will be created and managed through to successful resolution. You will also be notified of progress.&lt;/span&gt;&lt;/p&gt;]]&gt;&lt;/description&gt;&lt;entitlement_script/&gt;&lt;group/&gt;&lt;hide_sp&gt;false&lt;/hide_sp&gt;&lt;icon/&gt;&lt;ignore_price&gt;true&lt;/ignore_price&gt;&lt;image/&gt;&lt;list_price&gt;0&lt;/list_price&gt;&lt;location/&gt;&lt;meta/&gt;&lt;mobile_hide_price&gt;false&lt;/mobile_hide_price&gt;&lt;mobile_picture/&gt;&lt;mobile_picture_type&gt;use_desktop_picture&lt;/mobile_picture_type&gt;&lt;model/&gt;&lt;name&gt;Incident Replacement&lt;/name&gt;&lt;no_cart&gt;false&lt;/no_cart&gt;&lt;no_order&gt;false&lt;/no_order&gt;&lt;no_order_now&gt;false&lt;/no_order_now&gt;&lt;no_proceed_checkout&gt;false&lt;/no_proceed_checkout&gt;&lt;no_quantity&gt;false&lt;/no_quantity&gt;&lt;no_search&gt;false&lt;/no_search&gt;&lt;omit_price&gt;false&lt;/omit_price&gt;&lt;order&gt;0&lt;/order&gt;&lt;ordered_item_link/&gt;&lt;picture/&gt;&lt;preview&gt;JavaScript: popupOpenStandard("com.glideapp.servicecatalog_cat_item_view.do?v=1&amp;amp;sysparm_id=a9c07bb4db4f7f00683b300f7c9619c7&amp;amp;sysparm_preview=true", "summary");&lt;/preview&gt;&lt;price&gt;0&lt;/price&gt;&lt;recurring_frequency/&gt;&lt;recurring_price&gt;0&lt;/recurring_price&gt;&lt;roles/&gt;&lt;sc_catalogs&gt;e0d08b13c3330100c8b837659bba8fb4&lt;/sc_catalogs&gt;&lt;sc_ic_item_staging/&gt;&lt;sc_ic_version/&gt;&lt;short_description&gt;Is something broken or not working properly?&lt;/short_description&gt;&lt;show_variable_help_on_load&gt;false&lt;/show_variable_help_on_load&gt;&lt;start_closed&gt;false&lt;/start_closed&gt;&lt;sys_class_name&gt;sc_cat_item&lt;/sys_class_name&gt;&lt;sys_created_by&gt;daves&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-08-01 19:29:15&lt;/sys_created_on&gt;&lt;sys_id&gt;a9c07bb4db4f7f00683b300f7c9619c7&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Incident Replacement&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sc_cat_item_a9c07bb4db4f7f00683b300f7c9619c7&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;daves&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-08-01 19:29:16&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;type&gt;item&lt;/type&gt;&lt;use_sc_layout&gt;true&lt;/use_sc_layout&gt;&lt;vendor/&gt;&lt;visible_bundle&gt;true&lt;/visible_bundle&gt;&lt;visible_guide&gt;true&lt;/visible_guide&gt;&lt;visible_standalone&gt;true&lt;/visible_standalone&gt;&lt;workflow/&gt;&lt;/sc_cat_item&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=a9c07bb4db4f7f00683b300f7c9619c7"/&gt;&lt;fx_price action="delete_multiple" query="id=a9c07bb4db4f7f00683b300f7c9619c7"/&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-40095580</payload_hash>
+<remote_update_set display_value="Incident 2019-08-01 2019">8e79f8e6dbf73700b53f341f7c9619b3</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:18:39</sys_created_on>
+<sys_id>ce79f8e6dbf73700b53f341f7c9619b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16c4eab0b830000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:18:39</sys_updated_on>
+<table/>
+<target_name>Incident Replacement</target_name>
+<type>Catalog Item</type>
+<update_domain>global</update_domain>
+<update_guid>5ed237782a4f7f00475c78feb4844ca2</update_guid>
+<update_guid_history>5ed237782a4f7f00475c78feb4844ca2:-40095580,ded23778964f7f00f70f29b546b06888:-148336998,10327738f64f7f000ace1615e75bdd58:1549537865</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>
