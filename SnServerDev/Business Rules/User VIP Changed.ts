@@ -1,4 +1,5 @@
-﻿/// <reference path="../ServiceNowLegacy.d.ts" />
+﻿/// <reference path="../SnTypings/ServiceNowLegacy.ts" />
+declare var current: GlideRecord, previous: GlideRecord;
 
 (function executeRule(current: GlideRecord, previous: GlideRecord /*null when async*/) {
     try {
@@ -29,8 +30,8 @@
             var oldPriority = gr.priority;
             var priority = oldPriority;
             gr.u_vip_priority = current.vip;
-            var impact = gr.getValue('impact');
-            var urgency = gr.getValue('urgency');
+            var impact = parseInt(gr.getValue('impact'));
+            var urgency = parseInt(gr.getValue('urgency'));
             if (impact > 0 && impact < 4 && urgency > 0 && urgency < 4) {
                 if (impact > lookups.length) {
                     for (i = lookups.length; i < impact; i++)
@@ -82,7 +83,7 @@
                     p.addQuery('u_is_mission_related', is_mission_related);
                     p.addQuery('u_vip_priority', current.vip);
                     p.query();
-                    if (!p.next() || (priority = p.getValue('u_incident_priority')) < 1)
+                    if (!p.next() || (priority = parseInt(p.getValue('u_incident_priority'))) < 1)
                         priority = -1;
                     arr[(current.vip) ? 1 : 0] = priority;
                 }

@@ -108,20 +108,12 @@
     <Content Include="downloads\logo_service-now.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="downloads\Service Catalog Patch 2019-08-13.xml" />
-    <Content Include="downloads\sys_remote_update_set_Incident_Management.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="downloads\sys_remote_update_set_Initial_Setup.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="downloads\sys_remote_update_set_EmailConfig_CabWorkbench.xml" />
+    <Content Include="downloads\sys_remote_update_set_EmailConfig_TargetedCommunications.xml" />
+    <Content Include="downloads\sys_remote_update_set_Initial_Update_Set_Stage_1.xml" />
+    <Content Include="downloads\sys_remote_update_set_Initial_Update_Set_Stage_2.xml" />
     <Content Include="downloads\sys_remote_update_set_Security_Incident_Setup.xml" />
-    <Content Include="downloads\sys_remote_update_set_Service_Catalog.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="downloads\sys_remote_update_set_Test_Org_setup.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="downloads\sys_remote_update_set_Unclass_Setup_Stage_1.xml" />
     <Content Include="downloads\uatstats.txt" />
     <Content Include="images\adminSetup\DeveloperSettings.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
