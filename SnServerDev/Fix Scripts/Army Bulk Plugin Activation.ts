@@ -1,4 +1,4 @@
-﻿/// <reference path="../SnTypings/ServiceNowLegacy.ts" />
+﻿/// <reference path="../SnTypings/ServiceNowLegacy.d.ts" />
 
 // Array of IDs for plugins that should be activated.
 var pluginIds: string[] = [

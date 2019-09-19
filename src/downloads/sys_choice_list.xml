@@ -1,0 +1,2207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Change request is in the process of being actioned</hint>
+<inactive>false</inactive>
+<label>Implement</label>
+<language>en</language>
+<name>change_request</name>
+<sequence>5</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-22 14:39:12</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>a2fb6e02c323310056f1f71a54d3aea9</sys_id>
+<sys_mod_count>9</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-24 15:13:43</sys_updated_on>
+<value>-1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Change request has been scheduled to be actioned</hint>
+<inactive>false</inactive>
+<label>Scheduled</label>
+<language>en</language>
+<name>change_request</name>
+<sequence>4</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-22 14:37:03</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>5edb6e02c323310056f1f71a54d3ae12</sys_id>
+<sys_mod_count>9</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-24 15:07:32</sys_updated_on>
+<value>-2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Change request has been authorized</hint>
+<inactive>false</inactive>
+<label>Authorize</label>
+<language>en</language>
+<name>change_request</name>
+<sequence>3</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-22 14:36:25</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>819b6e02c323310056f1f71a54d3ae24</sys_id>
+<sys_mod_count>6</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-24 15:07:23</sys_updated_on>
+<value>-3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Awaiting information</label>
+<language>en</language>
+<name>kb_feedback_task</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-14 23:50:11</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>9d5f23fbdb403300683b300f7c961913</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-14 23:50:11</sys_updated_on>
+<value>-3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Change request is ready for authorization</hint>
+<inactive>false</inactive>
+<label>Assess</label>
+<language>en</language>
+<name>change_request</name>
+<sequence>2</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-22 14:30:02</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>171aea02c323310056f1f71a54d3aef5</sys_id>
+<sys_mod_count>7</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-24 15:07:16</sys_updated_on>
+<value>-4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Pending</label>
+<language>en</language>
+<name>comm_task</name>
+<sequence>-5</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2018-02-17 10:39:15</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>014edc925310130009170ef5d5dc34cd</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2018-02-17 10:40:20</sys_updated_on>
+<value>-5</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Change request has just been created</hint>
+<inactive>false</inactive>
+<label>New</label>
+<language>en</language>
+<name>change_request</name>
+<sequence>1</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-22 14:28:09</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>11a9ea02c323310056f1f71a54d3aea3</sys_id>
+<sys_mod_count>6</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-24 14:29:54</sys_updated_on>
+<value>-5</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Pending</label>
+<language>en</language>
+<name>task</name>
+<sequence>-5</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:47:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>66190457db003300b53f341f7c961907</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:47:20</sys_updated_on>
+<value>-5</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Pending</label>
+<language>en</language>
+<name>change_task</name>
+<sequence>-5</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:16:13</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>79bf8813dbc03300b53f341f7c961943</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:16:13</sys_updated_on>
+<value>-5</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Draft</label>
+<language>en</language>
+<name>rm_scrum_task</name>
+<sequence>10</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2011-08-04 14:35:03</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>9e56dad9ef541000a7450fa3f8225659</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2011-08-04 14:35:03</sys_updated_on>
+<value>-6</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Work checked to see if change request was successful</hint>
+<inactive>false</inactive>
+<label>Review</label>
+<language>en</language>
+<name>change_request</name>
+<sequence>6</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-22 14:39:58</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>d98c6e02c323310056f1f71a54d3aead</sys_id>
+<sys_mod_count>8</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-24 15:13:54</sys_updated_on>
+<value>0</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Open</label>
+<language>en</language>
+<name>comm_task</name>
+<sequence>1</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2018-02-17 10:39:15</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>054ed4165310130009170ef5d5dc3408</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2018-02-17 10:39:15</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Open</label>
+<language>en</language>
+<name>problem</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:10:39</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>1c7e009bdb803300b53f341f7c961933</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:10:39</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>New</label>
+<language>en</language>
+<name>kb_feedback_task</name>
+<sequence>0</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-14 23:50:11</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>1d5f23fbdb403300683b300f7c961910</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-14 23:50:11</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Draft</label>
+<language>en</language>
+<name>itfm_budget_task</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:35:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>22acdec6db907300b53f341f7c9619ac</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:35:20</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Security Incident initiator is not done describing the work</hint>
+<inactive>false</inactive>
+<label>Draft</label>
+<language>en</language>
+<name>sn_si_task</name>
+<sequence>0</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>2e878663ff123100158bffffffffff88</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-02-24 00:30:16</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>New</label>
+<language>en</language>
+<name>service_task</name>
+<sequence>0</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2014-08-07 16:39:38</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>2eddd6835f522100a9ad2572f2b477c7</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2014-08-07 16:40:46</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Ready</label>
+<language>en</language>
+<name>rm_scrum_task</name>
+<sequence>20</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2011-08-04 14:35:13</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>3056ded9ef541000a7450fa3f82256c7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2011-08-04 14:35:13</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>New</label>
+<language>en</language>
+<name>incident</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:36</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>30ee881fdb803300b53f341f7c96192f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:36</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Open</label>
+<language>en</language>
+<name>change_task</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:16:13</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>3dbf8813dbc03300b53f341f7c961945</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:16:13</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Security Request has been opened</hint>
+<inactive>false</inactive>
+<label>Draft</label>
+<language>en</language>
+<name>sn_si_request</name>
+<sequence>0</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>66668dce807441f6a43a6bc269fbdaad</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:29:15</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Service order initiator is not done describing the work</hint>
+<inactive>false</inactive>
+<label>Draft</label>
+<language>en</language>
+<name>sm_task</name>
+<sequence>0</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:45:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>a20c3052dbf5b300b53f341f7c9619fe</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:45:50</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Open</label>
+<language>en</language>
+<name>task</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:47:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>a6190457db003300b53f341f7c961907</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:47:20</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>New</label>
+<language>en</language>
+<name>gsw_task</name>
+<sequence>1</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2016-05-20 19:30:04</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>a7517cc1db631200edac3bc8f0b8f5f5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2016-05-20 19:30:04</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>New</label>
+<language>en</language>
+<name>std_change_proposal</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:26</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>dade441fdb803300b53f341f7c96197b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:26</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>New</label>
+<language>en</language>
+<name>sn_si_scan_request</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:49:15</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>fcdc7c1adbf5b300b53f341f7c961964</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:49:15</sys_updated_on>
+<value>1</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Security Incident is in draft</hint>
+<inactive>false</inactive>
+<label>Draft</label>
+<language>en</language>
+<name>sn_si_incident</name>
+<sequence>4</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>1e878663ff123100158bffffffffff85</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:28:56</sys_updated_on>
+<value>10</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Task is ready to be assigned</hint>
+<inactive>false</inactive>
+<label>Pending Assignment</label>
+<language>en</language>
+<name>sm_task</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:45:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>6e0c7052dbf5b300b53f341f7c961900</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:45:50</sys_updated_on>
+<value>10</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Task is ready to be worked on</hint>
+<inactive>false</inactive>
+<label>Ready</label>
+<language>en</language>
+<name>sn_si_task</name>
+<sequence>1</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-08-07 23:37:03</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>e3a96724df31020068c32df36bf2631e</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-08-07 23:37:03</sys_updated_on>
+<value>10</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Security Incident has been completed, but requires a post incident review</hint>
+<inactive>false</inactive>
+<label>Review</label>
+<language>en</language>
+<name>sn_si_incident</name>
+<sequence>20</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-03-26 21:16:49</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>8f8409eddf03310068c32df36bf2639b</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:22:53</sys_updated_on>
+<value>100</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Task is assigned, pending staff acceptance</hint>
+<inactive>false</inactive>
+<label>Analysis</label>
+<language>en</language>
+<name>sn_si_incident</name>
+<sequence>5</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>16878663ff123100158bffffffffff86</sys_id>
+<sys_mod_count>3</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:22:35</sys_updated_on>
+<value>16</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Task is assigned, pending agent acceptance</hint>
+<inactive>false</inactive>
+<label>Assigned</label>
+<language>en</language>
+<name>sm_task</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:45:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>220c7052dbf5b300b53f341f7c961903</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:45:50</sys_updated_on>
+<value>16</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Task is assigned, pending agent acceptance</hint>
+<inactive>false</inactive>
+<label>Assigned</label>
+<language>en</language>
+<name>sn_si_task</name>
+<sequence>2</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>22878663ff123100158bffffffffff8a</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-02-24 00:30:16</sys_updated_on>
+<value>16</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Request is assigned</hint>
+<inactive>false</inactive>
+<label>Assigned</label>
+<language>en</language>
+<name>sn_si_request</name>
+<sequence>1</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>5a2900fbaa764222b02a31e6fb8abcdd</sys_id>
+<sys_mod_count>3</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:22:35</sys_updated_on>
+<value>16</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Task is assigned, acknowledged and pending work to start</hint>
+<inactive>false</inactive>
+<label>Accepted</label>
+<language>en</language>
+<name>sm_task</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:45:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>e20c7052dbf5b300b53f341f7c961905</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:45:50</sys_updated_on>
+<value>17</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Contain the security issue</hint>
+<inactive>false</inactive>
+<label>Contain</label>
+<language>en</language>
+<name>sn_si_incident</name>
+<sequence>6</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>1e878663ff123100158bffffffffff86</sys_id>
+<sys_mod_count>3</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:21:06</sys_updated_on>
+<value>18</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Work has started</hint>
+<inactive>false</inactive>
+<label>Work In Progress</label>
+<language>en</language>
+<name>sn_si_task</name>
+<sequence>3</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>22878663ff123100158bffffffffff8b</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-09 23:58:39</sys_updated_on>
+<value>18</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Work has started</hint>
+<inactive>false</inactive>
+<label>Work In Progress</label>
+<language>en</language>
+<name>sm_task</name>
+<sequence>4</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:45:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>a60c7052dbf5b300b53f341f7c961907</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:45:50</sys_updated_on>
+<value>18</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Eradicate the security issue</hint>
+<inactive>false</inactive>
+<label>Eradicate</label>
+<language>en</language>
+<name>sn_si_incident</name>
+<sequence>7</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-07 03:21:33</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>01814f41df13310068c32df36bf2639b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:21:33</sys_updated_on>
+<value>19</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>In Progress</label>
+<language>en</language>
+<name>std_change_proposal</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:26</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>1ede441fdb803300b53f341f7c96197b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:26</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Work in progress</label>
+<language>en</language>
+<name>rm_scrum_task</name>
+<sequence>30</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2011-08-04 14:35:18</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>3956dad9ef541000a7450fa3f82256ae</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2011-08-04 14:35:18</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>In Progress</label>
+<language>en</language>
+<name>change_task</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:16:13</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>39bf8813dbc03300b53f341f7c961947</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:16:13</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Published</label>
+<language>en</language>
+<name>itfm_budget_task</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:35:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>66acdec6db907300b53f341f7c9619af</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:35:20</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Work In Progress</label>
+<language>en</language>
+<name>gsw_task</name>
+<sequence>2</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2016-05-20 19:30:31</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>8371bcc1db631200edac3bc8f0b8f553</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2016-05-20 19:30:31</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Known Error</label>
+<language>en</language>
+<name>problem</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:10:39</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>907e009bdb803300b53f341f7c961934</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:10:39</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Work in progress</label>
+<language>en</language>
+<name>kb_feedback_task</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-14 23:50:11</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>955f23fbdb403300683b300f7c961912</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-14 23:50:11</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Work in Progress</label>
+<language>en</language>
+<name>service_task</name>
+<sequence>1</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2014-08-07 16:39:38</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>a6ddd6835f522100a9ad2572f2b477c8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2014-08-07 16:39:38</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>In Progress</label>
+<language>en</language>
+<name>incident</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:36</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>b4ee881fdb803300b53f341f7c96192f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:36</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Scanning</label>
+<language>en</language>
+<name>sn_si_scan_request</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:49:15</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>b8dc7c1adbf5b300b53f341f7c961967</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:49:15</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>In Progress</label>
+<language>en</language>
+<name>comm_task</name>
+<sequence>2</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2018-02-17 10:39:15</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>cd4ed4165310130009170ef5d5dc3409</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2018-02-17 10:39:15</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Work in Progress</label>
+<language>en</language>
+<name>task</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:47:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>e6190457db003300b53f341f7c961907</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:47:20</sys_updated_on>
+<value>2</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Recover from the security issue</hint>
+<inactive>false</inactive>
+<label>Recover</label>
+<language>en</language>
+<name>sn_si_incident</name>
+<sequence>8</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-07 03:21:57</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>ba914f41df13310068c32df36bf2639c</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:21:57</sys_updated_on>
+<value>20</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Work has been completed</hint>
+<inactive>false</inactive>
+<label>Closed</label>
+<language>en</language>
+<name>sn_si_request</name>
+<sequence>2</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>149ca248a4af40f0bb946c5ed9fb7752</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:23:59</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Change request has now been completed</hint>
+<inactive>false</inactive>
+<label>Closed</label>
+<language>en</language>
+<name>change_request</name>
+<sequence>7</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-22 14:40:34</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>15ac6e02c323310056f1f71a54d3aeb2</sys_id>
+<sys_mod_count>5</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-24 14:31:24</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Work has been completed to specification</hint>
+<inactive>false</inactive>
+<label>Closed</label>
+<language>en</language>
+<name>sn_si_incident</name>
+<sequence>30</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>16878663ff123100158bffffffffff87</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:23:59</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Awaiting Input</label>
+<language>en</language>
+<name>itfm_budget_task</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:35:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>26acdec6db907300b53f341f7c9619b1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:35:20</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Closed Complete</label>
+<language>en</language>
+<name>task</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:47:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>2a190457db003300b53f341f7c961907</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:47:20</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Work has been completed to specification</hint>
+<inactive>false</inactive>
+<label>Closed Complete</label>
+<language>en</language>
+<name>sn_si_task</name>
+<sequence>4</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>2a878663ff123100158bffffffffff8b</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-09 23:58:40</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Closed</label>
+<language>en</language>
+<name>change_task</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:16:13</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>35bf8813dbc03300b53f341f7c961949</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:16:13</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Closed</label>
+<language>en</language>
+<name>std_change_proposal</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:26</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>5ede441fdb803300b53f341f7c96197b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:26</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Work has been completed to specification</hint>
+<inactive>false</inactive>
+<label>Closed Complete</label>
+<language>en</language>
+<name>sm_task</name>
+<sequence>5</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:45:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>6a0c7052dbf5b300b53f341f7c961909</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:45:50</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Complete</label>
+<language>en</language>
+<name>sn_si_scan_request</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:49:15</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>7cdc7c1adbf5b300b53f341f7c961969</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:49:15</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Complete</label>
+<language>en</language>
+<name>comm_task</name>
+<sequence>3</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2018-02-17 10:39:15</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>894ed4165310130009170ef5d5dc340b</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2018-02-17 10:40:38</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Pending Change</label>
+<language>en</language>
+<name>problem</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:10:39</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>947e009bdb803300b53f341f7c961934</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:10:39</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Closed</label>
+<language>en</language>
+<name>kb_feedback_task</name>
+<sequence>4</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-14 23:50:11</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>9d5f23fbdb403300683b300f7c961916</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-14 23:50:11</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Completed</label>
+<language>en</language>
+<name>service_task</name>
+<sequence>2</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2014-08-07 16:39:38</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>aeddd6835f522100a9ad2572f2b477c8</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2014-08-07 16:40:56</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Closed</label>
+<language>en</language>
+<name>gsw_task</name>
+<sequence>3</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2016-05-20 19:31:01</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>b791bcc1db631200edac3bc8f0b8f5d3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2016-05-20 19:31:01</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>On Hold</label>
+<language>en</language>
+<name>incident</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:36</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>b8ee881fdb803300b53f341f7c96192f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:36</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Complete</label>
+<language>en</language>
+<name>rm_scrum_task</name>
+<sequence>40</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2011-08-04 14:35:22</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>c7561ad9ef541000a7450fa3f822566f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2011-08-04 14:35:22</sys_updated_on>
+<value>3</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Work could not be completed as specified</hint>
+<inactive>false</inactive>
+<label>Closed Incomplete</label>
+<language>en</language>
+<name>sm_task</name>
+<sequence>6</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:45:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>2e0c7052dbf5b300b53f341f7c96190b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:45:50</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Error</label>
+<language>en</language>
+<name>sn_si_scan_request</name>
+<sequence>4</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:49:15</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>30dc7c1adbf5b300b53f341f7c96196c</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:49:15</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Canceled</label>
+<language>en</language>
+<name>change_task</name>
+<sequence>4</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:16:13</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>31bf8813dbc03300b53f341f7c96194b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:16:13</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Skipped</label>
+<language>en</language>
+<name>gsw_task</name>
+<sequence>4</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2016-05-20 19:30:48</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>3381bcc1db631200edac3bc8f0b8f5a7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2016-05-20 19:30:48</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Cancelled</label>
+<language>en</language>
+<name>rm_scrum_task</name>
+<sequence>50</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2011-08-04 14:35:27</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>4c56ded9ef541000a7450fa3f8225678</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2011-08-04 14:35:27</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Closed Incomplete</label>
+<language>en</language>
+<name>task</name>
+<sequence>4</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:47:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>6a190457db003300b53f341f7c961907</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:47:20</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Closed/Resolved</label>
+<language>en</language>
+<name>problem</name>
+<sequence>4</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:10:39</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>987e009bdb803300b53f341f7c961934</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:10:39</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Canceled</label>
+<language>en</language>
+<name>std_change_proposal</name>
+<sequence>4</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:26</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>9ede441fdb803300b53f341f7c96197b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:26</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Canceled</label>
+<language>en</language>
+<name>service_task</name>
+<sequence>3</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2014-08-07 16:39:38</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>a6ddd6835f522100a9ad2572f2b477c9</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2014-08-07 16:40:51</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Change request will not be actioned</hint>
+<inactive>false</inactive>
+<label>Canceled</label>
+<language>en</language>
+<name>change_request</name>
+<sequence>8</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-04-22 15:08:31</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>c5033242c323310056f1f71a54d3ae8b</sys_id>
+<sys_mod_count>6</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-24 14:32:46</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Pending Approval</label>
+<language>en</language>
+<name>itfm_budget_task</name>
+<sequence>4</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:35:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>e2acdec6db907300b53f341f7c9619b3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:35:20</sys_updated_on>
+<value>4</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Approved</label>
+<language>en</language>
+<name>itfm_budget_task</name>
+<sequence>5</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:35:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>a2acdec6db907300b53f341f7c9619b5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:35:20</sys_updated_on>
+<value>5</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Resolved</label>
+<language>en</language>
+<name>kb_feedback_task</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-14 23:50:11</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>955f23fbdb403300683b300f7c961915</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-14 23:50:11</sys_updated_on>
+<value>6</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Resolved</label>
+<language>en</language>
+<name>incident</name>
+<sequence>6</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:36</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>bcee881fdb803300b53f341f7c96192f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:36</sys_updated_on>
+<value>6</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Skipped</label>
+<language>en</language>
+<name>comm_task</name>
+<sequence>5</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2018-02-17 10:39:15</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>014ed4165310130009170ef5d5dc340f</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2018-02-17 10:40:53</sys_updated_on>
+<value>7</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Security Incident has been cancelled</hint>
+<inactive>false</inactive>
+<label>Cancelled</label>
+<language>en</language>
+<name>sn_si_incident</name>
+<sequence>32</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>16878663ff123100158bffffffffff88</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-07 03:24:10</sys_updated_on>
+<value>7</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Task has been cancelled</hint>
+<inactive>false</inactive>
+<label>Cancelled</label>
+<language>en</language>
+<name>sn_si_task</name>
+<sequence>6</sequence>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2015-02-24 00:30:16</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>2a878663ff123100158bffffffffff8c</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2015-04-09 23:58:40</sys_updated_on>
+<value>7</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Closed Skipped</label>
+<language>en</language>
+<name>task</name>
+<sequence>5</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:47:20</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>aa190457db003300b53f341f7c961907</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:47:20</sys_updated_on>
+<value>7</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Closed</label>
+<language>en</language>
+<name>incident</name>
+<sequence>7</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:36</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>b0ee881fdb803300b53f341f7c961930</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:36</sys_updated_on>
+<value>7</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint>Task has been cancelled</hint>
+<inactive>false</inactive>
+<label>Cancelled</label>
+<language>en</language>
+<name>sm_task</name>
+<sequence>7</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:45:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>ee0c7052dbf5b300b53f341f7c96190d</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:45:50</sys_updated_on>
+<value>7</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Canceled</label>
+<language>en</language>
+<name>incident</name>
+<sequence>8</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:12:36</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>b4ee881fdb803300b53f341f7c961930</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:12:36</sys_updated_on>
+<value>8</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Cancelled</label>
+<language>en</language>
+<name>task_activity</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:42:06</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>b53e560edbd07300b53f341f7c961947</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:42:06</sys_updated_on>
+<value>cancelled</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Complete</label>
+<language>en</language>
+<name>sys_schema_change</name>
+<sequence>300</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:43:34</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>df380413db003300b53f341f7c9619a0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:43:34</sys_updated_on>
+<value>complete</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Created but Unpublished</label>
+<language>en</language>
+<name>catalog_category_request</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:27</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>1dbdc457db803300b53f341f7c96198f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:27</sys_updated_on>
+<value>created</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Created</label>
+<language>en</language>
+<name>sc_ic_category_request</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:21</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>bfad4457db803300b53f341f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:21</sys_updated_on>
+<value>created</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Draft</label>
+<language>en</language>
+<name>sc_ic_task_assign_defn_staging</name>
+<sequence>0</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:23</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>50bd8457db803300b53f341f7c961982</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:23</sys_updated_on>
+<value>draft</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Expired</label>
+<language>en</language>
+<name>sc_ic_task_assign_defn_staging</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:23</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>d0bd8457db803300b53f341f7c961982</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:23</sys_updated_on>
+<value>expired</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Ignored</label>
+<language>en</language>
+<name>sys_sync_change</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:46:12</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>0ad888d3db003300b53f341f7c9619cf</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:46:12</sys_updated_on>
+<value>ignored</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Incomplete</label>
+<language>en</language>
+<name>sys_schema_change</name>
+<sequence>400</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:43:34</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>13380413db003300b53f341f7c9619a1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:43:34</sys_updated_on>
+<value>incomplete</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Incurred</label>
+<language>en</language>
+<name>sm_incidentals</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:43:49</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>cd9bb41edbb5b300b53f341f7c961953</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:43:49</sys_updated_on>
+<value>incurred</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>New</label>
+<language>en</language>
+<name>sys_sync_change</name>
+<sequence>0</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:46:12</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>86d888d3db003300b53f341f7c9619cf</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:46:12</sys_updated_on>
+<value>new</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>New</label>
+<language>en</language>
+<name>planned_task_notification</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:27:12</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>dbcade82db507300b53f341f7c961996</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:27:12</sys_updated_on>
+<value>new</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Pending</label>
+<language>en</language>
+<name>sys_schema_change</name>
+<sequence>100</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:43:34</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>5f380413db003300b53f341f7c9619a0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:43:34</sys_updated_on>
+<value>pending</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Pending</label>
+<language>en</language>
+<name>sm_incidentals</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-06-04 18:43:49</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>8d9bb41edbb5b300b53f341f7c961953</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-06-04 18:43:49</sys_updated_on>
+<value>pending</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Pending Push</label>
+<language>en</language>
+<name>sys_sync_change</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:46:12</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>c6d888d3db003300b53f341f7c9619cf</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:46:12</sys_updated_on>
+<value>pending_push</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Processed</label>
+<language>en</language>
+<name>planned_task_notification</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:27:12</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>1fcade82db507300b53f341f7c961996</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:27:12</sys_updated_on>
+<value>processed</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Published</label>
+<language>en</language>
+<name>sc_ic_task_assign_defn_staging</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:23</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>90bd8457db803300b53f341f7c961982</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:23</sys_updated_on>
+<value>published</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Published to Catalog</label>
+<language>en</language>
+<name>catalog_category_request</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:27</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>9dbdc457db803300b53f341f7c96198f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:27</sys_updated_on>
+<value>published</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Queued</label>
+<language>en</language>
+<name>sys_sync_change</name>
+<sequence>3</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:46:12</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>4ad888d3db003300b53f341f7c9619cf</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:46:12</sys_updated_on>
+<value>queued</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Ready</label>
+<language>en</language>
+<name>task_activity</name>
+<sequence>0</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:42:06</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>353e560edbd07300b53f341f7c961947</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:42:06</sys_updated_on>
+<value>ready</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Ready for Publication</label>
+<language>en</language>
+<name>catalog_category_request</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:27</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>5dbdc457db803300b53f341f7c96198f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:27</sys_updated_on>
+<value>ready</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Rejected</label>
+<language>en</language>
+<name>catalog_category_request</name>
+<sequence>4</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:27</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>ddbdc457db803300b53f341f7c96198f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:27</sys_updated_on>
+<value>rejected</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Rejected</label>
+<language>en</language>
+<name>sc_ic_category_request</name>
+<sequence>2</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:21</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>ffad4457db803300b53f341f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:21</sys_updated_on>
+<value>rejected</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Requested</label>
+<language>en</language>
+<name>sc_ic_category_request</name>
+<sequence>0</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:21</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>7fad4457db803300b53f341f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:21</sys_updated_on>
+<value>requested</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Requested</label>
+<language>en</language>
+<name>catalog_category_request</name>
+<sequence>0</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 18:07:27</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>d9bdc457db803300b53f341f7c96198f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 18:07:27</sys_updated_on>
+<value>requested</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Running</label>
+<language>en</language>
+<name>sys_schema_change</name>
+<sequence>200</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-12 17:43:34</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>9f380413db003300b53f341f7c9619a0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-12 17:43:34</sys_updated_on>
+<value>running</value>
+</sys_choice>
+<sys_choice>
+<dependent_value/>
+<element>state</element>
+<hint/>
+<inactive>false</inactive>
+<label>Sent</label>
+<language>en</language>
+<name>task_activity</name>
+<sequence>1</sequence>
+<sys_created_by>system</sys_created_by>
+<sys_created_on>2019-03-21 17:42:06</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>753e560edbd07300b53f341f7c961947</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>system</sys_updated_by>
+<sys_updated_on>2019-03-21 17:42:06</sys_updated_on>
+<value>sent</value>
+</sys_choice>
+</xml>

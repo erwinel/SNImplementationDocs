@@ -1,4 +1,4 @@
-/// <reference path="../SnTypings/ServiceNowLegacy.ts" />
+/// <reference path="../SnTypings/ServiceNowLegacy.d.ts" />
 (function executeRule(current, previous /*null when async*/) {
     try {
         var gr = new GlideRecord('u_caller_vip_lookup_rules');

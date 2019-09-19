@@ -1,4 +1,4 @@
-﻿/// <reference path="../SnTypings/ServiceNowLegacy.ts" />
+﻿/// <reference path="../SnTypings/ServiceNowLegacy.d.ts" />
 declare var current: GlideRecord, previous: GlideRecord;
 
 (function executeRule(current: GlideRecord, previous: GlideRecord /*null when async*/) {
