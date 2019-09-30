@@ -1759,9 +1759,9 @@ var app;
             $scope.$watchGroup(['serviceNowUrlIsValid', 'gitServiceUrlIsValid', 'idpUrlIsValid'], () => {
                 let areValid = $scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid;
                 if (areValid !== $scope.setupParametersAreInvalid)
-                    $scope.setupParametersAreInvalid = areValid;
+                    $scope.setupParametersAreInvalid = !areValid;
             });
-            $scope.setupParametersAreInvalid = $scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid;
+            $scope.setupParametersAreInvalid = !($scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid);
             navConfigLoader.loadTopNavItems().then((items) => { $scope.topNavItems = items; });
             let ctrl = this;
             navConfigLoader.loadCurrentItem().then((currentNavItem) => {

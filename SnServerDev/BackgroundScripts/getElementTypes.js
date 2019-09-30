@@ -1,7 +1,8 @@
 /// <reference path="../SnTypings/ServiceNowLegacy.d.ts" />
+/// <reference path="../SnTypings/ServiceCatalog.d.ts" />
 var getElementTypes;
 (function (getElementTypes) {
-    var tableName = 'cmdb_ci_service';
+    var tableName = 'sc_req_item';
     var typeMap = {
         "integer": "INumberGlideElement", "decimal": "INumberGlideElement", "email": "IStringGlideElement", "ph_number": "IStringGlideElement", "glide_date": "IStringGlideElement",
         "glide_date_time": "IStringGlideElement", "float": "INumberGlideElement", "string": "IStringGlideElement", "boolean": "IBooleanGlideElement", "GUID": "IGUIDGlideElement",
@@ -119,4 +120,11 @@ var getElementTypes;
     else
         gs.warn("Table " + JSON.stringify(tableName) + " not found");
 })(getElementTypes || (getElementTypes = {}));
+var gr = new GlideRecord('sc_req_item');
+gr.addQuery('sys_id', '1c1915dc1b108010cc628515ec4bcb48');
+gr.query();
+gr.next();
+var v = gr.variables.powerpoint;
+gs.info(v.getValue());
+v;
 //# sourceMappingURL=getElementTypes.js.map

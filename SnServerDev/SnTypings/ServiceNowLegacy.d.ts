@@ -1,3 +1,82 @@
+declare abstract class GlideElementVariables { [key: string]: GlideElementVariable; }
+
+declare abstract class GlideElementVariable {
+    getChoiceValue(): string;
+
+    getChoices(dependent?: string): Packages.java.lang.util.IArrayList<Packages.java.lang.String>;
+    /**
+     * Gets the current element descriptor.
+     * @returns {GlideElementDescriptor}
+     * @memberof GlideElementVariable
+     */
+    getED(): GlideElementDescriptor;
+
+    /**
+     * Gets the object label.
+     * @returns {string} The object label.
+     * @memberof GlideElementVariable
+     */
+    getLabel(): string;
+
+    // getModifiedBy(): string;
+
+    /**
+     * Gets the name of the field.
+     * @returns {string} The name of the field.
+     * @memberof GlideElementVariable
+     */
+    getName(): string;
+
+    /**
+     * Determines if a field is null.
+     * @returns {boolean} True if the field is null or an empty string, false if not.
+     * @memberof GlideElementVariable
+     */
+    nil(): boolean;
+
+    /**
+     * Gets the value of the current element.
+     * @returns {string}
+     * @memberof GlideElementVariable
+     */
+    getValue(): string;
+
+    /**
+     * Gets the formatted display value of the field.
+     * @param {number} [maxCharacters] Maximum characters desired
+     * @memberof GlideElementVariable
+     */
+    getDisplayValue(maxCharacters?: number): string;
+
+    /**
+     * Returns the HTML value of a field.
+     * @param {number} [maxChars] Maximum number of characters to return.
+     * @returns {string} HTML value for the field.
+     * @memberof GlideElementVariable
+     */
+    getHTMLValue(maxCharacters?: number): string;
+
+    /**
+     * Gets the name of the table on which the field resides.
+     * @returns {string} Name of the table. The returned value may be different from the table Class that the record is in. See Tables and Classes in the product documentation.
+     * @memberof GlideElementVariable
+     */
+    getTableName(): string;
+
+    /**
+     * Sets the value of a field.
+     * @param {*} value Object value to set the field to.
+     * @memberof GlideElementVariable
+     */
+    setValue(value: any): void;
+
+    /**
+     * Converts the value to a string.
+     * @returns {string} The value as a string
+     * @memberof GlideElementVariable
+     */
+    toString(): string;
+}
 /**
  * GlideElementDescriptor object.
  * @class GlideElementDescriptor
@@ -1685,11 +1764,11 @@ declare interface ItaskFields {
     user_input: GlideElement;
 	/**
 	 * Variables
-	 * @type {GlideElement}
+	 * @type {GlideElementVariables}
 	 * @memberof ItaskFields
 	 * @description Internal type is "variables"
 	 */
-    variables: GlideElement;
+    variables: GlideElementVariables;
 	/**
 	 * Watch list
 	 * @type {GlideElement}
@@ -5706,20 +5785,6 @@ declare class TimeZone {
      */
     useDaylightTime(): boolean;
 }
-
-//declare function j2js(javaObject: Boolean): boolean;
-//declare function j2js(javaObject: String): string;
-//declare function j2js(javaObject: Packages.java.lang.Integer): number
-//declare function j2js(javaObject: Packages.java.lang.Long): number
-//declare function j2js(javaObject: Packages.java.lang.Double): number
-//declare function j2js(javaObject: Packages.java.lang.Byte): number
-//declare function j2js(javaObject: Packages.java.lang.Float): number
-//declare function j2js(javaObject: Packages.java.lang.Short): number
-//declare function j2js(javaObject: Packages.java.lang.Character): number
-//declare function j2js(javaObject: Packages.java.lang.util.List): any[];
-//declare function j2js(javaObject: Packages.java.lang.util.Map): { [key: string]: any; };
-//declare function j2js(javaObject: Packages.java.lang.util.Set): any[];
-//declare function j2js(javaObject: Object): any;
 
 /**
  * GlideSession API.

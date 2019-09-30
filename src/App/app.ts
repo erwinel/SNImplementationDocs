@@ -2730,9 +2730,9 @@ namespace app {
             $scope.$watchGroup(['serviceNowUrlIsValid', 'gitServiceUrlIsValid', 'idpUrlIsValid'], () => {
                 let areValid: boolean = $scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid;
                 if (areValid !== $scope.setupParametersAreInvalid)
-                    $scope.setupParametersAreInvalid = areValid;
+                    $scope.setupParametersAreInvalid = !areValid;
             });
-            $scope.setupParametersAreInvalid = $scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid;
+            $scope.setupParametersAreInvalid = !($scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid);
             navConfigLoader.loadTopNavItems().then((items: navConfigLoaderService.NavigationItem[]) => { $scope.topNavItems = items; });
             let ctrl: appContentController = this;
             navConfigLoader.loadCurrentItem().then((currentNavItem: navConfigLoaderService.NavigationItem) => {

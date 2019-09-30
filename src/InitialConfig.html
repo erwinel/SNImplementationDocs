@@ -41,7 +41,7 @@
                     <div class="card-header p-1" accordion-group-toggle-on-click="adminLogins"><h2 class="card-title mb-0">1. Add Administrative Logins</h2></div>
                     <div class="card-body" accordion-group-content-item="adminLogins">
                         <div class="detail">
-                            Create application administrative accounts in ServiceNow and assign the following roles:
+                            Navigate to <sn-nav-link path-nodes="User Administration/Users" href="/sys_user_list.do" to-nav="true"></sn-nav-link> and create application administrative accounts in ServiceNow, assigning the following roles:
                             <ul>
                                 <li>admin</li>
                                 <li>security_admin</li>
@@ -69,16 +69,21 @@
                     <div class="card-header p-1" accordion-group-toggle-on-click="initialUpdateSet"><h2 class="card-title mb-0">2. Import Initial Update Set</h2></div>
                     <div class="card-body" accordion-group-content-item="initialUpdateSet">
                         <div class="detail">
-                            Load and apply the <a href="downloads/sys_remote_update_set_Initial_Update_Set_Stage_1.xml" target="_blank">sys_remote_update_set_Initial_Update_Set_Stage_1.xml</a> File in the
-                            <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
+                            <ol>
+                                <li>Navigate to <sn-nav-link path-nodes="System Update Sets/Retrieved Update Sets" href="/sys_remote_update_set_list.do?sysparm_fixed_query=sys_class_name%3Dsys_remote_update_set" to-nav="true"></sn-nav-link>.</li>
+                                <li>Click on <a:config-link base="sn" href="/upload.do?sysparm_referring_url=sys_remote_update_set_list.do%3Fsysparm_fixed_query%3Dsys_class_name%3Dsys_remote_update_set&sysparm_target=sys_remote_update_set" to-nav="true"><kbd>Import Update Set from XML</kbd></a:config-link>
+                                    and upload the <a href="downloads/sys_remote_update_set_Initial_Update_Set_Stage_1.xml" target="_blank">sys_remote_update_set_Initial_Update_Set_Stage_1.xml</a> file in the
+                                    <var class="targetName">downloads</var> folder of this documentation</li>
+                                <li><var class="targetName">Preview</var> and <var class="targetName">Commit</var> the loaded update set to prepare the ServiceNow instance.</li>
+                            </ol>
                         </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header p-1"><h3 class="card-title mb-0">Unclass Only</h3></div>
-                        <div class="card-body">
-                            <div class="detail">
-                                Load and apply the <a href="downloads/sys_remote_update_set_Unclass_Setup_Stage_1.xml" target="_blank">sys_remote_update_set_Unclass_Setup_Stage_1.xml</a> File in the
-                                <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
+                        <div class="card">
+                            <div class="card-header p-1"><h3 class="card-title mb-0">Unclass Only</h3></div>
+                            <div class="card-body">
+                                <div class="detail">
+                                    Load and apply the <a href="downloads/sys_remote_update_set_Unclass_Setup_Stage_1.xml" target="_blank">sys_remote_update_set_Unclass_Setup_Stage_1.xml</a> File in the
+                                    <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -93,12 +98,12 @@
                             whether the current instance is for production, UAT, Testing, Development or if it is a sandbox instance.
                         </div>
                         <ol>
-                            <li>
-                                Import the <var class="targetName">util</var> application from <kbd><config-url base="git" href="x_44813_util.git"></config-url></kbd>.
+                            <li>Navigate to <sn-nav-link path-nodes="System Applications/Studio" href="/$studio.do?sysparm_transaction_scope=global&sysparm_nostack=true" to-nav="true"></sn-nav-link> to open the Application Studio</li>
+                            <li>Click on <kbd>Import From Source Control</kbd>, then use the URL <kbd><config-url base="git" href="x_44813_util.git"></config-url></kbd> to import the <var class="targetName">Util</var> application.
                             </li>
-                            <li>Once the application is imported, select the <var>Util</var> application to open it in <var class="targetName">ServiceNow Studio</var>.</li>
-                            <li>Next, open <sn-nav-link path-nodes="Source Control/Switch Branch" /> from the menu at the top of the screen and select the branch named <kbd>V1.1</kbd> in the dropdown.</li>
-                            <li>Select the <var>V1.1</var> branc and click the <kbd>Switch Branch</kbd> button. You will see a message saying that it's uninstalling and then re-installing the application.
+                            <li>Once it is is imported, click on the <kbd>Select Application</kbd> button, then select the <var class="targetName">Util</var> application.</li>
+                            <li>From the menu at the top of the page, select <sn-nav-link path-nodes="Source Control/Switch Branch"></sn-nav-link>.</li>
+                            <li>Select the branch named <var class="targetName">V1.1</var> branch and click the <kbd>Switch Branch</kbd> button. You will see a message saying that it's uninstalling and then re-installing the application.
                                 Once it's done, close out the <var class="targetName">ServiceNow Studio</var> browser tab.</li>
                         </ol>
                     </div>
@@ -140,10 +145,6 @@
                                     <var class="targetName">Proceed in Background</var> to let it run in the background. This script can take several minutes to finish. If
                                     you chose to let it run in the foreground, the logged output that occurred during script execution will be displayed
                                     when it is finished. At the bottom of the output, you should see a line that indicates it has succeeded.
-                                    <br />
-                                    <!-- <button (click)="openFigure('Example of completed fix script', 'images/initialConfig/initialArmyConfigSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-                <img src="images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
-            </button> Refresh the browser page to see the applied color scheme. -->
                                 </li>
                             </ol>
                         </div>
@@ -166,10 +167,6 @@
                             <li>
                                 Scroll to the <var class="targetName">Banner Image</var> property and click on the
                                 <var class="targetName">+</var> icon to upload the banner image.
-                                <!-- <button (click)="openFigure('Example of banner image setting', 'images/initialConfig/bannerImageSetting_lg.png')"
-            class="btn btn-outline-primary mb-2 mr-2">
-            <img src="images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
-        </button> -->
                             </li>
                             <li>
                                 Upload the logo image corresponding to the SDLC stage you previously configured.
@@ -261,72 +258,82 @@
                     <div class="card-header p-1" accordion-group-toggle-on-click="serviceCatalog"><h2 class="card-title mb-0">8. Import Stage 2 Update Sets</h2></div>
                     <div class="card-body" accordion-group-content-item="serviceCatalog">
                         <div class="detail">
-                            Load and apply the update sets from the <a href="downloads/sys_remote_update_set_Initial_Update_Set_Stage_2.xml" target="_blank">sys_remote_update_set_Initial_Update_Set_Stage_2.xml</a>,
+                            Navigate to <sn-nav-link path-nodes="System Update Sets/Retrieved Update Sets" href="/sys_remote_update_set_list.do?sysparm_fixed_query=sys_class_name%3Dsys_remote_update_set" to-nav="true"></sn-nav-link>,
+                            then load and apply the update sets from the
+                            <a href="downloads/sys_remote_update_set_Initial_Update_Set_Stage_2.xml" target="_blank">sys_remote_update_set_Initial_Update_Set_Stage_2.xml</a>,
                             <a href="downloads/sys_remote_update_set_Security_Incident_Setup" target="_blank">sys_remote_update_set_Security_Incident_Setup.xml</a>,
                             <a href="downloads/sys_remote_update_set_EmailConfig_CabWorkbench" target="_blank">sys_remote_update_set_EmailConfig_CabWorkbench.xml</a> and
                             <a href="downloads/sys_remote_update_set_EmailConfig_TargetedCommunications" target="_blank">sys_remote_update_set_EmailConfig_TargetedCommunications.xml</a>
-                            files within the <var class="targetName">downloads</var> folder of this documentation to apply the global update set that sets up the service catalog.
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Known Issues and Warnings</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="detail">
-                                        The following preview problems may occur, in which case, follow the recommended action:
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Remote Update</th>
-                                                    <th scope="col">Description</th>
-                                                    <th scope="col">Recommended Action</th>
-                                                    <th scope="col">Missing Item</th>
-                                                    <th scope="col">Missing Item Table</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row"><em>(various)</em></th>
-                                                    <td>Could not find a record in sys_user for column user referenced in this update</td>
-                                                    <td>Accept remote update</td>
-                                                    <td>glide.maint</td>
-                                                    <td>sys_user</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">sc_category_b0fdfb01932002009ca87a75e57ffbe9</th>
-                                                    <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
-                                                    <td>Accept remote update</td>
-                                                    <td>Default</td>
-                                                    <td>sc_homepage_renderer</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">sc_category_2c0b59874f7b4200086eeed18110c71f</th>
-                                                    <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
-                                                    <td>Accept remote update</td>
-                                                    <td>Default</td>
-                                                    <td>sc_homepage_renderer</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4>Pre-Activation Warning</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="detail">
-                                                    <h5 class="alert-warning">Data Loss Warning</h5>
-                                                    When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
-                                                    It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
-                                                    <ol>
-                                                        <li>Navigate to <sn-nav-link path-nodes="System Policy/Rules/Caller VIP Lookup Rules"></sn-nav-link>.</li>
-                                                        <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
-                                                    </ol>
-                                                </div>
+                            files within the <var class="targetName">downloads</var> folder of this documentation by performing the following steps for each:
+                            <ol>
+                                <li>
+                                    Click on <a:config-link base="sn" href="/upload.do?sysparm_referring_url=sys_remote_update_set_list.do%3Fsysparm_fixed_query%3Dsys_class_name%3Dsys_remote_update_set&sysparm_target=sys_remote_update_set" to-nav="true"><kbd>Import Update Set from XML</kbd></a:config-link>
+                                    and upload the import set xml file.
+                                </li>
+                                <li><var class="targetName">Preview</var> and <var class="targetName">Commit</var> the loaded update set.</li>
+                            </ol>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Known Issues and Warnings</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="detail">
+                                    The following preview problems may occur, in which case, follow the recommended action:
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Remote Update</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Recommended Action</th>
+                                                <th scope="col">Missing Item</th>
+                                                <th scope="col">Missing Item Table</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><em>(various)</em></th>
+                                                <td>Could not find a record in sys_user for column user referenced in this update</td>
+                                                <td>Accept remote update</td>
+                                                <td>glide.maint</td>
+                                                <td>sys_user</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">sc_category_b0fdfb01932002009ca87a75e57ffbe9</th>
+                                                <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
+                                                <td>Accept remote update</td>
+                                                <td>Default</td>
+                                                <td>sc_homepage_renderer</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">sc_category_2c0b59874f7b4200086eeed18110c71f</th>
+                                                <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
+                                                <td>Accept remote update</td>
+                                                <td>Default</td>
+                                                <td>sc_homepage_renderer</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4>Pre-Activation Warning</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="detail">
+                                                <h5 class="alert-warning">Data Loss Warning</h5>
+                                                When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
+                                                It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
+                                                <ol>
+                                                    <li>Navigate to <sn-nav-link path-nodes="System Policy/Rules/Caller VIP Lookup Rules"></sn-nav-link>.</li>
+                                                    <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
+                                                </ol>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
