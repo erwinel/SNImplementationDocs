@@ -91,6 +91,7 @@
     <Compile Include="HtmlPage.cs" />
     <Compile Include="HtmlReaderWriter.cs" />
     <Compile Include="ImageInfo.cs" />
+    <Compile Include="JsTypeDef.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileUriCollection.cs" />
     <Compile Include="FileUriCollection.UriStrings.cs" />

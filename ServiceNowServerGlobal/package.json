@@ -1,0 +1,12 @@
+{
+  "name": "service-now-server-global",
+  "version": "0.0.0",
+  "description": "ServiceNowServerGlobal",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.14"
+  }
+}

@@ -1,4 +1,4 @@
-/// <reference path="SnTypings/ServiceNowLegacy.d.ts" />
+/// <reference path="SnTypings/ServiceNowScoped.d.ts" />
 var x_44813_media_svcs;
 (function (x_44813_media_svcs) {
     var my_multimedia_requests;

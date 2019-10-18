@@ -1,5 +1,6 @@
 /// <reference path="../SnTypings/ServiceNowLegacy.d.ts" />
 /// <reference path="../SnTypings/ServiceCatalog.d.ts" />
+/// <reference path="../SnTypings/j2js.d.ts" />
 var getElementTypes;
 (function (getElementTypes) {
     var tableName = 'sc_req_item';
@@ -115,16 +116,11 @@ var getElementTypes;
         lines.push("}");
         lines.push("declare interface " + recordClassName + " extends " + recordExtends + ", " + fieldsClassName + " { }");
         lines.push("declare interface I" + tableName + "GlideElement extends " + elementExtends + ", " + fieldsClassName + " { }");
+        lines.push("declare type " + tableName + "GlideRecord = I" + recordExtends + "GlideRecord & GlideRecord;");
+        lines.push("declare type " + tableName + "GlideElement = I" + recordExtends + "GlideElement & GlideElement;");
         gs.info(lines.join("\n"));
     }
     else
         gs.warn("Table " + JSON.stringify(tableName) + " not found");
 })(getElementTypes || (getElementTypes = {}));
-var gr = new GlideRecord('sc_req_item');
-gr.addQuery('sys_id', '1c1915dc1b108010cc628515ec4bcb48');
-gr.query();
-gr.next();
-var v = gr.variables.powerpoint;
-gs.info(v.getValue());
-v;
 //# sourceMappingURL=getElementTypes.js.map

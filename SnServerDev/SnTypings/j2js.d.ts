@@ -11,7 +11,7 @@ declare function j2js(javaObject: Packages.java.lang.Byte): number
 declare function j2js(javaObject: Packages.java.lang.Float): number
 declare function j2js(javaObject: Packages.java.lang.Short): number
 declare function j2js(javaObject: Packages.java.lang.Character): number
-declare function j2js(javaObject: Packages.java.lang.util.List): any[];
-declare function j2js(javaObject: Packages.java.lang.util.Map): { [key: string]: any; };
-declare function j2js(javaObject: Packages.java.lang.util.Set): any[];
+declare function j2js(javaObject: Packages.java.util.List): any[];
+declare function j2js(javaObject: Packages.java.util.Map): { [key: string]: any; };
+declare function j2js(javaObject: Packages.java.util.Set): any[];
 declare function j2js(javaObject: Object): any;

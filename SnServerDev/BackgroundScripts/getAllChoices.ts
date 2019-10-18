@@ -4,7 +4,7 @@ namespace getAllChoices {
     var gr: GlideRecord = new GlideRecord(tableName);
     gr.initialize();
     var element: GlideElement = gr.getElement(fieldName);
-    var choices: Packages.java.lang.util.IArrayList<Packages.java.lang.String> = element.getChoices();
+    var choices: Packages.java.util.IArrayList<Packages.java.lang.String> = element.getChoices();
     var values: string[] = [];
     for (var i: number = 0; i < choices.size(); i++)
         values.push(<string><any>choices.get(i));

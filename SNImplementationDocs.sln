@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnUriBuilder", "PowerShell\
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "SnServerDev", "SnServerDev\SnServerDev.njsproj", "{E0AD85D1-6E97-4DFE-BE12-237EC88117CC}"
 EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "SnServerGlobal", "SnServerGlobal\SnServerGlobal.njsproj", "{607E571C-4388-495B-9FF5-20D5C6F0E04B}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "SnServerScopedApps", "SnServerScopedApps\SnServerScopedApps.njsproj", "{5AEFEEB2-7D1D-4250-80CB-801D2AA24C05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{E0AD85D1-6E97-4DFE-BE12-237EC88117CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0AD85D1-6E97-4DFE-BE12-237EC88117CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0AD85D1-6E97-4DFE-BE12-237EC88117CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{607E571C-4388-495B-9FF5-20D5C6F0E04B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{607E571C-4388-495B-9FF5-20D5C6F0E04B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{607E571C-4388-495B-9FF5-20D5C6F0E04B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{607E571C-4388-495B-9FF5-20D5C6F0E04B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AEFEEB2-7D1D-4250-80CB-801D2AA24C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AEFEEB2-7D1D-4250-80CB-801D2AA24C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AEFEEB2-7D1D-4250-80CB-801D2AA24C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AEFEEB2-7D1D-4250-80CB-801D2AA24C05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

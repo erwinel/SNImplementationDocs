@@ -1,0 +1,12 @@
+{
+  "name": "sn-server-scoped-apps",
+  "version": "0.0.0",
+  "description": "SnServerScopedApps",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.14"
+  }
+}

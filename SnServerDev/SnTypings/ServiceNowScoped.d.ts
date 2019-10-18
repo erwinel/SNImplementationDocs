@@ -1,5 +1,27 @@
 /// <reference path="ServiceNowLegacy.d.ts" />
 
+declare namespace sn_sc {
+    export class CatItem {
+        canViewOnSearch(isMobile: boolean): boolean;
+        canViewInDomain(): boolean;
+        getFirstAccessibleCategoryForSearch(catalogId: string): string;
+        getRecordClass(): string;
+        isVisibleServicePortal(): boolean;
+        availableForUserCriteria(action: string, criteriaIDs: string[]): boolean;
+        notAvailableForUserCriteria(action: string, criteriaIDs: string[]): boolean;
+        create(standardUpdate: boolean): void;
+        deleteRecord(standardUpdate: boolean): void;
+        read(columns: any, standardUpdate: boolean): any;
+        setAttributes(attributes: any): void;
+        setCatalogs(catalogs: string): void;
+        setCategories(categories: string): void;
+        setImage(dbImageSysId: string, type: string): void;
+        setTableName(tableName: string): void;
+        setTableName(tableName: string): void;
+        update(columnValues: any, standardUpdate: boolean): any;
+    }
+}
+
 interface IGlideSPScriptable {
     canReadRecord(gr: GlideRecord): boolean;
     canReadRecord(table: string, sysId: GUIDString): boolean;

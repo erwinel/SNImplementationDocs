@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace PageManager
 {
-
     public class FileUri : Uri, IEquatable<FileUri>, IEquatable<Uri>
     {
         /// <summary>

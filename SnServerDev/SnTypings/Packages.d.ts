@@ -846,7 +846,7 @@
                 charValue(): number;
                 /**
                  * Compares two Character objects numerically.
-                 * @param {Packages.java.lang.util.Character} anotherCharacter -
+                 * @param {Packages.java.util.Character} anotherCharacter -
                  * @returns {number}
                  * @memberof {Character}
                  */
@@ -871,744 +871,753 @@
                  */
                 toString(): String;
             }
-            export namespace util {
+        }
+        export namespace util {
+            /**
+             * Java Collection interface.
+             * @export
+             * @interface ICollection<T>
+             */
+            export interface ICollection<T> {
                 /**
-                 * Java Collection interface.
-                 * @export
-                 * @interface ICollection<T>
+                 * Ensures that this collection contains the specified element (optional operation).
+                 * @param {T} e -
+                 * @returns {boolean}
+                 * @memberof {ICollection}
                  */
-                export interface ICollection<T> {
-                    /**
-                     * Ensures that this collection contains the specified element (optional operation).
-                     * @param {T} e -
-                     * @returns {boolean}
-                     * @memberof {ICollection}
-                     */
-                    add(e: T): boolean;
-                    /**
-                     * Adds all of the elements in the specified collection to this collection (optional operation).
-                     * @param {ICollection<T>} c -
-                     * @returns {boolean}
-                     * @memberof {ICollection}
-                     */
-                    addAll(c: ICollection<T>): boolean;
-                    /**
-                     * Removes all of the elements from this collection (optional operation).
-                     * @memberof {ICollection}
-                     */
-                    clear(): void;
-                    /**
-                     * Returns true if this collection contains the specified element.
-                     * @param {T} o -
-                     * @returns {boolean}
-                     * @memberof {ICollection}
-                     */
-                    contains(o: T): boolean;
-                    /**
-                     * Returns true if this collection contains all of the elements in the specified collection.
-                     * @param {ICollection<T>} c -
-                     * @returns {boolean}
-                     * @memberof {ICollection}
-                     */
-                    containsAll(c: ICollection<T>): boolean;
-                    /**
-                     * Returns true if this collection contains no elements.
-                     * @returns {boolean}
-                     * @memberof {ICollection}
-                     */
-                    isEmpty(): boolean;
-                    /**
-                     * Removes a single instance of the specified element from this collection, if it is present (optional operation).
-                     * @param {T} o -
-                     * @returns {boolean}
-                     * @memberof {ICollection}
-                     */
-                    remove(o: T): boolean;
-                    /**
-                     * Removes all of this collection's elements that are also contained in the specified collection (optional operation).
-                     * @param {ICollection<T>} c -
-                     * @returns {boolean}
-                     * @memberof {ICollection}
-                     */
-                    removeAll(c: ICollection<T>): boolean;
-                    /**
-                     * Retains only the elements in this collection that are contained in the specified collection (optional operation).
-                     * @param {ICollection<T>} c -
-                     * @returns {boolean}
-                     * @memberof {ICollection}
-                     */
-                    retainAll(c: ICollection<T>): boolean;
-                    /**
-                     * Returns the number of elements in this collection.
-                     * @returns {number}
-                     * @memberof {ICollection}
-                     */
-                    size(): number;
-                    /**
-                     * Returns an array containing all of the elements in this collection.
-                     * @returns {IJavaArray<T>}
-                     * @memberof {ICollection}
-                     */
-                    toArray(): IJavaArray<T>;
-                    /**
-                     * Returns an array containing all of the elements in this collection; the runtime type of the returned array is that of the specified array.
-                     * @param {JavaArray} a -
-                     * @returns {JavaArray}
-                     * @memberof {ICollection}
-                     */
-                    toArray(a: IJavaArray<T>): IJavaArray<T>;
-                }
-                export interface Collection extends ICollection<any> { }
+                add(e: T): boolean;
                 /**
-                 * Java List interface.
-                 * @export
-                 * @interface IList<T>
+                 * Adds all of the elements in the specified collection to this collection (optional operation).
+                 * @param {ICollection<T>} c -
+                 * @returns {boolean}
+                 * @memberof {ICollection}
                  */
-                export interface IList<T> extends ICollection<T> {
-                    /**
-                     * Ensures that this collection contains the specified element (optional operation).
-                     * @param {T} e -
-                     * @returns {boolean}
-                     * @memberof {IList}
-                     */
-                    add(e: T): boolean;
-                    /**
-                     * Inserts the specified element at the specified position in this list (optional operation).
-                     * @param {number} index -
-                     * @param {T} element -
-                     * @memberof {IList}
-                     */
-                    add(index: number, element: T): void;
-                    /**
-                     * Adds all of the elements in the specified collection to this collection (optional operation).
-                     * @param {ICollection<T>} c -
-                     * @returns {boolean}
-                     * @memberof {IList}
-                     */
-                    addAll(c: ICollection<T>): boolean;
-                    /**
-                     * Inserts all of the elements in the specified collection into this list at the specified position (optional operation).
-                     * @param {number} index -
-                     * @param {ICollection<T>} c -
-                     * @returns {boolean}
-                     * @memberof {IList}
-                     */
-                    addAll(index: number, c: ICollection<T>): boolean;
-                    /**
-                     * Returns the element at the specified position in this list.
-                     * @param {number} index -
-                     * @returns {T}
-                     * @memberof {IList}
-                     */
-                    get(index: number): T;
-                    /**
-                     * Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
-                     * @param {T} o -
-                     * @returns {number}
-                     * @memberof {IList}
-                     */
-                    indexOf(o: T): number;
-                    /**
-                     * Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.
-                     * @param {T} o -
-                     * @returns {number}
-                     * @memberof {IList}
-                     */
-                    lastIndexOf(o: T): number;
-                    /**
-                     * Removes a single instance of the specified element from this collection, if it is present (optional operation).
-                     * @param {T} o -
-                     * @returns {boolean}
-                     * @memberof {IList}
-                     */
-                    remove(o: T): boolean;
-                    /**
-                     * Removes the element at the specified position in this list (optional operation).
-                     * @param {number} index -
-                     * @returns {T}
-                     * @memberof {IList}
-                     */
-                    remove(index: number): T;
-                    /**
-                     * Replaces the element at the specified position in this list with the specified element (optional operation).
-                     * @param {number} index -
-                     * @param {T} element -
-                     * @returns {T}
-                     * @memberof {IList}
-                     */
-                    set(index: number, element: T): T;
-                    /**
-                     * Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
-                     * @param {number} fromIndex -
-                     * @param {number} toIndex -
-                     * @returns {Packages.java.lang.util.List}
-                     * @memberof {IList}
-                     */
-                    subList(fromIndex: number, toIndex: number): IList<T>;
-                }
-                export interface List extends IList<any> { }
+                addAll(c: ICollection<T>): boolean;
                 /**
-                 * Java Set interface.
-                 * @export
-                 * @interface ISet<T>
+                 * Removes all of the elements from this collection (optional operation).
+                 * @memberof {ICollection}
                  */
-                export interface ISet<T> {
-                    /**
-                     * Adds the specified element to this set if it is not already present (optional operation).
-                     * @param {T} e -
-                     * @returns {boolean}
-                     * @memberof {ISet}
-                     */
-                    add(e: T): boolean;
-                    /**
-                     * Adds all of the elements in the specified collection to this set if they're not already present (optional operation).
-                     * @param {ICollection<T>} c -
-                     * @returns {boolean}
-                     * @memberof {ISet}
-                     */
-                    addAll(c: ICollection<T>): boolean;
-                    /**
-                     * Removes all of the elements from this set (optional operation).
-                     * @memberof {ISet}
-                     */
-                    clear(): void;
-                    /**
-                     * Returns true if this set contains the specified element.
-                     * @param {T} o -
-                     * @returns {boolean}
-                     * @memberof {ISet}
-                     */
-                    contains(o: T): boolean;
-                    /**
-                     * Returns true if this set contains all of the elements of the specified collection.
-                     * @param {ICollection<T>} c -
-                     * @returns {boolean}
-                     * @memberof {ISet}
-                     */
-                    containsAll(c: ICollection<T>): boolean;
-                    /**
-                     * Returns true if this set contains no elements.
-                     * @returns {boolean}
-                     * @memberof {ISet}
-                     */
-                    isEmpty(): boolean;
-                    /**
-                     * Removes the specified element from this set if it is present (optional operation).
-                     * @param {T} o -
-                     * @returns {boolean}
-                     * @memberof {ISet}
-                     */
-                    remove(o: T): boolean;
-                    /**
-                     * Removes from this set all of its elements that are contained in the specified collection (optional operation).
-                     * @param {Packages.java.lang.util.Collection} c -
-                     * @returns {boolean}
-                     * @memberof {ISet}
-                     */
-                    removeAll(c: ICollection<T>): boolean;
-                    /**
-                     * Retains only the elements in this set that are contained in the specified collection (optional operation).
-                     * @param {Packages.java.lang.util.Collection} c -
-                     * @returns {boolean}
-                     * @memberof {ISet}
-                     */
-                    retainAll(c: ICollection<T>): boolean;
-                    /**
-                     * Returns the number of elements in this set (its cardinality).
-                     * @returns {number}
-                     * @memberof {ISet}
-                     */
-                    size(): number;
-                    /**
-                     * Returns an array containing all of the elements in this set.
-                     * @returns {IJavaArray<Object>}
-                     * @memberof {ISet}
-                     */
-                    toArray(): IJavaArray<T>;
-                    /**
-                     * Returns an array containing all of the elements in this set; the runtime type of the returned array is that of the specified array.
-                     * @param {IJavaArray<T>} a -
-                     * @returns {IJavaArray<T>}
-                     * @memberof {ISet}
-                     */
-                    toArray(a: IJavaArray<T>): IJavaArray<T>;
-                }
-                export interface Set extends ISet<any> { }
-                export interface IArrayList<T> extends IList<T> {
-                    /**
-                     * Increases the capacity of this ArrayList instance, if necessary, to ensure that it can hold at least the number of elements specified by the minimum capacity argument.
-                     * @param {number} minCapacity -
-                     * @memberof {ArrayList}
-                     */
-                    ensureCapacity(minCapacity: number): void;
-                    /**
-                     * Returns the number of elements in this list.
-                     * @returns {number}
-                     * @memberof {ArrayList}
-                     */
-                    size(): number;
-                    /**
-                     * Trims the capacity of this ArrayList instance to be the list's current size.
-                     * @memberof {ArrayList}
-                     */
-                    trimToSize(): void;
-                }
+                clear(): void;
                 /**
-                 * Java ArrayList class.
-                 * @export
-                 * @class ArrayList
-                 * @extends {Object}
-                 * @implements {List}
+                 * Returns true if this collection contains the specified element.
+                 * @param {T} o -
+                 * @returns {boolean}
+                 * @memberof {ICollection}
                  */
-                export class ArrayList extends Object implements IArrayList<any> {
-                    constructor();
-                    constructor(c: Collection);
-                    constructor(initialCapacity: number);
-                    /**
-                     * Appends the specified element to the end of this list.
-                     * @param {*} e -
-                     * @returns {boolean}
-                     * @memberof {ArrayList}
-                     */
-                    add(e: any): boolean;
-                    /**
-                     * Inserts the specified element at the specified position in this list.
-                     * @param {number} index -
-                     * @param {*} element -
-                     * @memberof {ArrayList}
-                     */
-                    add(index: number, element: any): void;
-                    /**
-                     * Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's Iterator.
-                     * @param {Packages.java.lang.util.Collection<any>} c -
-                     * @returns {boolean}
-                     * @memberof {ArrayList}
-                     */
-                    addAll(c: Collection): boolean;
-                    /**
-                     * Inserts all of the elements in the specified collection into this list, starting at the specified position.
-                     * @param {number} index -
-                     * @param {Collection} c -
-                     * @returns {boolean}
-                     * @memberof {ArrayList}
-                     */
-                    addAll(index: number, c: Collection): boolean;
-                    /**
-                     * Removes all of the elements from this list.
-                     * @memberof {ArrayList}
-                     */
-                    clear(): void;
-                    /**
-                     * Returns a shallow copy of this ArrayList instance.
-                     * @returns {*}
-                     * @memberof {ArrayList}
-                     */
-                    clone(): any;
-                    /**
-                     * Returns true if this list contains the specified element.
-                     * @param {*} o -
-                     * @returns {boolean}
-                     * @memberof {ArrayList}
-                     */
-                    contains(o: any): boolean;
-                    /**
-                     * Returns true if this list contains all of the elements of the specified collection.
-                     * @param {Collection} c -
-                     * @returns {boolean}
-                     * @memberof {ArrayList}
-                     */
-                    containsAll(c: Collection): boolean;
-                    /**
-                     * Increases the capacity of this ArrayList instance, if necessary, to ensure that it can hold at least the number of elements specified by the minimum capacity argument.
-                     * @param {number} minCapacity -
-                     * @memberof {ArrayList}
-                     */
-                    ensureCapacity(minCapacity: number): void;
-                    /**
-                     * Returns the element at the specified position in this list.
-                     * @param {number} index -
-                     * @returns {*}
-                     * @memberof {ArrayList}
-                     */
-                    get(index: number): any;
-                    /**
-                     * Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
-                     * @param {*} o -
-                     * @returns {number}
-                     * @memberof {ArrayList}
-                     */
-                    indexOf(o: any): number;
-                    /**
-                     * Returns true if this list contains no elements.
-                     * @returns {boolean}
-                     * @memberof {ArrayList}
-                     */
-                    isEmpty(): boolean;
-                    /**
-                     * Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.
-                     * @param {*} o -
-                     * @returns {number}
-                     * @memberof {ArrayList}
-                     */
-                    lastIndexOf(o: any): number;
-                    /**
-                     * Removes the element at the specified position in this list.
-                     * @param {number} index -
-                     * @returns {*}
-                     * @memberof {ArrayList}
-                     */
-                    remove(index: number): any;
-                    /**
-                     * Removes the first occurrence of the specified element from this list, if it is present.
-                     * @param {*} o -
-                     * @returns {boolean}
-                     * @memberof {ArrayList}
-                     */
-                    remove(o: any): boolean;
-                    /**
-                     * Removes from this list all of its elements that are contained in the specified collection.
-                     * @param {Collection} c -
-                     * @returns {boolean}
-                     * @memberof {ArrayList}
-                     */
-                    removeAll(c: Collection): boolean;
-                    /**
-                     * Retains only the elements in this list that are contained in the specified collection.
-                     * @param {Collection} c -
-                     * @returns {boolean}
-                     * @memberof {ArrayList}
-                     */
-                    retainAll(c: Collection): boolean;
-                    /**
-                     * Replaces the element at the specified position in this list with the specified element.
-                     * @param {number} index -
-                     * @param {*} element -
-                     * @returns {*}
-                     * @memberof {ArrayList}
-                     */
-                    set(index: number, element: any): any;
-                    /**
-                     * Returns the number of elements in this list.
-                     * @returns {number}
-                     * @memberof {ArrayList}
-                     */
-                    size(): number;
-                    /**
-                     * Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
-                     * @param {number} fromIndex -
-                     * @param {number} toIndex -
-                     * @returns {List}
-                     * @memberof {ArrayList}
-                     */
-                    subList(fromIndex: number, toIndex: number): List;
-                    /**
-                     * Returns an array containing all of the elements in this list in proper sequence (from first to last element).
-                     * @returns {IJavaArray<*>}
-                     * @memberof {ArrayList}
-                     */
-                    toArray(): IJavaArray<any>;
-                    /**
-                     * Returns an array containing all of the elements in this list in proper sequence (from first to last element); the runtime type of the returned array is that of the specified array.
-                     * @param {IJavaArray<*>} a -
-                     * @returns {IJavaArray<*>}
-                     * @memberof {ArrayList}
-                     */
-                    toArray(a: IJavaArray<any>): IJavaArray<any>;
-                    /**
-                     * Trims the capacity of this ArrayList instance to be the list's current size.
-                     * @memberof {ArrayList}
-                     */
-                    trimToSize(): void;
-                }
+                contains(o: T): boolean;
                 /**
-                 * Java Map interface.
-                 * @export
-                 * @interface IMap<K, V>
+                 * Returns true if this collection contains all of the elements in the specified collection.
+                 * @param {ICollection<T>} c -
+                 * @returns {boolean}
+                 * @memberof {ICollection}
                  */
-                export interface IMap<K, V> {
-                    /**
-                     * Removes all of the mappings from this map (optional operation).
-                     * @memberof {IMap}
-                     */
-                    clear(): void;
-                    /**
-                     * Returns true if this map contains a mapping for the specified key.
-                     * @param {K} key -
-                     * @returns {boolean}
-                     * @memberof {IMap}
-                     */
-                    containsKey(key: K): boolean;
-                    /**
-                     * Returns true if this map maps one or more keys to the specified value.
-                     * @param {V} value -
-                     * @returns {boolean}
-                     * @memberof {IMap}
-                     */
-                    containsValue(value: V): boolean;
-                    /**
-                     * Returns a Set view of the mappings contained in this map.
-                     * @returns {Set}
-                     * @memberof {IMap}
-                     */
-                    entrySet(): Set;
-                    /**
-                     * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
-                     * @param {K} key -
-                     * @returns {V}
-                     * @memberof {IMap}
-                     */
-                    get(key: K): V;
-                    /**
-                     * Returns true if this map contains no key-value mappings.
-                     * @returns {boolean}
-                     * @memberof {IMap}
-                     */
-                    isEmpty(): boolean;
-                    /**
-                     * Returns a Set view of the keys contained in this map.
-                     * @returns {ISet<K>}
-                     * @memberof {IMap}
-                     */
-                    keySet(): ISet<K>;
-                    /**
-                     * Associates the specified value with the specified key in this map (optional operation).
-                     * @param {K} key -
-                     * @param {V} value -
-                     * @returns {*}
-                     * @memberof {IMap}
-                     */
-                    put(key: K, value: V): any;
-                    /**
-                     * Copies all of the mappings from the specified map to this map (optional operation).
-                     * @param {IMap<K, V>} m -
-                     * @memberof {IMap}
-                     */
-                    putAll(m: IMap<K, V>): void;
-                    /**
-                     * Removes the mapping for a key from this map if it is present (optional operation).
-                     * @param {K} key -
-                     * @returns {V}
-                     * @memberof {IMap}
-                     */
-                    remove(key: K): V;
-                    /**
-                     * Returns the number of key-value mappings in this map.
-                     * @returns {number}
-                     * @memberof {IMap}
-                     */
-                    size(): number;
-                    /**
-                     * Returns a Collection view of the values contained in this map.
-                     * @returns {ICollection<V>}
-                     * @memberof {IMap}
-                     */
-                    values(): ICollection<V>;
-                }
-                export interface Map extends IMap<any, any> { }
-                export interface IHashMap<K, V> extends IMap<K, V> {
-                    /**
-                     * Returns a shallow copy of this instance: the keys and values themselves are not cloned.
-                     * @returns {IHashMap<K, V>}
-                     * @memberof {HashMap}
-                     */
-                    clone(): IHashMap<K, V>;
-                }
+                containsAll(c: ICollection<T>): boolean;
                 /**
-                 * Java HashMap class.
-                 * @export
-                 * @class HashMap
-                 * @extends {Object}
-                 * @implements {Map}
+                 * Returns true if this collection contains no elements.
+                 * @returns {boolean}
+                 * @memberof {ICollection}
                  */
-                export class HashMap extends Object implements IHashMap<any, any> {
-                    constructor();
-                    constructor(initialCapacity: number);
-                    constructor(initialCapacity: number, loadFactor: number);
-                    constructor(c: Map);
-                    /**
-                     * Removes all of the mappings from this map.
-                     * @memberof {HashMap}
-                     */
-                    clear(): void;
-                    /**
-                     * Returns a shallow copy of this HashMap instance: the keys and values themselves are not cloned.
-                     * @returns {Object}
-                     * @memberof {HashMap}
-                     */
-                    clone(): HashMap;
-                    /**
-                     * Returns true if this map contains a mapping for the specified key.
-                     * @param {Object} key -
-                     * @returns {boolean}
-                     * @memberof {HashMap}
-                     */
-                    containsKey(key: Object): boolean;
-                    /**
-                     * Returns true if this map maps one or more keys to the specified value.
-                     * @param {Object} value -
-                     * @returns {boolean}
-                     * @memberof {HashMap}
-                     */
-                    containsValue(value: Object): boolean;
-                    /**
-                     * Returns a Set view of the mappings contained in this map.
-                     * @returns {Packages.java.lang.util.Set}
-                     * @memberof {HashMap}
-                     */
-                    entrySet(): Packages.java.lang.util.Set;
-                    /**
-                     * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
-                     * @param {Object} key -
-                     * @returns {*}
-                     * @memberof {HashMap}
-                     */
-                    get(key: Object): any;
-                    /**
-                     * Returns true if this map contains no key-value mappings.
-                     * @returns {boolean}
-                     * @memberof {HashMap}
-                     */
-                    isEmpty(): boolean;
-                    /**
-                     * Returns a Set view of the keys contained in this map.
-                     * @returns {Packages.java.lang.util.Set}
-                     * @memberof {HashMap}
-                     */
-                    keySet(): Packages.java.lang.util.Set;
-                    /**
-                     * Associates the specified value with the specified key in this map.
-                     * @param {*} key -
-                     * @param {*} value -
-                     * @returns {*}
-                     * @memberof {HashMap}
-                     */
-                    put(key: any, value: any): any;
-                    /**
-                     * Copies all of the mappings from the specified map to this map.
-                     * @param {Packages.java.lang.util.Map} m -
-                     * @memberof {HashMap}
-                     */
-                    putAll(m: Packages.java.lang.util.Map): void;
-                    /**
-                     * Removes the mapping for the specified key from this map if present.
-                     * @param {Object} key -
-                     * @returns {*}
-                     * @memberof {HashMap}
-                     */
-                    remove(key: Object): any;
-                    /**
-                     * Returns the number of key-value mappings in this map.
-                     * @returns {number}
-                     * @memberof {HashMap}
-                     */
-                    size(): number;
-                    /**
-                     * Returns a Collection view of the values contained in this map.
-                     * @returns {Packages.java.lang.util.Collection}
-                     * @memberof {HashMap}
-                     */
-                    values(): Packages.java.lang.util.Collection;
-                }
-                export interface IHashSet<T> extends ICollection<T>, ISet<T> {
-                    /**
-                     * Returns the number of elements in this set (its cardinality).
-                     * @returns {number}
-                     * @memberof {IHashSet}
-                     */
-                    size(): number;
-                }
+                isEmpty(): boolean;
                 /**
-                 * Java HashSet class.
-                 * @export
-                 * @class HashSet
-                 * @extends {Object}
-                 * @implements {Collection}
-                 * @implements {Set}
+                 * Removes a single instance of the specified element from this collection, if it is present (optional operation).
+                 * @param {T} o -
+                 * @returns {boolean}
+                 * @memberof {ICollection}
                  */
-                export class HashSet extends Object implements IHashSet<any> {
-                    constructor();
-                    constructor(c: Collection);
-                    constructor(initialCapacity: number);
-                    constructor(initialCapacity: number, loadFactor: number);
-                    /**
-                     * Adds the specified element to this set if it is not already present.
-                     * @param {*} e -
-                     * @returns {boolean}
-                     * @memberof {HashSet}
-                     */
-                    add(e: any): boolean;
-                    /**
-                     * Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator (optional operation).
-                     * @param {Collection} c -
-                     * @returns {boolean}
-                     * @memberof {HashSet}
-                     */
-                    addAll(c:Collection): boolean;
-                    /**
-                     * Removes all of the elements from this set.
-                     * @memberof {HashSet}
-                     */
-                    clear(): void;
-                    /**
-                     * Returns a shallow copy of this HashSet instance: the elements themselves are not cloned.
-                     * @returns {HashSet}
-                     * @memberof {HashSet}
-                     */
-                    clone(): HashSet;
-                    /**
-                     * Returns true if this set contains the specified element.
-                     * @param {*} o -
-                     * @returns {boolean}
-                     * @memberof {HashSet}
-                     */
-                    contains(o: any): boolean;
-                    /**
-                     * Returns true if this collection contains all of the elements in the specified collection.
-                     * @param {Collection} c -
-                     * @returns {boolean}
-                     * @memberof {HashSet}
-                     */
-                    containsAll(c: Collection): boolean;
-                    /**
-                     * Returns true if this set contains no elements.
-                     * @returns {boolean}
-                     * @memberof {HashSet}
-                     */
-                    isEmpty(): boolean;
-                    /**
-                     * Removes the specified element from this set if it is present.
-                     * @param {*} o -
-                     * @returns {boolean}
-                     * @memberof {HashSet}
-                     */
-                    remove(o: any): boolean;
-                    /**
-                     * Removes all of this collection's elements that are also contained in the specified collection (optional operation).
-                     * @param {Collection} c -
-                     * @returns {boolean}
-                     * @memberof {HashSet}
-                     */
-                    removeAll(c: Collection): boolean;
-                    /**
-                     * Retains only the elements in this collection that are contained in the specified collection (optional operation).
-                     * @param {Collection} c -
-                     * @returns {boolean}
-                     * @memberof {HashSet}
-                     */
-                    retainAll(c: Collection): boolean;
-                    /**
-                     * Returns the number of elements in this set (its cardinality).
-                     * @returns {number}
-                     * @memberof {HashSet}
-                     */
-                    size(): number;
-                    /**
-                     * Returns an array containing all of the elements in this collection.
-                     * @returns {IJavaArray<*>}
-                     * @memberof {HashSet}
-                     */
-                    toArray(): IJavaArray<any>;
-                }
+                remove(o: T): boolean;
+                /**
+                 * Removes all of this collection's elements that are also contained in the specified collection (optional operation).
+                 * @param {ICollection<T>} c -
+                 * @returns {boolean}
+                 * @memberof {ICollection}
+                 */
+                removeAll(c: ICollection<T>): boolean;
+                /**
+                 * Retains only the elements in this collection that are contained in the specified collection (optional operation).
+                 * @param {ICollection<T>} c -
+                 * @returns {boolean}
+                 * @memberof {ICollection}
+                 */
+                retainAll(c: ICollection<T>): boolean;
+                /**
+                 * Returns the number of elements in this collection.
+                 * @returns {number}
+                 * @memberof {ICollection}
+                 */
+                size(): number;
+                /**
+                 * Returns an array containing all of the elements in this collection.
+                 * @returns {IJavaArray<T>}
+                 * @memberof {ICollection}
+                 */
+                toArray(): IJavaArray<T>;
+                /**
+                 * Returns an array containing all of the elements in this collection; the runtime type of the returned array is that of the specified array.
+                 * @param {JavaArray} a -
+                 * @returns {JavaArray}
+                 * @memberof {ICollection}
+                 */
+                toArray(a: IJavaArray<T>): IJavaArray<T>;
+            }
+            export interface Collection extends ICollection<any> { }
+            /**
+             * Java List interface.
+             * @export
+             * @interface IList<T>
+             */
+            export interface IList<T> extends ICollection<T> {
+                /**
+                 * Ensures that this collection contains the specified element (optional operation).
+                 * @param {T} e -
+                 * @returns {boolean}
+                 * @memberof {IList}
+                 */
+                add(e: T): boolean;
+                /**
+                 * Inserts the specified element at the specified position in this list (optional operation).
+                 * @param {number} index -
+                 * @param {T} element -
+                 * @memberof {IList}
+                 */
+                add(index: number, element: T): void;
+                /**
+                 * Adds all of the elements in the specified collection to this collection (optional operation).
+                 * @param {ICollection<T>} c -
+                 * @returns {boolean}
+                 * @memberof {IList}
+                 */
+                addAll(c: ICollection<T>): boolean;
+                /**
+                 * Inserts all of the elements in the specified collection into this list at the specified position (optional operation).
+                 * @param {number} index -
+                 * @param {ICollection<T>} c -
+                 * @returns {boolean}
+                 * @memberof {IList}
+                 */
+                addAll(index: number, c: ICollection<T>): boolean;
+                /**
+                 * Returns the element at the specified position in this list.
+                 * @param {number} index -
+                 * @returns {T}
+                 * @memberof {IList}
+                 */
+                get(index: number): T;
+                /**
+                 * Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
+                 * @param {T} o -
+                 * @returns {number}
+                 * @memberof {IList}
+                 */
+                indexOf(o: T): number;
+                /**
+                 * Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.
+                 * @param {T} o -
+                 * @returns {number}
+                 * @memberof {IList}
+                 */
+                lastIndexOf(o: T): number;
+                /**
+                 * Removes a single instance of the specified element from this collection, if it is present (optional operation).
+                 * @param {T} o -
+                 * @returns {boolean}
+                 * @memberof {IList}
+                 */
+                remove(o: T): boolean;
+                /**
+                 * Removes the element at the specified position in this list (optional operation).
+                 * @param {number} index -
+                 * @returns {T}
+                 * @memberof {IList}
+                 */
+                remove(index: number): T;
+                /**
+                 * Replaces the element at the specified position in this list with the specified element (optional operation).
+                 * @param {number} index -
+                 * @param {T} element -
+                 * @returns {T}
+                 * @memberof {IList}
+                 */
+                set(index: number, element: T): T;
+                /**
+                 * Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
+                 * @param {number} fromIndex -
+                 * @param {number} toIndex -
+                 * @returns {Packages.java.util.List}
+                 * @memberof {IList}
+                 */
+                subList(fromIndex: number, toIndex: number): IList<T>;
+            }
+            export interface List extends IList<any> { }
+            /**
+             * Java Set interface.
+             * @export
+             * @interface ISet<T>
+             */
+            export interface ISet<T> {
+                /**
+                 * Adds the specified element to this set if it is not already present (optional operation).
+                 * @param {T} e -
+                 * @returns {boolean}
+                 * @memberof {ISet}
+                 */
+                add(e: T): boolean;
+                /**
+                 * Adds all of the elements in the specified collection to this set if they're not already present (optional operation).
+                 * @param {ICollection<T>} c -
+                 * @returns {boolean}
+                 * @memberof {ISet}
+                 */
+                addAll(c: ICollection<T>): boolean;
+                /**
+                 * Removes all of the elements from this set (optional operation).
+                 * @memberof {ISet}
+                 */
+                clear(): void;
+                /**
+                 * Returns true if this set contains the specified element.
+                 * @param {T} o -
+                 * @returns {boolean}
+                 * @memberof {ISet}
+                 */
+                contains(o: T): boolean;
+                /**
+                 * Returns true if this set contains all of the elements of the specified collection.
+                 * @param {ICollection<T>} c -
+                 * @returns {boolean}
+                 * @memberof {ISet}
+                 */
+                containsAll(c: ICollection<T>): boolean;
+                /**
+                 * Returns true if this set contains no elements.
+                 * @returns {boolean}
+                 * @memberof {ISet}
+                 */
+                isEmpty(): boolean;
+                /**
+                 * Removes the specified element from this set if it is present (optional operation).
+                 * @param {T} o -
+                 * @returns {boolean}
+                 * @memberof {ISet}
+                 */
+                remove(o: T): boolean;
+                /**
+                 * Removes from this set all of its elements that are contained in the specified collection (optional operation).
+                 * @param {Packages.java.util.Collection} c -
+                 * @returns {boolean}
+                 * @memberof {ISet}
+                 */
+                removeAll(c: ICollection<T>): boolean;
+                /**
+                 * Retains only the elements in this set that are contained in the specified collection (optional operation).
+                 * @param {Packages.java.util.Collection} c -
+                 * @returns {boolean}
+                 * @memberof {ISet}
+                 */
+                retainAll(c: ICollection<T>): boolean;
+                /**
+                 * Returns the number of elements in this set (its cardinality).
+                 * @returns {number}
+                 * @memberof {ISet}
+                 */
+                size(): number;
+                /**
+                 * Returns an array containing all of the elements in this set.
+                 * @returns {IJavaArray<Object>}
+                 * @memberof {ISet}
+                 */
+                toArray(): IJavaArray<T>;
+                /**
+                 * Returns an array containing all of the elements in this set; the runtime type of the returned array is that of the specified array.
+                 * @param {IJavaArray<T>} a -
+                 * @returns {IJavaArray<T>}
+                 * @memberof {ISet}
+                 */
+                toArray(a: IJavaArray<T>): IJavaArray<T>;
+            }
+            export interface Set extends ISet<any> { }
+            export interface IArrayList<T> extends IList<T> {
+                /**
+                 * Increases the capacity of this ArrayList instance, if necessary, to ensure that it can hold at least the number of elements specified by the minimum capacity argument.
+                 * @param {number} minCapacity -
+                 * @memberof {ArrayList}
+                 */
+                ensureCapacity(minCapacity: number): void;
+                /**
+                 * Returns the number of elements in this list.
+                 * @returns {number}
+                 * @memberof {ArrayList}
+                 */
+                size(): number;
+                /**
+                 * Trims the capacity of this ArrayList instance to be the list's current size.
+                 * @memberof {ArrayList}
+                 */
+                trimToSize(): void;
+            }
+            /**
+             * Java ArrayList class.
+             * @export
+             * @class ArrayList
+             * @extends {Object}
+             * @implements {List}
+             */
+            export class ArrayList extends Object implements IArrayList<any> {
+                constructor();
+                constructor(c: Collection);
+                constructor(initialCapacity: number);
+                /**
+                 * Appends the specified element to the end of this list.
+                 * @param {*} e -
+                 * @returns {boolean}
+                 * @memberof {ArrayList}
+                 */
+                add(e: any): boolean;
+                /**
+                 * Inserts the specified element at the specified position in this list.
+                 * @param {number} index -
+                 * @param {*} element -
+                 * @memberof {ArrayList}
+                 */
+                add(index: number, element: any): void;
+                /**
+                 * Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's Iterator.
+                 * @param {Packages.java.util.Collection<any>} c -
+                 * @returns {boolean}
+                 * @memberof {ArrayList}
+                 */
+                addAll(c: Collection): boolean;
+                /**
+                 * Inserts all of the elements in the specified collection into this list, starting at the specified position.
+                 * @param {number} index -
+                 * @param {Collection} c -
+                 * @returns {boolean}
+                 * @memberof {ArrayList}
+                 */
+                addAll(index: number, c: Collection): boolean;
+                /**
+                 * Removes all of the elements from this list.
+                 * @memberof {ArrayList}
+                 */
+                clear(): void;
+                /**
+                 * Returns a shallow copy of this ArrayList instance.
+                 * @returns {*}
+                 * @memberof {ArrayList}
+                 */
+                clone(): any;
+                /**
+                 * Returns true if this list contains the specified element.
+                 * @param {*} o -
+                 * @returns {boolean}
+                 * @memberof {ArrayList}
+                 */
+                contains(o: any): boolean;
+                /**
+                 * Returns true if this list contains all of the elements of the specified collection.
+                 * @param {Collection} c -
+                 * @returns {boolean}
+                 * @memberof {ArrayList}
+                 */
+                containsAll(c: Collection): boolean;
+                /**
+                 * Increases the capacity of this ArrayList instance, if necessary, to ensure that it can hold at least the number of elements specified by the minimum capacity argument.
+                 * @param {number} minCapacity -
+                 * @memberof {ArrayList}
+                 */
+                ensureCapacity(minCapacity: number): void;
+                /**
+                 * Returns the element at the specified position in this list.
+                 * @param {number} index -
+                 * @returns {*}
+                 * @memberof {ArrayList}
+                 */
+                get(index: number): any;
+                /**
+                 * Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
+                 * @param {*} o -
+                 * @returns {number}
+                 * @memberof {ArrayList}
+                 */
+                indexOf(o: any): number;
+                /**
+                 * Returns true if this list contains no elements.
+                 * @returns {boolean}
+                 * @memberof {ArrayList}
+                 */
+                isEmpty(): boolean;
+                /**
+                 * Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.
+                 * @param {*} o -
+                 * @returns {number}
+                 * @memberof {ArrayList}
+                 */
+                lastIndexOf(o: any): number;
+                /**
+                 * Removes the element at the specified position in this list.
+                 * @param {number} index -
+                 * @returns {*}
+                 * @memberof {ArrayList}
+                 */
+                remove(index: number): any;
+                /**
+                 * Removes the first occurrence of the specified element from this list, if it is present.
+                 * @param {*} o -
+                 * @returns {boolean}
+                 * @memberof {ArrayList}
+                 */
+                remove(o: any): boolean;
+                /**
+                 * Removes from this list all of its elements that are contained in the specified collection.
+                 * @param {Collection} c -
+                 * @returns {boolean}
+                 * @memberof {ArrayList}
+                 */
+                removeAll(c: Collection): boolean;
+                /**
+                 * Retains only the elements in this list that are contained in the specified collection.
+                 * @param {Collection} c -
+                 * @returns {boolean}
+                 * @memberof {ArrayList}
+                 */
+                retainAll(c: Collection): boolean;
+                /**
+                 * Replaces the element at the specified position in this list with the specified element.
+                 * @param {number} index -
+                 * @param {*} element -
+                 * @returns {*}
+                 * @memberof {ArrayList}
+                 */
+                set(index: number, element: any): any;
+                /**
+                 * Returns the number of elements in this list.
+                 * @returns {number}
+                 * @memberof {ArrayList}
+                 */
+                size(): number;
+                /**
+                 * Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
+                 * @param {number} fromIndex -
+                 * @param {number} toIndex -
+                 * @returns {List}
+                 * @memberof {ArrayList}
+                 */
+                subList(fromIndex: number, toIndex: number): List;
+                /**
+                 * Returns an array containing all of the elements in this list in proper sequence (from first to last element).
+                 * @returns {IJavaArray<*>}
+                 * @memberof {ArrayList}
+                 */
+                toArray(): IJavaArray<any>;
+                /**
+                 * Returns an array containing all of the elements in this list in proper sequence (from first to last element); the runtime type of the returned array is that of the specified array.
+                 * @param {IJavaArray<*>} a -
+                 * @returns {IJavaArray<*>}
+                 * @memberof {ArrayList}
+                 */
+                toArray(a: IJavaArray<any>): IJavaArray<any>;
+                /**
+                 * Trims the capacity of this ArrayList instance to be the list's current size.
+                 * @memberof {ArrayList}
+                 */
+                trimToSize(): void;
+            }
+            /**
+             * Java Map interface.
+             * @export
+             * @interface IMap<K, V>
+             */
+            export interface IMap<K, V> {
+                /**
+                 * Removes all of the mappings from this map (optional operation).
+                 * @memberof {IMap}
+                 */
+                clear(): void;
+                /**
+                 * Returns true if this map contains a mapping for the specified key.
+                 * @param {K} key -
+                 * @returns {boolean}
+                 * @memberof {IMap}
+                 */
+                containsKey(key: K): boolean;
+                /**
+                 * Returns true if this map maps one or more keys to the specified value.
+                 * @param {V} value -
+                 * @returns {boolean}
+                 * @memberof {IMap}
+                 */
+                containsValue(value: V): boolean;
+                /**
+                 * Returns a Set view of the mappings contained in this map.
+                 * @returns {Set}
+                 * @memberof {IMap}
+                 */
+                entrySet(): Set;
+                /**
+                 * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
+                 * @param {K} key -
+                 * @returns {V}
+                 * @memberof {IMap}
+                 */
+                get(key: K): V;
+                /**
+                 * Returns true if this map contains no key-value mappings.
+                 * @returns {boolean}
+                 * @memberof {IMap}
+                 */
+                isEmpty(): boolean;
+                /**
+                 * Returns a Set view of the keys contained in this map.
+                 * @returns {ISet<K>}
+                 * @memberof {IMap}
+                 */
+                keySet(): ISet<K>;
+                /**
+                 * Associates the specified value with the specified key in this map (optional operation).
+                 * @param {K} key -
+                 * @param {V} value -
+                 * @returns {*}
+                 * @memberof {IMap}
+                 */
+                put(key: K, value: V): any;
+                /**
+                 * Copies all of the mappings from the specified map to this map (optional operation).
+                 * @param {IMap<K, V>} m -
+                 * @memberof {IMap}
+                 */
+                putAll(m: IMap<K, V>): void;
+                /**
+                 * Removes the mapping for a key from this map if it is present (optional operation).
+                 * @param {K} key -
+                 * @returns {V}
+                 * @memberof {IMap}
+                 */
+                remove(key: K): V;
+                /**
+                 * Returns the number of key-value mappings in this map.
+                 * @returns {number}
+                 * @memberof {IMap}
+                 */
+                size(): number;
+                /**
+                 * Returns a Collection view of the values contained in this map.
+                 * @returns {ICollection<V>}
+                 * @memberof {IMap}
+                 */
+                values(): ICollection<V>;
+            }
+            export interface Map extends IMap<any, any> { }
+            export interface IHashMap<K, V> extends IMap<K, V> {
+                /**
+                 * Returns a shallow copy of this instance: the keys and values themselves are not cloned.
+                 * @returns {IHashMap<K, V>}
+                 * @memberof {HashMap}
+                 */
+                clone(): IHashMap<K, V>;
+            }
+            /**
+             * Java HashMap class.
+             * @export
+             * @class HashMap
+             * @extends {Object}
+             * @implements {Map}
+             */
+            export class HashMap extends Object implements IHashMap<any, any> {
+                constructor();
+                constructor(initialCapacity: number);
+                constructor(initialCapacity: number, loadFactor: number);
+                constructor(c: Map);
+                /**
+                 * Removes all of the mappings from this map.
+                 * @memberof {HashMap}
+                 */
+                clear(): void;
+                /**
+                 * Returns a shallow copy of this HashMap instance: the keys and values themselves are not cloned.
+                 * @returns {Object}
+                 * @memberof {HashMap}
+                 */
+                clone(): HashMap;
+                /**
+                 * Returns true if this map contains a mapping for the specified key.
+                 * @param {Object} key -
+                 * @returns {boolean}
+                 * @memberof {HashMap}
+                 */
+                containsKey(key: Object): boolean;
+                /**
+                 * Returns true if this map maps one or more keys to the specified value.
+                 * @param {Object} value -
+                 * @returns {boolean}
+                 * @memberof {HashMap}
+                 */
+                containsValue(value: Object): boolean;
+                /**
+                 * Returns a Set view of the mappings contained in this map.
+                 * @returns {Packages.java.util.Set}
+                 * @memberof {HashMap}
+                 */
+                entrySet(): Packages.java.util.Set;
+                /**
+                 * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
+                 * @param {Object} key -
+                 * @returns {*}
+                 * @memberof {HashMap}
+                 */
+                get(key: Object): any;
+                /**
+                 * Returns true if this map contains no key-value mappings.
+                 * @returns {boolean}
+                 * @memberof {HashMap}
+                 */
+                isEmpty(): boolean;
+                /**
+                 * Returns a Set view of the keys contained in this map.
+                 * @returns {Packages.java.util.Set}
+                 * @memberof {HashMap}
+                 */
+                keySet(): Packages.java.util.Set;
+                /**
+                 * Associates the specified value with the specified key in this map.
+                 * @param {*} key -
+                 * @param {*} value -
+                 * @returns {*}
+                 * @memberof {HashMap}
+                 */
+                put(key: any, value: any): any;
+                /**
+                 * Copies all of the mappings from the specified map to this map.
+                 * @param {Packages.java.util.Map} m -
+                 * @memberof {HashMap}
+                 */
+                putAll(m: Packages.java.util.Map): void;
+                /**
+                 * Removes the mapping for the specified key from this map if present.
+                 * @param {Object} key -
+                 * @returns {*}
+                 * @memberof {HashMap}
+                 */
+                remove(key: Object): any;
+                /**
+                 * Returns the number of key-value mappings in this map.
+                 * @returns {number}
+                 * @memberof {HashMap}
+                 */
+                size(): number;
+                /**
+                 * Returns a Collection view of the values contained in this map.
+                 * @returns {Packages.java.util.Collection}
+                 * @memberof {HashMap}
+                 */
+                values(): Packages.java.util.Collection;
+            }
+            export interface IHashSet<T> extends ICollection<T>, ISet<T> {
+                /**
+                 * Returns the number of elements in this set (its cardinality).
+                 * @returns {number}
+                 * @memberof {IHashSet}
+                 */
+                size(): number;
+            }
+            /**
+             * Java HashSet class.
+             * @export
+             * @class HashSet
+             * @extends {Object}
+             * @implements {Collection}
+             * @implements {Set}
+             */
+            export class HashSet extends Object implements IHashSet<any> {
+                constructor();
+                constructor(c: Collection);
+                constructor(initialCapacity: number);
+                constructor(initialCapacity: number, loadFactor: number);
+                /**
+                 * Adds the specified element to this set if it is not already present.
+                 * @param {*} e -
+                 * @returns {boolean}
+                 * @memberof {HashSet}
+                 */
+                add(e: any): boolean;
+                /**
+                 * Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator (optional operation).
+                 * @param {Collection} c -
+                 * @returns {boolean}
+                 * @memberof {HashSet}
+                 */
+                addAll(c: Collection): boolean;
+                /**
+                 * Removes all of the elements from this set.
+                 * @memberof {HashSet}
+                 */
+                clear(): void;
+                /**
+                 * Returns a shallow copy of this HashSet instance: the elements themselves are not cloned.
+                 * @returns {HashSet}
+                 * @memberof {HashSet}
+                 */
+                clone(): HashSet;
+                /**
+                 * Returns true if this set contains the specified element.
+                 * @param {*} o -
+                 * @returns {boolean}
+                 * @memberof {HashSet}
+                 */
+                contains(o: any): boolean;
+                /**
+                 * Returns true if this collection contains all of the elements in the specified collection.
+                 * @param {Collection} c -
+                 * @returns {boolean}
+                 * @memberof {HashSet}
+                 */
+                containsAll(c: Collection): boolean;
+                /**
+                 * Returns true if this set contains no elements.
+                 * @returns {boolean}
+                 * @memberof {HashSet}
+                 */
+                isEmpty(): boolean;
+                /**
+                 * Removes the specified element from this set if it is present.
+                 * @param {*} o -
+                 * @returns {boolean}
+                 * @memberof {HashSet}
+                 */
+                remove(o: any): boolean;
+                /**
+                 * Removes all of this collection's elements that are also contained in the specified collection (optional operation).
+                 * @param {Collection} c -
+                 * @returns {boolean}
+                 * @memberof {HashSet}
+                 */
+                removeAll(c: Collection): boolean;
+                /**
+                 * Retains only the elements in this collection that are contained in the specified collection (optional operation).
+                 * @param {Collection} c -
+                 * @returns {boolean}
+                 * @memberof {HashSet}
+                 */
+                retainAll(c: Collection): boolean;
+                /**
+                 * Returns the number of elements in this set (its cardinality).
+                 * @returns {number}
+                 * @memberof {HashSet}
+                 */
+                size(): number;
+                /**
+                 * Returns an array containing all of the elements in this collection.
+                 * @returns {IJavaArray<*>}
+                 * @memberof {HashSet}
+                 */
+                toArray(): IJavaArray<any>;
+            }
+        }
+    }
+}
+
+declare namespace com {
+    export namespace glide {
+        export namespace script {
+            export abstract class FieldGlideDescriptor extends GlideElement {
             }
         }
     }
@@ -1620,8 +1629,9 @@
  * @interface IJavaArray
  * @template T
  */
-declare interface IJavaArray<T> {
-    length: number;
+declare interface IJavaArray<T> extends Packages.java.util.IArrayList<T> {
+    readonly empty: boolean;
+    clone(): IJavaArray<T>;
     [index: number]: T;
 }
 
@@ -1631,7 +1641,4 @@ declare interface IJavaArray<T> {
  * @class JavaArray
  * @implements {IJavaArray<any>}
  */
-declare class JavaArray implements IJavaArray<any> {
-    length: number;
-    [index: number]: any;
-}
+declare type JavaArray = IJavaArray<any>;

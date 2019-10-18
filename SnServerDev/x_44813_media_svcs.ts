@@ -1,4 +1,4 @@
-/// <reference path="SnTypings/ServiceNowLegacy.d.ts" />
+/// <reference path="SnTypings/ServiceNowScoped.d.ts" />
 
 namespace x_44813_media_svcs {
     namespace my_multimedia_requests {
@@ -6,7 +6,6 @@ namespace x_44813_media_svcs {
 
         }
         interface IClientScriptInput {
-
         }
         
         declare var $sp: IGlideSPScriptable;

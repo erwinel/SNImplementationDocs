@@ -3,7 +3,7 @@ declare abstract class GlideElementVariables { [key: string]: GlideElementVariab
 declare abstract class GlideElementVariable {
     getChoiceValue(): string;
 
-    getChoices(dependent?: string): Packages.java.lang.util.IArrayList<Packages.java.lang.String>;
+    getChoices(dependent?: string): Packages.java.util.IArrayList<Packages.java.lang.String>;
     /**
      * Gets the current element descriptor.
      * @returns {GlideElementDescriptor}
@@ -163,7 +163,7 @@ declare interface IGlideElement {
 
     getChoiceValue(): string;
     
-    getChoices(dependent?: string): Packages.java.lang.util.IArrayList<Packages.java.lang.String>;
+    getChoices(dependent?: string): Packages.java.util.IArrayList<Packages.java.lang.String>;
     
     getDecryptedValue(): string;
     
@@ -441,7 +441,7 @@ declare abstract class GlideElement implements IGlideElement {
 
     getChoiceValue(): string;
 
-    getChoices(dependent?: string): Packages.java.lang.util.IArrayList<Packages.java.lang.String>;
+    getChoices(dependent?: string): Packages.java.util.IArrayList<Packages.java.lang.String>;
 
     getDecryptedValue(): string;
 
@@ -548,6 +548,70 @@ declare abstract class GlideElement implements IGlideElement {
      * @memberof GlideElement
      */
     toString(): string;
+}
+
+declare abstract class GlideElementGlideVar extends GlideElement {
+
+}
+
+declare abstract class GlideElementHierarchicalVariables extends GlideElement {
+
+}
+
+declare abstract class GlideElementGlideObject extends GlideElement {
+
+}
+
+declare abstract class GlideElementDomainId extends GlideElement {
+
+}
+
+declare abstract class GlideElementPassword extends GlideElement {
+
+}
+
+declare abstract class GlideElementTranslatedText extends GlideElement {
+
+}
+
+declare abstract class GlideElementSysClassName extends GlideElement {
+
+}
+
+declare abstract class GlideElementTranslatedHTML extends GlideElement {
+
+}
+
+declare abstract class GlideElementUserImage extends GlideElement {
+
+}
+
+declare abstract class GlideElementBoolean extends GlideElement {
+
+}
+
+declare abstract class GlideElementRelatedTags extends GlideElement {
+    
+}
+
+declare abstract class GlideElementNumeric extends GlideElement {
+
+}
+
+declare abstract class GlideElementCurrency extends GlideElement {
+
+}
+
+declare abstract class GlideElementPrice extends GlideElement {
+
+}
+
+declare abstract class GlideElementScript extends GlideElement {
+
+}
+
+declare abstract class GlideElementReference extends GlideElement {
+
 }
 
 declare abstract class GlideReferenceElement extends GlideElement implements IGlideRefElement<GlideRecord> {
@@ -1843,6 +1907,19 @@ declare interface ItaskGlideRecordBase extends IGlideRecord, ItaskFields { }
  */
 declare interface ItaskGlideRecord extends ItaskGlideRecordBase, IGenericGlideRecord { }
 
+declare interface ItaskFieldsV<TVariables extends GlideElementVariables> extends ItaskFields {
+	/**
+	 * Variables
+	 * @type {TVariables}
+	 * @memberof ItaskFieldsV<TVariables>
+	 */
+    variables: TVariables;
+}
+declare interface ItaskGlideElementBaseV<TVariables extends GlideElementVariables, TBase extends ItaskGlideRecordBase> extends IGlideRefElement<TBase>, ItaskFieldsV<TVariables> { }
+declare interface ItaskGlideElementV<TVariables extends GlideElementVariables> extends ItaskGlideElementBaseV<TVariables, ItaskGlideRecord> { }
+declare interface ItaskGlideRecordBaseV<TVariables extends GlideElementVariables> extends IGlideRecord, ItaskFieldsV<TVariables> { }
+declare interface ItaskGlideRecordV<TVariables extends GlideElementVariables> extends ItaskGlideRecordBaseV<TVariables>, IGenericGlideRecord { }
+
 /**
  * GlideElement values from the Package table.
  * @interface Isys_packageFields
@@ -2335,6 +2412,8 @@ declare interface IincidentFields extends ItaskFields {
 }
 declare interface IincidentGlideRecord extends ItaskGlideRecordBase, IincidentFields { }
 declare interface IincidentGlideElement extends ItaskGlideElementBase<IincidentGlideRecord>, IincidentFields { }
+declare type incidentGlideRecord = IincidentGlideRecord & GlideRecord;
+declare type incidentGlideElement = IincidentGlideElement & GlideElement;
 
 declare type ChangeCloseCode = "successful" | "successful_issues" | "unsuccessful";
 
@@ -3973,7 +4052,7 @@ declare interface Iv_pluginGlideRecord extends IGlideRecord {
  */
 declare interface IGenericGlideRecord extends IGlideRecord {
     [key: string]: any;
-    getFields(): Packages.java.lang.util.ArrayList;
+    getFields(): Packages.java.util.ArrayList;
 }
 
 /**
@@ -4023,7 +4102,7 @@ declare class GlideRecord implements IGenericGlideRecord {
     sys_updated_on: IStringGlideElement;
     
     [key: string]: any;
-    getFields(): Packages.java.lang.util.ArrayList;
+    getFields(): Packages.java.util.ArrayList;
     constructor(tableName: string);
 
     /**
@@ -4582,7 +4661,7 @@ declare class ArrayUtil {
     contains<T>(array: T[], element: T): boolean;
     convertArray(a: any): any[];
     diff<T>(parent: T[], child: T[]): T[];
-    ensureArray<T>(o: any): Packages.java.lang.util.Collection | Packages.java.lang.util.Set | any[];
+    ensureArray<T>(o: any): Packages.java.util.Collection | Packages.java.util.Set | any[];
     indexOf<T>(array: T[], element: T, startIndex?: number): number;
     intersect<T>(a: T[], b: T[]): T[];
     union<T>(a: T[], b: T[]): T[];
@@ -6046,17 +6125,17 @@ declare abstract class GlideSystem {
      * @param {string} name Name of the event being queued.
      * @param {GlideRecord} instance A GlideRecord object, such as "current".
      * @param {string|null|undefined} parm1 Saved with the instance if specified.
-     * @param {string} parm3 The name of the queue
+     * @param {string} parm2 The name of the queue
      */
-    eventQueue(name: string, instance: GlideRecord, parm1: string | null | undefined, parm3: string): void;
+    eventQueue(name: string, instance: GlideRecord, parm1: string | null | undefined, parm2: string): void;
 
     /**
      * Queues an event for the event manager.
      * @param {string} name - Name of the event being queued.
      * @param {GlideRecord} instance - A GlideRecord object, such as "current".
-     * @param {string} parm3 - The name of the queue
+     * @param {string} parm1 - The name of the queue
      */
-    eventQueue(name: string, instance: GlideRecord, parm3: string): void;
+    eventQueue(name: string, instance: GlideRecord, parm1: string): void;
 
     /**
      * Alerts the user if event was not scheduled. Does nothing if the event is scheduled.

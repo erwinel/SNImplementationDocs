@@ -124,16 +124,9 @@ namespace getElementTypes {
         lines.push("}");
         lines.push("declare interface " + recordClassName + " extends " + recordExtends + ", " + fieldsClassName + " { }");
         lines.push("declare interface I" + tableName + "GlideElement extends " + elementExtends + ", " + fieldsClassName + " { }");
+        lines.push("declare type " + tableName + "GlideRecord = I" + recordExtends + "GlideRecord & GlideRecord;");
+        lines.push("declare type " + tableName + "GlideElement = I" + recordExtends + "GlideElement & GlideElement;");
         gs.info(lines.join("\n"));
     } else
         gs.warn("Table " + JSON.stringify(tableName) + " not found");
 }
-
-gs.include("j2js");
-var gr: Isc_req_itemGlideRecord = <Isc_req_itemGlideRecord><any>new GlideRecord('sc_req_item');
-gr.addQuery('sys_id', '1c1915dc1b108010cc628515ec4bcb48');
-gr.query();
-gr.next();
-var v = gr.variables.powerpoint;
-gs.info(j2js();
-v;

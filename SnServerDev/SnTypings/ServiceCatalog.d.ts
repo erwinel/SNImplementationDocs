@@ -44,7 +44,7 @@ declare interface Isc_categoryFields extends Isys_metadataFields {
 	 * @memberof Isc_categoryFields
 	 * @description Reference to Homepage Category Renderer (IGlideRefElement<Isc_homepage_rendererGlideRecord>)
 	 */
-    homepage_renderer: Isc_homepage_rendererGlideElement;
+    homepage_renderer: GlideReferenceElement;
 	/**
 	 * Icon
 	 * @type {GlideElement}
@@ -92,7 +92,7 @@ declare interface Isc_categoryFields extends Isys_metadataFields {
 	 * @memberof Isc_categoryFields
 	 * @description Reference to Module (IGlideRefElement<Isys_app_moduleGlideRecord>)
 	 */
-    module: Isys_app_moduleGlideElement;
+    module: GlideReferenceElement;
 	/**
 	 * Order
 	 * @type {INumberGlideElement}
@@ -211,6 +211,7 @@ declare interface Isc_catalogFields extends Isys_metadataFields {
 	 */
     title: IStringGlideElement;
 }
+
 /**
  * GlideRecord that contains values from a record in the Catalog table.
  * @interface Isc_catalogGlideRecord
@@ -531,12 +532,6 @@ declare interface Isc_cat_itemFields extends Isys_metadataFields {
 	 */
     start_closed: IBooleanGlideElement;
 	/**
-	 * Sys ID
-	 * @type {IGUIDGlideElement}
-	 * @memberof Isc_cat_itemFields
-	 */
-    sys_id: IGUIDGlideElement;
-	/**
 	 * Template
 	 * @type {GlideReferenceElement}
 	 * @memberof Isc_cat_itemFields
@@ -589,6 +584,7 @@ declare interface Isc_cat_itemFields extends Isys_metadataFields {
 	 */
     workflow: GlideReferenceElement;
 }
+
 /**
  * GlideRecord that contains values from a record in the Catalog Item table.
  * @interface Isc_cat_itemGlideRecord
@@ -603,6 +599,7 @@ declare interface Isc_cat_itemGlideRecord extends Isys_metadataGlideRecordBase, 
 declare interface Isc_cat_itemGlideElement extends Isys_metadataGlideElementBase<Isc_cat_itemGlideRecord>, Isc_cat_itemFields { }
 
 declare type IRequestState = "requested" | "in_process" | "closed_complete" | "closed_incomplete" | "closed_cancelled" | "closed_rejected" | "closed_skipped";
+
 /**
  * GlideElement values from the Request table.
  * @interface Isc_requestFields
@@ -688,6 +685,8 @@ declare interface Isc_requestGlideRecord extends ItaskGlideRecordBase, Isc_reque
  * @extends {ItaskGlideElementBase<Isc_requestGlideRecord>}
  */
 declare interface Isc_requestGlideElement extends ItaskGlideElementBase<Isc_requestGlideRecord>, Isc_requestFields { }
+declare type sc_requestGlideRecord = Isc_requestGlideRecord & GlideRecord;
+declare type sc_requestGlideElement = Isc_requestGlideElement & GlideElement;
 
 /**
  * GlideElement values from the Requested Item table.
@@ -809,9 +808,8 @@ declare interface Isc_req_itemFields extends ItaskFields {
 	 * @memberof Isc_req_itemFields
 	 * @description Internal type is workflow;
 	 */
-    stage: GlideElement
+    stage: GlideElement;
 }
-
 /**
  * GlideRecord that contains values from a record in the Requested Item table.
  * @interface Isc_req_itemGlideRecord
@@ -824,7 +822,170 @@ declare interface Isc_req_itemGlideRecord extends ItaskGlideRecordBase, Isc_req_
  * @extends {ItaskGlideElementBase<Isc_req_itemGlideRecord>}
  */
 declare interface Isc_req_itemGlideElement extends ItaskGlideElementBase<Isc_req_itemGlideRecord>, Isc_req_itemFields { }
+declare type sc_req_itemGlideRecord = Isc_req_itemGlideRecord & GlideRecord;
+declare type sc_req_itemGlideElement = Isc_req_itemGlideElement & GlideElement;
 
+declare interface Isc_req_itemFieldsV<TVariables extends GlideElementVariables> extends ItaskFieldsV<TVariables> {
+	/**
+	 * Backordered
+	 * @type {IBooleanGlideElement}
+	 * @memberof Isc_req_itemFields
+	 */
+    backordered: IBooleanGlideElement;
+	/**
+	 * Billable
+	 * @type {IBooleanGlideElement}
+	 * @memberof Isc_req_itemFields
+	 */
+    billable: IBooleanGlideElement;
+	/**
+	 * Item
+	 * @type {Isc_cat_itemGlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Reference to Catalog Item (IGlideRefElement<Isc_cat_itemGlideRecord>)
+	 */
+    cat_item: Isc_cat_itemGlideElement;
+	/**
+	 * Configuration item
+	 * @type {Icmdb_ciGlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Reference to Configuration Item (IGlideRefElement<Icmdb_ciGlideRecord>)
+	 */
+    configuration_item: Icmdb_ciGlideElement;
+	/**
+	 * Context
+	 * @type {GlideReferenceElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Reference to Workflow context (IGlideRefElement<Iwf_contextGlideRecord>)
+	 */
+    context: GlideReferenceElement;
+	/**
+	 * Estimated delivery
+	 * @type {IStringGlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Internal type is glide_date_time
+	 */
+    estimated_delivery: IStringGlideElement;
+	/**
+	 * Order Guide
+	 * @type {GlideReferenceElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Reference to Order guide (IGlideRefElement<Isc_cat_item_guideGlideRecord>)
+	 */
+    order_guide: GlideReferenceElement;
+	/**
+	 * Price
+	 * @type {INumberGlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Internal type is currency
+	 */
+    price: INumberGlideElement;
+	/**
+	 * Quantity
+	 * @type {INumberGlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Internal type is integer
+	 */
+    quantity: INumberGlideElement;
+	/**
+	 * Quantity Sourced
+	 * @type {INumberGlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Internal type is integer
+	 */
+    quantity_sourced: INumberGlideElement;
+	/**
+	 * Received
+	 * @type {IBooleanGlideElement}
+	 * @memberof Isc_req_itemFields
+	 */
+    received: IBooleanGlideElement;
+	/**
+	 * Recurring Price Frequency
+	 * @type {GlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Internal type is "choice"
+	 */
+    recurring_frequency: GlideElement;
+	/**
+	 * Recurring Price
+	 * @type {INumberGlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Internal type is price
+	 */
+    recurring_price: INumberGlideElement;
+	/**
+	 * Request
+	 * @type {Isc_requestGlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Reference to Request (IGlideRefElement<Isc_requestGlideRecord>)
+	 */
+    request: Isc_requestGlideElement;
+	/**
+	 * Catalog
+	 * @type {Isc_catalogGlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Reference to Catalog (IGlideRefElement<Isc_catalogGlideRecord>)
+	 */
+    sc_catalog: Isc_catalogGlideElement;
+	/**
+	 * Sourced
+	 * @type {IBooleanGlideElement}
+	 * @memberof Isc_req_itemFields
+	 */
+    sourced: IBooleanGlideElement;
+	/**
+	 * Stage
+	 * @type {GlideElement}
+	 * @memberof Isc_req_itemFields
+	 * @description Internal type is workflow;
+	 */
+    stage: GlideElement;
+}
+declare interface Isc_req_itemGlideRecordV<TVariables extends GlideElementVariables> extends ItaskGlideRecordBaseV<TVariables>, Isc_req_itemFieldsV<TVariables> { }
+declare interface Isc_req_itemGlideElementV<TVariables extends GlideElementVariables> extends ItaskGlideElementBaseV<TVariables, Isc_req_itemGlideRecordV<TVariables>>, Isc_req_itemFieldsV<TVariables> { }
+declare type sc_req_itemGlideRecordV<TVariables extends GlideElementVariables> = Isc_req_itemGlideRecordV<TVariables> & GlideRecord;
+declare type sc_req_itemGlideElementV<TVariables extends GlideElementVariables> = Isc_req_itemGlideElementV<TVariables> & GlideElement;
+
+/**
+ * GlideElement values from the Catalog Task table.
+ * @interface Isc_taskFields
+ * @extends {ItaskFields}
+ */
+declare interface Isc_taskFields extends ItaskFields {
+	/**
+	 * Resolve Time
+	 * @type {INumberGlideElement}
+	 * @memberof Isc_taskFields
+	 * @description Internal type is integer
+	 */
+    calendar_stc: INumberGlideElement;
+	/**
+	 * Request
+	 * @type {Isc_requestGlideElement}
+	 * @memberof Isc_taskFields
+	 * @description Reference to Request (IGlideRefElement<Isc_requestGlideRecord>)
+	 */
+    request: Isc_requestGlideElement;
+	/**
+	 * Request item
+	 * @type {Isc_req_itemGlideElement}
+	 * @memberof Isc_taskFields
+	 * @description Reference to Requested Item (IGlideRefElement<Isc_req_itemGlideRecord>)
+	 */
+    request_item: Isc_req_itemGlideElement;
+	/**
+	 * Catalog
+	 * @type {Isc_catalogGlideElement}
+	 * @memberof Isc_taskFields
+	 * @description Reference to Catalog (IGlideRefElement<Isc_catalogGlideRecord>)
+	 */
+    sc_catalog: Isc_catalogGlideElement;
+}
+declare interface Isc_taskGlideRecord extends ItaskGlideRecordBase, Isc_taskFields { }
+declare interface Isc_taskGlideElement extends ItaskGlideElementBase<Isc_taskGlideRecord>, Isc_taskFields { }
+declare type sc_taskGlideRecord = Isc_taskGlideRecord & GlideRecord;
+declare type sc_taskGlideElement = Isc_taskGlideRecord & GlideElement;
 /**
  * GlideElement values from the Service Offering table.
  * @interface Iservice_offeringFields
