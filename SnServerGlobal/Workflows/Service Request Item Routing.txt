@@ -1,0 +1,23 @@
+Please verify routing options for the associated generic service catalog IT service request item ${URI_REF}.
+  Description: ${short_description}
+Requested For: ${request.requested_for.URI_REF}
+          VIP: ${request.requested_for.vip}
+ Catalog Item: ${cat_item.URI_REF}
+     Quantity: ${quantity}
+ Requested By: ${opened_by.URI_REF}
+
+Routing Options
+	Directly route to fulfillment group.
+        Use the "Variables" section to select the fulfillment group, leaving the approval group blank.
+        Click the "Close Task" button to continue. The status for the associated request will be automatically updated and routed accordingly.
+    Route to group for approval.
+		Use the "Variables" section to select both the approval and the fulfillment groups.
+        Click the "Close Task" button to continue. The status for the associated request will be automatically updated.
+        Once (and if) the item is approved, the requested item will be re-assigned to the fulfillment groups.
+    Route to another group for assessment.
+		If your group is not able to determine the appropriate routing option, you can simply assign this task to another group.
+    Cancel Request Item
+        Change "State" field of this task to "Closed Skipped" or "Closed Incomplete".
+        Click the "Update" button to save changes. The associated request item will be automatically updated.
+
+IMPORTANT: The workflow for this request does not proceed until you close this task.

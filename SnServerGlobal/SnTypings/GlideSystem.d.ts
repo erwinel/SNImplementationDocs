@@ -1,6 +1,20 @@
 ﻿/// <reference path="JavaTypes.d.ts" />
 /// <reference path="GlideRecord.d.ts" />
 
+declare abstract class GlideEmailOutbound {
+    getSubject(): string;
+    setSubject(subject: string): void;
+    setFrom(address: string): void;
+    setReplyTo(address: string): void;
+    addAddress(type: string, address: string, displayName: string): void;
+    setBody(bodyText: string): void;
+}
+
+declare abstract class TemplatePrinter {
+    print(text: string): void;
+    space(spaces: number): void;
+}
+
 /**
  * Class for performing date operators and working with GlideDate fields.
  * @class GlideDate
