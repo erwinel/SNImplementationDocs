@@ -1,0 +1,10 @@
+Pull ${cat_item.URI_REF} from Stock or Order from Vendor if required.
+If the item has to be ordered, make sure to check the Backordered flag and specify the Estimated Delivery date on the associated item.
+  Description: ${short_description}
+Requested For: ${request.requested_for.URI_REF}
+          VIP: ${request.requested_for.vip}
+ Catalog Item: ${cat_item.URI_REF}
+     Quantity: ${quantity}
+ Requested By: ${opened_by.URI_REF}
+
+IMPORTANT: The workflow for this request does not proceed until you close this task.

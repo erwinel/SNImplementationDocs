@@ -32,12 +32,35 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="app.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <Content Include="Notifications\army.generic.request.route\Service Request Item Routing.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Notifications\army.generic.request.route\Fulfill Order.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Workflows\Fulfill Order.txt" />
+    <Content Include="Workflows\Service Request Item Routing.txt" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
-    <TypeScriptCompile Include="BackgroundScript.ts" />
-    <TypeScriptCompile Include="generateTypeScriptFromTable.ts" />
+    <TypeScriptCompile Include="BackgroundScript.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="generateTypeScriptFromTable.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Notifications\army.generic.request.route\army_generic_request_route.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Notifications\army.generic.request.route\army_sc_req_item_fulfill_order.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Notifications\army.generic.request.route\army_sc_req_item_no_fulfillment_group.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="SnTypings\GlideRecord.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -47,7 +70,18 @@
     <TypeScriptCompile Include="SnTypings\JavaTypes.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="SnTypings\ServiceCatalog.d.ts" />
+    <TypeScriptCompile Include="SnTypings\ServiceCatalog.d.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Workflows\Generic IT Request.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Workflows\Hardware Catalog Item Request.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Workflows\Service Castalog Item.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="x_44813_devjournal\Definitions.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -68,6 +102,9 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Notifications\" />
+    <Folder Include="Notifications\army.generic.request.route\" />
+    <Folder Include="Workflows\" />
     <Folder Include="x_44813_devjournal\" />
     <Folder Include="x_44813_dev_ts_hlp\" />
     <Folder Include="SnTypings\" />

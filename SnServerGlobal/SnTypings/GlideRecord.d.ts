@@ -4705,6 +4705,646 @@ declare type sys_templateGlideRecord = sys_metadataGlideRecord & Isys_templateCo
 declare type sys_templateElementReference = sys_metadataElementReference & GlidePropertiesElementReference<Isys_templateColumns, sys_templateGlideRecord>;
 
 /**
+ * GlideElement values from the Event Registration table.
+ * @interface Isysevent_registerColumns
+ * @extends {Isys_metadataColumns}
+ */
+declare interface Isysevent_registerColumns extends Isys_metadataColumns {
+    /**
+     * Caller Access
+     * @type {StringGlideElement}
+     * @memberof Isysevent_registerColumns
+     * @description Choices: "2": "Caller Restriction"; "1": "Caller Tracking"
+     *      Max length: 40
+     */
+    caller_access: StringGlideElement;
+
+    /**
+     * Description
+     * @type {StringGlideElement}
+     * @memberof Isysevent_registerColumns
+     * @description Max length: 100
+     */
+    description: StringGlideElement;
+
+    /**
+     * Event name
+     * @type {StringGlideElement}
+     * @memberof Isysevent_registerColumns
+     * @description Max length: 40
+     */
+    event_name: StringGlideElement;
+
+    /**
+     * Fired by
+     * @type {StringGlideElement}
+     * @memberof Isysevent_registerColumns
+     * @description Max length: 100
+     */
+    fired_by: StringGlideElement;
+
+    /**
+     * Queue
+     * @type {StringGlideElement}
+     * @memberof Isysevent_registerColumns
+     * @description Max length: 40
+     */
+    queue: StringGlideElement;
+
+    /**
+     * Suffix
+     * @type {StringGlideElement}
+     * @memberof Isysevent_registerColumns
+     * @description Max length: 40
+     */
+    suffix: StringGlideElement;
+
+    /**
+     * Table
+     * @type {StringGlideElement}
+     * @memberof Isysevent_registerColumns
+     * @description Internal type is "table_name"
+     *      Max length: 80
+     */
+    table: StringGlideElement;
+}
+
+declare type sysevent_registerGlideRecord = sys_metadataGlideRecord & Isysevent_registerColumns;
+
+declare type sysevent_registerElementReference = sys_metadataElementReference & GlidePropertiesElementReference<Isysevent_registerColumns, sysevent_registerGlideRecord>;
+
+/**
+ * GlideElement values from the Event table.
+ * @interface IsyseventColumns
+ */
+declare interface IsyseventColumns extends IGlideElementColumns {
+    /**
+     * Claimed by
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 100
+     */
+    claimed_by: StringGlideElement;
+
+    /**
+     * Descriptive name
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 40
+     */
+    descriptive_name: StringGlideElement;
+
+    /**
+     * Instance
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 40
+     */
+    instance: StringGlideElement;
+
+    /**
+     * Name
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 100
+     */
+    name: StringGlideElement;
+
+    /**
+     * Parm1
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 4000
+     */
+    parm1: StringGlideElement;
+
+    /**
+     * Parm2
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 4000
+     */
+    parm2: StringGlideElement;
+
+    /**
+     * Processed
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Internal type is "glide_date_time"
+     *      Max length: 40
+     */
+    processed: StringGlideElement;
+
+    /**
+     * Processing duration
+     * @type {GlideElementNumeric}
+     * @memberof IsyseventColumns
+     * @default 0
+     */
+    processing_duration: GlideElementNumeric;
+
+    /**
+     * Process on
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @default "javascript:gs.nowDateTime()"
+     * @description Internal type is "glide_date_time"
+     *      Max length: 40
+     */
+    process_on: StringGlideElement;
+
+    /**
+     * Queue
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 40
+     */
+    queue: StringGlideElement;
+
+    /**
+     * State
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @default "ready"
+     * @description Choices: "transferred": "transferred"; "error": "error"; "processed": "processed"; "ready": "ready"
+     *      Max length: 40
+     */
+    state: StringGlideElement;
+
+    /**
+     * Table
+     * @type {GlideElement}
+     * @memberof IsyseventColumns
+     * @description Internal type is "short_table_name"
+     */
+    table: GlideElement;
+
+    /**
+     * URI
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 4000
+     */
+    uri: StringGlideElement;
+
+    /**
+     * User ID
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 40
+     */
+    user_id: StringGlideElement;
+
+    /**
+     * User name
+     * @type {StringGlideElement}
+     * @memberof IsyseventColumns
+     * @description Max length: 40
+     */
+    user_name: StringGlideElement;
+}
+
+declare type syseventGlideRecord = GlideRecord & IsyseventColumns;
+
+declare type syseventElementReference = GlidePropertiesElementReference<IsyseventColumns, syseventGlideRecord>;
+
+
+/**
+ * GlideElement values from the Notification table.
+ * @interface Isysevent_email_actionColumns
+ * @extends {IsysruleColumns}
+ */
+declare interface Isysevent_email_actionColumns extends IsysruleColumns {
+    /**
+     * Inserted
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     */
+    action_insert: GlideElementBoolean;
+
+    /**
+     * Updated
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     */
+    action_update: GlideElementBoolean;
+
+    /**
+     * Active
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     * @default true
+     */
+    active: GlideElementBoolean;
+
+    /**
+     * Advanced condition
+     * @type {GlideElementScript}
+     * @memberof Isysevent_email_actionColumns
+     */
+    advanced_condition: GlideElementScript;
+
+    /**
+     * Affected field on event
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "choice"
+     *      Choices: "parm2": "Parm2"; "parm1": "Parm1"
+     */
+    affected_field_on_event: GlideElement;
+
+    /**
+     * Category
+     * @type {sys_notification_categoryElementReference}
+     * @memberof Isysevent_email_actionColumns
+     * @default "javascript:gs.getProperty('glide.notification.default_category', 'c97d83137f4432005f58108c3ffa917a');"
+     * @description Reference to table "sys_notification_category"
+     */
+    category: sys_notification_categoryElementReference;
+
+    /**
+     * Table
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "table_name"
+     *      Max length: 80
+     */
+    collection: StringGlideElement;
+
+    /**
+     * Conditions
+     * @type {GlideElementConditions}
+     * @memberof Isysevent_email_actionColumns
+     */
+    condition: GlideElementConditions;
+
+    /**
+     * Content type
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @default "text/html"
+     * @description Choices: "multipart/mixed": "HTML and plain text"; "text/html": "HTML only"; "text/plain": "Plain text only"; "text/xml": "XML only"
+     *      Max length: 40
+     */
+    content_type: StringGlideElement;
+
+    /**
+     * Default Interval
+     * @type {sys_email_digest_intervalElementReference}
+     * @memberof Isysevent_email_actionColumns
+     * @description Reference to table "sys_email_digest_interval"
+     */
+    default_interval: sys_email_digest_intervalElementReference;
+
+    /**
+     * Allow Digest
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     * @default false
+     */
+    digestable: GlideElementBoolean;
+
+    /**
+     * Digest From
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Max length: 100
+     */
+    digest_from: StringGlideElement;
+
+    /**
+     * Digest HTML
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "html_script"
+     */
+    digest_html: GlideElement;
+
+    /**
+     * Digest Reply To
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Max length: 100
+     */
+    digest_reply_to: StringGlideElement;
+
+    /**
+     * Digest Separator (HTML)
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @default "<br><hr><br>"
+     * @description Internal type is "html_script"
+     */
+    digest_separator_html: GlideElement;
+
+    /**
+     * Digest Separator (text)
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @default "\\n--------------------------------------------------------------------------------\\n"
+     * @description Internal type is "email_script"
+     */
+    digest_separator_text: GlideElement;
+
+    /**
+     * Digest Subject
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Max length: 100
+     */
+    digest_subject: StringGlideElement;
+
+    /**
+     * Digest Template
+     * @type {sysevent_email_templateElementReference}
+     * @memberof Isysevent_email_actionColumns
+     * @description Reference to table "sysevent_email_template"
+     */
+    digest_template: sysevent_email_templateElementReference;
+
+    /**
+     * Digest Text
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "email_script"
+     */
+    digest_text: GlideElement;
+
+    /**
+     * Event name
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "sysevent_name"
+     */
+    event_name: GlideElement;
+
+    /**
+     * Event parm 1 contains recipient
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     */
+    event_parm_1: GlideElementBoolean;
+
+    /**
+     * Event parm 2 contains recipient
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     */
+    event_parm_2: GlideElementBoolean;
+
+    /**
+     * Exclude delegates
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     * @default false
+     */
+    exclude_delegates: GlideElementBoolean;
+
+    /**
+     * Force delivery
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     * @default false
+     */
+    force_delivery: GlideElementBoolean;
+
+    /**
+     * From
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Max length: 100
+     */
+    from: StringGlideElement;
+
+    /**
+     * Send when
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @default "engine"
+     * @description Choices: "triggered": "Triggered"; "event": "Event is fired"; "engine": "Record inserted or updated"
+     *      Max length: 40
+     */
+    generation_type: StringGlideElement;
+
+    /**
+     * Importance
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Choices: "high": "High"; "low": "Low"
+     *      Max length: 40
+     */
+    importance: StringGlideElement;
+
+    /**
+     * Include attachments
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     */
+    include_attachments: GlideElementBoolean;
+
+    /**
+     * Item
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @default "event.parm1"
+     * @description Max length: 40
+     */
+    item: StringGlideElement;
+
+    /**
+     * Item table
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "table_name"
+     *      Max length: 40
+     */
+    item_table: StringGlideElement;
+
+    /**
+     * Mandatory
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     * @default false
+     */
+    mandatory: GlideElementBoolean;
+
+    /**
+     * Message
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "email_script"
+     */
+    message: GlideElement;
+
+    /**
+     * Message HTML
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "html_script"
+     */
+    message_html: GlideElement;
+
+    /**
+     * Push Messages
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "glide_list"
+     */
+    message_list: GlideElement;
+
+    /**
+     * Message text
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "email_script"
+     */
+    message_text: GlideElement;
+
+    /**
+     * Omit watermark
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     * @default false
+     */
+    omit_watermark: GlideElementBoolean;
+
+    /**
+     * Push Message Only
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     * @default false
+     */
+    push_message_only: GlideElementBoolean;
+
+    /**
+     * Users/Groups in fields
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "field_list"
+     */
+    recipient_fields: GlideElement;
+
+    /**
+     * Groups
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "glide_list"
+     */
+    recipient_groups: GlideElement;
+
+    /**
+     * Users
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "glide_list"
+     */
+    recipient_users: GlideElement;
+
+    /**
+     * Reply to
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Max length: 100
+     */
+    reply_to: StringGlideElement;
+
+    /**
+     * Send to event creator
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     * @default true
+     */
+    send_self: GlideElementBoolean;
+
+    /**
+     * SMS alternate
+     * @type {GlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Internal type is "email_script"
+     */
+    sms_alternate: GlideElement;
+
+    /**
+     * Stationery
+     * @type {sysevent_email_styleElementReference}
+     * @memberof Isysevent_email_actionColumns
+     * @description Reference to table "sysevent_email_style"
+     */
+    style: sysevent_email_styleElementReference;
+
+    /**
+     * Subject
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @description Max length: 100
+     */
+    subject: StringGlideElement;
+
+    /**
+     * Subscribable
+     * @type {GlideElementBoolean}
+     * @memberof Isysevent_email_actionColumns
+     * @default false
+     */
+    subscribable: GlideElementBoolean;
+
+    /**
+     * Sys version
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @default "2"
+     * @description Choices: "1": "V1"; "2": "V2"
+     *      Max length: 40
+     */
+    sys_version: StringGlideElement;
+
+    /**
+     * Email template
+     * @type {sysevent_email_templateElementReference}
+     * @memberof Isysevent_email_actionColumns
+     * @description Reference to table "sysevent_email_template"
+     */
+    template: sysevent_email_templateElementReference;
+
+    /**
+     * Type
+     * @type {StringGlideElement}
+     * @memberof Isysevent_email_actionColumns
+     * @default "email"
+     * @description Choices: "email": "EMAIL"; "vcalendar": "Meeting Invitation"
+     *      Max length: 40
+     */
+    type: StringGlideElement;
+
+    /**
+     * Weight
+     * @type {GlideElementNumeric}
+     * @memberof Isysevent_email_actionColumns
+     * @default 0
+     */
+    weight: GlideElementNumeric;
+}
+
+declare type sysevent_email_actionGlideRecord = sysruleGlideRecord & Isysevent_email_actionColumns;
+
+declare type sysevent_email_actionElementReference = sysruleElementReference & GlidePropertiesElementReference<Isysevent_email_actionColumns, sysevent_email_actionGlideRecord>;
+
+declare interface IScopedWorkflow {
+    debug(message: string, args: Object): string;
+    error(message: string, args: Object): string;
+    getVariable<T>(name: string): T;
+    info(message: string, args: Object): string;
+    inputs: { [key: string]: any; };
+    name: string;
+    removeVariable(name: string): void;
+    result: string;
+    scratchpad: { [key: string]: any; };
+    setResult(result: string): void;
+    setVariable(name: string, value: Object): void;
+    warn(message: string, args: Object): string;
+}
+
+/**
  * GlideElement values from the Workflow Element Definition table.
  * @interface Iwf_element_definitionColumns
  * @extends {Isys_metadataColumns}

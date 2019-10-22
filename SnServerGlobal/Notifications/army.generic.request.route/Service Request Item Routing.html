@@ -1,0 +1,38 @@
+﻿<p>Generic service request ${URI_REF} has been submitted and needs to be routed to the appropriate fulfillment and/or approval group.</p>
+<table>
+    <tbody>
+        <tr>
+            <th style="text-align: right;" scope="row">Description:</th>
+            <td>${short_description}</td>
+        </tr>
+        <tr>
+            <th style="text-align: right;" scope="row">Requested For:</th>
+            <td>${request.requested_for.URI_REF}</td>
+        </tr>
+        <tr>
+            <th style="text-align: right;" scope="row">Number:</th>
+            <td>${URI_REF}</td>
+        </tr>
+        <tr>
+            <th style="text-align: right;" scope="row">VIP:</th>
+            <td>${request.requested_for.vip}</td>
+        </tr>
+        <tr>
+            <th style="text-align: right;" scope="row">Catalog Item:</th>
+            <td>${cat_item.URI_REF}</td>
+        </tr>
+        <tr>
+            <th style="text-align: right;" scope="row">Quantity:</th>
+            <td>${quantity}</td>
+        </tr>
+        <tr>
+            <th style="text-align: right;" scope="row">Requested By:</th>
+            <td>${opened_by.URI_REF}</td>
+        </tr>
+    </tbody>
+</table>
+<p></p>
+<p><strong>Routing Options</strong></p>
+<ul>
+    ${mail_script:army.generic.request.route}
+</ul>
