@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2019-10-22 15:57:28">
+  <wf_workflow_version action="INSERT_OR_UPDATE">
+    <active>true</active>
+    <activity_stages>{"stages":{"c00ecd13db6cc810683b300f7c9619cd":{"duration":"1 Day","order":120,"stageId":"c00ecd13db6cc810683b300f7c9619cd","name":"Fulfillment","value":"fulfillment"},"c80ecd13db6cc810683b300f7c9619cc":{"duration":"","order":1000,"stageId":"c80ecd13db6cc810683b300f7c9619cc","name":"Request Cancelled","value":"Request Cancelled"},"4c0ecd13db6cc810683b300f7c9619cc":{"duration":"","order":90,"stageId":"4c0ecd13db6cc810683b300f7c9619cc","name":"Request Approved","value":"request_approved"},"cc0ecd13db6cc810683b300f7c9619cc":{"duration":"","order":1100,"stageId":"cc0ecd13db6cc810683b300f7c9619cc","name":"Completed","value":"complete"},"400ecd13db6cc810683b300f7c9619cd":{"duration":"","order":130,"stageId":"400ecd13db6cc810683b300f7c9619cd","name":"In Stock","value":"in_stock"}},"activities":{"880ec593db6cc810683b300f7c9619f0":"c80ecd13db6cc810683b300f7c9619cc","c40ec593db6cc810683b300f7c9619e6":"cc0ecd13db6cc810683b300f7c9619cc","c40ec593db6cc810683b300f7c9619d3":"400ecd13db6cc810683b300f7c9619cd","c80ec593db6cc810683b300f7c9619f6":"c00ecd13db6cc810683b300f7c9619cd","c00ec593db6cc810683b300f7c9619d9":"c00ecd13db6cc810683b300f7c9619cd","c40ec593db6cc810683b300f7c9619f1":"400ecd13db6cc810683b300f7c9619cd","9cfe01d3db6cc810683b300f7c9619c6":"400ecd13db6cc810683b300f7c9619cd","040ec593db6cc810683b300f7c9619eb":"c00ecd13db6cc810683b300f7c9619cd","040ec593db6cc810683b300f7c9619e7":"400ecd13db6cc810683b300f7c9619cd","000ec593db6cc810683b300f7c9619f4":"4c0ecd13db6cc810683b300f7c9619cc","040ec593db6cc810683b300f7c9619e8":"c00ecd13db6cc810683b300f7c9619cd","8c0ec593db6cc810683b300f7c9619f5":"c00ecd13db6cc810683b300f7c9619cd","800ec593db6cc810683b300f7c9619f9":"4c0ecd13db6cc810683b300f7c9619cc","840ec593db6cc810683b300f7c9619d6":"400ecd13db6cc810683b300f7c9619cd","8c0ec593db6cc810683b300f7c9619cd":"c00ecd13db6cc810683b300f7c9619cd","7a2e8d53db6cc810683b300f7c96194c":"400ecd13db6cc810683b300f7c9619cd","cc0ec593db6cc810683b300f7c9619f9":"4c0ecd13db6cc810683b300f7c9619cc","440ec593db6cc810683b300f7c9619f8":"400ecd13db6cc810683b300f7c9619cd","000ec593db6cc810683b300f7c9619d8":"c80ecd13db6cc810683b300f7c9619cc"},"subflows":[],"ends":["0c0ec593db6cc810683b300f7c9619ea"]}</activity_stages>
+    <after_business_rules>false</after_business_rules>
+    <checked_out/>
+    <checked_out_by display_value=""/>
+    <column_renderer display_value="Legacy">007c2f021b020100adca1e094f0713b4</column_renderer>
+    <condition table="sc_req_item"/>
+    <condition_type/>
+    <description/>
+    <expected_sequences>040ec593db6cc810683b300f7c9619f5,cc0ec593db6cc810683b300f7c9619f9,800ec593db6cc810683b300f7c9619f9,000ec593db6cc810683b300f7c9619f4,c80ec593db6cc810683b300f7c9619f6,040ec593db6cc810683b300f7c9619eb,c00ec593db6cc810683b300f7c9619d9,8c0ec593db6cc810683b300f7c9619cd,880ec593db6cc810683b300f7c9619f0,000ec593db6cc810683b300f7c9619d8,0c0ec593db6cc810683b300f7c9619ea</expected_sequences>
+    <expected_time>1970-01-06 00:00:00</expected_time>
+    <expected_time_type/>
+    <full_sequences>040ec593db6cc810683b300f7c9619f5,cc0ec593db6cc810683b300f7c9619f9,800ec593db6cc810683b300f7c9619f9,000ec593db6cc810683b300f7c9619f4,c80ec593db6cc810683b300f7c9619f6,8c0ec593db6cc810683b300f7c9619f5,040ec593db6cc810683b300f7c9619eb,040ec593db6cc810683b300f7c9619e8,c00ec593db6cc810683b300f7c9619d9,880ec593db6cc810683b300f7c9619f0,440ec593db6cc810683b300f7c9619f8,8c0ec593db6cc810683b300f7c9619cd,000ec593db6cc810683b300f7c9619d8,7a2e8d53db6cc810683b300f7c96194c,080ec593db6cc810683b300f7c9619f7,0c0ec593db6cc810683b300f7c9619ea,c40ec593db6cc810683b300f7c9619d3,9cfe01d3db6cc810683b300f7c9619c6,040ec593db6cc810683b300f7c9619e7,c40ec593db6cc810683b300f7c9619f1,840ec593db6cc810683b300f7c9619d6,c40ec593db6cc810683b300f7c9619e6</full_sequences>
+    <journal/>
+    <max_activity_count>100</max_activity_count>
+    <name>Hardware Catalog Item Request</name>
+    <not_cacheable>false</not_cacheable>
+    <on_cancel><![CDATA[// This script executes if the workflow is cancelled.// The global variable context_sys_id contains the sys_id of the cancelled workflow context.]]></on_cancel>
+    <order>100</order>
+    <pin_type>set_by_activity</pin_type>
+    <published>true</published>
+    <relative_duration display_value=""/>
+    <requires_ert>true</requires_ert>
+    <run_multiple>false</run_multiple>
+    <schedule display_value=""/>
+    <stage_field>stage</stage_field>
+    <stage_order>computed</stage_order>
+    <start display_value="Begin">040ec593db6cc810683b300f7c9619f5</start>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>0c0ecd13db6cc810683b300f7c9619cb</sys_id>
+    <sys_mod_count>119</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:56:35</sys_updated_on>
+    <table>sc_req_item</table>
+    <timezone/>
+    <validated>false</validated>
+    <workflow display_value="Hardware Catalog Item Request">ee206f860f34b700d12eba8ce1050e73</workflow>
+  </wf_workflow_version>
+</unload>

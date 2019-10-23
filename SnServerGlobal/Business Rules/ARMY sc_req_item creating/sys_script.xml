@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2019-10-22 14:31:18">
+<sys_script action="INSERT_OR_UPDATE">
+<abort_action>false</abort_action>
+<access>package_private</access>
+<action_delete>false</action_delete>
+<action_insert>true</action_insert>
+<action_query>false</action_query>
+<action_update>false</action_update>
+<active>true</active>
+<add_message>false</add_message>
+<advanced>true</advanced>
+<change_fields>false</change_fields>
+<client_callable>false</client_callable>
+<collection>sc_req_item</collection>
+<condition>current.assignment_group.nil() &amp;&amp; current.assigned_to.nil()</condition>
+<description/>
+<execute_function>false</execute_function>
+<filter_condition table="sc_req_item"/>
+<is_rest>false</is_rest>
+<message/>
+<name>ARMY sc_req_item creating</name>
+<order>100</order>
+<priority>100</priority>
+<rest_method display_value=""/>
+<rest_method_text/>
+<rest_service display_value=""/>
+<rest_service_text/>
+<rest_variables/>
+<role_conditions/>
+<script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	if (current.cat_item.group.nil())
+		gs.warn("Catalog item " + current.cat_item.sys_id + " (" + current.cat_item.getDisplayValue() + ") has no fulfillment group.");
+	else
+		current.assignment_group.setValue(current.cat_item.group);
+})(current, previous);]]></script>
+<sys_class_name>sys_script</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-07 23:43:30</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>619e6d26db184010b53f341f7c9619ca</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_name>ARMY sc_req_item creating</sys_name>
+<sys_overrides display_value=""/>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>sys_script_619e6d26db184010b53f341f7c9619ca</sys_update_name>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-07 23:45:27</sys_updated_on>
+<template/>
+<when>before</when>
+</sys_script>
+</unload>

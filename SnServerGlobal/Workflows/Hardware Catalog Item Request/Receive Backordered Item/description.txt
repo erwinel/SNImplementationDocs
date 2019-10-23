@@ -1,0 +1,3 @@
+Please close this task once the back-ordered item arrives.
+
+IMPORTANT: The workflow for this request does not proceed until you close this task. Cancelling this task will also cancel the associated requested item!

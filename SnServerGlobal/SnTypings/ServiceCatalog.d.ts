@@ -828,10 +828,10 @@ declare type sc_requestElementReference = taskElementReference & GlideProperties
 declare interface Isc_req_itemColumns extends ItaskColumns {
     /**
      * Backordered
-     * @type {GlideElementBoolean}
+     * @type {GlideElementBoolean | boolean}
      * @memberof Isc_req_itemColumns
      */
-    backordered: GlideElementBoolean;
+    backordered: GlideElementBoolean | boolean;
 
     /**
      * Billable
@@ -908,10 +908,10 @@ declare interface Isc_req_itemColumns extends ItaskColumns {
 
     /**
      * Received
-     * @type {GlideElementBoolean}
+     * @type {GlideElementBoolean | boolean}
      * @memberof Isc_req_itemColumns
      */
-    received: GlideElementBoolean;
+    received: GlideElementBoolean | boolean;
 
     /**
      * Recurring Price Frequency
@@ -949,12 +949,12 @@ declare interface Isc_req_itemColumns extends ItaskColumns {
 
     /**
      * Sourced
-     * @type {GlideElementBoolean}
+     * @type {GlideElementBoolean | boolean}
      * @memberof Isc_req_itemColumns
      * @readonly
      * @default false
      */
-    sourced: GlideElementBoolean;
+    sourced: GlideElementBoolean | boolean;
 
     /**
      * Stage

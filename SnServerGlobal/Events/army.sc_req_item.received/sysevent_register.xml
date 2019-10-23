@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2019-10-22 15:28:07">
+<sysevent_register action="INSERT_OR_UPDATE">
+<caller_access/>
+<description>Item was backordered and then received.</description>
+<event_name>army.sc_req_item.received</event_name>
+<fired_by>Service Catalog Workflows</fired_by>
+<queue/>
+<suffix/>
+<sys_class_name>sysevent_register</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:27:54</sys_created_on>
+<sys_id>fa2d8d53db6cc810683b300f7c96190a</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_name>army.sc_req_item.received</sys_name>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>sysevent_register_fa2d8d53db6cc810683b300f7c96190a</sys_update_name>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:27:54</sys_updated_on>
+<table>sc_req_item</table>
+</sysevent_register>
+</unload>

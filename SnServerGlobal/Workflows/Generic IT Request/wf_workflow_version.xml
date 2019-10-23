@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2019-10-22 15:05:43">
+<wf_workflow_version action="INSERT_OR_UPDATE">
+<active>true</active>
+<activity_stages>{"stages":{"f7558d9bdb2cc810683b300f7c961924":{"duration":"","order":110,"stageId":"f7558d9bdb2cc810683b300f7c961924","name":"Request Approved","value":"request_approved"},"fb558d9bdb2cc810683b300f7c961924":{"duration":"1 Day","order":100,"stageId":"fb558d9bdb2cc810683b300f7c961924","name":"Waiting for Approval","value":"waiting_for_approval"},"77558d9bdb2cc810683b300f7c961924":{"duration":"1 Day","order":120,"stageId":"77558d9bdb2cc810683b300f7c961924","name":"Fulfillment","value":"fulfillment"},"7b558d9bdb2cc810683b300f7c961924":{"duration":"","order":1000,"stageId":"7b558d9bdb2cc810683b300f7c961924","name":"Request Cancelled","value":"Request Cancelled"}},"activities":{"7755011fdb2cc810683b300f7c9619c3":"7b558d9bdb2cc810683b300f7c961924","4065011fdb2cc810683b300f7c9619d9":"fb558d9bdb2cc810683b300f7c961924","c065011fdb2cc810683b300f7c9619df":"fb558d9bdb2cc810683b300f7c961924","4865011fdb2cc810683b300f7c9619d6":"fb558d9bdb2cc810683b300f7c961924","bf55011fdb2cc810683b300f7c9619cb":"fb558d9bdb2cc810683b300f7c961924","8465011fdb2cc810683b300f7c9619de":"77558d9bdb2cc810683b300f7c961924","3b55011fdb2cc810683b300f7c9619ca":"fb558d9bdb2cc810683b300f7c961924","bb55011fdb2cc810683b300f7c9619c4":"fb558d9bdb2cc810683b300f7c961924","0c65011fdb2cc810683b300f7c9619d5":"fb558d9bdb2cc810683b300f7c961924","3755011fdb2cc810683b300f7c9619cd":"fb558d9bdb2cc810683b300f7c961924","c465011fdb2cc810683b300f7c9619d7":"77558d9bdb2cc810683b300f7c961924","c465011fdb2cc810683b300f7c9619d4":"fb558d9bdb2cc810683b300f7c961924","f7558d9bdb2cc810683b300f7c961925":"fb558d9bdb2cc810683b300f7c961924","3f55011fdb2cc810683b300f7c9619d2":"7b558d9bdb2cc810683b300f7c961924","4865011fdb2cc810683b300f7c9619dd":"f7558d9bdb2cc810683b300f7c961924","3355011fdb2cc810683b300f7c9619c6":"fb558d9bdb2cc810683b300f7c961924","7755011fdb2cc810683b300f7c9619c9":"fb558d9bdb2cc810683b300f7c961924"},"subflows":[],"ends":["7b55011fdb2cc810683b300f7c9619d3"]}</activity_stages>
+<after_business_rules>false</after_business_rules>
+<checked_out/>
+<checked_out_by display_value=""/>
+<column_renderer display_value="Workflow-driven">a56213111b030100adca1e094f0713ac</column_renderer>
+<condition table="sc_req_item"/>
+<condition_type/>
+<description/>
+<expected_sequences>0065011fdb2cc810683b300f7c9619e0,0c65011fdb2cc810683b300f7c9619d5,f7558d9bdb2cc810683b300f7c961925,c065011fdb2cc810683b300f7c9619df,c465011fdb2cc810683b300f7c9619d4,4865011fdb2cc810683b300f7c9619dd,8465011fdb2cc810683b300f7c9619de,c465011fdb2cc810683b300f7c9619d7,7b55011fdb2cc810683b300f7c9619d3</expected_sequences>
+<expected_time>1970-01-01 14:00:00</expected_time>
+<expected_time_type/>
+<full_sequences>0065011fdb2cc810683b300f7c9619e0,0c65011fdb2cc810683b300f7c9619d5,f7558d9bdb2cc810683b300f7c961925,c065011fdb2cc810683b300f7c9619df,c465011fdb2cc810683b300f7c9619d4,4865011fdb2cc810683b300f7c9619dd,bb55011fdb2cc810683b300f7c9619c4,8465011fdb2cc810683b300f7c9619de,3755011fdb2cc810683b300f7c9619cd,bf55011fdb2cc810683b300f7c9619cb,c465011fdb2cc810683b300f7c9619d7,7755011fdb2cc810683b300f7c9619c9,4865011fdb2cc810683b300f7c9619d6,7b55011fdb2cc810683b300f7c9619d3,3b55011fdb2cc810683b300f7c9619ca,fb55011fdb2cc810683b300f7c9619c7,3355011fdb2cc810683b300f7c9619c6,4065011fdb2cc810683b300f7c9619d9,3f55011fdb2cc810683b300f7c9619d2,7755011fdb2cc810683b300f7c9619c3</full_sequences>
+<journal/>
+<max_activity_count>100</max_activity_count>
+<name>Generic IT Request</name>
+<not_cacheable>false</not_cacheable>
+<on_cancel><![CDATA[// This script executes if the workflow is cancelled.// The global variable context_sys_id contains the sys_id of the cancelled workflow context.]]></on_cancel>
+<order>100</order>
+<pin_type>set_by_activity</pin_type>
+<published>true</published>
+<relative_duration display_value="2 business days by 4pm">3bf802c20a0a0b52008e2859cd8abcf2</relative_duration>
+<requires_ert>true</requires_ert>
+<run_multiple>false</run_multiple>
+<schedule display_value=""/>
+<stage_field>stage</stage_field>
+<stage_order>computed</stage_order>
+<start display_value="Begin">0065011fdb2cc810683b300f7c9619e0</start>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 14:53:11</sys_created_on>
+<sys_id>f3558d9bdb2cc810683b300f7c961922</sys_id>
+<sys_mod_count>4</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 14:53:53</sys_updated_on>
+<table>sc_req_item</table>
+<timezone/>
+<validated>false</validated>
+<workflow display_value="Generic IT Request">8c61e839db68bb00683b300f7c9619c1</workflow>
+</wf_workflow_version>
+</unload>

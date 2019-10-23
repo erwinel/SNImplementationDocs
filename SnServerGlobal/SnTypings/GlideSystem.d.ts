@@ -1302,9 +1302,9 @@ declare abstract class GlideSystem {
      * Queues an event for the event manager.
      * @param {string} name - Name of the event being queued.
      * @param {GlideRecord} instance - A GlideRecord object, such as "current".
-     * @param {string} parm1 - The name of the queue
+     * @param {string} [parm1] - The name of the queue
      */
-    eventQueue(name: string, instance: GlideRecord, parm1: string): void;
+    eventQueue(name: string, instance: GlideRecord, parm1?: string): void;
 
     /**
      * Alerts the user if event was not scheduled. Does nothing if the event is scheduled.
@@ -1622,6 +1622,23 @@ declare abstract class GlideSystem {
     yesterday(): string;
 }
 
+declare abstract class JSUtil {
+    static describeObject(obj: any, name?: string): string;
+    static doesNotHave(item: any): boolean;
+    static escapeAttr(text: string): string;
+    static escapeText(text: string): string;
+    static getBooleanValue(gr: GlideRecord, field: string): boolean;
+    static has(item: any): boolean;
+    static instance_of(item: any, className: string): boolean;
+    static isJavaObject(value: any): boolean;
+    static logObject(obj: any, name: string): void;
+    static nil(item: any): boolean;
+    static notNil(item: any): boolean;
+    static toBoolean(item: any): boolean;
+    static type_of(item: any): string;
+    static unescapeAttr(text: string): string;
+    static unescapeText(text: string): string;
+}
 /**
  * Global GlideSystem instance.
  */

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2019-10-22 14:19:19">
+<sysevent_register action="INSERT_OR_UPDATE">
+<caller_access/>
+<description>Generic Catalog item request needs to be routed.</description>
+<event_name>army.generic.request.route</event_name>
+<fired_by>Generic IT Request service catalog workflow</fired_by>
+<queue/>
+<suffix/>
+<sys_class_name>sysevent_register</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-08 13:38:43</sys_created_on>
+<sys_id>519d60fedbdc4010b53f341f7c9619ab</sys_id>
+<sys_mod_count>7</sys_mod_count>
+<sys_name>army.generic.request.route</sys_name>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>sysevent_register_519d60fedbdc4010b53f341f7c9619ab</sys_update_name>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-21 23:28:03</sys_updated_on>
+<table>sc_req_item</table>
+</sysevent_register>
+</unload>

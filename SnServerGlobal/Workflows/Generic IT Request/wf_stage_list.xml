@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+<wf_stage>
+<name>Waiting for Approval</name>
+<ola>1970-01-02 00:00:00</ola>
+<order>100</order>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 14:53:11</sys_created_on>
+<sys_id>fb558d9bdb2cc810683b300f7c961924</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 14:53:11</sys_updated_on>
+<value>waiting_for_approval</value>
+<workflow_version>f3558d9bdb2cc810683b300f7c961922</workflow_version>
+</wf_stage>
+<wf_stage>
+<name>Request Approved</name>
+<ola>1970-01-01 00:00:00</ola>
+<order>110</order>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 14:53:11</sys_created_on>
+<sys_id>f7558d9bdb2cc810683b300f7c961924</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 14:53:39</sys_updated_on>
+<value>request_approved</value>
+<workflow_version>f3558d9bdb2cc810683b300f7c961922</workflow_version>
+</wf_stage>
+<wf_stage>
+<name>Fulfillment</name>
+<ola>1970-01-02 00:00:00</ola>
+<order>120</order>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 14:53:11</sys_created_on>
+<sys_id>77558d9bdb2cc810683b300f7c961924</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 14:53:11</sys_updated_on>
+<value>fulfillment</value>
+<workflow_version>f3558d9bdb2cc810683b300f7c961922</workflow_version>
+</wf_stage>
+<wf_stage>
+<name>Delivery</name>
+<ola>1970-01-03 00:00:00</ola>
+<order>140</order>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 14:53:11</sys_created_on>
+<sys_id>33558d9bdb2cc810683b300f7c961924</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 14:53:11</sys_updated_on>
+<value>delivery</value>
+<workflow_version>f3558d9bdb2cc810683b300f7c961922</workflow_version>
+</wf_stage>
+<wf_stage>
+<name>Request Cancelled</name>
+<ola>1970-01-01 00:00:00</ola>
+<order>1000</order>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 14:53:11</sys_created_on>
+<sys_id>7b558d9bdb2cc810683b300f7c961924</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 14:53:11</sys_updated_on>
+<value>Request Cancelled</value>
+<workflow_version>f3558d9bdb2cc810683b300f7c961922</workflow_version>
+</wf_stage>
+<wf_stage>
+<name>Completed</name>
+<ola>1970-01-01 00:00:00</ola>
+<order>1100</order>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 14:53:11</sys_created_on>
+<sys_id>f3558d9bdb2cc810683b300f7c961924</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 14:53:11</sys_updated_on>
+<value>complete</value>
+<workflow_version>f3558d9bdb2cc810683b300f7c961922</workflow_version>
+</wf_stage>
+</xml>

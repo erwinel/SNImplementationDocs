@@ -1,6 +1,6 @@
 var generateTypeScriptFromTable;
 (function (generateTypeScriptFromTable) {
-    var targetTableName = 'wf_workflow';
+    var targetTableName = 'task';
     var TableClassInfo = (function () {
         var jsTypeMapping = {
             "integer": { className: "GlideElementNumeric", shouldAnnotate: false }, "decimal": { className: "GlideElementNumeric", shouldAnnotate: true }, "float": { className: "GlideElementNumeric", shouldAnnotate: true },
@@ -66,8 +66,7 @@ var generateTypeScriptFromTable;
         function areFieldsEqual(x, y, excludeChoices) {
             if (typeof x !== "object" || x === null)
                 return typeof y !== "object" || y === null;
-            if (typeof y !== "object" || y === null || x.internal_type !== y.internal_type || x.js_type !== y.js_type || x.title !== y.title || x.isArray !== y.isArray || x.mandatory !== y.mandatory || x.read_only !== y.read_only ||
-                x.max_length !== y.max_length || x.column_label !== y.column_label || x.comments !== y.comments || x.default_value !== y.default_value || x.referenceTable !== y.referenceTable)
+            if (typeof y !== "object" || y === null || x.internal_type !== y.internal_type || x.js_type !== y.js_type || x.isArray !== y.isArray || x.referenceTable !== y.referenceTable)
                 return false;
             if (excludeChoices)
                 return true;
@@ -193,7 +192,7 @@ var generateTypeScriptFromTable;
             else {
                 var r = {};
                 for (var n in result) {
-                    if (typeof rootFields[n] === "undefined" || !areFieldsEqual(rootFields[n], result[n]))
+                    if (typeof rootFields[n] === "undefined" || !areFieldsEqual(rootFields[n], result[n], result[n].choices.length == 0))
                         r[n] = result[n];
                 }
                 return r;
@@ -204,21 +203,16 @@ var generateTypeScriptFromTable;
             var sys_db_object;
             var tableName;
             var t;
-            //gs.info("Invoked getTableClassInfo(" + (typeof table) + " " + JSON.stringify(table) + ((typeof doNotCreate === "undefined") ? ")" : JSON.stringify(doNotCreate) + ")"));
             if (typeof table === "string") {
                 t = cache[table];
-                if (typeof t === "object") {
-                    //gs.info("Returning table " + JSON.stringify(table) + " from cache");
+                if (typeof t === "object")
                     return t;
-                }
                 if (doNotCreate === true)
                     return;
                 sys_db_object = new GlideRecord("sys_db_object");
                 sys_db_object.addQuery('name', table);
-                //gs.info("Querying table sys_db_object with " + sys_db_object.getEncodedQuery());
                 sys_db_object.query();
                 if (!sys_db_object.next()) {
-                    //gs.warn("Table " + JSON.stringify(table) + " not found");
                     cache[table] = null;
                     return null;
                 }
@@ -229,10 +223,8 @@ var generateTypeScriptFromTable;
                     return;
                 tableName = "" + table.name;
                 t = cache[tableName];
-                if (typeof t === "object") {
-                    //gs.info("Returning table " + JSON.stringify(tableName) + " from cache");
+                if (typeof t === "object")
                     return t;
-                }
                 sys_db_object = table;
             }
             var super_class;
@@ -245,12 +237,9 @@ var generateTypeScriptFromTable;
                 label: "" + sys_db_object.label,
                 providerClass: "" + sys_db_object.provider_class
             };
-            //gs.info("Creating new cache item: " + JSON.stringify(cacheItem));
             var sys_dictionary = new GlideRecord('sys_dictionary');
-            sys_dictionary.addActiveQuery();
             sys_dictionary.addNotNullQuery('element');
             sys_dictionary.addQuery('name', tableName);
-            //gs.info('Querying sys_dictionary with ' + sys_dictionary.getEncodedQuery());
             sys_dictionary.query();
             var allFields = {};
             while (sys_dictionary.next()) {
@@ -274,7 +263,6 @@ var generateTypeScriptFromTable;
                     var gr = new GlideRecord('sys_choice');
                     gr.addQuery('name', tableName);
                     gr.addQuery('element', element);
-                    //gs.info('Querying sys_choice with ' + gr.getEncodedQuery());
                     gr.query();
                     while (gr.next())
                         field.choices.push({
@@ -287,7 +275,6 @@ var generateTypeScriptFromTable;
                     field.referenceTable = "" + sys_dictionary.reference.name;
                 allFields[element] = field;
             }
-            //gs.info("All fields: " + JSON.stringify(allFields));
             var parentFields;
             if (super_class !== null) {
                 cacheItem.super_class = super_class.name;
@@ -299,20 +286,14 @@ var generateTypeScriptFromTable;
                         if (typeof parentFields[n] === "undefined")
                             cacheItem.fields[n] = allFields[n];
                         else if (allFields[n].choices.length > 0) {
-                            //gs.info('Comparing ' + JSON.stringify(allFields[n]) + " to " + JSON.stringify(parentFields[n]));
                             if (!areFieldsEqual(allFields[n], parentFields[n]))
                                 (cacheItem.fields[n] = allFields[n]).overides = (isInheritedField(parentFields[n])) ? parentFields[n].inheritedFrom : super_class.name;
-                            //else
-                            //    gs.info("Skipping equal field");
                         }
                         else if (!areFieldsEqual(allFields[n], parentFields[n], true)) {
-                            //gs.info('Not equal: ' + JSON.stringify(allFields[n]) + " : " + JSON.stringify(parentFields[n]));
                             if (parentFields[n].choices.length > 0)
                                 allFields[n].choices = parentFields[n].choices.map(function (value) { return { label: value.label, sequence: value.sequence, value: value.value }; });
                             (cacheItem.fields[n] = allFields[n]).overides = (isInheritedField(parentFields[n])) ? parentFields[n].inheritedFrom : super_class.name;
                         }
-                        //else
-                        //    gs.info('Are equal: ' + JSON.stringify(allFields[n]) + " : " + JSON.stringify(parentFields[n]));
                     }
                 else
                     for (var n in allFields) {
@@ -458,10 +439,15 @@ var generateTypeScriptFromTable;
                     " * GlideElement values from the " + this.label + " table.",
                     " * @interface " + name
                 ];
-                if (typeof this.super_class === "string")
+                var grName;
+                if (typeof this.super_class === "string") {
                     lines.push(" * @extends {I" + this.super_class + "Columns}", " */", "declare interface " + name + " extends I" + this.super_class + "Columns {");
-                else
+                    grName = this.super_class + "GlideRecord";
+                }
+                else {
                     lines.push(" */", "declare interface " + name + " extends IGlideElementColumns {");
+                    grName = "GlideRecord";
+                }
                 for (var n in this.fields) {
                     var f = this.fields[n];
                     lines.push("    /**", "     * " + f.column_label, "     * @type {" + f.js_type + "}", "     * @memberof " + name);
@@ -551,7 +537,11 @@ var generateTypeScriptFromTable;
                     }
                     lines.push("     */", "    " + n + ": " + f.js_type + ";", "");
                 }
-                return lines.join("\n") + "}";
+                lines[lines.length - 1] = "}";
+                lines.push("");
+                lines.push("declare type " + this.name + "GlideRecord = " + grName + " & " + name + ";");
+                lines.push("declare type " + this.name + "ElementReference = GlidePropertiesElementReference<" + name + ", " + this.name + "GlideRecord>;");
+                return lines.join("\n");
             },
             fields: {},
             label: '',

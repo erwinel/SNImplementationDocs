@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2019-10-22 14:28:26">
+<sys_script action="INSERT_OR_UPDATE">
+<abort_action>false</abort_action>
+<access>package_private</access>
+<action_delete>false</action_delete>
+<action_insert>true</action_insert>
+<action_query>false</action_query>
+<action_update>true</action_update>
+<active>true</active>
+<add_message>false</add_message>
+<advanced>true</advanced>
+<change_fields>false</change_fields>
+<client_callable>false</client_callable>
+<collection>incident</collection>
+<condition/>
+<description/>
+<execute_function>false</execute_function>
+<filter_condition table="incident">active=true^incident_stateIN1,2,3^EQ<item goto="false" or="false" field="active" endquery="false" value="true" operator="=" newquery="false"/>
+<item goto="false" or="false" field="incident_state" endquery="false" value="1,2,3" operator="IN" newquery="false"/>
+<item goto="false" or="false" field="" endquery="true" value="" operator="=" newquery="false"/>
+</filter_condition>
+<is_rest>false</is_rest>
+<message/>
+<name>Incident caller profile validation</name>
+<order>100</order>
+<priority>100</priority>
+<rest_method display_value=""/>
+<rest_method_text/>
+<rest_service display_value=""/>
+<rest_service_text/>
+<rest_variables/>
+<role_conditions/>
+<script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	if (current.caller_id.nil())
+		current.caller_id.setValue(current.opened_by);
+	else if (!current.caller_id.changes())
+		return;
+	var message;
+	var missing = [];
+	if (current.caller_id.building.nil())
+		missing.push('Building');
+	if (current.caller_id.department.nil())
+		missing.push("Department");
+	if (current.caller_id.u_red_phone.nil())
+		missing.push("Red Phone");
+	if (missing.length == 1)
+		message = missing[0] + '.\nThis is';
+	else {
+		if (missing.length == 0)
+			return;
+		if (missing.length > 2)
+			missing = [missing.join(", "), missing.pop()];
+		message = missing.join(' or ') + '.\nThese are';
+	}
+	var sys_id = current.caller_id.sys_id.getValue();
+	if (sys_id === gs.getUserID())
+		gs.addErrorMessage('Your user profile does not specify your ' + message +
+						   ' required for expedient incident resolution.\n<a href="/sys_user.do?sys_id=' + sys_id + '&sysparm_view=ess">Click here</a> to open your Profile and fix this issue.');
+	else {
+		message = "You have submitted a request on behalf of a user whose profile does not specify their " + message +
+			" required for expedient incident resolution.\nAn email was sent to that user alerting them to update their profile.";
+		if (gs.hasRole('user_admin,itil,admin'))
+			gs.addErrorMessage(message + '\nYou may also <a href="/sys_user.do?sys_id=' + sys_id + '&sysparm_view=itil">Click here</a> to open their Profile and fix this issue.');
+		else
+			gs.addErrorMessage(message);
+		gs.eventQueue('army.incident_caller.profile_incomplete', current, sys_id);
+	}
+})(current, previous);]]></script>
+<sys_class_name>sys_script</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 22:20:08</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>54a8202edbb73700b53f341f7c9619c6</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_name>Incident caller profile validation</sys_name>
+<sys_overrides display_value=""/>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>sys_script_54a8202edbb73700b53f341f7c9619c6</sys_update_name>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-08 15:54:28</sys_updated_on>
+<template/>
+<when>before</when>
+</sys_script>
+</unload>

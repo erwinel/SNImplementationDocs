@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta id="to" content="${request.requested_for}" />
+    <meta id="event" content="army.sc_req_item.in_stock" />
+    <title>Your requested item ${number} for ${cat_item} is in stock and will be deployed soon!</title>
+</head>
+<body>
+    Click here to view request: ${URI}
+    <p>
+        Number: ${number}
+        Opened: ${opened_at}
+        Item: ${cat_item}
+        Quantity: ${quantity}
+    </p>
+    <p>
+        Additional comments:
+        ${comments}
+    </p>
+
+
+</body>
+</html>

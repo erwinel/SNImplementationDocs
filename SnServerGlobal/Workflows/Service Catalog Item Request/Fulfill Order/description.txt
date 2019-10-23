@@ -1,0 +1,1 @@
+Pull from Stock or Order from Vendor if required.  If the item has to be ordered, make sure to check the Backordered flag and specify the Estimated Delivery date on the associated item.

@@ -35,30 +35,80 @@
     <TypeScriptCompile Include="app.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <Content Include="Notifications\army.generic.request.route\Service Request Item Routing.html">
+    <Content Include="Business Rules\ARMY sc_req_item creating\sys_script.xml" />
+    <Content Include="Business Rules\ARMY sc_task created\sys_script.xml" />
+    <Content Include="Business Rules\ARMY sc_task creating\sys_script.xml" />
+    <Content Include="Business Rules\Catalog requestor profile validation\sys_script.xml" />
+    <Content Include="Business Rules\Incident caller profile validation\sys_script.pdf" />
+    <Content Include="Business Rules\Incident caller profile validation\sys_script.xml" />
+    <Content Include="Events\army.generic.request.route\Event Registry.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Notifications\army.generic.request.route\Fulfill Order.html">
+    <Content Include="Events\army.generic.request.route\Service Request Item Routing.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Workflows\Fulfill Order.txt" />
-    <Content Include="Workflows\Service Request Item Routing.txt" />
+    <Content Include="Events\army.generic.request.route\Fulfill Order.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Events\army.generic.request.route\sysevent_email_action.xml" />
+    <Content Include="Events\army.generic.request.route\sysevent_register.xml" />
+    <Content Include="Events\army.incident_caller.profile_incomplete\sysevent_email_action.xml" />
+    <Content Include="Events\army.incident_caller.profile_incomplete\sysevent_register.xml" />
+    <Content Include="Events\army.sc_requested_for.profile_incomplete\sysevent_email_action.xml" />
+    <Content Include="Events\army.sc_requested_for.profile_incomplete\sysevent_register.xml" />
+    <Content Include="Events\army.sc_req_item.backordered\Notification\message_html.html" />
+    <Content Include="Events\army.sc_req_item.fulfill_order\Notification\message_html.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Events\army.sc_req_item.fulfill_order\Notification\sysevent_email_action.xml" />
+    <Content Include="Events\army.sc_req_item.fulfill_order\sysevent_register.xml" />
+    <Content Include="Events\army.sc_req_item.in_stock\Notification\message_html.html" />
+    <Content Include="Events\army.sc_req_item.no.fulfillment_group\sysevent_register.xml" />
+    <Content Include="Events\army.sc_req_item.received\Notification\message_html.html" />
+    <Content Include="Events\army.sc_req_item.received\sysevent_register.xml" />
+    <Content Include="Variable Sets\generic_it_service_request\item_option_new_list.xml" />
+    <Content Include="Variable Sets\generic_it_service_request\item_option_new_set.xml" />
+    <Content Include="Variable Sets\hardware_request\item_option_new_set.xml" />
+    <Content Include="Workflows\Generic IT Request\Route Request\description.txt" />
+    <Content Include="Workflows\Generic IT Request\wf_activity_list.xml" />
+    <Content Include="Workflows\Generic IT Request\wf_stage_list.xml" />
+    <Content Include="Workflows\Generic IT Request\wf_variable_list.xml" />
+    <Content Include="Workflows\Generic IT Request\wf_workflow_version.xml" />
+    <Content Include="Workflows\Hardware Catalog Item Request\Fulfill Order\description.txt" />
+    <Content Include="Workflows\Hardware Catalog Item Request\Fulfill Order\wf_activity.xml" />
+    <Content Include="Workflows\Hardware Catalog Item Request\Inform Backordered received.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Workflows\Hardware Catalog Item Request\Inform Completion.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Workflows\Hardware Catalog Item Request\Inform of Backordered Status.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Workflows\Hardware Catalog Item Request\Receive Backordered Item\description.txt" />
+    <Content Include="Workflows\Hardware Catalog Item Request\Receive Backordered Item\wf_activity.xml" />
+    <Content Include="Workflows\Hardware Catalog Item Request\wf_activity_list.xml" />
+    <Content Include="Workflows\Hardware Catalog Item Request\wf_stage_list.xml" />
+    <Content Include="Workflows\Hardware Catalog Item Request\wf_variable_list.xml" />
+    <Content Include="Workflows\Hardware Catalog Item Request\wf_workflow_version.xml" />
+    <Content Include="Workflows\Service Catalog Item Request\Determine Fulfillment Group\description.txt" />
+    <Content Include="Workflows\Service Catalog Item Request\Fulfill Order\description.txt" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
     <TypeScriptCompile Include="BackgroundScript.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Events\army.sc_req_item.fulfill_order\Notification\army_sc_req_item_fulfill_order.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="generateTypeScriptFromTable.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Notifications\army.generic.request.route\army_generic_request_route.ts">
+    <TypeScriptCompile Include="Events\army.generic.request.route\army_generic_request_route.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Notifications\army.generic.request.route\army_sc_req_item_fulfill_order.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Notifications\army.generic.request.route\army_sc_req_item_no_fulfillment_group.ts">
+    <TypeScriptCompile Include="Events\army.generic.request.route\army_sc_req_item_no_fulfillment_group.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="SnTypings\GlideRecord.d.ts">
@@ -73,13 +123,13 @@
     <TypeScriptCompile Include="SnTypings\ServiceCatalog.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Workflows\Generic IT Request.ts">
+    <TypeScriptCompile Include="Workflows\Generic IT Request\Generic IT Request.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Workflows\Hardware Catalog Item Request.ts">
+    <TypeScriptCompile Include="Workflows\Hardware Catalog Item Request\Hardware Catalog Item Request.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Workflows\Service Castalog Item.ts">
+    <TypeScriptCompile Include="Workflows\Service Catalog Item Request\Service Castalog Item.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="x_44813_devjournal\Definitions.ts">
@@ -100,11 +150,42 @@
     <TypeScriptCompile Include="x_44813_dev_ts_hlp\TypeScriptDefinitionGenerator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="x_44813_servic_cat.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Notifications\" />
-    <Folder Include="Notifications\army.generic.request.route\" />
+    <Folder Include="Business Rules\" />
+    <Folder Include="Business Rules\ARMY sc_req_item creating\" />
+    <Folder Include="Business Rules\ARMY sc_task created\" />
+    <Folder Include="Business Rules\ARMY sc_task creating\" />
+    <Folder Include="Business Rules\Catalog requestor profile validation\" />
+    <Folder Include="Business Rules\Incident caller profile validation\" />
+    <Folder Include="Events\" />
+    <Folder Include="Events\army.generic.request.route\" />
+    <Folder Include="Events\army.incident_caller.profile_incomplete\" />
+    <Folder Include="Events\army.sc_requested_for.profile_incomplete\" />
+    <Folder Include="Events\army.sc_req_item.backordered\Notification\" />
+    <Folder Include="Events\army.sc_req_item.fulfill_order\" />
+    <Folder Include="Events\army.sc_req_item.fulfill_order\Notification\" />
+    <Folder Include="Events\army.sc_req_item.in_stock\Notification\" />
+    <Folder Include="Events\army.sc_req_item.no.fulfillment_group\" />
+    <Folder Include="Events\army.sc_req_item.in_stock\" />
+    <Folder Include="Events\army.sc_req_item.backordered\" />
+    <Folder Include="Events\army.sc_req_item.received\" />
+    <Folder Include="Events\army.sc_req_item.received\Notification\" />
+    <Folder Include="Variable Sets\" />
+    <Folder Include="Variable Sets\generic_it_service_request\" />
+    <Folder Include="Variable Sets\hardware_request\" />
     <Folder Include="Workflows\" />
+    <Folder Include="Workflows\Generic IT Request\" />
+    <Folder Include="Workflows\Generic IT Request\Route Request\" />
+    <Folder Include="Workflows\Hardware Catalog Item Request\" />
+    <Folder Include="Workflows\Hardware Catalog Item Request\Fulfill Order\" />
+    <Folder Include="Workflows\Hardware Catalog Item Request\Receive Backordered Item\" />
+    <Folder Include="Workflows\Service Catalog Item Request\" />
+    <Folder Include="Workflows\Service Catalog Item Request\Determine Fulfillment Group\" />
+    <Folder Include="Workflows\Service Catalog Item Request\Fulfill Order\" />
     <Folder Include="x_44813_devjournal\" />
     <Folder Include="x_44813_dev_ts_hlp\" />
     <Folder Include="SnTypings\" />

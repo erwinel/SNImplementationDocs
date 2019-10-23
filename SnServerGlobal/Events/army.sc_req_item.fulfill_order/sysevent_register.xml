@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2019-10-22 14:20:13">
+<sysevent_register action="INSERT_OR_UPDATE">
+<caller_access/>
+<description>Service Catalog item request needs to be fulfulled.</description>
+<event_name>army.sc_req_item.fulfill_order</event_name>
+<fired_by>Service Catalog Request Item service catalog workflows</fired_by>
+<queue/>
+<suffix/>
+<sys_class_name>sysevent_register</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-21 23:38:30</sys_created_on>
+<sys_id>f404758fdb684810b53f341f7c9619de</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_name>army.sc_req_item.fulfill_order</sys_name>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>sysevent_register_f404758fdb684810b53f341f7c9619de</sys_update_name>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-21 23:38:30</sys_updated_on>
+<table>sc_req_item</table>
+</sysevent_register>
+</unload>

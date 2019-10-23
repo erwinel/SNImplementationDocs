@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <wf_activity>
+    <activity_definition display_value="Catalog Task">38891b6f0a0a0b1e00efdfdd77602027</activity_definition>
+    <activity_definition_updated>false</activity_definition_updated>
+    <databus_lookup_id/>
+    <height/>
+    <input>{}</input>
+    <is_parent>false</is_parent>
+    <name>Fulfill Order</name>
+    <new_activity_definition/>
+    <notes/>
+    <out_of_date>false</out_of_date>
+    <parent/>
+    <pinned>false</pinned>
+    <pinned_version/>
+    <stage display_value="Fulfillment">c00ecd13db6cc810683b300f7c9619cd</stage>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>040ec593db6cc810683b300f7c9619eb</sys_id>
+    <sys_mod_count>1</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:45:39</sys_updated_on>
+    <timeout>1970-01-01 00:00:00</timeout>
+    <vars/>
+    <width/>
+    <workflow_version display_value="Hardware Catalog Item Request">0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+    <x>223</x>
+    <y>56</y>
+  </wf_activity>
+  <sys_variable_value action="delete_multiple" query="document_key=040ec593db6cc810683b300f7c9619eb"/>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>20</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>000ec593db6cc810683b300f7c9619ee</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>3</value>
+    <variable display_value="">d7ec9d5cc0a8016500a4ed439b25f438</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>250</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>040ec593db6cc810683b300f7c9619ed</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>1970-01-05 00:00:00</value>
+    <variable display_value="">c360b80b0a0a0ba97c533f11a0c9814c</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1300</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>080ec593db6cc810683b300f7c9619ec</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>Please fulfill this order</value>
+    <variable display_value="">d7f61655c0a8016500793dd16da8beff</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>200</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>080ec593db6cc810683b300f7c9619ef</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value/>
+    <variable display_value="">8f5ec60dc0a800667063095e6702d1ee</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1650</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>0c0ec593db6cc810683b300f7c9619eb</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>1</value>
+    <variable display_value="">98b91165c0a800665c43a410b6f29fe5</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1000</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>0c0ec593db6cc810683b300f7c9619ee</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>Values</value>
+    <variable display_value="">d7ee92ddc0a8016500b307a89bbf3db1</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>2000</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>400ec593db6cc810683b300f7c9619ed</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>
+      // Set 'answer' to the number of seconds this timer should wait
+      answer = 0;
+    </value>
+    <variable display_value="">8f79bbdbc0a80066479b2d5ea4863c24</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1500</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>440ec593db6cc810683b300f7c9619ec</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value/>
+    <variable display_value="">d7f79afac0a80165001b98ae987d06a5</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>610</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>440ec593db6cc810683b300f7c9619ef</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value/>
+    <variable display_value="">8f6728b4c0a80066478f02b692654b58</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>600</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>480ec593db6cc810683b300f7c9619eb</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>workflow_schedule</value>
+    <variable display_value="">8f63ae0fc0a80066697c832ba44df4e1</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>620</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>480ec593db6cc810683b300f7c9619ee</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>08fcd0830a0a0b2600079f56b1adb9ae</value>
+    <variable display_value="">8f6814cfc0a8006605477949c2fa6e6e</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1200</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>4c0ec593db6cc810683b300f7c9619ed</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value/>
+    <variable display_value="">d7f3c998c0a8016500d0204c0005453b</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>710</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>800ec593db6cc810683b300f7c9619ec</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value/>
+    <variable display_value="">8f6c1eb6c0a8006633bb0f81ef62d520</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1400</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>800ec593db6cc810683b300f7c9619ef</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value/>
+    <variable display_value="">d7f6e527c0a801650053e44a74e34315</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1700</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>840ec593db6cc810683b300f7c9619eb</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>wf.request_item_backordered</value>
+    <variable display_value="">acb99baa0a0a0ba300d0938182192ad4</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>10</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>840ec593db6cc810683b300f7c9619ee</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>sc_task</value>
+    <variable display_value="">d7eb710cc0a80165001dace00d26aee0</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>400</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>880ec593db6cc810683b300f7c9619ed</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>3bf802c20a0a0b52008e2859cd8abcf2</value>
+    <variable display_value="">8f630a2cc0a80066385b16d90585802d</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>40</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>8c0ec593db6cc810683b300f7c9619ec</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>1</value>
+    <variable display_value="">c360af110a0a0ba97c533f11e09f464f</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>300</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>c00ec593db6cc810683b300f7c9619ee</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value/>
+    <variable display_value="">8f722677c0a800664d3a879fadd87bfc</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1600</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>c40ec593db6cc810683b300f7c9619ed</sys_id>
+    <sys_mod_count>1</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:45:39</sys_updated_on>
+    <value>
+      description=Pull ${cat_item.URI_REF} from Stock or Order from Vendor if required. item ${URI_REF}.
+      If the item has to be ordered, make sure to check the Backordered flag and specify the Estimated Delivery date on the associated item.
+      Description: ${short_description}
+      Requested For: ${request.requested_for.URI_REF}
+      VIP: ${request.requested_for.vip}
+      Catalog Item: ${cat_item.URI_REF}
+      Quantity: ${quantity}
+      Requested By: ${opened_by.URI_REF}
+
+      IMPORTANT: The workflow for this request does not proceed until you close this task. Cancelling this task will also cancel the associated requested item!^EQ
+    </value>
+    <variable display_value="">c360b4100a0a0ba97c533f1148325820</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>700</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>c80ec593db6cc810683b300f7c9619ec</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>user_specified_timezone</value>
+    <variable display_value="">8f68b111c0a800662a07dc10fa198c4f</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>720</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>c80ec593db6cc810683b300f7c9619ef</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value/>
+    <variable display_value="">8f6d4120c0a8006655edc4495deb43ab</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1100</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>cc0ec593db6cc810683b300f7c9619eb</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value/>
+    <variable display_value="">d7f2bd33c0a801650021da8ff242a081</variable>
+  </sys_variable_value>
+  <sys_variable_value action="INSERT_OR_UPDATE">
+    <document>wf_activity</document>
+    <document_key>040ec593db6cc810683b300f7c9619eb</document_key>
+    <order>1660</order>
+    <sys_class_name>sys_variable_value</sys_class_name>
+    <sys_created_by>erwinel_da</sys_created_by>
+    <sys_created_on>2019-10-22 15:30:53</sys_created_on>
+    <sys_id>cc0ec593db6cc810683b300f7c9619ee</sys_id>
+    <sys_mod_count>0</sys_mod_count>
+    <sys_updated_by>erwinel_da</sys_updated_by>
+    <sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+    <value>
+      task.short_description.setValue('Fulfill catalog item request: ' + current.cat_item.short_description);
+      gs.eventQueue('army.sc_req_item.fulfill_order', current, task.number.getValue(), current.cat_item.getDisplayValue());
+    </value>
+    <variable display_value="">98b96f90c0a800666b58ec516f330397</variable>
+  </sys_variable_value>
+</xml>

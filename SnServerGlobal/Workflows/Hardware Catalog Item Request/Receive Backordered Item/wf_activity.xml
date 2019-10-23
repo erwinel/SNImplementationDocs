@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+<wf_activity>
+<activity_definition display_value="Catalog Task">38891b6f0a0a0b1e00efdfdd77602027</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id/>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Receive Backordered Item</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage display_value="Fulfillment">680899d7db6cc810683b300f7c961996</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>6408995bdb6cc810683b300f7c9619df</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 17:46:13</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version display_value="Hardware Catalog Item Request">a00899d7db6cc810683b300f7c961995</workflow_version>
+<x>1025</x>
+<y>188</y>
+</wf_activity>
+<sys_variable_value action="delete_multiple" query="document_key=6408995bdb6cc810683b300f7c9619df"/>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1100</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>2008995bdb6cc810683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>8a4cb6d4c61122780043b1642efcd52b</value>
+<variable display_value="">d7f2bd33c0a801650021da8ff242a081</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>700</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>2c08995bdb6cc810683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>user_specified_timezone</value>
+<variable display_value="">8f68b111c0a800662a07dc10fa198c4f</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1660</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>3008995bdb6cc810683b300f7c9619e3</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 17:46:13</sys_updated_on>
+<value>task.short_description.setValue('Receive Catalog Item: ' + current.cat_item.short_description);
+gs.eventQueue('army.sc_req_item.backordered', current, task.number.getValue());
+current.variables.request_item_backordered.setValue(true);</value>
+<variable display_value="">98b96f90c0a800666b58ec516f330397</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>300</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>3408995bdb6cc810683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">8f722677c0a800664d3a879fadd87bfc</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1600</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>3808995bdb6cc810683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>state=-5^description=Please close this task once the back-ordered item arrives.
+
+IMPORTANT: The workflow for this request does not proceed until you close this task. Cancelling this task will also cancel the associated requested item!^EQ</value>
+<variable display_value="">c360b4100a0a0ba97c533f1148325820</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>720</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>3c08995bdb6cc810683b300f7c9619e3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">8f6d4120c0a8006655edc4495deb43ab</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1300</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>6808995bdb6cc810683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">d7f61655c0a8016500793dd16da8beff</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1650</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>6c08995bdb6cc810683b300f7c9619df</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>1</value>
+<variable display_value="">98b91165c0a800665c43a410b6f29fe5</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>20</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>7008995bdb6cc810683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">d7ec9d5cc0a8016500a4ed439b25f438</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>250</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>7408995bdb6cc810683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">c360b80b0a0a0ba97c533f11a0c9814c</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>200</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>7808995bdb6cc810683b300f7c9619e3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">8f5ec60dc0a800667063095e6702d1ee</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1000</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>7c08995bdb6cc810683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>Values</value>
+<variable display_value="">d7ee92ddc0a8016500b307a89bbf3db1</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1500</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>a408995bdb6cc810683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">d7f79afac0a80165001b98ae987d06a5</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>600</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>a808995bdb6cc810683b300f7c9619df</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>workflow_schedule</value>
+<variable display_value="">8f63ae0fc0a80066697c832ba44df4e1</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>2000</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>b008995bdb6cc810683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>// Set 'answer' to the number of seconds this timer should wait
+answer = 0;</value>
+<variable display_value="">8f79bbdbc0a80066479b2d5ea4863c24</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>610</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>b408995bdb6cc810683b300f7c9619e3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">8f6728b4c0a80066478f02b692654b58</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>620</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>b808995bdb6cc810683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>08fcd0830a0a0b2600079f56b1adb9ae</value>
+<variable display_value="">8f6814cfc0a8006605477949c2fa6e6e</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1200</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>bc08995bdb6cc810683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">d7f3c998c0a8016500d0204c0005453b</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>710</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>e008995bdb6cc810683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">8f6c1eb6c0a8006633bb0f81ef62d520</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1700</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>e408995bdb6cc810683b300f7c9619df</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">acb99baa0a0a0ba300d0938182192ad4</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>40</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>ec08995bdb6cc810683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>1</value>
+<variable display_value="">c360af110a0a0ba97c533f11e09f464f</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>1400</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>f008995bdb6cc810683b300f7c9619e3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value/>
+<variable display_value="">d7f6e527c0a801650053e44a74e34315</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>10</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>f408995bdb6cc810683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>sc_task</value>
+<variable display_value="">d7eb710cc0a80165001dace00d26aee0</variable>
+</sys_variable_value>
+<sys_variable_value action="INSERT_OR_UPDATE">
+<document>wf_activity</document>
+<document_key>6408995bdb6cc810683b300f7c9619df</document_key>
+<order>400</order>
+<sys_class_name>sys_variable_value</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 16:14:37</sys_created_on>
+<sys_id>f808995bdb6cc810683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 16:14:37</sys_updated_on>
+<value>3bf802c20a0a0b52008e2859cd8abcf2</value>
+<variable display_value="">8f630a2cc0a80066385b16d90585802d</variable>
+</sys_variable_value>
+</xml>

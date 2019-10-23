@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2019-10-22 15:10:27">
+<item_option_new_set action="INSERT_OR_UPDATE">
+<create_roles/>
+<description>Request information, including justification for hardware requests.</description>
+<display_title>false</display_title>
+<internal_name>hardware_request</internal_name>
+<layout>2down</layout>
+<name/>
+<order>100</order>
+<read_roles/>
+<sys_class_name>item_option_new_set</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-04-10 17:40:25</sys_created_on>
+<sys_id>3cdc15200f30b300d12eba8ce1050e59</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_name>Hardware Request</sys_name>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>item_option_new_set_3cdc15200f30b300d12eba8ce1050e59</sys_update_name>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-04-10 17:40:25</sys_updated_on>
+<title>Hardware Request</title>
+<type>one_to_one</type>
+<write_roles/>
+</item_option_new_set>
+</unload>

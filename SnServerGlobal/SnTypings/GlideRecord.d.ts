@@ -4908,6 +4908,32 @@ declare type syseventGlideRecord = GlideRecord & IsyseventColumns;
 
 declare type syseventElementReference = GlidePropertiesElementReference<IsyseventColumns, syseventGlideRecord>;
 
+/**
+ * GlideElement values from the Notification Category table.
+ * @interface Isys_notification_categoryColumns
+ * @extends {Isys_metadataColumns}
+ */
+declare interface Isys_notification_categoryColumns extends Isys_metadataColumns {
+    /**
+     * Name
+     * @type {StringGlideElement}
+     * @memberof Isys_notification_categoryColumns
+     * @description Internal type is "translated_text"
+     *      Max length: 32
+     */
+    name: StringGlideElement;
+
+    /**
+     * Short description
+     * @type {StringGlideElement}
+     * @memberof Isys_notification_categoryColumns
+     * @description Max length: 1000
+     */
+    short_description: StringGlideElement;
+}
+
+declare type sys_notification_categoryGlideRecord = sys_metadataGlideRecord & Isys_notification_categoryColumns;
+declare type sys_notification_categoryElementReference = GlidePropertiesElementReference<Isys_notification_categoryColumns, sys_notification_categoryGlideRecord>;
 
 /**
  * GlideElement values from the Notification table.
@@ -4957,7 +4983,6 @@ declare interface Isysevent_email_actionColumns extends IsysruleColumns {
      * Category
      * @type {sys_notification_categoryElementReference}
      * @memberof Isysevent_email_actionColumns
-     * @default "javascript:gs.getProperty('glide.notification.default_category', 'c97d83137f4432005f58108c3ffa917a');"
      * @description Reference to table "sys_notification_category"
      */
     category: sys_notification_categoryElementReference;
@@ -4990,11 +5015,11 @@ declare interface Isysevent_email_actionColumns extends IsysruleColumns {
 
     /**
      * Default Interval
-     * @type {sys_email_digest_intervalElementReference}
+     * @type {GlideElementReference}
      * @memberof Isysevent_email_actionColumns
      * @description Reference to table "sys_email_digest_interval"
      */
-    default_interval: sys_email_digest_intervalElementReference;
+    default_interval: GlideElementReference;
 
     /**
      * Allow Digest
@@ -5056,11 +5081,11 @@ declare interface Isysevent_email_actionColumns extends IsysruleColumns {
 
     /**
      * Digest Template
-     * @type {sysevent_email_templateElementReference}
+     * @type {GlideElementReference}
      * @memberof Isysevent_email_actionColumns
      * @description Reference to table "sysevent_email_template"
      */
-    digest_template: sysevent_email_templateElementReference;
+    digest_template: GlideElementReference;
 
     /**
      * Digest Text
@@ -5266,11 +5291,11 @@ declare interface Isysevent_email_actionColumns extends IsysruleColumns {
 
     /**
      * Stationery
-     * @type {sysevent_email_styleElementReference}
+     * @type {GlideElementReference}
      * @memberof Isysevent_email_actionColumns
      * @description Reference to table "sysevent_email_style"
      */
-    style: sysevent_email_styleElementReference;
+    style: GlideElementReference;
 
     /**
      * Subject
@@ -5300,11 +5325,11 @@ declare interface Isysevent_email_actionColumns extends IsysruleColumns {
 
     /**
      * Email template
-     * @type {sysevent_email_templateElementReference}
+     * @type {GlideElementReference}
      * @memberof Isysevent_email_actionColumns
      * @description Reference to table "sysevent_email_template"
      */
-    template: sysevent_email_templateElementReference;
+    template: GlideElementReference;
 
     /**
      * Type
@@ -7623,6 +7648,14 @@ declare interface ItaskColumns extends IGlideElementColumns {
     reassignment_count: GlideElementNumeric;
 
     /**
+     * Rejection goto
+     * @type {taskElementReference}
+     * @memberof ItaskColumns
+     * @description Reference to table "task"
+     */
+    rejection_goto: taskElementReference;
+
+    /**
      * Service offering
      * @type {service_offeringElementReference}
      * @memberof ItaskColumns
@@ -7735,12 +7768,27 @@ declare interface ItaskColumns extends IGlideElementColumns {
     user_input: GlideElement;
 
     /**
+     * Variables
+     * @type {GlideElementVariables}
+     * @memberof ItaskColumns
+     */
+    variables: GlideElementVariables;
+
+    /**
      * Watch list
      * @type {GlideElement}
      * @memberof ItaskColumns
      * @description Internal type is "glide_list"
      */
     watch_list: GlideElement;
+
+    /**
+     * Workflow activity
+     * @type {wf_activityElementReference}
+     * @memberof ItaskColumns
+     * @description Reference to table "wf_activity"
+     */
+    wf_activity: wf_activityElementReference;
 
     /**
      * Actual end

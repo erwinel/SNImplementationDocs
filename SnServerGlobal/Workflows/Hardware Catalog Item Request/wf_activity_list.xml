@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+<wf_activity>
+<activity_definition>50a78fa50a6a803f66d064255f7201a5</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>2</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Automatic Approval</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>4c0ecd13db6cc810683b300f7c9619cc</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>cc0ec593db6cc810683b300f7c9619f9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>42</x>
+<y>128</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>c7a5e32c0a0a0b3a002377c24ed8ea76</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id/>
+<height/>
+<input/>
+<is_parent>false</is_parent>
+<name>Begin</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>040ec593db6cc810683b300f7c9619f5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width>80</width>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>5</x>
+<y>20</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>db8c65aec0a8016501d00259bc7203a4</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>21</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Clear Backordered Variable</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>080ec593db6cc810683b300f7c9619f7</sys_id>
+<sys_mod_count>4</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:36:25</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>1008</x>
+<y>344</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>c7a66f7d0a0a0b3a004544a6d2f14076</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id/>
+<height/>
+<input/>
+<is_parent>false</is_parent>
+<name>End</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>0c0ec593db6cc810683b300f7c9619ea</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width>80</width>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>1134</x>
+<y>664</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>38891b6f0a0a0b1e00efdfdd77602027</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id/>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Fulfill Order</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>c00ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>040ec593db6cc810683b300f7c9619eb</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:56:06</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>224</x>
+<y>55</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>98f621ca0a0a0b5900f7c291f5e45a0e</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>16</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Is Completed</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>400ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>840ec593db6cc810683b300f7c9619d6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>563</x>
+<y>608</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>98f621ca0a0a0b5900f7c291f5e45a0e</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>1</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Item Has Fulfillment Group</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>4c0ecd13db6cc810683b300f7c9619cc</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>000ec593db6cc810683b300f7c9619f4</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>55</x>
+<y>410</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>9f680b92c0a801640026553f665b429f</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>22</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Notify In Stock</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>400ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:33:05</sys_created_on>
+<sys_id>7a2e8d53db6cc810683b300f7c96194c</sys_id>
+<sys_mod_count>3</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:33:30</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>582</x>
+<y>258</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>9f680b92c0a801640026553f665b429f</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>24</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Notify Received</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>400ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:35:36</sys_created_on>
+<sys_id>9cfe01d3db6cc810683b300f7c9619c6</sys_id>
+<sys_mod_count>5</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:36:22</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>1285</x>
+<y>327</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>38891b6f0a0a0b1e00efdfdd77602027</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id/>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Receive Backordered Item</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>c00ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>8c0ec593db6cc810683b300f7c9619cd</sys_id>
+<sys_mod_count>3</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:45:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>1025</x>
+<y>188</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>396807940a0a0b5c00afd9f67d9fd7a2</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>17</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Request Item Cancelled</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>c80ecd13db6cc810683b300f7c9619cc</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>000ec593db6cc810683b300f7c9619d8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>817</x>
+<y>695</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>396807940a0a0b5c00afd9f67d9fd7a2</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>18</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Request Item Fulfillment complete</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>cc0ecd13db6cc810683b300f7c9619cc</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>c40ec593db6cc810683b300f7c9619e6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>781</x>
+<y>528</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>1ca8d7cf0a0a0b265e9a000c2c08248c</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>8</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Set Approved State</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>4c0ecd13db6cc810683b300f7c9619cc</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>800ec593db6cc810683b300f7c9619f9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>23</x>
+<y>278</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>1ca8d7cf0a0a0b265e9a000c2c08248c</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>10</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Set Backordered and Pending</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>c00ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>c00ec593db6cc810683b300f7c9619d9</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:44:19</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>592</x>
+<y>33</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>1ca8d7cf0a0a0b265e9a000c2c08248c</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>13</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Set Cancelled</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>c80ecd13db6cc810683b300f7c9619cc</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>880ec593db6cc810683b300f7c9619f0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>781</x>
+<y>114</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>1ca8d7cf0a0a0b265e9a000c2c08248c</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>14</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Set Completed</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>400ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>c40ec593db6cc810683b300f7c9619d3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>583</x>
+<y>353</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>1ca8d7cf0a0a0b265e9a000c2c08248c</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>7</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Set Default Assignment Group</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>c00ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>8c0ec593db6cc810683b300f7c9619f5</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>369</x>
+<y>466</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>db8c65aec0a8016501d00259bc7203a4</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>20</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Set Fulfillment Group from assignment group</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>c00ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>040ec593db6cc810683b300f7c9619e8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>353</x>
+<y>358</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>db8c65aec0a8016501d00259bc7203a4</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>19</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Set Fulfillment Group From Cat Item</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>c00ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>c80ec593db6cc810683b300f7c9619f6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>260</x>
+<y>220</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>1ca8d7cf0a0a0b265e9a000c2c08248c</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>12</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Set In Stock</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>400ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>440ec593db6cc810683b300f7c9619f8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>580</x>
+<y>161</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>1ca8d7cf0a0a0b265e9a000c2c08248c</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>11</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Set Received</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>400ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>c40ec593db6cc810683b300f7c9619f1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>1288</x>
+<y>433</y>
+</wf_activity>
+<wf_activity>
+<activity_definition>d93a02ae0a0a0aa30077abad3fdac035</activity_definition>
+<activity_definition_updated>false</activity_definition_updated>
+<databus_lookup_id>15</databus_lookup_id>
+<height/>
+<input>{}</input>
+<is_parent>false</is_parent>
+<name>Wait For Close</name>
+<new_activity_definition/>
+<notes/>
+<out_of_date>false</out_of_date>
+<parent/>
+<pinned>false</pinned>
+<pinned_version/>
+<stage>400ecd13db6cc810683b300f7c9619cd</stage>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-22 15:30:53</sys_created_on>
+<sys_id>040ec593db6cc810683b300f7c9619e7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-22 15:30:53</sys_updated_on>
+<timeout>1970-01-01 00:00:00</timeout>
+<vars/>
+<width/>
+<workflow_version>0c0ecd13db6cc810683b300f7c9619cb</workflow_version>
+<x>313</x>
+<y>595</y>
+</wf_activity>
+</xml>
