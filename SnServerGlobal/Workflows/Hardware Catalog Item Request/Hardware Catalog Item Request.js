@@ -33,7 +33,7 @@ var workflows_hardware_catalog_item_request;
     (function (notify_availability_validation_task) {
         (function () {
             var gr = new GlideRecord('sc_task');
-            gr.addQuery('number', workflow.scratchpad.task_number);
+            gr.addQuery('number', workflow.scratchpad().task_number);
             gr.query();
             if (gr.next())
                 return "" + gr.sys_id;
@@ -42,7 +42,7 @@ var workflows_hardware_catalog_item_request;
     })(notify_availability_validation_task || (notify_availability_validation_task = {}));
     function setItem1(current, workflow) {
         var gr = new GlideRecord('sc_task');
-        gr.addQuery('number', workflow.scratchpad.task_number);
+        gr.addQuery('number', workflow.scratchpad().task_number);
         gr.query();
         if (gr.next())
             return "" + gr.sys_id;
@@ -53,7 +53,7 @@ var workflows_hardware_catalog_item_request;
         answer = (function () {
             if (JSUtil.getBooleanValue(current, "active") && current.approval.getValue() === "requested") {
                 var gr = new GlideRecord('sc_task');
-                gr.addQuery('number', workflow.scratchpad.task_number);
+                gr.addQuery('number', workflow.scratchpad().task_number);
                 gr.query();
                 return !(gr.next() && JSUtil.getBooleanValue(gr, "active"));
             }
@@ -90,7 +90,7 @@ var workflows_hardware_catalog_item_request;
         function ifScript() {
             if (JSUtil.toBoolean(current.active)) {
                 var gr = new GlideRecord('sc_task');
-                gr.addQuery('number', workflow.scratchpad.task_number);
+                gr.addQuery('number', workflow.scratchpad().task_number);
                 gr.query();
                 if (gr.next()) {
                     var state = parseInt(gr.state.getValue());

@@ -6,7 +6,6 @@ var x_44813_servic_cat;
     var RequestItemAvailabilityChanging;
     (function (RequestItemAvailabilityChanging) {
         (function executeRule(current, previous /*null when async*/) {
-            current.approval;
             if (current.backordered.changesTo(true)) {
                 if (current.sourced == true)
                     current.sourced = false;

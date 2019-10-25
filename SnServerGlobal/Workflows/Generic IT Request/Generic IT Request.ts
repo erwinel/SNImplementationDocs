@@ -6,16 +6,12 @@ namespace workflows_generic_it_request {
     type genericRequestItemGlideRecord = sc_req_itemGlideRecord & {
         variables: {
             it_req_approval_group: GlideElementVariable;
-            it_req_group_assignment: GlideElementVariable;
             mission_impact: GlideElementVariable;
         };
     };
-    interface IWorkflowVar extends IScopedWorkflow {
-        scratchpad: {
-            task_number: string;
-        }
-    }
-    function initialize_impact_urgency_and_priority(current: sc_req_itemGlideRecord, workflow: IWorkflowVar): void {
+    type wfWorkflowScratchPad = WorkflowScratchPad & { task_number: StringGlideElement | string; backordered: GlideElementBoolean | boolean; sourced: GlideElementBoolean | boolean; received: GlideElementBoolean | boolean; };
+    interface IWorkflowVar extends IScopedWorkflow { scratchpad(): wfWorkflowScratchPad; }
+    function initialize_impact_urgency_and_priority(current: genericRequestItemGlideRecord, workflow: IWorkflowVar): void {
         if (gs.nil(current.variables.mission_impact))
             gs.warn('Mission Impact not defined (mission_impact variable missing or misconfigured)');
         else {
@@ -45,11 +41,14 @@ namespace workflows_generic_it_request {
     }
 
     namespace route_request {
-        function advancedScript(current: sc_req_itemGlideRecord, task: sc_taskGlideRecord, workflow: IWorkflowVar): void {
+        function advancedScript(current: genericRequestItemGlideRecord, task: sc_taskGlideRecord, workflow: IWorkflowVar): void {
             task.short_description.setValue('Route IT Request request for ' +
                 (((current.short_description + "").indexOf(current.cat_item.short_description.getValue()) < 0) ?
                     current.request.requested_for.getDisplayValue() + ' (' + current.short_description + ')' :
                     current.request.requested_for.getDisplayValue()));
+            task.impact = current.impact;
+            task.urgency = current.urgency;
+            task.priority = current.priority;
             let requested_for: string = current.request.requested_for.getDisplayValue();
             let description: string[] = [
                 'Please verify routing options for the associated generic service catalog IT service request item ' + current.number + '.',
@@ -74,30 +73,59 @@ namespace workflows_generic_it_request {
             description.push('',
                 'Routing Options',
                 '    Directly route to fulfillment group.',
-                '        Use the "Variables" section to select the fulfillment group, leaving the approval group blank.',
-                '        Click the "Close Task" button to continue. The status for the associated request will be automatically updated and routed accordingly.',
+                '        Fill in the "Assignment Group" field of the associated request item.',
+                '        Close this task to move the request item into the "Approved" stage.',
                 '    Route to group for approval.',
-                '        Use the "Variables" section to select both the approval and the fulfillment groups.',
-                '        Click the "Close Task" button to continue. The status for the associated request will be automatically updated.',
-                '        Once (and if) the item is approved, the requested item will be re-assigned to the fulfillment groups.');
+                '        Fill in the "Assignment Group" field of the associated request item.',
+                '        Use the "Variables" section of this task to select the approval group.',
+                '        Close this task to generate the approval tasks.',
+                '    Re-Route this task to another group for assessment.',
+                '        Update the Assignment Group of this task (not the requested item) to re-route this to another group for assessment.',
+                '        Do not close the task if you have re-assigned it to some one else.');
             task.description.setValue(description.join('\n'));
-            workflow.scratchpad.task_number = task.number.getValue();
+            workflow.scratchpad().task_number = task.number;
             gs.eventQueue('army.generic.request.route', current, task.number.getValue());
         }
     }
-    namespace cancel_task_if_still_open {
-        function advancedScript(current: sc_req_itemGlideRecord, task: sc_taskGlideRecord, workflow: IWorkflowVar): void {
-            if (!gs.nil(workflow.scratchpad.task_number)) {
-                var gr: sc_taskGlideRecord = <sc_taskGlideRecord>new GlideRecord('sc_task');
-                gr.addQuery('number', workflow.scratchpad.task_number);
-                workflow.scratchpad.task_number = null;
-                gr.query();
-                if (gr.next()) {
-                    gr.state.setValue(7);
-                    gr.update();
-                    gs.addInfoMessage('Cancelled request item routing task');
-                }
+    namespace Wait_Approval {
+        declare var current: genericRequestItemGlideRecord, answer: boolean, workflow: IWorkflowVar;
+        answer = (function (): boolean {
+            let scratchpad: wfWorkflowScratchPad = workflow.scratchpad();
+            if (gs.nil(scratchpad.task_number))
+                return true;
+            var gr: sc_taskGlideRecord = <sc_taskGlideRecord>new GlideRecord('sc_task');
+            gr.addQuery('number', scratchpad.task_number);
+            gr.query();
+            if (gr.next() && gr.state < 3) {
+                if (current.active && current.variables.it_req_approval_group.nil() && (current.approval == "requested" || current.approval == "not requested"))
+                    return false;
+                gr.state = 7;
+                gr.update();
+                gs.addInfoMessage('Cancelled request item routing task');
             }
+            scratchpad.task_number = null;
+            return true;
+        })();
+    }
+    namespace Needs_Approval {
+        declare var current: genericRequestItemGlideRecord, answer: 'yes' | 'no', workflow: IWorkflowVar;
+        function ifScript(): 'yes' | 'no' {
+            return (current.variables.it_req_approval_group.nil() || (current.approval != "requested" && current.approval != "not requested")) ? 'no' : 'yes';
         }
+        answer = ifScript();
+    }
+    namespace Save_Current_State {
+        declare var current: genericRequestItemGlideRecord, answer: 'yes' | 'no', workflow: IWorkflowVar;
+        let scratchpad: wfWorkflowScratchPad = workflow.scratchpad();
+        scratchpad.backordered = current.backordered;
+        scratchpad.received = current.received;
+        scratchpad.sourced = current.sourced;
+    }
+    namespace Wait_Source_Changed_or_Closed {
+        declare var current: genericRequestItemGlideRecord, answer: boolean, workflow: IWorkflowVar;
+        answer = (function (): boolean {
+            let scratchpad: wfWorkflowScratchPad = workflow.scratchpad();
+            return current.backordered != scratchpad.backordered || current.sourced != scratchpad.sourced || current.received != scratchpad.received || current.active != true;
+        })();
     }
 }

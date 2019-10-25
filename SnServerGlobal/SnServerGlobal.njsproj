@@ -111,6 +111,9 @@
     <TypeScriptCompile Include="Events\army.generic.request.route\army_sc_req_item_no_fulfillment_group.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="normalizeRoleList.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="SnTypings\GlideRecord.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -121,6 +124,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="SnTypings\ServiceCatalog.d.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="UI Actions\forceToUpdateSet.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Workflows\Generic IT Request\Generic IT Request.ts">
@@ -174,6 +180,7 @@
     <Folder Include="Events\army.sc_req_item.backordered\" />
     <Folder Include="Events\army.sc_req_item.received\" />
     <Folder Include="Events\army.sc_req_item.received\Notification\" />
+    <Folder Include="UI Actions\" />
     <Folder Include="Variable Sets\" />
     <Folder Include="Variable Sets\generic_it_service_request\" />
     <Folder Include="Variable Sets\hardware_request\" />

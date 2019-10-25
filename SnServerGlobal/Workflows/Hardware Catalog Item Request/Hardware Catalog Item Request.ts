@@ -3,11 +3,8 @@
 /// <reference path="../../SnTypings/ServiceCatalog.d.ts" />
 
 namespace workflows_hardware_catalog_item_request {
-    interface IWorkflowVar extends IScopedWorkflow {
-        scratchpad: {
-            task_number: any;
-        }
-    }
+    type wfWorkflowScratchPad = WorkflowScratchPad & { task_number: string; };
+    interface IWorkflowVar extends IScopedWorkflow { scratchpad(): wfWorkflowScratchPad; }
 
     namespace verify_availability {
         function advanced_script(current: sc_req_itemGlideRecord, task: sc_taskGlideRecord, workflow: IWorkflowVar): void {
@@ -40,7 +37,7 @@ namespace workflows_hardware_catalog_item_request {
         declare var current: sc_req_itemGlideRecord, workflow: IWorkflowVar;
         (function (): string {
             var gr: sc_taskGlideRecord = <sc_taskGlideRecord>new GlideRecord('sc_task');
-            gr.addQuery('number', workflow.scratchpad.task_number);
+            gr.addQuery('number', workflow.scratchpad().task_number);
             gr.query();
             if (gr.next())
                 return "" + gr.sys_id;
@@ -49,7 +46,7 @@ namespace workflows_hardware_catalog_item_request {
     }
     function setItem1(current: sc_req_itemGlideRecord, workflow: IWorkflowVar): string {
         var gr: sc_taskGlideRecord = <sc_taskGlideRecord>new GlideRecord('sc_task');
-        gr.addQuery('number', workflow.scratchpad.task_number);
+        gr.addQuery('number', workflow.scratchpad().task_number);
         gr.query();
         if (gr.next())
             return "" + gr.sys_id;
@@ -60,7 +57,7 @@ namespace workflows_hardware_catalog_item_request {
         answer = (function (): boolean {
             if (JSUtil.getBooleanValue(current, "active") && current.approval.getValue() === "requested") {
                 var gr: sc_taskGlideRecord = <sc_taskGlideRecord>new GlideRecord('sc_task');
-                gr.addQuery('number', workflow.scratchpad.task_number);
+                gr.addQuery('number', workflow.scratchpad().task_number);
                 gr.query();
                 return !(gr.next() && JSUtil.getBooleanValue(gr, "active"));
             }
@@ -97,7 +94,7 @@ namespace workflows_hardware_catalog_item_request {
         function ifScript(): 'yes' | 'no' {
             if (JSUtil.toBoolean(current.active)) {
                 var gr: sc_taskGlideRecord = <sc_taskGlideRecord>new GlideRecord('sc_task');
-                gr.addQuery('number', workflow.scratchpad.task_number);
+                gr.addQuery('number', workflow.scratchpad().task_number);
                 gr.query();
                 if (gr.next()) {
                     let state: number = parseInt(gr.state.getValue());

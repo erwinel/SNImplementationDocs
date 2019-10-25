@@ -15,6 +15,232 @@ declare abstract class TemplatePrinter {
     space(spaces: number): void;
 }
 
+declare class GlideActionURL {
+    setRedirectURL(o: string | GlideRecord): void;
+}
+
+declare class GlideScriptEvaluator {
+    constructor();
+    evaluateGeneratedString(expression: string, returnError: boolean): any;
+    // evaluateString(expression: string, returnError: boolean): any;
+    // evaluateString(expression: string, identifierKey: string, returnError: boolean): any;
+    evaluateString(expression: string, returnError_OR_identifierKey: boolean | string, returnError?: boolean): any;
+    haveError(): boolean;
+    setEnforceSecurity(enforce: boolean): void;
+}
+
+declare class GlideEvaluator extends GlideScriptEvaluator {
+    // constructor();
+    // constructor(inter: boolean);
+    // constructor(inter: boolean, strict: boolean);
+    constructor(inter?: boolean, strict?: boolean);
+    static evaluateCondition(condition: string): boolean;
+    // evaluateString(expression: string, returnError: boolean): any;
+    // evaluateString(expression: string, identifierKey: string, returnError: boolean): any;
+    // static evaluateString(expression: string): any;
+    evaluateString(expression: string, returnError_OR_identifierKey?: boolean | string, returnError?: boolean): any;
+    static evaluateStringWithGlobals(expression: string, globals: { [key: string]: any; }): any;
+    // static interpretGeneratedString(expression: string): any;
+    // static interpretGeneratedString(expression: string, returnError: boolean): any;
+    static interpretGeneratedString(expression: string, returnError?: boolean): any;
+    // static interpretString(expression: string): any;
+    // static interpretString(expression: string, returnError: boolean): any;
+    static interpretString(expression: string, returnError?: boolean): any;
+}
+
+declare class GlideLRUCache {
+    // constructor();
+    // constructor(initialCapacity: number, loadFactor: number);
+    // constructor(initialCapacity: number);
+    constructor(initialCapacity?: number, loadFactor?: number);
+    get(key: any): any;
+}
+
+declare class GlideController extends GlideEvaluator {
+    // constructor();
+    // constructor(global: any);
+    constructor(global?: any);
+    // evaluateAsObject(expression: string): any;
+    // evaluateAsObject(expression: string, ed: GlideElementDescriptor): any;
+    evaluateAsObject(expression: string, ed?: GlideElementDescriptor): any;
+    static exists(name: string): any;
+    static getCache(): GlideLRUCache;
+    static getGlobal(name: string): any;
+    static getSandboxGlobal(name: string): any;
+    static putGlobal(name: string, value: any): void;
+    static removeGlobal(string_1: string): void;
+}
+
+declare class GlideXMLDocument {
+    // constructor();
+    // constructor(d: any);
+    // constructor(rootName: string);
+    // constructor(file: any);
+    constructor(d_OR_rootName_OR_file?: any | string);
+    createCDATAElement(name: string, value: string): any;
+    createComment(msg: string): any;
+    // createElement(name: string, value: string): any;
+    // createElement(name: string): any;
+    createElement(name: string, value?: string): any;
+    getChildTextByTagName(parent: any, tagName: string): string;
+    getDocument(): any;
+    getDocumentElement(): any;
+    getElementByTagName(tagName: string): any;
+    getElementValueByTagName(tagName: string): string;
+    importElement(e: any): any;
+    importElementToParent(e: any, parent: any): any;
+    isNamespaceAware(): boolean;
+    isValid(): boolean;
+    parse(xml: string): boolean;
+    pop(): void;
+    selectNodes(xpath: string): any;
+    // selectSingleNode(xpath: string): any;
+    // selectSingleNode(currentNode: any, xpath: string): any;
+    selectSingleNode(xpath_OR_currentNode: string | any, xpath?: string): any;
+    selectSingleNodeText(xpath: string): string;
+    setAttribute(name: string, value: string): void;
+    setCurrent(e: any): void;
+    // setDocument(document: any): void;
+    // setDocument(document: string): void;
+    setDocument(document: any | string): void;
+    setNamespaceAware(nsAware: boolean): void;
+    setText(e: any, text: string): void;
+    toIndentedString(): string;
+    toString(): string;
+}
+
+declare class GlideChoice {
+    // constructor(value: string, label: string);
+    // constructor(value: string, label: string, sysId: string);
+    constructor(value: string, label: string, sysId?: string);
+    getId(): string;
+    getImage(): string;
+    getLabel(): string;
+    getParameter(name: string): any;
+    getSelected(): boolean;
+    getValue(): string;
+    setId(sysId: string): void;
+    setImage(image: string): void;
+    setLabel(string_1: string): void;
+    setParameter(name: string, value: any): void;
+    setSelected(selected: boolean): void;
+    setValue(string_1: string): void;
+}
+
+declare class GlideChoiceList {
+    // add(choice: GlideChoice): boolean;
+    // add(value: string, label: string): GlideChoice;
+    add(choice_OR_value: GlideChoice | string, label?: string): boolean;
+    addAll(cl: GlideChoiceList): void;
+    addFirst(value: string, label: string): void;
+    addNone(): GlideChoice;
+    constructor();
+    // getChoice(index: number): GlideChoice;
+    // getChoice(value: string): GlideChoice;
+    getChoice(index_OR_value: number | string): GlideChoice;
+    static getChoiceList(tableName: string, fieldName: string): GlideChoiceList;
+    getChoiceNoTrim(value: string): GlideChoice;
+    getLabelOf(value: string): string;
+    getNullOverride(gc: GlideController): string;
+    getSelectedIndex(): number;
+    getSize(): number;
+    getValueOf(label: string): string;
+    // removeChoice(value: string): GlideChoice;
+    // removeChoice(i: number): GlideChoice;
+    removeChoice(value_OR_i: string | number): GlideChoice;
+    removeNone(): void;
+    sort(): void;
+    toJSON(): any;
+    toXML(x: GlideXMLDocument): void;
+}
+
+declare class GlideSysForm {
+    // constructor(tableName: string);
+    // constructor(tableName: string, viewName: string);
+    // constructor();
+    constructor(tableName?: string, viewName?: string);
+    createDefaultBaselineVersion(record: GlideRecord): void;
+    static generateDefaultForm(tableName: string): string;
+    static getRelatedTables(tableName: string): GlideChoiceList;
+    getSuggestedFields(): Array<string>;
+    getTableName(): string;
+    save(): void;
+    setAvailable(available: string): void;
+    setCollection(s: string): void;
+    setForm(form: string): void;
+    setName(name: string): void;
+    setPackageID(packageID: string): void;
+    setScopeID(scopeID: string): void;
+    setSelected(selected: string): void;
+    setTablePackageID(): void;
+    setTableScopeID(): void;
+    setView(viewName: string): void;
+    setViewName(viewName: string): void;
+}
+
+declare class GlideChoiceListSet {
+    constructor();
+    getColumns(): GlideChoiceList;
+    getSelected(): GlideChoiceList;
+    setColumns(clColumns: GlideChoiceList): void;
+    setSelected(clSelected: GlideChoiceList): void;
+    sortColumns(): void;
+    toXML(): any;
+}
+
+declare class GlideSysList extends GlideSysForm {
+    InsertListElements(fields: Array<any>): void;
+    // constructor(tableName: string);
+    // constructor(tableName: string, parentName: string);
+    constructor(tableName: string, parentName?: string);
+    createDefaultBaseline(): void;
+    getAccessList(collectionKey: string): Array<string>;
+    getListColumns(): GlideChoiceList;
+    getListRecords(): Array<string>;
+    getListSet(): GlideChoiceListSet;
+    getRecordSet(): GlideRecord;
+    getStandardListID(): string;
+    isUserList(): boolean;
+    // save(): void;
+    // save(fields: string): void;
+    save(fields?: string): void;
+    saveForUser(fields: string): void;
+    setIncludeFormatting(b: boolean): void;
+    setReconcileList(b: boolean): void;
+    setRelatedParentID(parentID: string): void;
+    setRelatedParentName(parentName: string): void;
+    setRelationshipID(relationshipID: string): void;
+    setUserApplies(b: boolean): void;
+}
+
+declare class GlideUpdateManager2 {
+    allowBackout(sysId: string): boolean;
+    allowVersionBackout(sysId: string): boolean;
+    // constructor();
+    // constructor(updateSetId: string);
+    constructor(updateSetId?: string);
+    getDefaultUpdateName(tableName: string, uniqueValue: string): string;
+    getUpdateName(gr: GlideRecord): string;
+    // load(updateName: string): void;
+    // load(updateName: string, directory: string): void;
+    load(updateName: string, directory?: string): void;
+    loadFile(filePath: string): void;
+    // loadFixes(updateName: string, before: boolean): void;
+    // loadFixes(updateName: string): void;
+    loadFixes(updateName: string, before?: boolean): void;
+    loadFromDatabase(category: string): void;
+    loadIntoDatabase(category: string): boolean;
+    // loadXML(xml: string): void;
+    // loadXML(xml: string, writeVersion: boolean, revertedFrom: string, sourceTable: string, sourceId: string): void;
+    loadXML(xml: string, writeVersion?: boolean, revertedFrom?: string, sourceTable?: string, sourceId?: string): void;
+    removeUpdateSet(setID: string): void;
+    saveBaselineChoiceListElements(tableName: string, fieldName: string): void;
+    saveChoiceListElements(tableName: string, fieldName: string): void;
+    saveListElements(sl: GlideSysList): void;
+    saveRecord(gr: GlideRecord): boolean;
+    setInstalling(b: boolean): void;
+}
+
 /**
  * Class for performing date operators and working with GlideDate fields.
  * @class GlideDate
@@ -1620,6 +1846,18 @@ declare abstract class GlideSystem {
      * @returns {string} GMT for 24 hours ago, in the format yyyy-mm-dd hh:mm:ss
      */
     yesterday(): string;
+}
+
+declare class ArrayUtil {
+    concat<T>(parent: T[], child: T[]): T[];
+    contains<T>(array: T[], element: T): boolean;
+    convertArray(a: any): any[];
+    diff<T>(parent: T[], child: T[]): T[];
+    ensureArray<T>(o: any): Packages.java.util.Collection | Packages.java.util.Set | any[];
+    indexOf<T>(array: T[], element: T, startIndex?: number): number;
+    intersect<T>(a: T[], b: T[]): T[];
+    union<T>(a: T[], b: T[]): T[];
+    unique<T>(parent: T[]): T[];
 }
 
 declare abstract class JSUtil {

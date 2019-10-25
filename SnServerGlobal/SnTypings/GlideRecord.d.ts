@@ -53,6 +53,7 @@ declare abstract class GlideElementDescriptor {
     isChoiceTable(): boolean;
     isEdgeEncrypted(): boolean;
     isVirtual(): boolean;
+    getBooleanAttribute(name: string): boolean;
 }
 /**
  * GlideElement values from the Model Category table.
@@ -4148,7 +4149,87 @@ declare interface Isys_user_groupColumns extends IGlideElementColumns {
 declare type sys_user_groupGlideRecord = GlideRecord & Isys_user_groupColumns;
 
 declare type sys_user_groupElementReference = GlidePropertiesElementReference<Isys_user_groupColumns, sys_user_groupGlideRecord>;
+/**
+ * GlideElement values from the Group Member table.
+ * @interface Isys_user_grmemberColumns
+ */
+declare interface Isys_user_grmemberColumns extends IGlideElementColumns {
+    /**
+     * Group
+     * @type {sys_user_groupElementReference}
+     * @memberof Isys_user_grmemberColumns
+     * @description Reference to table "sys_user_group"
+     */
+    group: sys_user_groupElementReference;
 
+    /**
+     * Average points per sprint
+     * @type {GlideElementNumeric}
+     * @memberof Isys_user_grmemberColumns
+     * @default 0
+     */
+    points: GlideElementNumeric;
+
+    /**
+     * Scrum role
+     * @type {StringGlideElement}
+     * @memberof Isys_user_grmemberColumns
+     * @description Choices: "support": "Support"; "information_developer": "Information developer"; "qa": "QA"; "developer": "Developer"; "scrum_master": "Scrum master"; "product_owner": "Product owner"
+     *      Max length: 40
+     */
+    scrum_role: StringGlideElement;
+
+    /**
+     * User
+     * @type {sys_userElementReference}
+     * @memberof Isys_user_grmemberColumns
+     * @description Reference to table "sys_user"
+     */
+    user: sys_userElementReference;
+}
+
+declare type sys_user_grmemberGlideRecord = GlideRecord & Isys_user_grmemberColumns;
+declare type sys_user_grmemberElementReference = GlidePropertiesElementReference<Isys_user_grmemberColumns, sys_user_grmemberGlideRecord>;
+/**
+ * GlideElement values from the Group Role table.
+ * @interface Isys_group_has_roleColumns
+ */
+declare interface Isys_group_has_roleColumns extends IGlideElementColumns {
+    /**
+     * Granted by
+     * @type {sys_user_groupElementReference}
+     * @memberof Isys_group_has_roleColumns
+     * @description Reference to table "sys_user_group"
+     */
+    granted_by: sys_user_groupElementReference;
+
+    /**
+     * Group
+     * @type {sys_user_groupElementReference}
+     * @memberof Isys_group_has_roleColumns
+     * @description Reference to table "sys_user_group"
+     */
+    group: sys_user_groupElementReference;
+
+    /**
+     * Inherits
+     * @type {GlideElementBoolean}
+     * @memberof Isys_group_has_roleColumns
+     * @default true
+     */
+    inherits: GlideElementBoolean;
+
+    /**
+     * Role
+     * @type {sys_user_roleElementReference}
+     * @memberof Isys_group_has_roleColumns
+     * @description Reference to table "sys_user_role"
+     */
+    role: sys_user_roleElementReference;
+}
+
+declare type sys_group_has_roleGlideRecord = GlideRecord & Isys_group_has_roleColumns;
+declare type sys_group_has_roleElementReference = GlidePropertiesElementReference<Isys_group_has_roleColumns, sys_group_has_roleGlideRecord>;
 /**
  * GlideQueryCondition object.
  * @class GlideQueryCondition
@@ -5354,6 +5435,7 @@ declare type sysevent_email_actionGlideRecord = sysruleGlideRecord & Isysevent_e
 
 declare type sysevent_email_actionElementReference = sysruleElementReference & GlidePropertiesElementReference<Isysevent_email_actionColumns, sysevent_email_actionGlideRecord>;
 
+declare abstract class WorkflowScratchPad { [key: string]: any; }
 declare interface IScopedWorkflow {
     debug(message: string, args: Object): string;
     error(message: string, args: Object): string;
@@ -5363,7 +5445,7 @@ declare interface IScopedWorkflow {
     name: string;
     removeVariable(name: string): void;
     result: string;
-    scratchpad: { [key: string]: any; };
+    scratchpad(): WorkflowScratchPad;
     setResult(result: string): void;
     setVariable(name: string, value: Object): void;
     warn(message: string, args: Object): string;
@@ -7305,7 +7387,7 @@ declare interface ItaskColumns extends IGlideElementColumns {
      * @memberof ItaskColumns
      * @default true
      */
-    active: GlideElementBoolean;
+    active: GlideElementBoolean | boolean;
 
     /**
      * Activity due
@@ -7332,7 +7414,7 @@ declare interface ItaskColumns extends IGlideElementColumns {
      * @description Choices: "rejected": "Rejected"; "approved": "Approved"; "requested": "Requested"; "not requested": "Not Yet Requested"
      *      Max length: 40
      */
-    approval: TaskAppprovalGlideElement;
+    approval: TaskAppprovalGlideElement | TaskAppproval;
 
     /**
      * Approval history
@@ -7696,7 +7778,7 @@ declare interface ItaskColumns extends IGlideElementColumns {
      * @default 1
      * @description Choices: "7": "Closed Skipped"; "4": "Closed Incomplete"; "3": "Closed Complete"; "2": "Work in Progress"; "1": "Open"; "-5": "Pending"
      */
-    state: TaskStateGlideElement;
+    state: TaskStateGlideElement | TaskState | TaskStateString;
 
     /**
      * Task type

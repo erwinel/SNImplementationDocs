@@ -6,7 +6,6 @@ namespace x_44813_servic_cat {
     namespace RequestItemAvailabilityChanging {
         declare var current: sc_req_itemGlideRecord, previous: null;
         (function executeRule(current: sc_req_itemGlideRecord, previous: null /*null when async*/) {
-            current.approval
             if ((<GlideElementBoolean>current.backordered).changesTo(true)) {
                 if (current.sourced == true)
                     current.sourced = false;
