@@ -1,0 +1,12 @@
+{
+  "name": "x_44813_servic_cat",
+  "version": "0.0.0",
+  "description": "x_44813_servic_cat",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.14"
+  }
+}
