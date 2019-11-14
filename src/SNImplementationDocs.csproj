@@ -94,6 +94,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AzureInfo.html" />
     <Content Include="ChangeManagement.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1970,6 +1971,18 @@
     <Content Include="Template\mainAppPageHead.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Template\Pages\Dev\Azure.htm" />
+    <Content Include="Template\Pages\Dev\Git.htm" />
+    <Content Include="Template\Pages\Dev\Index.htm" />
+    <Content Include="Template\Pages\Dev\Notes.htm" />
+    <Content Include="Template\Pages\Dev\Snippets.htm" />
+    <Content Include="Template\Pages\Home.htm" />
+    <Content Include="Template\Pages\Implementation\Change.htm" />
+    <Content Include="Template\Pages\Implementation\Incident.htm" />
+    <Content Include="Template\Pages\Implementation\Index.htm" />
+    <Content Include="Template\Pages\Implementation\Security.htm" />
+    <Content Include="Template\Pages\Implementation\ServiceCatalog.htm" />
+    <Content Include="Template\Pages\InitialConfig.htm" />
     <Content Include="Template\regexGroupContent.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

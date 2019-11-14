@@ -1,7 +1,10 @@
 /// <reference path="../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../Scripts/typings/angularjs/angular-route.d.ts" />
 /// <reference path="../Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
+
+type Mandatory<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
 
 namespace persistentStorageLoaderService {
     /**
@@ -2467,6 +2470,1145 @@ namespace snNavLinkDirective {
     }
 }
 
+namespace pageManager {
+    /**
+     * Prefix for hash portion of navigation URI strings.
+     * @export
+     * @constant HashPrefix
+     * @type {"!"}
+     */
+    export const HASH_PREFIX = '!';
+
+    /**
+     * Prefix for relative navigation URI path strings.
+     * @export
+     * @constant NavPrefix
+     * @type {"#!"}
+     */
+    export const NAV_PREFIX = '#!';
+
+    export const DEFAULT_PAGE_TITLE = 'ServiceNow Implementation and Maintenance';
+    export const CONTROLLER_NAME_MAIN_CONTENT = 'mainContentController';
+    export const CONTROLLER_NAME_DEFAULT_PAGE = 'defaultPageController';
+    export const SERVICE_NAME_PAGE_MANAGER = 'pageManager';
+
+    /**
+     * Handles W3C DOM event.
+     * @export
+     * @typedef {(event?: BaseJQueryEventObject) => void} DOMelementEventCallback
+     * @param {BaseJQueryEventObject} [event] - Contains information about the W3C DOM event that occurred.
+     */
+    export type DOMelementEventCallback = (event?: BaseJQueryEventObject) => void;
+
+    export const CSS_CLASS_MAIN_SHOWING_ASIDE_NAV: Readonly<string[]> = [];
+    export const CSS_CLASS_MAIN_HIDING_ASIDE_NAV: Readonly<string[]> = [];
+    export const CSS_CLASS_NAV_ANCHOR_IS_CURRENT: Readonly<string[]> = [];
+    export const CSS_CLASS_NAV_LINK_ITEM_IS_CURRENT: Readonly<string[]> = [];
+    export const CSS_CLASS_NAV_ANCHOR_HAS_CURRENT: Readonly<string[]> = [];
+    export const CSS_CLASS_NAV_LINK_ITEM_HAS_CURRENT: Readonly<string[]> = [];
+    export const CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT: Readonly<string[]> = [];
+    export const CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT: Readonly<string[]> = [];
+
+    export class NavMenuItem {
+        private readonly _id: string;
+        private readonly _title: string;
+        private readonly _tooltip: string;
+        private _parent?: NavMenuItem;
+        private _previous?: NavMenuItem;
+        private _next?: NavMenuItem;
+        private _childItems: NavMenuItem[];
+        private _isCurrent = false;
+        private _containsCurrent = false;
+        private _linkItemCss: Readonly<string[]> = CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+        private _anchorCss: Readonly<string[]> = CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+        private _href: string;
+        private _url: string;
+        private _click: DOMelementEventCallback = NavMenuItem.clickNotCurrent;
+        get title(): string { return this._title; }
+        get tooltip(): string { return this._tooltip; }
+        get parent(): NavMenuItem | undefined { return this._parent; }
+        get previous(): NavMenuItem | undefined { return this._previous; }
+        get next(): NavMenuItem | undefined { return this._next; }
+        get isCurrent(): boolean { return this._isCurrent; }
+        get containsCurrent(): boolean { return this._containsCurrent; }
+        get notCurrent(): boolean { return !(this._isCurrent || this._containsCurrent); }
+        get linkItemCss(): Readonly<string[]> { return this._linkItemCss; }
+        get anchorCss(): Readonly<string[]> { return this._anchorCss; }
+        get href(): string { return this._href; }
+        get url(): string { return this._url; }
+        get click(): DOMelementEventCallback { return this._click; }
+        constructor(routeInfo: PageRouteInfo, parent: NavMenuItem | NavMenuItem[]) {
+            this._id = routeInfo.id;
+            this._title = ((typeof routeInfo.linkTitle === 'string' && routeInfo.linkTitle.trim().length > 0) || Provider.routeInfoHasExplicitController(routeInfo)) ?
+                routeInfo.linkTitle : routeInfo.title;
+            this._tooltip = (typeof routeInfo.tooltip === 'string' && routeInfo.tooltip.trim().length > 0) ? routeInfo.tooltip : '';
+            let arr: NavMenuItem[];
+            if (Array.isArray(parent)) {
+                parent.push(this);
+                arr = parent;
+            } else {
+                parent._childItems.push(this);
+                arr = parent._childItems;
+            }
+
+            let i: number = arr.length - 2;
+            (arr[i]._next = this)._previous = arr[i];
+        }
+
+        private static clickIsCurrent(event?: BaseJQueryEventObject): boolean {
+            if (typeof event === 'object' && event !== null && !event.isDefaultPrevented())
+                event.preventDefault();
+            return false;
+        }
+        private static clickNotCurrent(event?: BaseJQueryEventObject): boolean { return true; }
+        static find(source: ReadonlyArray<NavRouteInfo>, id: string): PageRouteInfo | undefined {
+            for (let i: number = 0; i < source.length; i++) {
+                if ((<PageRouteInfo>source[i]).id === id)
+                    return <PageRouteInfo>source[i];
+            }
+        }
+        static getParent(source: ReadonlyArray<NavRouteInfo>, target: PageRouteInfo | string): PageRouteInfo | undefined {
+            return NavMenuItem.find(source, (typeof target === 'string') ? target : target.id);
+        }
+        static getChildren(source: ReadonlyArray<NavRouteInfo>, target: PageRouteInfo | string): PageRouteInfo[] {
+            let result: PageRouteInfo[] = [];
+            let id: string = (typeof target === 'string') ? target : target.id;
+            for (let i: number = 0; i < source.length; i++) {
+                if ((<PageRouteInfo>source[i]).parentId === id)
+                    result.push(<PageRouteInfo>source[i]);
+            }
+            return result;
+        }
+        private static import(source: ReadonlyArray<NavRouteInfo>, scope: INavigationScope | NavMenuItem[], target: PageRouteInfo | string): NavMenuItem {
+            let id: string;
+            if (typeof target === 'string') {
+                id = target;
+                if (typeof (target = NavMenuItem.find(source, target)) === 'undefined')
+                    return;
+            }
+            let parentRouteInfo: PageRouteInfo | undefined = NavMenuItem.getParent(source, id);
+            let item: NavMenuItem;
+            let i: number;
+            if (typeof parentRouteInfo === 'undefined') {
+                if (Array.isArray(scope)) {
+                    for (i = 0; i < source.length; i++) {
+                        if (!Provider.isRouteRedirectInfo(source[i]) && typeof NavMenuItem.getParent(source, <PageRouteInfo>source[i]) === 'undefined') {
+                            let m: NavMenuItem = new NavMenuItem(<PageRouteInfo>source[i], scope);
+                            if (m._id === id)
+                                item = m;
+                        }
+                    }
+                    if (typeof item !== 'undefined')
+                        return item;
+                    return new NavMenuItem(target, scope);
+                }
+                for (i = 0; i < scope.pageTopNavItems.length; i++) {
+                    if (scope.pageTopNavItems[i]._id === id)
+                        return scope.pageTopNavItems[i];
+                }
+                    
+                return new NavMenuItem(target, <NavMenuItem[]>scope.pageTopNavItems);
+            }
+            let parentItem: NavMenuItem = this.import(source, scope, parentRouteInfo);
+            if (parentItem._childItems.length == 0) {
+                for (i = 0; i < source.length; i++) {
+                    if (!Provider.isRouteRedirectInfo(source[i]) && typeof (<PageRouteInfo>source[i]).id === parentItem._id) {
+                        let m: NavMenuItem = new NavMenuItem(<PageRouteInfo>source[i], parentItem);
+                        if (m._id === id)
+                            item = m;
+                    }
+                }
+                if (typeof item !== 'undefined')
+                    return item;
+            } else
+                for (i = 0; i < parentItem._childItems.length; i++) {
+                    if (parentItem._childItems[i]._id === id)
+                        return parentItem._childItems[i];
+                }
+            return new NavMenuItem(target, parentItem);
+        }
+        static setCurrent(source: ReadonlyArray<NavRouteInfo>, scope: INavigationScope | NavMenuItem[], routeInfo: PageRouteInfo): NavMenuItem {
+            let currentNavItem: NavMenuItem = NavMenuItem.import(source, scope, routeInfo);
+            let item: NavMenuItem;
+            if (Array.isArray(scope)) {
+                for (let i: number = 0; i < scope.length; i++) {
+                    if (scope[i]._id === currentNavItem._id) {
+                        if (scope[i]._isCurrent)
+                            return scope[i];
+                        scope[i]._isCurrent = false;
+                        scope[i]._anchorCss = CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+                        scope[i]._linkItemCss = CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+                        scope[i]._click = NavMenuItem.clickNotCurrent;
+                        scope[i]._href = currentNavItem._url;
+                        for (let item: NavMenuItem = scope[i]._parent; typeof item !== 'undefined'; item = item._parent) {
+                            item._containsCurrent = false;
+                            item._anchorCss = CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+                            item._linkItemCss = CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+                            item._click = NavMenuItem.clickNotCurrent;
+                            item._href = item._url;
+                        }
+                        break;
+                    }
+                }
+                currentNavItem._isCurrent = true;
+                currentNavItem._anchorCss = CSS_CLASS_NAV_ANCHOR_IS_CURRENT;
+                currentNavItem._linkItemCss = CSS_CLASS_NAV_LINK_ITEM_IS_CURRENT;
+                currentNavItem._click = NavMenuItem.clickIsCurrent;
+                currentNavItem._href = currentNavItem._url;
+                for (item = currentNavItem._parent; typeof item !== 'undefined'; item = item._parent) {
+                    item._containsCurrent = false;
+                    item._anchorCss = CSS_CLASS_NAV_ANCHOR_HAS_CURRENT;
+                    item._linkItemCss = CSS_CLASS_NAV_LINK_ITEM_HAS_CURRENT;
+                    item._click = NavMenuItem.clickNotCurrent;
+                    item._href = item._url;
+                }
+                return currentNavItem;
+            }
+            if (typeof scope.currentNavItem === 'object' && scope.currentNavItem !== null) {
+                if (routeInfo.id === scope.currentNavItem._id)
+                    return scope.currentNavItem;
+                scope.currentNavItem._isCurrent = false;
+                scope.currentNavItem._anchorCss = CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+                scope.currentNavItem._linkItemCss = CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+                scope.currentNavItem._click = NavMenuItem.clickNotCurrent;
+                scope.currentNavItem._href = scope.currentNavItem._url;
+                for (item = scope.currentNavItem._parent; typeof item !== 'undefined'; item = item._parent) {
+                    item._containsCurrent = false;
+                    item._anchorCss = CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+                    item._linkItemCss = CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+                    item._click = NavMenuItem.clickNotCurrent;
+                    item._href = item._url;
+                }
+            }
+            while (scope.precedingSideNavItems.length > 0)
+                (<NavMenuItem[]>scope.precedingSideNavItems).pop();
+            while (scope.followingSideNavItems.length > 0)
+                (<NavMenuItem[]>scope.followingSideNavItems).pop();
+            while (scope.sideNavBreadcrumbItems.length > 0)
+                (<NavMenuItem[]>scope.sideNavBreadcrumbItems).pop();
+            while (scope.nestedChildNavItems.length > 0)
+                (<NavMenuItem[]>scope.nestedChildNavItems).pop();
+            (scope.currentNavItem = currentNavItem)._isCurrent = true;
+            currentNavItem._isCurrent = true;
+            currentNavItem._anchorCss = CSS_CLASS_NAV_ANCHOR_IS_CURRENT;
+            currentNavItem._linkItemCss = CSS_CLASS_NAV_LINK_ITEM_IS_CURRENT;
+            currentNavItem._click = NavMenuItem.clickIsCurrent;
+            currentNavItem._href = currentNavItem._url;
+            for (let item: NavMenuItem = currentNavItem._parent; typeof item !== 'undefined'; item = item._parent) {
+                item._containsCurrent = false;
+                item._anchorCss = CSS_CLASS_NAV_ANCHOR_HAS_CURRENT;
+                item._linkItemCss = CSS_CLASS_NAV_LINK_ITEM_HAS_CURRENT;
+                item._click = NavMenuItem.clickNotCurrent;
+                item._href = item._url;
+            }
+            if (typeof currentNavItem._parent === 'undefined') {
+                scope.showNestedChildNav = scope.showSideNavBreadcrumbs = scope.showCurrentItem = scope.showFollowingSideNav = false;
+                NavMenuItem.getChildren(source, routeInfo).forEach(function (value: PageRouteInfo) {
+                    (<NavMenuItem[]>scope.precedingSideNavItems).push(NavMenuItem.import(source, scope, value));
+                });
+                scope.showPrecedingSideNav = scope.precedingSideNavItems.length > 0;
+            } else {
+                for (item = currentNavItem._parent; typeof item._parent !== 'undefined'; item = item._parent)
+                    (<NavMenuItem[]>scope.sideNavBreadcrumbItems).push(item);
+                scope.showSideNavBreadcrumbs = scope.sideNavBreadcrumbItems.length > 0;
+                let i = 0;
+                let id: string = scope.currentNavItem._id;
+                let arr: NavMenuItem[] = currentNavItem._parent._childItems;
+                while (arr[i]._id !== id)
+                    (<NavMenuItem[]>scope.precedingSideNavItems).push(arr[i++]);
+                while (++i < arr.length)
+                    (<NavMenuItem[]>scope.followingSideNavItems).push(arr[i]);
+                NavMenuItem.getChildren(source, routeInfo).forEach(function (value: PageRouteInfo) {
+                    (<NavMenuItem[]>scope.nestedChildNavItems).push(NavMenuItem.import(source, scope, value));
+                });
+                scope.showPrecedingSideNav = scope.precedingSideNavItems.length > 0;
+                scope.showNestedChildNav = scope.nestedChildNavItems.length > 0;
+                scope.showFollowingSideNav = scope.followingSideNavItems.length > 0;
+                scope.showCurrentItem = scope.showPrecedingSideNav || scope.showNestedChildNav || scope.showFollowingSideNav || scope.showSideNavBreadcrumbs;
+            }
+            scope.mainSectionClass = ((scope.showNavAsideElement = scope.showCurrentItem || scope.showPrecedingSideNav) == true) ? CSS_CLASS_MAIN_SHOWING_ASIDE_NAV : CSS_CLASS_MAIN_HIDING_ASIDE_NAV;
+            return currentNavItem;
+        }
+    }
+
+    export interface IVisibleState {
+        readonly isVisible: boolean;
+        readonly notVisible: boolean;
+    }
+
+    export class VisibilityState<S extends IVisibleState, V> {
+        get whenVisible(): V | undefined { return this._whenVisible; }
+        set whenVisibile(value: V | undefined) { this._whenVisible = value; }
+        get whenNotVisible(): V | undefined { return this._whenNotVisible; }
+        set whenNotVisible(value: V | undefined) { this._whenNotVisible = value; }
+        get dependency(): S | undefined { return this._dependency; }
+        set dependency(value: S | undefined) { this._dependency = value; }
+        get isVisible(): boolean { return !VisbleDependency2.isNil(this._dependency) && this._dependency.isVisible; }
+        get notVisible(): boolean { return VisbleDependency2.isNil(this._dependency) || this._dependency.notVisible; }
+        get state(): V | undefined { return (this.isVisible) ? this._whenVisible : this._whenNotVisible; }
+        constructor(private _whenVisible?: V, private _whenNotVisible?: V, private _dependency?: S) { }
+    }
+
+    export class VisbleDependency2<T1 extends IVisibleState, T2 extends IVisibleState> implements IVisibleState {
+        get item1(): T1 | undefined { return this._item1; }
+        get item2(): T2 | undefined { return this._item2; }
+        get isVisible(): boolean { return !(VisbleDependency2.isNil(this._item1) || VisbleDependency2.isNil(this._item2)) && this._item1.isVisible && this._item2.isVisible; }
+        get notVisible(): boolean { return VisbleDependency2.isNil(this._item1) || VisbleDependency2.isNil(this._item2) || this._item1.notVisible || this._item2.notVisible; }
+        constructor(private _item1?: T1, private _item2?: T2) { }
+        static isNil(obj: any): boolean { return typeof obj === 'undefined' || (typeof obj === 'object' && obj === null); }
+    }
+
+    export class VisbleDependency3<T1 extends IVisibleState, T2 extends IVisibleState, T3 extends IVisibleState> extends VisbleDependency2<T1, T2> {
+        get item3(): T3 | undefined { return this._item3; }
+        get isVisible(): boolean { return !VisbleDependency2.isNil(this._item3) && super.isVisible; }
+        get notVisible(): boolean { return VisbleDependency2.isNil(this._item3) || super.notVisible; }
+        constructor(item1?: T1, item2?: T2, private _item3?: T3) { super(item1, item2); }
+    }
+
+    export class VisbleDependency4<T1 extends IVisibleState, T2 extends IVisibleState, T3 extends IVisibleState, T4 extends IVisibleState> extends VisbleDependency3<T1, T2, T3> {
+        get item4(): T4 | undefined { return this._item4; }
+        get isVisible(): boolean { return !VisbleDependency2.isNil(this._item4) && super.isVisible; }
+        get notVisible(): boolean { return VisbleDependency2.isNil(this._item4) || super.notVisible; }
+        constructor(item1?: T1, item2?: T2, item3?: T3, private _item4?: T4) { super(item1, item2, item3); }
+    }
+
+    export class OrderedMap<E> implements IVisibleState, Map<string, E> {
+        private _items: HideIfEmpty<E>;
+        private readonly _key: symbol = Symbol();
+        private _nullKey: string | undefined;
+        private _undefinedKey: string | undefined;
+        readonly [Symbol.toStringTag]: 'OrderedMap';
+        get isVisible() { return this._items.isVisible; }
+        get notVisible() { return this._items.notVisible; }
+        get size(): number { return this._items.size; }
+        constructor(comparer: (x: E, y: E) => boolean);
+        constructor(getKey: (value: E) => string, item0: E, ...items: E[]);
+        constructor(getKey: (value: E) => string, comparer: (x: E, y: E) => boolean, item0: E, ...items: E[]);
+        constructor(arg0?: ((x: E, y: E) => boolean) | ((value: E) => string), arg1?: ((x: E, y: E) => boolean) | E, ...items: E[]) {
+            if (arguments.length == 0)
+                this._items = new HideIfEmpty<E>();
+            else {
+                let k: string;
+                if (arguments.length == 1)
+                    this._items = new HideIfEmpty<E>(<(x: E, y: E) => boolean>arg0);
+                else if (arguments.length == 2) {
+                    this._items = new HideIfEmpty<E>();
+                    k = (<(value: E) => string>arg0)(<E>arg1);
+                    if (typeof k !== 'string')
+                        throw new Error('Invalid key');
+                    if (typeof arg1 === 'undefined')
+                        this._undefinedKey = k;
+                    else if (typeof arg1 === 'object' && arg1 === null)
+                        this._nullKey = k;
+                    else
+                        (<E>arg1)[this._key] = k;
+                    this._items.add(<E>arg1);
+                } else {
+                    if (typeof arg1 === 'function')
+                        this._items = new HideIfEmpty<E>(<(x: E, y: E) => boolean>arg1);
+                    else {
+                        k = (<(value: E) => string>arg0)(<E>arg1);
+                        if (typeof k !== 'string')
+                            throw new Error('Invalid key');
+                        if (typeof arg1 === 'undefined')
+                            this._undefinedKey = k;
+                        else if (typeof arg1 === 'object' && arg1 === null)
+                            this._nullKey = k;
+                        else
+                            (<E>arg1)[this._key] = k;
+                        this._items = new HideIfEmpty<E>();
+                        this._items.add(<E>arg1);
+                    }
+                    for (let i: number = 0; i < items.length; i++) {
+                        if (typeof this.keyOf(items[i]) === 'string') {
+                            this.clear();
+                            throw new Error('Duplicate key');
+                        }
+                        k = (<(value: E) => string>arg0)(items[i]);
+                        if (typeof k !== 'string') {
+                            this.clear();
+                            throw new Error('Invalid key');
+                        }
+                    }
+                }
+            }
+        }
+        add(values: Map<string, E>): void {
+            let iterator = values.entries();
+            let items: [string, E][] = [];
+            for (let r = iterator.next(); r.done !== true; r = iterator.next()) {
+                if (typeof r.value[0] !== 'string')
+                    throw new Error("Invalid key");
+                if (typeof this.keyOf(r.value) === 'string')
+                    throw new Error("Item has already been added");
+                items.push(r.value);
+            }
+            items.forEach(function (this: OrderedMap<E>, value: [string, E]): void { this.set(value[0], value[1]); });
+        }
+        merge(values: Map<string, E>): void {
+            let iterator = values.entries();
+            let items: [string, E][] = [];
+            for (let r = iterator.next(); r.done !== true; r = iterator.next()) {
+                if (typeof r.value[0] !== 'string')
+                    throw new Error("Invalid key");
+                items.push(r.value);
+            }
+            items.forEach(function (this: OrderedMap<E>, value: [string, E]): void { this.set(value[0], value[1]); });
+        }
+        clear(): void {
+            this._items.forEach(function (this: OrderedMap<E>, value: E): void {
+                if (typeof value !== 'undefined' && (typeof value !== 'object' || value !== null))
+                    value[this._key] = undefined;
+            }, this);
+            this._nullKey = this._undefinedKey = undefined;
+            this._items.clear();
+        }
+        delete(key: string): boolean {
+            for (let i: number = 0; i < this._items.size; i++) {
+                if (this.keyOf(this._items[i]) === key) {
+                    this.deleteAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+        deleteAt(index: number): void {
+            let item: E = this._items.get(index);
+            this._items.deleteAt(index);
+            if (typeof item === 'undefined')
+                this._undefinedKey = undefined;
+            else if (typeof item === 'object' && item === null)
+                this._nullKey = undefined;
+            else
+                item[this._key] = undefined;
+        }
+        filter(callbackfn: (value: E, key: string, index: number, set: Map<string, E>) => boolean): E[];
+        filter<T>(callbackfn: (this: T, value: E, key: string, index: number, set: Map<string, E>) => boolean, thisArg: T): E[];
+        filter(callbackfn: (value: E, key: string, index: number, set: Map<string, E>) => boolean, thisArg?: any): E[] {
+            if (arguments.length > 1)
+                return this._items.filter(function (this: OrderedMap<E>, value: E, index: number): boolean { return callbackfn.call(thisArg, value, this.keyOf(value), index, this); }, this);
+            return this._items.filter(function (this: OrderedMap<E>, value: E, index: number): boolean { return callbackfn(value, this.keyOf(value), index, this); }, this);
+        }
+        forEach(callbackfn: (value: E, key: string, map: Map<string, E>) => void): void;
+        forEach<T>(callbackfn: (this: T, value: E, key: string, map: Map<string, E>) => void, thisArg: T): void;
+        forEach(callbackfn: (value: E, key: string, map: Map<string, E>) => void, thisArg?: any): void {
+            if (arguments.length > 1)
+                this._items.forEach(function (this: OrderedMap<E>, value: E): void { callbackfn.call(thisArg, value, this.keyOf(value), this); }, this);
+            else
+                this._items.forEach(function (this: OrderedMap<E>, value: E): void { callbackfn(value, this.keyOf(value), this); }, this);
+        }
+        map<R>(callbackfn: (value: E, key: string, index: number, set: Map<string, E>) => R): R[];
+        map<T, R>(callbackfn: (this: T, value: E, key: string, index: number, set: Map<string, E>) => R, thisArg: T): R[];
+        map<R>(callbackfn: (value: E, key: string, index: number, set: Map<string, E>) => R, thisArg?: any): R[] {
+            if (arguments.length > 1)
+                return this._items.map(function (this: OrderedMap<E>, value: E, index: number): R { return callbackfn.call(thisArg, value, this.keyOf(value), index, this); }, this);
+            return this._items.map(function (this: OrderedMap<E>, value: E, index: number): R { return callbackfn(value, this.keyOf(value), index, this); }, this);
+        }
+        get(index: number): E;
+        get(key: string): E;
+        get(arg: number | string): E{
+            if (typeof arg === "number")
+                return this._items.get(arg);
+            for (let i: number = 0; i < this._items.size; i++) {
+                if (this.keyOf(this._items[i]) === arg)
+                    return this._items[i];
+            }
+        }
+        has(key: string): boolean {
+            for (let i: number = 0; i < this._items.size; i++) {
+                if (this.keyOf(this._items[i]) === key)
+                    return true;
+            }
+            return false;
+        }
+        hasValue(value: E): boolean { return typeof this.keyOf(value) === 'string'; }
+        indexOfValue(value: E): number {
+            let key: string | undefined = this.keyOf(value);
+            if (typeof key === 'string')
+                return this.indexOf(key);
+        }
+        indexOf(key: string): number {
+            for (let i: number = 0; i < this._items.size; i++) {
+                if (this.keyOf(this._items[i]) === key)
+                    return i;
+            }
+            return -1;
+        }
+        keyOf<T>(item: T): string | undefined {
+            if (typeof item === 'undefined')
+                return this._undefinedKey;
+            if (typeof item === 'object' && item === null)
+                return this._nullKey;
+            return item[this._key];
+        }
+        set(key: string, value: E): this {
+            if (typeof key !== 'string')
+                throw new Error("Invalid key");
+            let index: number = this.indexOf(key);
+            if (index < 0) {
+                if (typeof value === 'undefined')
+                    this._undefinedKey = key;
+                else if (typeof value === 'object' && value === null)
+                    this._nullKey = key;
+                else
+                    value[this._key] = key;
+                this._items.add(value);
+            } else {
+                if (key === this._undefinedKey)
+                    this._undefinedKey = undefined;
+                else if (key === this._nullKey)
+                    this._nullKey = undefined;
+                else
+                    this._items.get(index)[this._key] = undefined;
+                if (typeof value === 'undefined')
+                    this._undefinedKey = key;
+                else if (typeof value === 'object' && value === null)
+                    this._nullKey = key;
+                else
+                    value[this._key] = key;
+                this._items.set(index, value);
+            }
+            return this;
+        }
+        [Symbol.iterator](): IterableIterator<[string, E]> { return new SymbolKeyValueIterator<E>(this._items.values(), this._key, this._nullKey, this._undefinedKey); }
+        entries(): IterableIterator<[string, E]> { return new SymbolKeyValueIterator<E>(this._items.values(), this._key, this._nullKey, this._undefinedKey); }
+        keys(): IterableIterator<string> { return new SymbolKeyIterator<E>(this._items.values(), this._key, this._nullKey, this._undefinedKey); }
+        values(): IterableIterator<E> { return this._items.values(); }
+    }
+    export class SymbolKeyIterator<E> implements IterableIterator<string> {
+        constructor(private _iterator: IterableIterator<E>, private readonly _keySymbol: symbol, private readonly _nullKey?: string, private readonly _undefinedKey?: string) { }
+        [Symbol.iterator](): IterableIterator<string> { return this; }
+        next(): IteratorResult<string, any> {
+            if (typeof this._iterator !== 'undefined') {
+                let result: IteratorResult<E, any> = this._iterator.next();
+                if (!result.done)
+                    return { value: (typeof result.value === 'undefined') ? this._undefinedKey : ((typeof result.value === 'object' && result.value === null) ? this._nullKey : result.value[this._keySymbol]) };
+                this._iterator = undefined;
+            }
+            return <IteratorReturnResult<any>>{ done: true };
+        }
+    }
+    export class SymbolKeyValueIterator<E> implements IterableIterator<[string, E]> {
+        constructor(private _iterator: IterableIterator<E>, private readonly _keySymbol: symbol, private readonly _nullKey?: string, private readonly _undefinedKey?: string) { }
+        [Symbol.iterator](): IterableIterator<[string, E]> { return this; }
+        next(): IteratorResult<[string, E], any> {
+            if (typeof this._iterator !== 'undefined') {
+                let result: IteratorResult<E, any> = this._iterator.next();
+                if (!result.done)
+                    return { value: [(typeof result.value === 'undefined') ? this._undefinedKey : ((typeof result.value === 'object' && result.value === null) ? this._nullKey : result.value[this._keySymbol]), result.value] };
+                this._iterator = undefined;
+            }
+            return <IteratorReturnResult<any>>{ done: true };
+        }
+    }
+
+    export class HideIfEmpty<E> implements Set<E> {
+        private _items: E[] = [];
+        private readonly _comparer: (x: E, y: E) => boolean;
+        readonly [Symbol.toStringTag]: 'VisibleIfNotEmpty';
+        get isVisible() { return this._items.length > 0; }
+        get notVisible() { return this._items.length == 0; }
+        get size(): number { return this._items.length; }
+        constructor(...items: E[]);
+        constructor(comparer: (x: E, y: E) => boolean, ...items: E[]);
+        constructor(arg0?: ((x: E, y: E) => boolean) | E, ...items: E[]){
+            if (arguments.length == 0)
+                this._items = [];
+            else {
+                if (typeof arg0 == 'function') {
+                    this._comparer = <(x: E, y: E) => boolean>arg0;
+                    this._items = (arguments.length > 0) ? items : [];
+                    return;
+                }
+                this._items = (arguments.length == 1) ? [<E>arg0] : [<E>arg0].concat(items);
+            }
+            this._comparer = function (x: E, y: E): boolean { return x === y; }
+        }
+        add(value: E): this {
+            this._items.push(value);
+            return this;
+        }
+        clear(): void { this._items.length == 0; }
+        deleteAt(index: number): void {
+            if (this._items.length > 0) {
+                if (index === 0)
+                    this._items.shift();
+                else if (index == this._items.length - 1)
+                    this._items.pop();
+                else {
+                    if (index >= this._items.length)
+                        throw new RangeError("Index out of range");
+                    this._items.splice(index, 1);
+                }
+            }
+        }
+        delete(value: E): boolean {
+            for (let i: number = 0; i < this._items.length; i++) {
+                if (this._comparer(this._items[i], value)) {
+                    if (i === 0)
+                        this._items.shift();
+                    else if (i < this._items.length - 1)
+                        this._items.splice(i, 1);
+                    else
+                        this._items.pop();
+                    return true;
+                }
+            }
+            return false;
+        }
+        filter(callbackfn: (value: E, index: number, set: Set<E>) => boolean): E[];
+        filter<T>(callbackfn: (this: T, value: E, index: number, set: Set<E>) => boolean, thisArg: T): E[];
+        filter(callbackfn: (value: E, index: number, set: Set<E>) => boolean, thisArg?: any): E[] {
+            if (arguments.length > 1)
+                return this._items.filter(function (this: HideIfEmpty<E>, value: E, index: number): boolean { return callbackfn.call(thisArg, value, index, this); }, this);
+            return this._items.filter(function (this: HideIfEmpty<E>, value: E, index: number): boolean { return callbackfn(value, index, this); }, this);
+        }
+        forEach(callbackfn: (value: E, value2: E, set: Set<E>) => void): void;
+        forEach<T>(callbackfn: (this: T, value: E, value2: E, set: Set<E>) => void, thisArg: T): void;
+        forEach(callbackfn: (value: E, value2: E, set: Set<E>) => void, thisArg?: any): void {
+            if (arguments.length > 1)
+                this._items.forEach(function (this: HideIfEmpty<E>, value: E, index: number): void { callbackfn.call(thisArg, value, value, this); }, this);
+            else
+                this._items.forEach(function (this: HideIfEmpty<E>, value: E, index: number): void { callbackfn(value, value, this); }, this);
+        }
+        map<R>(callbackfn: (value: E, index: number, set: Set<E>) => R): R[];
+        map<T, R>(callbackfn: (this: T, value: E, index: number, set: Set<E>) => R, thisArg: T): R[];
+        map<R>(callbackfn: (value: E, index: number, set: Set<E>) => R, thisArg?: any): R[] {
+            if (arguments.length > 1)
+                return this._items.map(function (this: HideIfEmpty<E>, value: E, index: number): R { return callbackfn.call(thisArg, value, index, this); }, this);
+            return this._items.map(function (this: HideIfEmpty<E>, value: E, index: number): R { return callbackfn(value, index, this); }, this);
+        }
+        get(index: number): E { return this._items[index]; }
+        has(value: E): boolean {
+            for (let i: number = 0; i < this._items.length; i++) {
+                if (this._comparer(this._items[i], value))
+                    return true;
+            }
+            return false;
+        }
+        indexOf(value: E): number {
+            for (let i: number = 0; i < this._items.length; i++) {
+                if (this._comparer(this._items[i], value))
+                    return i;
+            }
+            return -1;
+        }
+        set(index: number, value: E): void { this._items[index] = value; }
+        [Symbol.iterator](): IterableIterator<E> { return this._items.values(); }
+        entries(): IterableIterator<[E, E]> { return this._items.map(function (value: E): [E, E] { return [value, value]; }).values(); }
+        keys(): IterableIterator<E> { return this._items.values(); }
+        values(): IterableIterator<E> { return this._items.values(); }
+    }
+
+    export interface IPageTitleScope {
+        /**
+         * The current page title.
+         * @type {string}
+         * @memberof IMainContentControllerScope
+         */
+        pageTitle: string;
+
+        /**
+         * Indicates whether the current page has a subtitle to be displayed.
+         * @type {boolean}
+         * @memberof IMainContentControllerScope
+         */
+        showSubtitle: boolean;
+
+        /**
+         * The subtitle for the current page.
+         * @type {string}
+         * @memberof IMainContentControllerScope
+         */
+        subTitle: string;
+    }
+    export interface IAppSettingsScope {
+        /**
+         * The value of the GIT repository URL field in the edit setup parameters dialog.
+         *
+         * @type {string}
+         * @memberof IDirectiveScope
+         */
+        serviceNowUrl: string;
+        /**
+         * Indicates whether the ServiceNow URL field in the edit setup parameters dialog is valid.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        serviceNowUrlIsValid: boolean;
+        /**
+         * The value of the GIT repository URL field in the edit setup parameters dialog.
+         *
+         * @type {string}
+         * @memberof IDirectiveScope
+         */
+        gitServiceUrl: string;
+        /**
+         * Indicates whether the GIT repository URL field in the edit setup parameters dialog is valid.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        gitServiceUrlIsValid: boolean;
+        idpUrl: string;
+        idpUrlIsValid: boolean;
+        /**
+         * Indicates whether all fields in the edit setup parameters dialog are valid.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        setupParametersAreInvalid: boolean;
+        /**
+         * Indicates whether the edit setup parameters dialog is being displayed.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        setupParametersDialogVisible: boolean;
+    }
+    export interface INavigationScope {
+        /**
+         * Navigation menu items to be displayed horizontally above the content.
+         * @type {ReadonlyArray<NavMenuItem>}
+         * @memberof IDirectiveScope
+         */
+        pageTopNavItems: ReadonlyArray<NavMenuItem>;
+        /**
+         * Ancestor navigation menu items to be displayed in the secondary navigation menu.
+         *
+         * @type {ReadonlyArray<NavMenuItem>}
+         * @memberof IDirectiveScope
+         */
+        sideNavBreadcrumbItems: ReadonlyArray<NavMenuItem>;
+        /**
+         * Indicates whether ancestor navigation menu items are to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        showSideNavBreadcrumbs: boolean;
+        /**
+         * Navigation menu items within the secondary navigation menu, exclusing any that represents the current page or sibling items following the one that represents the current page.
+         *
+         * @type {ReadonlyArray<NavMenuItem>}
+         * @memberof IDirectiveScope
+         */
+        precedingSideNavItems: ReadonlyArray<NavMenuItem>;
+        /**
+         * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        showPrecedingSideNav: boolean;
+        /**
+         * Navigation menu item representing the current page.
+         *
+         * @type {NavMenuItem}
+         * @memberof IDirectiveScope
+         */
+        currentNavItem?: NavMenuItem;
+        /**
+         * Indicates whether navigation menu item representing the current page is to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        showCurrentItem: boolean;
+        /**
+         * Navigation menu items within the secondary navigation menu, exclusing any that represents the current page or sibling items following the one that represents the current page.
+         *
+         * @type {ReadonlyArray<NavMenuItem>}
+         * @memberof IDirectiveScope
+         */
+        nestedChildNavItems: ReadonlyArray<NavMenuItem>;
+        /**
+         * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        showNestedChildNav: boolean;
+        /**
+         * Navigation menu items within the secondary navigation menu that follow the item representing the current page.
+         *
+         * @type {ReadonlyArray<NavMenuItem>}
+         * @memberof IDirectiveScope
+         */
+        followingSideNavItems: ReadonlyArray<NavMenuItem>;
+        /**
+         * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        showFollowingSideNav: boolean;
+        /**
+         * Heading text for the secondary navigation menu.
+         *
+         * @type {string}
+         * @memberof IDirectiveScope
+         */
+        sideNavHeading: string;
+        /**
+         * Indicates whether a heading is to be displayed in the secondary navigation menu.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        showSideNavHeading: boolean;
+        /**
+         * Indicates whether the secondary navigation menu is to be displayed.
+         *
+         * @type {boolean}
+         * @memberof IDirectiveScope
+         */
+        showNavAsideElement: boolean;
+        /**
+         * CSS class names for the main content section.
+         *
+         * @type {Readonly<string[]>}
+         * @memberof IDirectiveScope
+         */
+        mainSectionClass: Readonly<string[]>;
+    }
+    /**
+     * Defines the scope object for the main application controller.
+     * @export
+     * @interface IMainContentControllerScope
+     * @extends {ng.IScope}
+     */
+    export interface IMainContentControllerScope extends IPageTitleScope, IAppSettingsScope, INavigationScope, ng.IScope {
+    }
+    /**
+     * The main application controller.
+     * @export
+     * @class MainContentController
+     * @implements {ng.IController}
+     */
+    export class MainContentController implements ng.IController {
+        readonly [Symbol.toStringTag]: string = CONTROLLER_NAME_MAIN_CONTENT;
+
+        /**
+         * Creates an instance of MainContentController.
+         * @param {IMainContentControllerScope} $scope
+         * @param {PageTitleService} pageTitleService
+         * @memberof MainContentController
+         */
+        constructor(private readonly $scope: IMainContentControllerScope, pageManager: Service) {
+            const ctrl: MainContentController = this;
+            pageManager.setScope($scope);
+        }
+        $doCheck(): void { }
+        static getControllerInjectable(): ng.Injectable<ng.IControllerConstructor> {
+            return ['$scope', 'pageManager', MainContentController];
+        }
+    }
+
+    export interface IDefaultPageControllerScope extends ng.IScope {
+
+    }
+    /**
+     * Controller for static pages.
+     * @export
+     * @class DefaultPageController
+     * @implements {ng.IController}
+     */
+    export class DefaultPageController implements ng.IController {
+        readonly [Symbol.toStringTag]: string = CONTROLLER_NAME_DEFAULT_PAGE;
+        constructor(private readonly $scope: IDefaultPageControllerScope, pageManager: Service) {
+        }
+        $doCheck(): void { }
+        static getControllerInjectable(): ng.Injectable<ng.IControllerConstructor> {
+            return ['$scope', 'pageManager', DefaultPageController];
+        }
+    }
+
+    /**
+     * Service which provides page-related information and tracks and updates the current app page title.
+     * @export
+     * @class pageManager.Service
+     */
+    export class Service {
+        private _pageTitle = DEFAULT_PAGE_TITLE;
+        private _pageSubTitle = '';
+        private _mainScope: IPageTitleScope & INavigationScope;
+        private _currentRouteInfo: PageRouteInfo;
+        private _currentRoute: ng.route.ICurrentRoute;
+        private _currentNavItem: NavMenuItem;
+        private _rootItems: NavMenuItem[] = [];
+        readonly [Symbol.toStringTag]: string = SERVICE_NAME_PAGE_MANAGER;
+
+        getRouteInfoById(id: string): NavRouteInfo | undefined {
+            for (let i: number = 0; i < this._pageRouteInfo.length; i++) {
+                if ((<ICustomRouteMembers>this._pageRouteInfo[i]).id === id)
+                    return this._pageRouteInfo[i];
+            }
+        }
+
+        private setCurrentRoute(route: NavRouteInfo): void {
+            if (Provider.isRouteRedirectInfo(route))
+                return;
+            this._currentRouteInfo = route;
+            if (Provider.routeInfoUsesDefaultController(route)) {
+                if (route.subTitle === 'string' && route.subTitle.length > 0)
+                    this.pageTitle(route.title, route.subTitle);
+                else
+                    this.pageTitle(route.title);
+            }
+            this._currentNavItem = NavMenuItem.setCurrent(this._pageRouteInfo, (typeof this._mainScope === 'undefined') ? this._rootItems : this._mainScope, route);
+        }
+
+        constructor($rootScope: ng.IRootScopeService, private readonly _pageRouteInfo: ReadonlyArray<NavRouteInfo>) {
+            const svc: Service = this;
+            this.setCurrentRoute(this._pageRouteInfo[0]);
+            let item: NavMenuItem = this._currentNavItem;
+            while (typeof item.parent !== 'undefined')
+                item = item.parent;
+            while (typeof item.previous !== 'undefined')
+                item = item.previous;
+            do { this._rootItems.push(item); } while (typeof (item = item.next) !== 'undefined');
+            $rootScope.$on('$routeChangeSuccess', function (event: ng.IAngularEvent, current: ng.route.ICurrentRoute): void {
+                if (typeof current.name !== 'string')
+                    return;
+
+                svc._currentRoute = current;
+                let routeInfo: NavRouteInfo | undefined = this.getRouteInfoById(current.name);
+                if (typeof routeInfo !== 'undefined')
+                    svc.setCurrentRoute(routeInfo);
+            });
+        }
+
+
+        /**
+         * Gets or sets the the current page title.
+         * @param {string} [value] - If defined, this will set the current page title and the page subtitle will be empty.
+         * @returns {string} The current page title.
+         * @memberof PageLocationService
+         */
+        pageTitle(value?: string): string;
+        /**
+         * Sets the new page title and subtitle.
+         * @param value - The new page title.
+         * @param subTitle - The new page subtitle.
+         * @returns {string} The current page title.
+         * @memberof PageLocationService
+         */
+        pageTitle(value: string, subTitle: string): string;
+        pageTitle(value?: string, subTitle?: string): string {
+            if (typeof value === 'string') {
+                this._pageTitle = ((value = value.trim()).length == 0) ? DEFAULT_PAGE_TITLE : value;
+                this._pageSubTitle = (typeof subTitle === 'string') ? subTitle : '';
+                if (typeof this._mainScope !== 'undefined') {
+                    this._mainScope.pageTitle = this._pageTitle;
+                    this._mainScope.subTitle = this._pageSubTitle;
+                    this._mainScope.showSubtitle = this._pageSubTitle.trim().length > 0;
+                }
+            }
+            return this._pageTitle;
+        }
+
+        /**
+         * Gets the current page subtitle.
+         * @returns {string} - The current page subtitle title or an empty string if there is currently no subtitle.
+         * @memberof PageLocationService
+         */
+        pageSubTitle(value?: string): string { return this._pageSubTitle; }
+
+        /**
+         * This should only be called by the main controller so the main controller's page title properties can be updated.
+         * @param {IPageTitleScope & INavigationScope} scope - The scope of the main application controller.
+         * @memberof PageLocationService
+         */
+        setScope(scope: IPageTitleScope & INavigationScope): void {
+            if (typeof scope !== 'object' || scope === null)
+                return;
+            (this._mainScope = scope).pageTitle = this._pageTitle;
+            scope.showSubtitle = (scope.subTitle = this._pageSubTitle).trim().length > 0;
+            NavMenuItem.setCurrent(this._pageRouteInfo, this._mainScope, this._currentRouteInfo)
+        }
+    }
+    export interface ICustomRouteMembers {
+        route: string;
+        id?: string;
+        linkTitle?: string;
+        parentId?: string;
+        title: string;
+        subTitle?: string;
+        tooltip?: string;
+    }
+    export type RouteTemplateUrl = Readonly<Omit<Mandatory<ICustomRouteMembers, "linkTitle">, "title" | "subTitle"> & Omit<Mandatory<ng.route.IRoute, "controller" | "templateUrl">, "template">>;
+    export type RouteTemplateString = Readonly<Omit<Mandatory<ICustomRouteMembers, "linkTitle">, "title" | "subTitle"> & Omit<Mandatory<ng.route.IRoute, "controller" | "template">, "templateUrl">>;
+    export type RouteTemplateUrlDefaultController = Readonly<ICustomRouteMembers & Omit<Mandatory<ng.route.IRoute, "templateUrl">, "template">>;
+    export type RouteTemplateStringDefaultController = Readonly<ICustomRouteMembers & Omit<Mandatory<ng.route.IRoute, "template">, "templateUrl">>;
+    export type RouteRedirectInfo = Readonly<Pick<ICustomRouteMembers, "route"> & Omit<Mandatory<ng.route.IRoute, "redirectTo">, "controller" | "template" | "templateUrl" | "resolve">>;
+    export type PageRouteInfo = Mandatory<RouteTemplateUrl, 'id'> | Mandatory<RouteTemplateString, 'id'> | Mandatory<RouteTemplateUrlDefaultController, 'id'> |
+        Mandatory<RouteTemplateStringDefaultController, 'id'>;
+    export type NavRouteInfo = PageRouteInfo | RouteRedirectInfo;
+    export class Provider implements ng.IServiceProvider {
+        private readonly _pageRouteInfo: ReadonlyArray<RouteTemplateUrl | RouteTemplateString | RouteTemplateUrlDefaultController | RouteTemplateStringDefaultController | RouteRedirectInfo> = [
+            {
+                templateUrl: 'Template/Pages/Home.htm',
+                route: '/home',
+                title: DEFAULT_PAGE_TITLE,
+                linkTitle: "Home"
+            },
+            {
+                id: 'implementation',
+                templateUrl: 'Template/Pages/Implementation/Index.htm',
+                route: '/implementation',
+                title: 'ServiceNow Implementation Notes',
+                linkTitle: 'Implementation Notes'
+            },
+            {
+                parentId: 'implementation',
+                templateUrl: 'Template/Pages/Implementation/ServiceCatalog.htm',
+                route: '/implementation/serviceCatalog',
+                title: 'ServiceNow Implementation Notes',
+                subTitle: 'Service Catalog',
+                linkTitle: 'Service Catalog'
+            },
+            {
+                parentId: 'implementation',
+                templateUrl: 'Template/Pages/Implementation/Incident.htm',
+                route: '/implementation/incident',
+                title: 'ServiceNow Implementation Notes',
+                subTitle: 'Incident Management',
+                linkTitle: 'Incident Management'
+            },
+            {
+                parentId: 'implementation',
+                templateUrl: 'Template/Pages/Implementation/Change.htm',
+                route: '/implementation/change',
+                title: 'ServiceNow Implementation Notes',
+                subTitle: 'Change Management',
+                linkTitle: 'Change Management'
+            },
+            {
+                parentId: 'implementation',
+                templateUrl: 'Template/Pages/Implementation/Security.htm',
+                route: '/implementation/security',
+                title: 'ServiceNow Implementation Notes',
+                subTitle: 'Security Operations',
+                linkTitle: 'Security Operations'
+            },
+            {
+                templateUrl: 'Template/Pages/InitialConfig.htm',
+                route: '/initialConfig',
+                title: 'Initial Configuration Instructions',
+                linkTitle: 'Initial Config'
+            },
+            {
+                id: 'dev',
+                templateUrl: 'Template/Pages/Dev/Index.htm',
+                route: '/dev',
+                title: 'Development Resources',
+                linkTitle: 'Dev Resources'
+            },
+            {
+                parentId: 'dev',
+                templateUrl: 'Template/Pages/Dev/Notes.htm',
+                route: '/dev/notes',
+                title: 'Development Resources',
+                subTitle: 'Development Notes',
+                linkTitle: 'Notes'
+            },
+            {
+                parentId: 'dev',
+                templateUrl: 'Template/Pages/Dev/Git.htm',
+                route: '/dev/git',
+                title: 'Development Resources',
+                subTitle: 'Git Notes',
+                linkTitle: 'Git'
+            },
+            {
+                parentId: 'dev',
+                templateUrl: 'Template/Pages/Dev/Azure.htm',
+                route: '/dev/azure',
+                title: 'Development Resources',
+                subTitle: 'Azure Notes',
+                linkTitle: 'Azure'
+            },
+            {
+                parentId: 'dev',
+                templateUrl: 'Template/Pages/Dev/Snippets.htm',
+                route: '/dev/snippets',
+                title: 'Development Resources',
+                subTitle: 'Code Snippets',
+                linkTitle: 'Snippets'
+            },
+            {
+                parentId: 'dev',
+                templateUrl: 'Template/Pages/Dev/SiteDesign.htm',
+                route: '/dev/siteDesign',
+                title: 'Development Resources',
+                subTitle: "Documentation Website Design Notes",
+                linkTitle: "Site Design"
+            },
+            { route: '/', redirectTo: "/home" }
+        ];
+        get $get(): ['$rootScope', ($rootScope: ng.IRootScopeService) => Service] {
+            return ['$rootScope', function pageManagerFactory($rootScope: ng.IRootScopeService): Service {
+                return new Service($rootScope, this.getRouteInfo());
+            }];
+        }
+        private getRouteInfo(): ReadonlyArray<NavRouteInfo> {
+            return this._pageRouteInfo.map(function (value: NavRouteInfo, index: number): NavRouteInfo {
+                if (Provider.isRouteRedirectInfo(value))
+                    return value;
+                if (typeof value.id !== "string")
+                    (<ICustomRouteMembers>value).id = "__page" + index;
+                return <NavRouteInfo>value;
+            });
+        }
+        static isRouteRedirectInfo(routeInfo: NavRouteInfo): routeInfo is RouteRedirectInfo {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof (<RouteRedirectInfo>routeInfo).redirectTo === "string";
+        }
+        static routeInfoHasPageTemplateUrl(routeInfo: NavRouteInfo): routeInfo is Exclude<PageRouteInfo, RouteTemplateString | RouteTemplateStringDefaultController> {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof (<RouteTemplateUrl>routeInfo).templateUrl === "string";
+        }
+        static routeInfoHasPageTemplateString(routeInfo: NavRouteInfo): routeInfo is Exclude<PageRouteInfo, RouteTemplateUrl | RouteTemplateUrlDefaultController> {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof (<RouteTemplateString>routeInfo).template === "string";
+        }
+        static routeInfoHasExplicitController(routeInfo: NavRouteInfo): routeInfo is Exclude<PageRouteInfo, RouteTemplateStringDefaultController | RouteTemplateUrlDefaultController> {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof (<RouteTemplateUrlDefaultController>routeInfo).title !== "string";
+        }
+        static routeInfoUsesDefaultController(routeInfo: NavRouteInfo): routeInfo is Exclude<PageRouteInfo, RouteTemplateString | RouteTemplateUrl> {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof (<RouteTemplateUrlDefaultController>routeInfo).title === "string";
+        }
+        ConfigureRoutes($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider): void {
+            $locationProvider.hashPrefix(HASH_PREFIX);
+            this.getRouteInfo().forEach(function (value: NavRouteInfo): void {
+                let routeDef: ng.route.IRoute;
+                if (Provider.isRouteRedirectInfo(value))
+                    routeDef = { redirectTo: value.redirectTo };
+                else {
+                    if (Provider.routeInfoUsesDefaultController(value))
+                        routeDef = { controller: CONTROLLER_NAME_DEFAULT_PAGE, controllerAs: CONTROLLER_NAME_DEFAULT_PAGE };
+                    else {
+                        routeDef = { controller: value.controller };
+                        if (typeof value.controllerAs === 'string')
+                            routeDef.controllerAs = value.controllerAs;
+                    }
+                    routeDef.name = value.id;
+                    if (Provider.routeInfoHasPageTemplateUrl(value))
+                        routeDef.templateUrl = value.templateUrl;
+                    else
+                        routeDef.template = value.template;
+                    if (typeof value.caseInsensitiveMatch === "boolean")
+                        routeDef.caseInsensitiveMatch = value.caseInsensitiveMatch;
+                    if (typeof value.reloadOnSearch === "boolean")
+                        routeDef.reloadOnSearch = value.reloadOnSearch;
+                    if (typeof value.resolve === "object" && value.resolve !== null)
+                        routeDef.resolve = value.resolve;
+                }
+                $routeProvider.when(value.route, routeDef);
+            });
+        }
+    }
+}
 /**
  * The main application namespace
  * @namespace
@@ -2477,8 +3619,14 @@ namespace app {
      * @export
      * @constant {ng.IModule}
      */
-    export let appModule: ng.IModule = angular.module("app", []);
-
+    export const appModule: ng.IModule = angular.module("app", [])
+        .provider(pageManager.SERVICE_NAME_PAGE_MANAGER, pageManager.Provider)
+        .config(['$locationProvider', '$routeProvider', 'pageManagerProvider',
+            function ($locationProvider: ng.ILocationProvider, $routeProvider: ng.route.IRouteProvider, pageManagerProvider: pageManager.Provider) {
+                pageManagerProvider.ConfigureRoutes($routeProvider, $locationProvider);
+            }])
+        .controller(pageManager.CONTROLLER_NAME_MAIN_CONTENT, pageManager.MainContentController.getControllerInjectable())
+        .controller(pageManager.CONTROLLER_NAME_DEFAULT_PAGE, pageManager.DefaultPageController.getControllerInjectable());
     appModule.service(persistentStorageLoaderService.SERVICE_NAME, persistentStorageLoaderService.getServiceInjectable());
     appModule.service(notificationMessageService.SERVICE_NAME, notificationMessageService.getServiceInjectable());
     appModule.service(appConfigLoaderService.SERVICE_NAME, appConfigLoaderService.getServiceInjectable());

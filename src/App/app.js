@@ -1,4 +1,5 @@
 /// <reference path="../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../Scripts/typings/angularjs/angular-route.d.ts" />
 /// <reference path="../Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
@@ -1688,6 +1689,901 @@ var snNavLinkDirective;
     }
     snNavLinkDirective.getDirectiveInjectable = getDirectiveInjectable;
 })(snNavLinkDirective || (snNavLinkDirective = {}));
+var pageManager;
+(function (pageManager_1) {
+    /**
+     * Prefix for hash portion of navigation URI strings.
+     * @export
+     * @constant HashPrefix
+     * @type {"!"}
+     */
+    pageManager_1.HASH_PREFIX = '!';
+    /**
+     * Prefix for relative navigation URI path strings.
+     * @export
+     * @constant NavPrefix
+     * @type {"#!"}
+     */
+    pageManager_1.NAV_PREFIX = '#!';
+    pageManager_1.DEFAULT_PAGE_TITLE = 'ServiceNow Implementation and Maintenance';
+    pageManager_1.CONTROLLER_NAME_MAIN_CONTENT = 'mainContentController';
+    pageManager_1.CONTROLLER_NAME_DEFAULT_PAGE = 'defaultPageController';
+    pageManager_1.SERVICE_NAME_PAGE_MANAGER = 'pageManager';
+    pageManager_1.CSS_CLASS_MAIN_SHOWING_ASIDE_NAV = [];
+    pageManager_1.CSS_CLASS_MAIN_HIDING_ASIDE_NAV = [];
+    pageManager_1.CSS_CLASS_NAV_ANCHOR_IS_CURRENT = [];
+    pageManager_1.CSS_CLASS_NAV_LINK_ITEM_IS_CURRENT = [];
+    pageManager_1.CSS_CLASS_NAV_ANCHOR_HAS_CURRENT = [];
+    pageManager_1.CSS_CLASS_NAV_LINK_ITEM_HAS_CURRENT = [];
+    pageManager_1.CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT = [];
+    pageManager_1.CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT = [];
+    class NavMenuItem {
+        constructor(routeInfo, parent) {
+            this._isCurrent = false;
+            this._containsCurrent = false;
+            this._linkItemCss = pageManager_1.CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+            this._anchorCss = pageManager_1.CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+            this._click = NavMenuItem.clickNotCurrent;
+            this._id = routeInfo.id;
+            this._title = ((typeof routeInfo.linkTitle === 'string' && routeInfo.linkTitle.trim().length > 0) || Provider.routeInfoHasExplicitController(routeInfo)) ?
+                routeInfo.linkTitle : routeInfo.title;
+            this._tooltip = (typeof routeInfo.tooltip === 'string' && routeInfo.tooltip.trim().length > 0) ? routeInfo.tooltip : '';
+            let arr;
+            if (Array.isArray(parent)) {
+                parent.push(this);
+                arr = parent;
+            }
+            else {
+                parent._childItems.push(this);
+                arr = parent._childItems;
+            }
+            let i = arr.length - 2;
+            (arr[i]._next = this)._previous = arr[i];
+        }
+        get title() { return this._title; }
+        get tooltip() { return this._tooltip; }
+        get parent() { return this._parent; }
+        get previous() { return this._previous; }
+        get next() { return this._next; }
+        get isCurrent() { return this._isCurrent; }
+        get containsCurrent() { return this._containsCurrent; }
+        get notCurrent() { return !(this._isCurrent || this._containsCurrent); }
+        get linkItemCss() { return this._linkItemCss; }
+        get anchorCss() { return this._anchorCss; }
+        get href() { return this._href; }
+        get url() { return this._url; }
+        get click() { return this._click; }
+        static clickIsCurrent(event) {
+            if (typeof event === 'object' && event !== null && !event.isDefaultPrevented())
+                event.preventDefault();
+            return false;
+        }
+        static clickNotCurrent(event) { return true; }
+        static find(source, id) {
+            for (let i = 0; i < source.length; i++) {
+                if (source[i].id === id)
+                    return source[i];
+            }
+        }
+        static getParent(source, target) {
+            return NavMenuItem.find(source, (typeof target === 'string') ? target : target.id);
+        }
+        static getChildren(source, target) {
+            let result = [];
+            let id = (typeof target === 'string') ? target : target.id;
+            for (let i = 0; i < source.length; i++) {
+                if (source[i].parentId === id)
+                    result.push(source[i]);
+            }
+            return result;
+        }
+        static import(source, scope, target) {
+            let id;
+            if (typeof target === 'string') {
+                id = target;
+                if (typeof (target = NavMenuItem.find(source, target)) === 'undefined')
+                    return;
+            }
+            let parentRouteInfo = NavMenuItem.getParent(source, id);
+            let item;
+            let i;
+            if (typeof parentRouteInfo === 'undefined') {
+                if (Array.isArray(scope)) {
+                    for (i = 0; i < source.length; i++) {
+                        if (!Provider.isRouteRedirectInfo(source[i]) && typeof NavMenuItem.getParent(source, source[i]) === 'undefined') {
+                            let m = new NavMenuItem(source[i], scope);
+                            if (m._id === id)
+                                item = m;
+                        }
+                    }
+                    if (typeof item !== 'undefined')
+                        return item;
+                    return new NavMenuItem(target, scope);
+                }
+                for (i = 0; i < scope.pageTopNavItems.length; i++) {
+                    if (scope.pageTopNavItems[i]._id === id)
+                        return scope.pageTopNavItems[i];
+                }
+                return new NavMenuItem(target, scope.pageTopNavItems);
+            }
+            let parentItem = this.import(source, scope, parentRouteInfo);
+            if (parentItem._childItems.length == 0) {
+                for (i = 0; i < source.length; i++) {
+                    if (!Provider.isRouteRedirectInfo(source[i]) && typeof source[i].id === parentItem._id) {
+                        let m = new NavMenuItem(source[i], parentItem);
+                        if (m._id === id)
+                            item = m;
+                    }
+                }
+                if (typeof item !== 'undefined')
+                    return item;
+            }
+            else
+                for (i = 0; i < parentItem._childItems.length; i++) {
+                    if (parentItem._childItems[i]._id === id)
+                        return parentItem._childItems[i];
+                }
+            return new NavMenuItem(target, parentItem);
+        }
+        static setCurrent(source, scope, routeInfo) {
+            let currentNavItem = NavMenuItem.import(source, scope, routeInfo);
+            let item;
+            if (Array.isArray(scope)) {
+                for (let i = 0; i < scope.length; i++) {
+                    if (scope[i]._id === currentNavItem._id) {
+                        if (scope[i]._isCurrent)
+                            return scope[i];
+                        scope[i]._isCurrent = false;
+                        scope[i]._anchorCss = pageManager_1.CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+                        scope[i]._linkItemCss = pageManager_1.CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+                        scope[i]._click = NavMenuItem.clickNotCurrent;
+                        scope[i]._href = currentNavItem._url;
+                        for (let item = scope[i]._parent; typeof item !== 'undefined'; item = item._parent) {
+                            item._containsCurrent = false;
+                            item._anchorCss = pageManager_1.CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+                            item._linkItemCss = pageManager_1.CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+                            item._click = NavMenuItem.clickNotCurrent;
+                            item._href = item._url;
+                        }
+                        break;
+                    }
+                }
+                currentNavItem._isCurrent = true;
+                currentNavItem._anchorCss = pageManager_1.CSS_CLASS_NAV_ANCHOR_IS_CURRENT;
+                currentNavItem._linkItemCss = pageManager_1.CSS_CLASS_NAV_LINK_ITEM_IS_CURRENT;
+                currentNavItem._click = NavMenuItem.clickIsCurrent;
+                currentNavItem._href = currentNavItem._url;
+                for (item = currentNavItem._parent; typeof item !== 'undefined'; item = item._parent) {
+                    item._containsCurrent = false;
+                    item._anchorCss = pageManager_1.CSS_CLASS_NAV_ANCHOR_HAS_CURRENT;
+                    item._linkItemCss = pageManager_1.CSS_CLASS_NAV_LINK_ITEM_HAS_CURRENT;
+                    item._click = NavMenuItem.clickNotCurrent;
+                    item._href = item._url;
+                }
+                return currentNavItem;
+            }
+            if (typeof scope.currentNavItem === 'object' && scope.currentNavItem !== null) {
+                if (routeInfo.id === scope.currentNavItem._id)
+                    return scope.currentNavItem;
+                scope.currentNavItem._isCurrent = false;
+                scope.currentNavItem._anchorCss = pageManager_1.CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+                scope.currentNavItem._linkItemCss = pageManager_1.CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+                scope.currentNavItem._click = NavMenuItem.clickNotCurrent;
+                scope.currentNavItem._href = scope.currentNavItem._url;
+                for (item = scope.currentNavItem._parent; typeof item !== 'undefined'; item = item._parent) {
+                    item._containsCurrent = false;
+                    item._anchorCss = pageManager_1.CSS_CLASS_NAV_ANCHOR_NOT_IN_CURRENT;
+                    item._linkItemCss = pageManager_1.CSS_CLASS_NAV_LINK_ITEM_NOT_IN_CURRENT;
+                    item._click = NavMenuItem.clickNotCurrent;
+                    item._href = item._url;
+                }
+            }
+            while (scope.precedingSideNavItems.length > 0)
+                scope.precedingSideNavItems.pop();
+            while (scope.followingSideNavItems.length > 0)
+                scope.followingSideNavItems.pop();
+            while (scope.sideNavBreadcrumbItems.length > 0)
+                scope.sideNavBreadcrumbItems.pop();
+            while (scope.nestedChildNavItems.length > 0)
+                scope.nestedChildNavItems.pop();
+            (scope.currentNavItem = currentNavItem)._isCurrent = true;
+            currentNavItem._isCurrent = true;
+            currentNavItem._anchorCss = pageManager_1.CSS_CLASS_NAV_ANCHOR_IS_CURRENT;
+            currentNavItem._linkItemCss = pageManager_1.CSS_CLASS_NAV_LINK_ITEM_IS_CURRENT;
+            currentNavItem._click = NavMenuItem.clickIsCurrent;
+            currentNavItem._href = currentNavItem._url;
+            for (let item = currentNavItem._parent; typeof item !== 'undefined'; item = item._parent) {
+                item._containsCurrent = false;
+                item._anchorCss = pageManager_1.CSS_CLASS_NAV_ANCHOR_HAS_CURRENT;
+                item._linkItemCss = pageManager_1.CSS_CLASS_NAV_LINK_ITEM_HAS_CURRENT;
+                item._click = NavMenuItem.clickNotCurrent;
+                item._href = item._url;
+            }
+            if (typeof currentNavItem._parent === 'undefined') {
+                scope.showNestedChildNav = scope.showSideNavBreadcrumbs = scope.showCurrentItem = scope.showFollowingSideNav = false;
+                NavMenuItem.getChildren(source, routeInfo).forEach(function (value) {
+                    scope.precedingSideNavItems.push(NavMenuItem.import(source, scope, value));
+                });
+                scope.showPrecedingSideNav = scope.precedingSideNavItems.length > 0;
+            }
+            else {
+                for (item = currentNavItem._parent; typeof item._parent !== 'undefined'; item = item._parent)
+                    scope.sideNavBreadcrumbItems.push(item);
+                scope.showSideNavBreadcrumbs = scope.sideNavBreadcrumbItems.length > 0;
+                let i = 0;
+                let id = scope.currentNavItem._id;
+                let arr = currentNavItem._parent._childItems;
+                while (arr[i]._id !== id)
+                    scope.precedingSideNavItems.push(arr[i++]);
+                while (++i < arr.length)
+                    scope.followingSideNavItems.push(arr[i]);
+                NavMenuItem.getChildren(source, routeInfo).forEach(function (value) {
+                    scope.nestedChildNavItems.push(NavMenuItem.import(source, scope, value));
+                });
+                scope.showPrecedingSideNav = scope.precedingSideNavItems.length > 0;
+                scope.showNestedChildNav = scope.nestedChildNavItems.length > 0;
+                scope.showFollowingSideNav = scope.followingSideNavItems.length > 0;
+                scope.showCurrentItem = scope.showPrecedingSideNav || scope.showNestedChildNav || scope.showFollowingSideNav || scope.showSideNavBreadcrumbs;
+            }
+            scope.mainSectionClass = ((scope.showNavAsideElement = scope.showCurrentItem || scope.showPrecedingSideNav) == true) ? pageManager_1.CSS_CLASS_MAIN_SHOWING_ASIDE_NAV : pageManager_1.CSS_CLASS_MAIN_HIDING_ASIDE_NAV;
+            return currentNavItem;
+        }
+    }
+    pageManager_1.NavMenuItem = NavMenuItem;
+    class VisibilityState {
+        constructor(_whenVisible, _whenNotVisible, _dependency) {
+            this._whenVisible = _whenVisible;
+            this._whenNotVisible = _whenNotVisible;
+            this._dependency = _dependency;
+        }
+        get whenVisible() { return this._whenVisible; }
+        set whenVisibile(value) { this._whenVisible = value; }
+        get whenNotVisible() { return this._whenNotVisible; }
+        set whenNotVisible(value) { this._whenNotVisible = value; }
+        get dependency() { return this._dependency; }
+        set dependency(value) { this._dependency = value; }
+        get isVisible() { return !VisbleDependency2.isNil(this._dependency) && this._dependency.isVisible; }
+        get notVisible() { return VisbleDependency2.isNil(this._dependency) || this._dependency.notVisible; }
+        get state() { return (this.isVisible) ? this._whenVisible : this._whenNotVisible; }
+    }
+    pageManager_1.VisibilityState = VisibilityState;
+    class VisbleDependency2 {
+        constructor(_item1, _item2) {
+            this._item1 = _item1;
+            this._item2 = _item2;
+        }
+        get item1() { return this._item1; }
+        get item2() { return this._item2; }
+        get isVisible() { return !(VisbleDependency2.isNil(this._item1) || VisbleDependency2.isNil(this._item2)) && this._item1.isVisible && this._item2.isVisible; }
+        get notVisible() { return VisbleDependency2.isNil(this._item1) || VisbleDependency2.isNil(this._item2) || this._item1.notVisible || this._item2.notVisible; }
+        static isNil(obj) { return typeof obj === 'undefined' || (typeof obj === 'object' && obj === null); }
+    }
+    pageManager_1.VisbleDependency2 = VisbleDependency2;
+    class VisbleDependency3 extends VisbleDependency2 {
+        constructor(item1, item2, _item3) {
+            super(item1, item2);
+            this._item3 = _item3;
+        }
+        get item3() { return this._item3; }
+        get isVisible() { return !VisbleDependency2.isNil(this._item3) && super.isVisible; }
+        get notVisible() { return VisbleDependency2.isNil(this._item3) || super.notVisible; }
+    }
+    pageManager_1.VisbleDependency3 = VisbleDependency3;
+    class VisbleDependency4 extends VisbleDependency3 {
+        constructor(item1, item2, item3, _item4) {
+            super(item1, item2, item3);
+            this._item4 = _item4;
+        }
+        get item4() { return this._item4; }
+        get isVisible() { return !VisbleDependency2.isNil(this._item4) && super.isVisible; }
+        get notVisible() { return VisbleDependency2.isNil(this._item4) || super.notVisible; }
+    }
+    pageManager_1.VisbleDependency4 = VisbleDependency4;
+    class OrderedMap {
+        constructor(arg0, arg1, ...items) {
+            this._key = Symbol();
+            if (arguments.length == 0)
+                this._items = new HideIfEmpty();
+            else {
+                let k;
+                if (arguments.length == 1)
+                    this._items = new HideIfEmpty(arg0);
+                else if (arguments.length == 2) {
+                    this._items = new HideIfEmpty();
+                    k = arg0(arg1);
+                    if (typeof k !== 'string')
+                        throw new Error('Invalid key');
+                    if (typeof arg1 === 'undefined')
+                        this._undefinedKey = k;
+                    else if (typeof arg1 === 'object' && arg1 === null)
+                        this._nullKey = k;
+                    else
+                        arg1[this._key] = k;
+                    this._items.add(arg1);
+                }
+                else {
+                    if (typeof arg1 === 'function')
+                        this._items = new HideIfEmpty(arg1);
+                    else {
+                        k = arg0(arg1);
+                        if (typeof k !== 'string')
+                            throw new Error('Invalid key');
+                        if (typeof arg1 === 'undefined')
+                            this._undefinedKey = k;
+                        else if (typeof arg1 === 'object' && arg1 === null)
+                            this._nullKey = k;
+                        else
+                            arg1[this._key] = k;
+                        this._items = new HideIfEmpty();
+                        this._items.add(arg1);
+                    }
+                    for (let i = 0; i < items.length; i++) {
+                        if (typeof this.keyOf(items[i]) === 'string') {
+                            this.clear();
+                            throw new Error('Duplicate key');
+                        }
+                        k = arg0(items[i]);
+                        if (typeof k !== 'string') {
+                            this.clear();
+                            throw new Error('Invalid key');
+                        }
+                    }
+                }
+            }
+        }
+        get isVisible() { return this._items.isVisible; }
+        get notVisible() { return this._items.notVisible; }
+        get size() { return this._items.size; }
+        add(values) {
+            let iterator = values.entries();
+            let items = [];
+            for (let r = iterator.next(); r.done !== true; r = iterator.next()) {
+                if (typeof r.value[0] !== 'string')
+                    throw new Error("Invalid key");
+                if (typeof this.keyOf(r.value) === 'string')
+                    throw new Error("Item has already been added");
+                items.push(r.value);
+            }
+            items.forEach(function (value) { this.set(value[0], value[1]); });
+        }
+        merge(values) {
+            let iterator = values.entries();
+            let items = [];
+            for (let r = iterator.next(); r.done !== true; r = iterator.next()) {
+                if (typeof r.value[0] !== 'string')
+                    throw new Error("Invalid key");
+                items.push(r.value);
+            }
+            items.forEach(function (value) { this.set(value[0], value[1]); });
+        }
+        clear() {
+            this._items.forEach(function (value) {
+                if (typeof value !== 'undefined' && (typeof value !== 'object' || value !== null))
+                    value[this._key] = undefined;
+            }, this);
+            this._nullKey = this._undefinedKey = undefined;
+            this._items.clear();
+        }
+        delete(key) {
+            for (let i = 0; i < this._items.size; i++) {
+                if (this.keyOf(this._items[i]) === key) {
+                    this.deleteAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+        deleteAt(index) {
+            let item = this._items.get(index);
+            this._items.deleteAt(index);
+            if (typeof item === 'undefined')
+                this._undefinedKey = undefined;
+            else if (typeof item === 'object' && item === null)
+                this._nullKey = undefined;
+            else
+                item[this._key] = undefined;
+        }
+        filter(callbackfn, thisArg) {
+            if (arguments.length > 1)
+                return this._items.filter(function (value, index) { return callbackfn.call(thisArg, value, this.keyOf(value), index, this); }, this);
+            return this._items.filter(function (value, index) { return callbackfn(value, this.keyOf(value), index, this); }, this);
+        }
+        forEach(callbackfn, thisArg) {
+            if (arguments.length > 1)
+                this._items.forEach(function (value) { callbackfn.call(thisArg, value, this.keyOf(value), this); }, this);
+            else
+                this._items.forEach(function (value) { callbackfn(value, this.keyOf(value), this); }, this);
+        }
+        map(callbackfn, thisArg) {
+            if (arguments.length > 1)
+                return this._items.map(function (value, index) { return callbackfn.call(thisArg, value, this.keyOf(value), index, this); }, this);
+            return this._items.map(function (value, index) { return callbackfn(value, this.keyOf(value), index, this); }, this);
+        }
+        get(arg) {
+            if (typeof arg === "number")
+                return this._items.get(arg);
+            for (let i = 0; i < this._items.size; i++) {
+                if (this.keyOf(this._items[i]) === arg)
+                    return this._items[i];
+            }
+        }
+        has(key) {
+            for (let i = 0; i < this._items.size; i++) {
+                if (this.keyOf(this._items[i]) === key)
+                    return true;
+            }
+            return false;
+        }
+        hasValue(value) { return typeof this.keyOf(value) === 'string'; }
+        indexOfValue(value) {
+            let key = this.keyOf(value);
+            if (typeof key === 'string')
+                return this.indexOf(key);
+        }
+        indexOf(key) {
+            for (let i = 0; i < this._items.size; i++) {
+                if (this.keyOf(this._items[i]) === key)
+                    return i;
+            }
+            return -1;
+        }
+        keyOf(item) {
+            if (typeof item === 'undefined')
+                return this._undefinedKey;
+            if (typeof item === 'object' && item === null)
+                return this._nullKey;
+            return item[this._key];
+        }
+        set(key, value) {
+            if (typeof key !== 'string')
+                throw new Error("Invalid key");
+            let index = this.indexOf(key);
+            if (index < 0) {
+                if (typeof value === 'undefined')
+                    this._undefinedKey = key;
+                else if (typeof value === 'object' && value === null)
+                    this._nullKey = key;
+                else
+                    value[this._key] = key;
+                this._items.add(value);
+            }
+            else {
+                if (key === this._undefinedKey)
+                    this._undefinedKey = undefined;
+                else if (key === this._nullKey)
+                    this._nullKey = undefined;
+                else
+                    this._items.get(index)[this._key] = undefined;
+                if (typeof value === 'undefined')
+                    this._undefinedKey = key;
+                else if (typeof value === 'object' && value === null)
+                    this._nullKey = key;
+                else
+                    value[this._key] = key;
+                this._items.set(index, value);
+            }
+            return this;
+        }
+        [Symbol.iterator]() { return new SymbolKeyValueIterator(this._items.values(), this._key, this._nullKey, this._undefinedKey); }
+        entries() { return new SymbolKeyValueIterator(this._items.values(), this._key, this._nullKey, this._undefinedKey); }
+        keys() { return new SymbolKeyIterator(this._items.values(), this._key, this._nullKey, this._undefinedKey); }
+        values() { return this._items.values(); }
+    }
+    pageManager_1.OrderedMap = OrderedMap;
+    class SymbolKeyIterator {
+        constructor(_iterator, _keySymbol, _nullKey, _undefinedKey) {
+            this._iterator = _iterator;
+            this._keySymbol = _keySymbol;
+            this._nullKey = _nullKey;
+            this._undefinedKey = _undefinedKey;
+        }
+        [Symbol.iterator]() { return this; }
+        next() {
+            if (typeof this._iterator !== 'undefined') {
+                let result = this._iterator.next();
+                if (!result.done)
+                    return { value: (typeof result.value === 'undefined') ? this._undefinedKey : ((typeof result.value === 'object' && result.value === null) ? this._nullKey : result.value[this._keySymbol]) };
+                this._iterator = undefined;
+            }
+            return { done: true };
+        }
+    }
+    pageManager_1.SymbolKeyIterator = SymbolKeyIterator;
+    class SymbolKeyValueIterator {
+        constructor(_iterator, _keySymbol, _nullKey, _undefinedKey) {
+            this._iterator = _iterator;
+            this._keySymbol = _keySymbol;
+            this._nullKey = _nullKey;
+            this._undefinedKey = _undefinedKey;
+        }
+        [Symbol.iterator]() { return this; }
+        next() {
+            if (typeof this._iterator !== 'undefined') {
+                let result = this._iterator.next();
+                if (!result.done)
+                    return { value: [(typeof result.value === 'undefined') ? this._undefinedKey : ((typeof result.value === 'object' && result.value === null) ? this._nullKey : result.value[this._keySymbol]), result.value] };
+                this._iterator = undefined;
+            }
+            return { done: true };
+        }
+    }
+    pageManager_1.SymbolKeyValueIterator = SymbolKeyValueIterator;
+    class HideIfEmpty {
+        constructor(arg0, ...items) {
+            this._items = [];
+            if (arguments.length == 0)
+                this._items = [];
+            else {
+                if (typeof arg0 == 'function') {
+                    this._comparer = arg0;
+                    this._items = (arguments.length > 0) ? items : [];
+                    return;
+                }
+                this._items = (arguments.length == 1) ? [arg0] : [arg0].concat(items);
+            }
+            this._comparer = function (x, y) { return x === y; };
+        }
+        get isVisible() { return this._items.length > 0; }
+        get notVisible() { return this._items.length == 0; }
+        get size() { return this._items.length; }
+        add(value) {
+            this._items.push(value);
+            return this;
+        }
+        clear() { this._items.length == 0; }
+        deleteAt(index) {
+            if (this._items.length > 0) {
+                if (index === 0)
+                    this._items.shift();
+                else if (index == this._items.length - 1)
+                    this._items.pop();
+                else {
+                    if (index >= this._items.length)
+                        throw new RangeError("Index out of range");
+                    this._items.splice(index, 1);
+                }
+            }
+        }
+        delete(value) {
+            for (let i = 0; i < this._items.length; i++) {
+                if (this._comparer(this._items[i], value)) {
+                    if (i === 0)
+                        this._items.shift();
+                    else if (i < this._items.length - 1)
+                        this._items.splice(i, 1);
+                    else
+                        this._items.pop();
+                    return true;
+                }
+            }
+            return false;
+        }
+        filter(callbackfn, thisArg) {
+            if (arguments.length > 1)
+                return this._items.filter(function (value, index) { return callbackfn.call(thisArg, value, index, this); }, this);
+            return this._items.filter(function (value, index) { return callbackfn(value, index, this); }, this);
+        }
+        forEach(callbackfn, thisArg) {
+            if (arguments.length > 1)
+                this._items.forEach(function (value, index) { callbackfn.call(thisArg, value, value, this); }, this);
+            else
+                this._items.forEach(function (value, index) { callbackfn(value, value, this); }, this);
+        }
+        map(callbackfn, thisArg) {
+            if (arguments.length > 1)
+                return this._items.map(function (value, index) { return callbackfn.call(thisArg, value, index, this); }, this);
+            return this._items.map(function (value, index) { return callbackfn(value, index, this); }, this);
+        }
+        get(index) { return this._items[index]; }
+        has(value) {
+            for (let i = 0; i < this._items.length; i++) {
+                if (this._comparer(this._items[i], value))
+                    return true;
+            }
+            return false;
+        }
+        indexOf(value) {
+            for (let i = 0; i < this._items.length; i++) {
+                if (this._comparer(this._items[i], value))
+                    return i;
+            }
+            return -1;
+        }
+        set(index, value) { this._items[index] = value; }
+        [Symbol.iterator]() { return this._items.values(); }
+        entries() { return this._items.map(function (value) { return [value, value]; }).values(); }
+        keys() { return this._items.values(); }
+        values() { return this._items.values(); }
+    }
+    pageManager_1.HideIfEmpty = HideIfEmpty;
+    /**
+     * The main application controller.
+     * @export
+     * @class MainContentController
+     * @implements {ng.IController}
+     */
+    class MainContentController {
+        /**
+         * Creates an instance of MainContentController.
+         * @param {IMainContentControllerScope} $scope
+         * @param {PageTitleService} pageTitleService
+         * @memberof MainContentController
+         */
+        constructor($scope, pageManager) {
+            this.$scope = $scope;
+            this[Symbol.toStringTag] = pageManager_1.CONTROLLER_NAME_MAIN_CONTENT;
+            const ctrl = this;
+            pageManager.setScope($scope);
+        }
+        $doCheck() { }
+        static getControllerInjectable() {
+            return ['$scope', 'pageManager', MainContentController];
+        }
+    }
+    pageManager_1.MainContentController = MainContentController;
+    /**
+     * Controller for static pages.
+     * @export
+     * @class DefaultPageController
+     * @implements {ng.IController}
+     */
+    class DefaultPageController {
+        constructor($scope, pageManager) {
+            this.$scope = $scope;
+            this[Symbol.toStringTag] = pageManager_1.CONTROLLER_NAME_DEFAULT_PAGE;
+        }
+        $doCheck() { }
+        static getControllerInjectable() {
+            return ['$scope', 'pageManager', DefaultPageController];
+        }
+    }
+    pageManager_1.DefaultPageController = DefaultPageController;
+    /**
+     * Service which provides page-related information and tracks and updates the current app page title.
+     * @export
+     * @class pageManager.Service
+     */
+    class Service {
+        constructor($rootScope, _pageRouteInfo) {
+            this._pageRouteInfo = _pageRouteInfo;
+            this._pageTitle = pageManager_1.DEFAULT_PAGE_TITLE;
+            this._pageSubTitle = '';
+            this._rootItems = [];
+            this[Symbol.toStringTag] = pageManager_1.SERVICE_NAME_PAGE_MANAGER;
+            const svc = this;
+            this.setCurrentRoute(this._pageRouteInfo[0]);
+            let item = this._currentNavItem;
+            while (typeof item.parent !== 'undefined')
+                item = item.parent;
+            while (typeof item.previous !== 'undefined')
+                item = item.previous;
+            do {
+                this._rootItems.push(item);
+            } while (typeof (item = item.next) !== 'undefined');
+            $rootScope.$on('$routeChangeSuccess', function (event, current) {
+                if (typeof current.name !== 'string')
+                    return;
+                svc._currentRoute = current;
+                let routeInfo = this.getRouteInfoById(current.name);
+                if (typeof routeInfo !== 'undefined')
+                    svc.setCurrentRoute(routeInfo);
+            });
+        }
+        getRouteInfoById(id) {
+            for (let i = 0; i < this._pageRouteInfo.length; i++) {
+                if (this._pageRouteInfo[i].id === id)
+                    return this._pageRouteInfo[i];
+            }
+        }
+        setCurrentRoute(route) {
+            if (Provider.isRouteRedirectInfo(route))
+                return;
+            this._currentRouteInfo = route;
+            if (Provider.routeInfoUsesDefaultController(route)) {
+                if (route.subTitle === 'string' && route.subTitle.length > 0)
+                    this.pageTitle(route.title, route.subTitle);
+                else
+                    this.pageTitle(route.title);
+            }
+            this._currentNavItem = NavMenuItem.setCurrent(this._pageRouteInfo, (typeof this._mainScope === 'undefined') ? this._rootItems : this._mainScope, route);
+        }
+        pageTitle(value, subTitle) {
+            if (typeof value === 'string') {
+                this._pageTitle = ((value = value.trim()).length == 0) ? pageManager_1.DEFAULT_PAGE_TITLE : value;
+                this._pageSubTitle = (typeof subTitle === 'string') ? subTitle : '';
+                if (typeof this._mainScope !== 'undefined') {
+                    this._mainScope.pageTitle = this._pageTitle;
+                    this._mainScope.subTitle = this._pageSubTitle;
+                    this._mainScope.showSubtitle = this._pageSubTitle.trim().length > 0;
+                }
+            }
+            return this._pageTitle;
+        }
+        /**
+         * Gets the current page subtitle.
+         * @returns {string} - The current page subtitle title or an empty string if there is currently no subtitle.
+         * @memberof PageLocationService
+         */
+        pageSubTitle(value) { return this._pageSubTitle; }
+        /**
+         * This should only be called by the main controller so the main controller's page title properties can be updated.
+         * @param {IPageTitleScope & INavigationScope} scope - The scope of the main application controller.
+         * @memberof PageLocationService
+         */
+        setScope(scope) {
+            if (typeof scope !== 'object' || scope === null)
+                return;
+            (this._mainScope = scope).pageTitle = this._pageTitle;
+            scope.showSubtitle = (scope.subTitle = this._pageSubTitle).trim().length > 0;
+            NavMenuItem.setCurrent(this._pageRouteInfo, this._mainScope, this._currentRouteInfo);
+        }
+    }
+    pageManager_1.Service = Service;
+    class Provider {
+        constructor() {
+            this._pageRouteInfo = [
+                {
+                    templateUrl: 'Template/Pages/Home.htm',
+                    route: '/home',
+                    title: pageManager_1.DEFAULT_PAGE_TITLE,
+                    linkTitle: "Home"
+                },
+                {
+                    id: 'implementation',
+                    templateUrl: 'Template/Pages/Implementation/Index.htm',
+                    route: '/implementation',
+                    title: 'ServiceNow Implementation Notes',
+                    linkTitle: 'Implementation Notes'
+                },
+                {
+                    parentId: 'implementation',
+                    templateUrl: 'Template/Pages/Implementation/ServiceCatalog.htm',
+                    route: '/implementation/serviceCatalog',
+                    title: 'ServiceNow Implementation Notes',
+                    subTitle: 'Service Catalog',
+                    linkTitle: 'Service Catalog'
+                },
+                {
+                    parentId: 'implementation',
+                    templateUrl: 'Template/Pages/Implementation/Incident.htm',
+                    route: '/implementation/incident',
+                    title: 'ServiceNow Implementation Notes',
+                    subTitle: 'Incident Management',
+                    linkTitle: 'Incident Management'
+                },
+                {
+                    parentId: 'implementation',
+                    templateUrl: 'Template/Pages/Implementation/Change.htm',
+                    route: '/implementation/change',
+                    title: 'ServiceNow Implementation Notes',
+                    subTitle: 'Change Management',
+                    linkTitle: 'Change Management'
+                },
+                {
+                    parentId: 'implementation',
+                    templateUrl: 'Template/Pages/Implementation/Security.htm',
+                    route: '/implementation/security',
+                    title: 'ServiceNow Implementation Notes',
+                    subTitle: 'Security Operations',
+                    linkTitle: 'Security Operations'
+                },
+                {
+                    templateUrl: 'Template/Pages/InitialConfig.htm',
+                    route: '/initialConfig',
+                    title: 'Initial Configuration Instructions',
+                    linkTitle: 'Initial Config'
+                },
+                {
+                    id: 'dev',
+                    templateUrl: 'Template/Pages/Dev/Index.htm',
+                    route: '/dev',
+                    title: 'Development Resources',
+                    linkTitle: 'Dev Resources'
+                },
+                {
+                    parentId: 'dev',
+                    templateUrl: 'Template/Pages/Dev/Notes.htm',
+                    route: '/dev/notes',
+                    title: 'Development Resources',
+                    subTitle: 'Development Notes',
+                    linkTitle: 'Notes'
+                },
+                {
+                    parentId: 'dev',
+                    templateUrl: 'Template/Pages/Dev/Git.htm',
+                    route: '/dev/git',
+                    title: 'Development Resources',
+                    subTitle: 'Git Notes',
+                    linkTitle: 'Git'
+                },
+                {
+                    parentId: 'dev',
+                    templateUrl: 'Template/Pages/Dev/Azure.htm',
+                    route: '/dev/azure',
+                    title: 'Development Resources',
+                    subTitle: 'Azure Notes',
+                    linkTitle: 'Azure'
+                },
+                {
+                    parentId: 'dev',
+                    templateUrl: 'Template/Pages/Dev/Snippets.htm',
+                    route: '/dev/snippets',
+                    title: 'Development Resources',
+                    subTitle: 'Code Snippets',
+                    linkTitle: 'Snippets'
+                },
+                {
+                    parentId: 'dev',
+                    templateUrl: 'Template/Pages/Dev/SiteDesign.htm',
+                    route: '/dev/siteDesign',
+                    title: 'Development Resources',
+                    subTitle: "Documentation Website Design Notes",
+                    linkTitle: "Site Design"
+                },
+                { route: '/', redirectTo: "/home" }
+            ];
+        }
+        get $get() {
+            return ['$rootScope', function pageManagerFactory($rootScope) {
+                    return new Service($rootScope, this.getRouteInfo());
+                }];
+        }
+        getRouteInfo() {
+            return this._pageRouteInfo.map(function (value, index) {
+                if (Provider.isRouteRedirectInfo(value))
+                    return value;
+                if (typeof value.id !== "string")
+                    value.id = "__page" + index;
+                return value;
+            });
+        }
+        static isRouteRedirectInfo(routeInfo) {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof routeInfo.redirectTo === "string";
+        }
+        static routeInfoHasPageTemplateUrl(routeInfo) {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof routeInfo.templateUrl === "string";
+        }
+        static routeInfoHasPageTemplateString(routeInfo) {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof routeInfo.template === "string";
+        }
+        static routeInfoHasExplicitController(routeInfo) {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof routeInfo.title !== "string";
+        }
+        static routeInfoUsesDefaultController(routeInfo) {
+            return typeof routeInfo === "object" && routeInfo !== null && typeof routeInfo.title === "string";
+        }
+        ConfigureRoutes($routeProvider, $locationProvider) {
+            $locationProvider.hashPrefix(pageManager_1.HASH_PREFIX);
+            this.getRouteInfo().forEach(function (value) {
+                let routeDef;
+                if (Provider.isRouteRedirectInfo(value))
+                    routeDef = { redirectTo: value.redirectTo };
+                else {
+                    if (Provider.routeInfoUsesDefaultController(value))
+                        routeDef = { controller: pageManager_1.CONTROLLER_NAME_DEFAULT_PAGE, controllerAs: pageManager_1.CONTROLLER_NAME_DEFAULT_PAGE };
+                    else {
+                        routeDef = { controller: value.controller };
+                        if (typeof value.controllerAs === 'string')
+                            routeDef.controllerAs = value.controllerAs;
+                    }
+                    routeDef.name = value.id;
+                    if (Provider.routeInfoHasPageTemplateUrl(value))
+                        routeDef.templateUrl = value.templateUrl;
+                    else
+                        routeDef.template = value.template;
+                    if (typeof value.caseInsensitiveMatch === "boolean")
+                        routeDef.caseInsensitiveMatch = value.caseInsensitiveMatch;
+                    if (typeof value.reloadOnSearch === "boolean")
+                        routeDef.reloadOnSearch = value.reloadOnSearch;
+                    if (typeof value.resolve === "object" && value.resolve !== null)
+                        routeDef.resolve = value.resolve;
+                }
+                $routeProvider.when(value.route, routeDef);
+            });
+        }
+    }
+    pageManager_1.Provider = Provider;
+})(pageManager || (pageManager = {}));
 /**
  * The main application namespace
  * @namespace
@@ -1699,7 +2595,14 @@ var app;
      * @export
      * @constant {ng.IModule}
      */
-    app.appModule = angular.module("app", []);
+    app.appModule = angular.module("app", [])
+        .provider(pageManager.SERVICE_NAME_PAGE_MANAGER, pageManager.Provider)
+        .config(['$locationProvider', '$routeProvider', 'pageManagerProvider',
+        function ($locationProvider, $routeProvider, pageManagerProvider) {
+            pageManagerProvider.ConfigureRoutes($routeProvider, $locationProvider);
+        }])
+        .controller(pageManager.CONTROLLER_NAME_MAIN_CONTENT, pageManager.MainContentController.getControllerInjectable())
+        .controller(pageManager.CONTROLLER_NAME_DEFAULT_PAGE, pageManager.DefaultPageController.getControllerInjectable());
     app.appModule.service(persistentStorageLoaderService.SERVICE_NAME, persistentStorageLoaderService.getServiceInjectable());
     app.appModule.service(notificationMessageService.SERVICE_NAME, notificationMessageService.getServiceInjectable());
     app.appModule.service(appConfigLoaderService.SERVICE_NAME, appConfigLoaderService.getServiceInjectable());
