@@ -4,10 +4,12 @@
 /// <reference path="commonServiceNowDefinitions.ts" />
 /// <reference path="sys.ts" />
 /// <reference path="app.ts" />
-var inicidentManagment;
-(function (inicidentManagment) {
-    const ImpactUrgencyNames = ["High", "Medium", "Low"];
-    const IncidentPriorityNames = ["Critical", "High", "Moderate", "Low", "Planning"];
+var incidentManagment;
+(function (incidentManagment) {
+    incidentManagment.CONTROLLER_NAME_INCIDENT_MGMT = "incidentManagmentController";
+    incidentManagment.CONTROLLER_NAME_PRODUCER_EMULATOR = "producerEmulatorController";
+    incidentManagment.ImpactUrgencyNames = ["High", "Medium", "Low"];
+    incidentManagment.IncidentPriorityNames = ["Critical", "High", "Moderate", "Low", "Planning"];
     class SortableColumnState {
         constructor(headingText, _propertyName, _onSortChangeCallback) {
             this._propertyName = _propertyName;
@@ -99,6 +101,7 @@ var inicidentManagment;
             this._buttonClass = (this._isCurrent) ? "btn-primary" : "btn-outline-secondary";
         }
     }
+    incidentManagment.SortableColumnState = SortableColumnState;
     class PriorityMatcherRule {
         constructor(_order, _impact, _urgency, _is_mission_related, _vip_priority, _incident_priority) {
             this._order = _order;
@@ -114,11 +117,11 @@ var inicidentManagment;
         get is_mission_related_value() { return this._is_mission_related; }
         get vip_priority_value() { return this._vip_priority; }
         get incident_priority_value() { return this._incident_priority; }
-        get impact_display_text() { return ImpactUrgencyNames[this._impact - 1]; }
-        get urgency_display_text() { return ImpactUrgencyNames[this._urgency - 1]; }
+        get impact_display_text() { return incidentManagment.ImpactUrgencyNames[this._impact - 1]; }
+        get urgency_display_text() { return incidentManagment.ImpactUrgencyNames[this._urgency - 1]; }
         get is_mission_related_display_text() { return (this._is_mission_related) ? "Yes" : "No"; }
         get vip_priority_display_text() { return (this._is_mission_related) ? "Yes" : "No"; }
-        get incident_priority_display_text() { return IncidentPriorityNames[this._urgency - 1]; }
+        get incident_priority_display_text() { return incidentManagment.IncidentPriorityNames[this._urgency - 1]; }
         get rowClass() { return ["row", "flex-nowrap", this._rowClass]; }
         static sortRules(sortColumn, rules) {
             ((sortColumn.isDescending) ?
@@ -177,8 +180,10 @@ var inicidentManagment;
         new PriorityMatcherRule(3500, 3, 3, true, false, 5),
         new PriorityMatcherRule(3600, 3, 3, false, false, 5)
     ];
+    incidentManagment.PriorityMatcherRule = PriorityMatcherRule;
     class IncidentManagmentController {
         constructor() {
+            this[Symbol.toStringTag] = incidentManagment.CONTROLLER_NAME_INCIDENT_MGMT;
             let controller = this;
             function onSortChangeCallback(col) {
                 if (!col.isCurrent) {
@@ -202,7 +207,8 @@ var inicidentManagment;
         get priorityMatcherRules() { return this._priorityMatcherRules; }
         $doCheck() { }
     }
-    app.appModule.controller("incidentManagmentController", [IncidentManagmentController]);
+    incidentManagment.IncidentManagmentController = IncidentManagmentController;
+    app.appModule.controller(incidentManagment.CONTROLLER_NAME_INCIDENT_MGMT, [IncidentManagmentController]);
     class DropdownSelectionState {
         constructor(_options, _changeCallback) {
             this._options = _options;
@@ -276,8 +282,10 @@ var inicidentManagment;
             this.selectedIndex = -1;
         }
     }
+    incidentManagment.DropdownSelectionState = DropdownSelectionState;
     class ProducerEmulatorController {
         constructor() {
+            this[Symbol.toStringTag] = incidentManagment.CONTROLLER_NAME_PRODUCER_EMULATOR;
             this._is_caller_vip = false;
             this._showCalculations = false;
             let controller = this;
@@ -347,12 +355,12 @@ var inicidentManagment;
             }, current, new sn_emulation_helpers.Emulated_GlideRecord({ vip: false }));
             let s = current.impact.toString();
             let i = parseInt(s);
-            this._impact = s + " - " + ImpactUrgencyNames[i - 1];
+            this._impact = s + " - " + incidentManagment.ImpactUrgencyNames[i - 1];
             s = current.urgency.toString();
             let u = parseInt(s);
-            this._urgency = s + " - " + ImpactUrgencyNames[u - 1];
+            this._urgency = s + " - " + incidentManagment.ImpactUrgencyNames[u - 1];
             let p = PriorityMatcherRule.lookupPriority(i, u, this._is_mission_related.selectedValue, this._is_caller_vip);
-            this._priority = p + " - " + IncidentPriorityNames[p - 1];
+            this._priority = p + " - " + incidentManagment.IncidentPriorityNames[p - 1];
             this._comment = current.comment.toString();
             if (this._productivity_impact.selectedValue === 0) {
                 if (this._users_impacted.selectedValue === 0) {
@@ -431,6 +439,7 @@ var inicidentManagment;
         }
         $doCheck() { }
     }
-    app.appModule.controller("producerEmulatorController", [ProducerEmulatorController]);
-})(inicidentManagment || (inicidentManagment = {}));
+    incidentManagment.ProducerEmulatorController = ProducerEmulatorController;
+    app.appModule.controller(incidentManagment.CONTROLLER_NAME_PRODUCER_EMULATOR, [ProducerEmulatorController]);
+})(incidentManagment || (incidentManagment = {}));
 //# sourceMappingURL=IncidentManagement.js.map

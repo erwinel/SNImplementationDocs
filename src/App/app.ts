@@ -3,6 +3,7 @@
 /// <reference path="../Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
+/// <reference path="IncidentManagement.ts" />
 
 type Mandatory<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
 
@@ -2491,6 +2492,7 @@ namespace pageManager {
     export const CONTROLLER_NAME_MAIN_CONTENT = 'mainContentController';
     export const CONTROLLER_NAME_DEFAULT_PAGE = 'defaultPageController';
     export const SERVICE_NAME_PAGE_MANAGER = 'pageManager';
+    export const PROVIDER_NAME_PAGE_MANAGER = SERVICE_NAME_PAGE_MANAGER + 'Provider';
 
     /**
      * Handles W3C DOM event.
@@ -2702,11 +2704,10 @@ namespace pageManager {
                 item._href = item._url;
             }
             if (typeof currentNavItem._parent === 'undefined') {
-                scope.showNestedChildNav = scope.showSideNavBreadcrumbs = scope.showCurrentItem = scope.showFollowingSideNav = false;
+                scope.showNestedChildNav = scope.showSideNavBreadcrumbs = scope.showCurrentItem = false;
                 NavMenuItem.getChildren(source, routeInfo).forEach(function (value: PageRouteInfo) {
                     (<NavMenuItem[]>scope.precedingSideNavItems).push(NavMenuItem.import(source, scope, value));
                 });
-                scope.showPrecedingSideNav = scope.precedingSideNavItems.length > 0;
             } else {
                 for (item = currentNavItem._parent; typeof item._parent !== 'undefined'; item = item._parent)
                     (<NavMenuItem[]>scope.sideNavBreadcrumbItems).push(item);
@@ -2721,12 +2722,10 @@ namespace pageManager {
                 NavMenuItem.getChildren(source, routeInfo).forEach(function (value: PageRouteInfo) {
                     (<NavMenuItem[]>scope.nestedChildNavItems).push(NavMenuItem.import(source, scope, value));
                 });
-                scope.showPrecedingSideNav = scope.precedingSideNavItems.length > 0;
                 scope.showNestedChildNav = scope.nestedChildNavItems.length > 0;
-                scope.showFollowingSideNav = scope.followingSideNavItems.length > 0;
-                scope.showCurrentItem = scope.showPrecedingSideNav || scope.showNestedChildNav || scope.showFollowingSideNav || scope.showSideNavBreadcrumbs;
+                scope.showCurrentItem = scope.precedingSideNavItems.length > 0 || scope.showNestedChildNav || scope.followingSideNavItems.length > 0 || scope.showSideNavBreadcrumbs;
             }
-            scope.mainSectionClass = ((scope.showNavAsideElement = scope.showCurrentItem || scope.showPrecedingSideNav) == true) ? CSS_CLASS_MAIN_SHOWING_ASIDE_NAV : CSS_CLASS_MAIN_HIDING_ASIDE_NAV;
+            scope.mainSectionClass = ((scope.showNavAsideElement = scope.showCurrentItem || scope.precedingSideNavItems.length > 0) == true) ? CSS_CLASS_MAIN_SHOWING_ASIDE_NAV : CSS_CLASS_MAIN_HIDING_ASIDE_NAV;
             return currentNavItem;
         }
     }
@@ -2975,6 +2974,7 @@ namespace pageManager {
         keys(): IterableIterator<string> { return new SymbolKeyIterator<E>(this._items.values(), this._key, this._nullKey, this._undefinedKey); }
         values(): IterableIterator<E> { return this._items.values(); }
     }
+
     export class SymbolKeyIterator<E> implements IterableIterator<string> {
         constructor(private _iterator: IterableIterator<E>, private readonly _keySymbol: symbol, private readonly _nullKey?: string, private readonly _undefinedKey?: string) { }
         [Symbol.iterator](): IterableIterator<string> { return this; }
@@ -2988,6 +2988,7 @@ namespace pageManager {
             return <IteratorReturnResult<any>>{ done: true };
         }
     }
+
     export class SymbolKeyValueIterator<E> implements IterableIterator<[string, E]> {
         constructor(private _iterator: IterableIterator<E>, private readonly _keySymbol: symbol, private readonly _nullKey?: string, private readonly _undefinedKey?: string) { }
         [Symbol.iterator](): IterableIterator<[string, E]> { return this; }
@@ -3196,13 +3197,7 @@ namespace pageManager {
          * @memberof IDirectiveScope
          */
         precedingSideNavItems: ReadonlyArray<NavMenuItem>;
-        /**
-         * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showPrecedingSideNav: boolean;
+
         /**
          * Navigation menu item representing the current page.
          *
@@ -3238,6 +3233,8 @@ namespace pageManager {
          * @memberof IDirectiveScope
          */
         followingSideNavItems: ReadonlyArray<NavMenuItem>;
+
+        // TODO: Make obsolete
         /**
          * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
          *
@@ -3341,26 +3338,6 @@ namespace pageManager {
         private _rootItems: NavMenuItem[] = [];
         readonly [Symbol.toStringTag]: string = SERVICE_NAME_PAGE_MANAGER;
 
-        getRouteInfoById(id: string): NavRouteInfo | undefined {
-            for (let i: number = 0; i < this._pageRouteInfo.length; i++) {
-                if ((<ICustomRouteMembers>this._pageRouteInfo[i]).id === id)
-                    return this._pageRouteInfo[i];
-            }
-        }
-
-        private setCurrentRoute(route: NavRouteInfo): void {
-            if (Provider.isRouteRedirectInfo(route))
-                return;
-            this._currentRouteInfo = route;
-            if (Provider.routeInfoUsesDefaultController(route)) {
-                if (route.subTitle === 'string' && route.subTitle.length > 0)
-                    this.pageTitle(route.title, route.subTitle);
-                else
-                    this.pageTitle(route.title);
-            }
-            this._currentNavItem = NavMenuItem.setCurrent(this._pageRouteInfo, (typeof this._mainScope === 'undefined') ? this._rootItems : this._mainScope, route);
-        }
-
         constructor($rootScope: ng.IRootScopeService, private readonly _pageRouteInfo: ReadonlyArray<NavRouteInfo>) {
             const svc: Service = this;
             this.setCurrentRoute(this._pageRouteInfo[0]);
@@ -3381,6 +3358,29 @@ namespace pageManager {
             });
         }
 
+        getRouteInfoById(id: string): NavRouteInfo | undefined {
+            for (let i: number = 0; i < this._pageRouteInfo.length; i++) {
+                if ((<ICustomRouteMembers>this._pageRouteInfo[i]).id === id)
+                    return this._pageRouteInfo[i];
+            }
+        }
+
+        currentPage(): PageRouteInfo { return this._currentRouteInfo; }
+
+        currentRoute(): ng.route.ICurrentRoute { return this._currentRoute; }
+
+        private setCurrentRoute(route: NavRouteInfo): void {
+            if (Provider.isRouteRedirectInfo(route))
+                return;
+            this._currentRouteInfo = route;
+            if (Provider.routeInfoUsesDefaultController(route)) {
+                if (route.subTitle === 'string' && route.subTitle.length > 0)
+                    this.pageTitle(route.title, route.subTitle);
+                else
+                    this.pageTitle(route.title);
+            }
+            this._currentNavItem = NavMenuItem.setCurrent(this._pageRouteInfo, (typeof this._mainScope === 'undefined') ? this._rootItems : this._mainScope, route);
+        }
 
         /**
          * Gets or sets the the current page title.
@@ -3448,6 +3448,7 @@ namespace pageManager {
         Mandatory<RouteTemplateStringDefaultController, 'id'>;
     export type NavRouteInfo = PageRouteInfo | RouteRedirectInfo;
     export class Provider implements ng.IServiceProvider {
+        readonly [Symbol.toStringTag]: string = PROVIDER_NAME_PAGE_MANAGER;
         private readonly _pageRouteInfo: ReadonlyArray<RouteTemplateUrl | RouteTemplateString | RouteTemplateUrlDefaultController | RouteTemplateStringDefaultController | RouteRedirectInfo> = [
             {
                 templateUrl: 'Template/Pages/Home.htm',
@@ -3474,8 +3475,8 @@ namespace pageManager {
                 parentId: 'implementation',
                 templateUrl: 'Template/Pages/Implementation/Incident.htm',
                 route: '/implementation/incident',
-                title: 'ServiceNow Implementation Notes',
-                subTitle: 'Incident Management',
+                controller: incidentManagment.CONTROLLER_NAME_INCIDENT_MGMT,
+                controllerAs: 'incidentManagment',
                 linkTitle: 'Incident Management'
             },
             {
@@ -3550,8 +3551,9 @@ namespace pageManager {
             { route: '/', redirectTo: "/home" }
         ];
         get $get(): ['$rootScope', ($rootScope: ng.IRootScopeService) => Service] {
+            let provider: Provider = this;
             return ['$rootScope', function pageManagerFactory($rootScope: ng.IRootScopeService): Service {
-                return new Service($rootScope, this.getRouteInfo());
+                return new Service($rootScope, provider.getRouteInfo());
             }];
         }
         private getRouteInfo(): ReadonlyArray<NavRouteInfo> {
@@ -3609,6 +3611,7 @@ namespace pageManager {
         }
     }
 }
+
 /**
  * The main application namespace
  * @namespace
@@ -3624,364 +3627,365 @@ namespace app {
         .config(['$locationProvider', '$routeProvider', 'pageManagerProvider',
             function ($locationProvider: ng.ILocationProvider, $routeProvider: ng.route.IRouteProvider, pageManagerProvider: pageManager.Provider) {
                 pageManagerProvider.ConfigureRoutes($routeProvider, $locationProvider);
+                window.alert('Called config');
             }])
         .controller(pageManager.CONTROLLER_NAME_MAIN_CONTENT, pageManager.MainContentController.getControllerInjectable())
-        .controller(pageManager.CONTROLLER_NAME_DEFAULT_PAGE, pageManager.DefaultPageController.getControllerInjectable());
-    appModule.service(persistentStorageLoaderService.SERVICE_NAME, persistentStorageLoaderService.getServiceInjectable());
-    appModule.service(notificationMessageService.SERVICE_NAME, notificationMessageService.getServiceInjectable());
-    appModule.service(appConfigLoaderService.SERVICE_NAME, appConfigLoaderService.getServiceInjectable());
-    appModule.service(navConfigLoaderService.SERVICE_NAME, navConfigLoaderService.getServiceInjectable());
-    appModule.service(appModalPopupService.SERVICE_NAME, appModalPopupService.getServiceInjectable());
-    appModule.directive(appModalPopupService.DIRECTIVE_NAME, appModalPopupService.Service.getDirectiveInjectable());
-    appModule.directive(urlInputDirective.DIRECTIVE_NAME, urlInputDirective.getDirectiveInjectable());
-    appModule.directive(configUrlDirective.DIRECTIVE_NAME, configUrlDirective.getDirectiveInjectable());
-    appModule.directive(aConfigLinkDirective.DIRECTIVE_NAME, aConfigLinkDirective.getDirectiveInjectable());
-    appModule.directive(snNavLinkDirective.DIRECTIVE_NAME, snNavLinkDirective.getDirectiveInjectable());
+        .controller(pageManager.CONTROLLER_NAME_DEFAULT_PAGE, pageManager.DefaultPageController.getControllerInjectable())
+        .service(persistentStorageLoaderService.SERVICE_NAME, persistentStorageLoaderService.getServiceInjectable())
+        .service(notificationMessageService.SERVICE_NAME, notificationMessageService.getServiceInjectable())
+        .service(appConfigLoaderService.SERVICE_NAME, appConfigLoaderService.getServiceInjectable())
+        .service(navConfigLoaderService.SERVICE_NAME, navConfigLoaderService.getServiceInjectable())
+        .service(appModalPopupService.SERVICE_NAME, appModalPopupService.getServiceInjectable())
+        .directive(appModalPopupService.DIRECTIVE_NAME, appModalPopupService.Service.getDirectiveInjectable())
+        .directive(urlInputDirective.DIRECTIVE_NAME, urlInputDirective.getDirectiveInjectable())
+        .directive(configUrlDirective.DIRECTIVE_NAME, configUrlDirective.getDirectiveInjectable())
+        .directive(aConfigLinkDirective.DIRECTIVE_NAME, aConfigLinkDirective.getDirectiveInjectable())
+        .directive(snNavLinkDirective.DIRECTIVE_NAME, snNavLinkDirective.getDirectiveInjectable());
 
-    // #region appContent directive.
+    //// #region appContent directive.
 
-    /**
-     * Defines the directive name as "appContent".
-     * @export
-     * @constant {string}
-     */
-    export const DIRECTIVE_NAME_appContentDirective: string = "appContent";
+    ///**
+    // * Defines the directive name as "appContent".
+    // * @export
+    // * @constant {string}
+    // */
+    //export const DIRECTIVE_NAME_appContentDirective: string = "appContent";
 
-    /**
-     *
-     *
-     * @interface IDirectiveScope
-     * @extends {ng.IScope}
-     */
-    export interface IAppContentDirectiveScope extends ng.IScope {
-        /**
-         * The controller associated with the current scope.
-         *
-         * @type {appContentController}
-         * @memberof IDirectiveScope
-         */
-        appContentController: appContentController;
-        /**
-         * The title of the current page.
-         *
-         * @type {string}
-         * @memberof IDirectiveScope
-         */
-        pageTitle: string;
-        /**
-         * The value of the GIT repository URL field in the edit setup parameters dialog.
-         *
-         * @type {string}
-         * @memberof IDirectiveScope
-         */
-        serviceNowUrl: string;
-        /**
-         * Indicates whether the ServiceNow URL field in the edit setup parameters dialog is valid.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        serviceNowUrlIsValid: boolean;
-        /**
-         * The value of the GIT repository URL field in the edit setup parameters dialog.
-         *
-         * @type {string}
-         * @memberof IDirectiveScope
-         */
-        gitServiceUrl: string;
-        /**
-         * Indicates whether the GIT repository URL field in the edit setup parameters dialog is valid.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        gitServiceUrlIsValid: boolean;
-        idpUrl: string;
-        idpUrlIsValid: boolean;
-        /**
-         * Indicates whether all fields in the edit setup parameters dialog are valid.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        setupParametersAreInvalid: boolean;
-        /**
-         * Indicates whether the edit setup parameters dialog is being displayed.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        setupParametersDialogVisible: boolean;
-        /**
-         * Navigation menu items to be displayed in the primary navigation menu.
-         *
-         * @type {ReadonlyArray<NavigationItem>}
-         * @memberof IDirectiveScope
-         */
-        topNavItems: ReadonlyArray<navConfigLoaderService.NavigationItem>;
-        /**
-         * Indicates whether the secondary navigation menu is to be displayed.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showSideMenu: boolean;
-        /**
-         * Ancestor navigation menu items to be displayed in the secondary navigation menu.
-         *
-         * @type {ReadonlyArray<NavigationItem>}
-         * @memberof IDirectiveScope
-         */
-        sideNavBreadcrumbItems: ReadonlyArray<navConfigLoaderService.NavigationItem>;
-        /**
-         * Indicates whether ancestor navigation menu items are to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showBreadcrumbLinks: boolean;
-        /**
-         * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showSideNavItems: boolean;
-        /**
-         * Heading text for the secondary navigation menu.
-         *
-         * @type {string}
-         * @memberof IDirectiveScope
-         */
-        sideNavHeading: string;
-        /**
-         * Indicates whether a heading is to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showSideNavHeading: boolean;
-        /**
-         * Navigation menu items within the secondary navigation menu, exclusing any that represents the current page or sibling items following the one that represents the current page.
-         *
-         * @type {ReadonlyArray<NavigationItem>}
-         * @memberof IDirectiveScope
-         */
-        sideNavItems: ReadonlyArray<navConfigLoaderService.NavigationItem>;
-        /**
-         * Indicates whether navigation menu item representing the current page is to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showCurrentItem: boolean;
-        /**
-         * Navigation menu item representing the current page.
-         *
-         * @type {ReadonlyArray<NavigationItem>}
-         * @memberof IDirectiveScope
-         */
-        currentNavItem?: navConfigLoaderService.NavigationItem;
-        /**
-         * Navigation menu items within the secondary navigation menu that follow the item representing the current page.
-         *
-         * @type {ReadonlyArray<NavigationItem>}
-         * @memberof IDirectiveScope
-         */
-        followingSideNavItems: ReadonlyArray<navConfigLoaderService.NavigationItem>;
-        /**
-         * CSS class names for the main content section.
-         *
-         * @type {string[]}
-         * @memberof IDirectiveScope
-         */
-        mainSectionClass: string[];
-        ///**
-        // * Indicates whether the main modal popup dialog is being displayed.
-        // *
-        // * @type {boolean}
-        // * @memberof IDirectiveScope
-        // */
-        //popupDialogVisible: boolean;
-        ///**
-        // * The title of the modal popup dialog.
-        // *
-        // * @type {string}
-        // * @memberof IDirectiveScope
-        // */
-        //popupDialogTitle: string;
-        ///**
-        // * Message text for modal popup dialog.
-        // *
-        // * @type {string}
-        // * @memberof IDirectiveScope
-        // */
-        //popupDialogMessage: string;
-        ///**
-        // * Buttons to be displayed in modal popup dialog.
-        // *
-        // * @type {IPopupDialogButtonConfig[]}
-        // * @memberof IDirectiveScope
-        // */
-        //popupDialogButtons: IPopupDialogButtonConfig[];
-        ///**
-        // * The callback to invoke when the modal popup dialog has been closed.
-        // *
-        // * @type {{ (result?: any): void; }}
-        // * @param {*} [result] - The dialog result value.
-        // * @memberof IDirectiveScope
-        // */
-        //onPopupDialogClose?: { (result?: any): void; };
-        /**
-         * CSS class names for the modal popup dialog body element.
-         *
-         * @type {string[]}
-         * @memberof IDirectiveScope
-         */
-        //popupDialogBodyClass: string[];
-    }
+    ///**
+    // *
+    // *
+    // * @interface IDirectiveScope
+    // * @extends {ng.IScope}
+    // */
+    //export interface IAppContentDirectiveScope extends ng.IScope {
+    //    /**
+    //     * The controller associated with the current scope.
+    //     *
+    //     * @type {appContentController}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    appContentController: appContentController;
+    //    /**
+    //     * The title of the current page.
+    //     *
+    //     * @type {string}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    pageTitle: string;
+    //    /**
+    //     * The value of the GIT repository URL field in the edit setup parameters dialog.
+    //     *
+    //     * @type {string}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    serviceNowUrl: string;
+    //    /**
+    //     * Indicates whether the ServiceNow URL field in the edit setup parameters dialog is valid.
+    //     *
+    //     * @type {boolean}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    serviceNowUrlIsValid: boolean;
+    //    /**
+    //     * The value of the GIT repository URL field in the edit setup parameters dialog.
+    //     *
+    //     * @type {string}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    gitServiceUrl: string;
+    //    /**
+    //     * Indicates whether the GIT repository URL field in the edit setup parameters dialog is valid.
+    //     *
+    //     * @type {boolean}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    gitServiceUrlIsValid: boolean;
+    //    idpUrl: string;
+    //    idpUrlIsValid: boolean;
+    //    /**
+    //     * Indicates whether all fields in the edit setup parameters dialog are valid.
+    //     *
+    //     * @type {boolean}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    setupParametersAreInvalid: boolean;
+    //    /**
+    //     * Indicates whether the edit setup parameters dialog is being displayed.
+    //     *
+    //     * @type {boolean}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    setupParametersDialogVisible: boolean;
+    //    /**
+    //     * Navigation menu items to be displayed in the primary navigation menu.
+    //     *
+    //     * @type {ReadonlyArray<NavigationItem>}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    topNavItems: ReadonlyArray<navConfigLoaderService.NavigationItem>;
+    //    /**
+    //     * Indicates whether the secondary navigation menu is to be displayed.
+    //     *
+    //     * @type {boolean}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    showSideMenu: boolean;
+    //    /**
+    //     * Ancestor navigation menu items to be displayed in the secondary navigation menu.
+    //     *
+    //     * @type {ReadonlyArray<NavigationItem>}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    sideNavBreadcrumbItems: ReadonlyArray<navConfigLoaderService.NavigationItem>;
+    //    /**
+    //     * Indicates whether ancestor navigation menu items are to be displayed in the secondary navigation menu.
+    //     *
+    //     * @type {boolean}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    showBreadcrumbLinks: boolean;
+    //    /**
+    //     * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
+    //     *
+    //     * @type {boolean}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    showSideNavItems: boolean;
+    //    /**
+    //     * Heading text for the secondary navigation menu.
+    //     *
+    //     * @type {string}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    sideNavHeading: string;
+    //    /**
+    //     * Indicates whether a heading is to be displayed in the secondary navigation menu.
+    //     *
+    //     * @type {boolean}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    showSideNavHeading: boolean;
+    //    /**
+    //     * Navigation menu items within the secondary navigation menu, exclusing any that represents the current page or sibling items following the one that represents the current page.
+    //     *
+    //     * @type {ReadonlyArray<NavigationItem>}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    sideNavItems: ReadonlyArray<navConfigLoaderService.NavigationItem>;
+    //    /**
+    //     * Indicates whether navigation menu item representing the current page is to be displayed in the secondary navigation menu.
+    //     *
+    //     * @type {boolean}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    showCurrentItem: boolean;
+    //    /**
+    //     * Navigation menu item representing the current page.
+    //     *
+    //     * @type {ReadonlyArray<NavigationItem>}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    currentNavItem?: navConfigLoaderService.NavigationItem;
+    //    /**
+    //     * Navigation menu items within the secondary navigation menu that follow the item representing the current page.
+    //     *
+    //     * @type {ReadonlyArray<NavigationItem>}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    followingSideNavItems: ReadonlyArray<navConfigLoaderService.NavigationItem>;
+    //    /**
+    //     * CSS class names for the main content section.
+    //     *
+    //     * @type {string[]}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    mainSectionClass: string[];
+    //    ///**
+    //    // * Indicates whether the main modal popup dialog is being displayed.
+    //    // *
+    //    // * @type {boolean}
+    //    // * @memberof IDirectiveScope
+    //    // */
+    //    //popupDialogVisible: boolean;
+    //    ///**
+    //    // * The title of the modal popup dialog.
+    //    // *
+    //    // * @type {string}
+    //    // * @memberof IDirectiveScope
+    //    // */
+    //    //popupDialogTitle: string;
+    //    ///**
+    //    // * Message text for modal popup dialog.
+    //    // *
+    //    // * @type {string}
+    //    // * @memberof IDirectiveScope
+    //    // */
+    //    //popupDialogMessage: string;
+    //    ///**
+    //    // * Buttons to be displayed in modal popup dialog.
+    //    // *
+    //    // * @type {IPopupDialogButtonConfig[]}
+    //    // * @memberof IDirectiveScope
+    //    // */
+    //    //popupDialogButtons: IPopupDialogButtonConfig[];
+    //    ///**
+    //    // * The callback to invoke when the modal popup dialog has been closed.
+    //    // *
+    //    // * @type {{ (result?: any): void; }}
+    //    // * @param {*} [result] - The dialog result value.
+    //    // * @memberof IDirectiveScope
+    //    // */
+    //    //onPopupDialogClose?: { (result?: any): void; };
+    //    /**
+    //     * CSS class names for the modal popup dialog body element.
+    //     *
+    //     * @type {string[]}
+    //     * @memberof IDirectiveScope
+    //     */
+    //    //popupDialogBodyClass: string[];
+    //}
 
-    /**
-     * Implements the controller for the appContent directive
-     * @class Controller
-     * @implements {ng.IController}
-     */
-    export class appContentController implements ng.IController {
-        /**
-         * Creates an instance of the controller for the appContent directive.
-         *
-         * @param {IAppContentDirectiveScope} $scope - The scope for the current appContent directive.
-         * @param {ng.ILogService} $log - The $log service.
-         * @param {ng.IWindowService} $window - The $window service.
-         * @param {appConfigDataService} appConfigData - The appConfigData service.
-         * @memberof Controller
-         */
-        constructor(private $scope: IAppContentDirectiveScope, private $log: ng.ILogService, private $window: ng.IWindowService, private navConfigLoader: navConfigLoaderService.Service, private appConfigLoader: appConfigLoaderService.Service) {
-            $scope.serviceNowUrlIsValid = $scope.gitServiceUrlIsValid = $scope.idpUrlIsValid = $scope.setupParametersAreInvalid = true;
-            $scope.setupParametersDialogVisible = $scope.showSideMenu = $scope.showBreadcrumbLinks = $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = false;
-            $scope.topNavItems = $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
-            $scope.sideNavHeading = '';
-            appConfigLoader.onServiceNowUrlChanged($scope, (url: URL) => {
-                $scope.serviceNowUrl = url.href;
-            });
-            $scope.serviceNowUrl = appConfigLoader.serviceNowUrl().href;
-            appConfigLoader.onGitServiceUrlChanged($scope, (url: URL) => {
-                $scope.gitServiceUrl = url.href;
-            });
-            $scope.gitServiceUrl = appConfigLoader.gitServiceUrl().href;
-            appConfigLoader.onIdpUrlChanged($scope, (url: URL) => {
-                $scope.idpUrl = url.href;
-            });
-            $scope.idpUrl = appConfigLoader.idpUrl().href;
-            this.updateMainSectionClass();
-            navConfigLoader.loadPageTitle().then((title: string) => { $scope.pageTitle = title; });
-            $scope.$watchGroup(['serviceNowUrlIsValid', 'gitServiceUrlIsValid', 'idpUrlIsValid'], () => {
-                let areValid: boolean = $scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid;
-                if (areValid !== $scope.setupParametersAreInvalid)
-                    $scope.setupParametersAreInvalid = !areValid;
-            });
-            $scope.setupParametersAreInvalid = !($scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid);
-            navConfigLoader.loadTopNavItems().then((items: navConfigLoaderService.NavigationItem[]) => { $scope.topNavItems = items; });
-            let ctrl: appContentController = this;
-            navConfigLoader.loadCurrentItem().then((currentNavItem: navConfigLoaderService.NavigationItem) => {
-                if (sys.isNil(currentNavItem)) {
-                    $scope.showBreadcrumbLinks = $scope.showSideMenu = $scope.showSideNavHeading = $scope.showSideNavItems = $scope.showCurrentItem = false;
-                    $scope.sideNavHeading = '';
-                    $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
-                    $scope.currentNavItem = undefined;
-                } else {
-                    if (currentNavItem.isNestedNavItem) {
-                        $scope.showBreadcrumbLinks = ($scope.sideNavBreadcrumbItems = currentNavItem.getBreadcrumbLinks()).length > 0;
-                        let parentNavItem: navConfigLoaderService.NavigationItem = currentNavItem.parentNavItem;
-                        if (currentNavItem.hasSiblingNavItem) {
-                            $scope.showSideMenu = $scope.showSideNavItems = $scope.showCurrentItem = true;
-                            $scope.sideNavItems = currentNavItem.precedingSiblings();
-                            $scope.followingSideNavItems = currentNavItem.followingSiblings();
-                            $scope.showSideNavHeading = ($scope.sideNavHeading = parentNavItem.sideNavHeading.trim()).length > 0;
-                            $scope.currentNavItem = currentNavItem;
-                        } else {
-                            $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = false;
-                            $scope.followingSideNavItems = $scope.sideNavItems = [];
-                            $scope.showSideMenu = $scope.showBreadcrumbLinks;
-                            $scope.sideNavHeading = '';
-                            $scope.currentNavItem = undefined;
-                        }
-                    } else {
-                        $scope.currentNavItem = undefined;
-                        $scope.showBreadcrumbLinks = $scope.showCurrentItem = false;
-                        $scope.sideNavBreadcrumbItems = $scope.followingSideNavItems = [];
-                        $scope.showSideMenu = $scope.showSideNavItems = currentNavItem.hasChildNavItem;
-                        if ($scope.showSideMenu) {
-                            $scope.showSideNavHeading = ($scope.sideNavHeading = currentNavItem.sideNavHeading.trim()).length > 0;
-                            $scope.sideNavItems = currentNavItem.childNavItems;
-                        } else {
-                            $scope.sideNavItems = [];
-                            $scope.sideNavHeading = '';
-                            $scope.showSideNavHeading = $scope.showSideNavItems = false;
-                        }
-                    }
-                }
-                ctrl.updateMainSectionClass();
-            }, (reason: any) => {
-                $log.error(angular.toJson({
-                    message: "Error loading application settings",
-                    reason: reason
-                }, true));
-                $window.alert("Unexpected error loading application settings. See browser log for more detail.");
-            });
-        }
+    ///**
+    // * Implements the controller for the appContent directive
+    // * @class Controller
+    // * @implements {ng.IController}
+    // */
+    //export class appContentController implements ng.IController {
+    //    /**
+    //     * Creates an instance of the controller for the appContent directive.
+    //     *
+    //     * @param {IAppContentDirectiveScope} $scope - The scope for the current appContent directive.
+    //     * @param {ng.ILogService} $log - The $log service.
+    //     * @param {ng.IWindowService} $window - The $window service.
+    //     * @param {appConfigDataService} appConfigData - The appConfigData service.
+    //     * @memberof Controller
+    //     */
+    //    constructor(private $scope: IAppContentDirectiveScope, private $log: ng.ILogService, private $window: ng.IWindowService, private navConfigLoader: navConfigLoaderService.Service, private appConfigLoader: appConfigLoaderService.Service) {
+    //        $scope.serviceNowUrlIsValid = $scope.gitServiceUrlIsValid = $scope.idpUrlIsValid = $scope.setupParametersAreInvalid = true;
+    //        $scope.setupParametersDialogVisible = $scope.showSideMenu = $scope.showBreadcrumbLinks = $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = false;
+    //        $scope.topNavItems = $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
+    //        $scope.sideNavHeading = '';
+    //        appConfigLoader.onServiceNowUrlChanged($scope, (url: URL) => {
+    //            $scope.serviceNowUrl = url.href;
+    //        });
+    //        $scope.serviceNowUrl = appConfigLoader.serviceNowUrl().href;
+    //        appConfigLoader.onGitServiceUrlChanged($scope, (url: URL) => {
+    //            $scope.gitServiceUrl = url.href;
+    //        });
+    //        $scope.gitServiceUrl = appConfigLoader.gitServiceUrl().href;
+    //        appConfigLoader.onIdpUrlChanged($scope, (url: URL) => {
+    //            $scope.idpUrl = url.href;
+    //        });
+    //        $scope.idpUrl = appConfigLoader.idpUrl().href;
+    //        this.updateMainSectionClass();
+    //        navConfigLoader.loadPageTitle().then((title: string) => { $scope.pageTitle = title; });
+    //        $scope.$watchGroup(['serviceNowUrlIsValid', 'gitServiceUrlIsValid', 'idpUrlIsValid'], () => {
+    //            let areValid: boolean = $scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid;
+    //            if (areValid !== $scope.setupParametersAreInvalid)
+    //                $scope.setupParametersAreInvalid = !areValid;
+    //        });
+    //        $scope.setupParametersAreInvalid = !($scope.serviceNowUrlIsValid && $scope.gitServiceUrlIsValid && $scope.idpUrlIsValid);
+    //        navConfigLoader.loadTopNavItems().then((items: navConfigLoaderService.NavigationItem[]) => { $scope.topNavItems = items; });
+    //        let ctrl: appContentController = this;
+    //        navConfigLoader.loadCurrentItem().then((currentNavItem: navConfigLoaderService.NavigationItem) => {
+    //            if (sys.isNil(currentNavItem)) {
+    //                $scope.showBreadcrumbLinks = $scope.showSideMenu = $scope.showSideNavHeading = $scope.showSideNavItems = $scope.showCurrentItem = false;
+    //                $scope.sideNavHeading = '';
+    //                $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
+    //                $scope.currentNavItem = undefined;
+    //            } else {
+    //                if (currentNavItem.isNestedNavItem) {
+    //                    $scope.showBreadcrumbLinks = ($scope.sideNavBreadcrumbItems = currentNavItem.getBreadcrumbLinks()).length > 0;
+    //                    let parentNavItem: navConfigLoaderService.NavigationItem = currentNavItem.parentNavItem;
+    //                    if (currentNavItem.hasSiblingNavItem) {
+    //                        $scope.showSideMenu = $scope.showSideNavItems = $scope.showCurrentItem = true;
+    //                        $scope.sideNavItems = currentNavItem.precedingSiblings();
+    //                        $scope.followingSideNavItems = currentNavItem.followingSiblings();
+    //                        $scope.showSideNavHeading = ($scope.sideNavHeading = parentNavItem.sideNavHeading.trim()).length > 0;
+    //                        $scope.currentNavItem = currentNavItem;
+    //                    } else {
+    //                        $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = false;
+    //                        $scope.followingSideNavItems = $scope.sideNavItems = [];
+    //                        $scope.showSideMenu = $scope.showBreadcrumbLinks;
+    //                        $scope.sideNavHeading = '';
+    //                        $scope.currentNavItem = undefined;
+    //                    }
+    //                } else {
+    //                    $scope.currentNavItem = undefined;
+    //                    $scope.showBreadcrumbLinks = $scope.showCurrentItem = false;
+    //                    $scope.sideNavBreadcrumbItems = $scope.followingSideNavItems = [];
+    //                    $scope.showSideMenu = $scope.showSideNavItems = currentNavItem.hasChildNavItem;
+    //                    if ($scope.showSideMenu) {
+    //                        $scope.showSideNavHeading = ($scope.sideNavHeading = currentNavItem.sideNavHeading.trim()).length > 0;
+    //                        $scope.sideNavItems = currentNavItem.childNavItems;
+    //                    } else {
+    //                        $scope.sideNavItems = [];
+    //                        $scope.sideNavHeading = '';
+    //                        $scope.showSideNavHeading = $scope.showSideNavItems = false;
+    //                    }
+    //                }
+    //            }
+    //            ctrl.updateMainSectionClass();
+    //        }, (reason: any) => {
+    //            $log.error(angular.toJson({
+    //                message: "Error loading application settings",
+    //                reason: reason
+    //            }, true));
+    //            $window.alert("Unexpected error loading application settings. See browser log for more detail.");
+    //        });
+    //    }
 
-        private updateMainSectionClass() {
-            if (this.$scope.showSideMenu)
-                this.$scope.mainSectionClass = ["container-fluid", "col-8", "col-lg-9"];
-            else
-                this.$scope.mainSectionClass = ["container-fluid", "col-12"];
-        }
+    //    private updateMainSectionClass() {
+    //        if (this.$scope.showSideMenu)
+    //            this.$scope.mainSectionClass = ["container-fluid", "col-8", "col-lg-9"];
+    //        else
+    //            this.$scope.mainSectionClass = ["container-fluid", "col-12"];
+    //    }
 
-        /**
-         * Opens the edit dialog for setup parameters.
-         *
-         * @param {JQueryInputEventObject} [event] - The event object.
-         * @memberof Controller
-         */
-        openSetupParametersEditDialog(event?: JQueryInputEventObject): void {
-            sys.preventEventDefault(event);
-            if (!this.$scope.setupParametersDialogVisible) {
-                $("#setupParametersDialog").modal('show');
-                this.$scope.setupParametersDialogVisible = true;
-            }
-        }
+    //    /**
+    //     * Opens the edit dialog for setup parameters.
+    //     *
+    //     * @param {JQueryInputEventObject} [event] - The event object.
+    //     * @memberof Controller
+    //     */
+    //    openSetupParametersEditDialog(event?: JQueryInputEventObject): void {
+    //        sys.preventEventDefault(event);
+    //        if (!this.$scope.setupParametersDialogVisible) {
+    //            $("#setupParametersDialog").modal('show');
+    //            this.$scope.setupParametersDialogVisible = true;
+    //        }
+    //    }
 
-        /**
-         * Closes the edit dialog for setup parameters.
-         *
-         * @param {JQueryInputEventObject} [event] - The event object.
-         * @param {boolean} [accept] - Whether to accept any validated changes that were made.
-         * @memberof Controller
-         */
-        closeSetupParametersEditDialog(event?: JQueryInputEventObject, accept?: boolean): void {
-            sys.preventEventDefault(event);
-            if (this.$scope.setupParametersDialogVisible) {
-                $("#setupParametersDialog").modal('hide');
-                this.$scope.setupParametersDialogVisible = false;
-            }
-        }
+    //    /**
+    //     * Closes the edit dialog for setup parameters.
+    //     *
+    //     * @param {JQueryInputEventObject} [event] - The event object.
+    //     * @param {boolean} [accept] - Whether to accept any validated changes that were made.
+    //     * @memberof Controller
+    //     */
+    //    closeSetupParametersEditDialog(event?: JQueryInputEventObject, accept?: boolean): void {
+    //        sys.preventEventDefault(event);
+    //        if (this.$scope.setupParametersDialogVisible) {
+    //            $("#setupParametersDialog").modal('hide');
+    //            this.$scope.setupParametersDialogVisible = false;
+    //        }
+    //    }
 
-        $onInit(): void { }
-    }
+    //    $onInit(): void { }
+    //}
 
-    appModule.directive(DIRECTIVE_NAME_appContentDirective, () => {
-        return {
-            controller: ['$scope', '$log', '$window', navConfigLoaderService.SERVICE_NAME, appConfigLoaderService.SERVICE_NAME, appContentController],
-            controllerAs: 'appContentController',
-            restrict: "E",
-            scope: true,
-            templateUrl: 'Template/appContent.htm',
-            transclude: true
-        };
-    });
+    //appModule.directive(DIRECTIVE_NAME_appContentDirective, () => {
+    //    return {
+    //        controller: ['$scope', '$log', '$window', navConfigLoaderService.SERVICE_NAME, appConfigLoaderService.SERVICE_NAME, appContentController],
+    //        controllerAs: 'appContentController',
+    //        restrict: "E",
+    //        scope: true,
+    //        templateUrl: 'Template/appContent.htm',
+    //        transclude: true
+    //    };
+    //});
 
-    // #endregion
+    //// #endregion
 
     // #region copyToClipboardButton directive and copyToClipboardService.
 

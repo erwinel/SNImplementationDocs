@@ -5,22 +5,23 @@
 /// <reference path="sys.ts" />
 /// <reference path="app.ts" />
 
-namespace inicidentManagment {
-    type YesNoValue = "Yes" | "No";
+namespace incidentManagment {
+    export const CONTROLLER_NAME_INCIDENT_MGMT: string = "incidentManagmentController";
+    export const CONTROLLER_NAME_PRODUCER_EMULATOR: string = "producerEmulatorController";
+    export type YesNoValue = "Yes" | "No";
 
-    interface IEmulatedProducer {
+    export interface IEmulatedProducer {
         users_impacted: number;
         productivity_impact: number;
         is_mission_related: YesNoValue;
     }
 
-    type ImactUrgencySrc = 1 | 2 | 3;
-    const ImpactUrgencyNames: string[] = ["High", "Medium", "Low"];
-    type IncidentPrioritySrc = 1 | 2 | 3 | 4 | 5;
-    const IncidentPriorityNames = ["Critical", "High", "Moderate", "Low", "Planning"];
+    export type ImactUrgencySrc = 1 | 2 | 3;
+    export const ImpactUrgencyNames: string[] = ["High", "Medium", "Low"];
+    export type IncidentPrioritySrc = 1 | 2 | 3 | 4 | 5;
+    export const IncidentPriorityNames = ["Critical", "High", "Moderate", "Low", "Planning"];
     
-
-    class SortableColumnState<TRow extends { [key: string]: any }> {
+    export class SortableColumnState<TRow extends { [key: string]: any }> {
         private readonly _headingText: string;
         private _isDescending: boolean = false;
         private _isCurrent: boolean = false;
@@ -117,7 +118,7 @@ namespace inicidentManagment {
         }
     }
 
-    class PriorityMatcherRule {
+    export class PriorityMatcherRule {
         private _rowClass: string;
         get order(): number { return this._order; }
         get impact_value(): ImactUrgencySrc { return this._impact; }
@@ -200,7 +201,8 @@ namespace inicidentManagment {
         ];
     }
 
-    class IncidentManagmentController implements ng.IController {
+    export class IncidentManagmentController implements ng.IController {
+        readonly [Symbol.toStringTag]: string = CONTROLLER_NAME_INCIDENT_MGMT;
         private readonly _priorityMatcherColumns: SortableColumnState<PriorityMatcherRule>[];
         private readonly _priorityMatcherRules: PriorityMatcherRule[];
 
@@ -232,11 +234,11 @@ namespace inicidentManagment {
         $doCheck() { }
     }
 
-    interface ISelectionOption<TValue> { value: TValue; label: string, id?: string; }
+    export interface ISelectionOption<TValue> { value: TValue; label: string, id?: string; }
 
-    app.appModule.controller("incidentManagmentController", [IncidentManagmentController]);
+    app.appModule.controller(CONTROLLER_NAME_INCIDENT_MGMT, [IncidentManagmentController]);
 
-    class DropdownSelectionState<TValue> {
+    export class DropdownSelectionState<TValue> {
         private _selectedIndex: number;
         private _selectedValue?: TValue;
         private _selectedText?: string;
@@ -317,7 +319,8 @@ namespace inicidentManagment {
         }
     }
 
-    class ProducerEmulatorController implements ng.IController {
+    export class ProducerEmulatorController implements ng.IController {
+        readonly [Symbol.toStringTag]: string = CONTROLLER_NAME_PRODUCER_EMULATOR;
         private _users_impacted: DropdownSelectionState<number>;
         private _productivity_impact: DropdownSelectionState<number>;
         private _is_mission_related: DropdownSelectionState<boolean>;
@@ -486,5 +489,5 @@ namespace inicidentManagment {
         $doCheck() { }
     }
 
-    app.appModule.controller("producerEmulatorController", [ProducerEmulatorController]);
+    app.appModule.controller(CONTROLLER_NAME_PRODUCER_EMULATOR, [ProducerEmulatorController]);
 }

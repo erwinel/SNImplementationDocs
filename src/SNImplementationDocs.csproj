@@ -94,7 +94,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AzureInfo.html" />
     <Content Include="ChangeManagement.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1935,11 +1934,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="libman.json" />
-    <Content Include="ServiceNowScripts\ADPhotoTransformScript.js" />
-    <Content Include="ServiceNowScripts\IncidentCallerProfileIncomplete.htm" />
-    <Content Include="ServiceNowScripts\live_profile_update.js" />
-    <Content Include="ServiceNowScripts\RequestedForProfileIncomplete.htm" />
-    <Content Include="ServiceNowScripts\ServiceRequestItemRouting.html" />
     <Content Include="SiteDesignNotes.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1975,6 +1969,7 @@
     <Content Include="Template\Pages\Dev\Git.htm" />
     <Content Include="Template\Pages\Dev\Index.htm" />
     <Content Include="Template\Pages\Dev\Notes.htm" />
+    <Content Include="Template\Pages\Dev\SiteDesign.htm" />
     <Content Include="Template\Pages\Dev\Snippets.htm" />
     <Content Include="Template\Pages\Home.htm" />
     <Content Include="Template\Pages\Implementation\Change.htm" />
@@ -2080,11 +2075,6 @@
     <TypeScriptCompile Include="App\regexTester.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="App\uriBuilder.ts" />
-    <TypeScriptCompile Include="ServiceNowScripts\aclRuleCurrentUserOrUserAdmin.ts" />
-    <TypeScriptCompile Include="ServiceNowScripts\ServiceNow.d.ts" />
-    <TypeScriptCompile Include="ServiceNowScripts\ServiceNowClient.d.ts" />
-    <TypeScriptCompile Include="ServiceNowScripts\UI Action\exportToCsv.ts" />
-    <TypeScriptCompile Include="ServiceNowScripts\validateUserProfileCompliance.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

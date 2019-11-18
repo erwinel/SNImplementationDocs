@@ -1,10 +1,109 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
+<div class="card">
+    <div class="card-header"><h1>Connecting Local Workstation to Azure Machine</h1></div>
+    <div class="card-body">
+        <h2>Overview</h2>
+        <ol>
+            <li><a href="#azConnect">Connect to Azure</a></li>
+            <li><a href="#vpnGatewayCfg">Create VPN gateway in cloud</a></li>
+            <li><a href="#cloudRootCert">Create PKI cert</a></li>
+            <li><a href="#vpnClientCfg">Configure VPN client</a></li>
+        </ol>
+        <div class="card" id="azConnect">
+            <div class="card-header"><h2>Connect to Azure</h2></div>
+            <div class="card-body">
+                <ol>
+                    https://www.servicenow.com/now-at-work/washington-dc/creatorcon.html
+                    <li>Open PowerShell with admin privileges.</li>
+                    <li>
+                        Check if Azure Module is installed
+                        <div>PowerShell Command: <code>Get-InstalledModule -Name Az</code></div>
+                        <div>
+                            If it is installed, you'll see a response similar to:<pre><code>Version    Name                                Repository           Description
+-------    ----                                ----------           -----------
+3.0.0      Az                                  PSGallery            Microsoft Azure PowerShell - Cmdlets to manage resources in Azure. This module is compatible with WindowsPowerShel...</code></pre>
+                        </div>
+                        <div>
+                            If it is not installed, you'll see a response that is similar to:<pre><code style="color:red">PackageManagement\Get-Package : No match was found for the specified search criteria and module names 'Az'.
+At C:\Program Files\WindowsPowerShell\Modules\PowerShellGet\1.0.0.1\PSModule.psm1:2253 char:9
++         PackageManagement\Get-Package @PSBoundParameters | Microsoft. ...
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Microsoft.Power...lets.GetPackage:GetPackage) [Get-Package], Exception
+    + FullyQualifiedErrorId : NoMatchFound,Microsoft.PowerShell.PackageManagement.Cmdlets.GetPackage</code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        If not installed already, install Azure PowerShell Module:
+                        <div>PowerShell Command: <code>Install-Module -Name Az -AllowClobber -Scope AllUsers</code></div>
+                        Otherwise, import the Azure PowerShell Module:
+                        <div>PowerShell Command: <code>Import-Module -Name 'Az'</code></div>
+                    </li>
+                    <li>
+                        Connect to Azure
+                        <div>PowerShell Command: <code>Connect-AzAccount</code></div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="card" id="vpnGatewayCfg">
+            <div class="card-header"><h2>1. Create VPN gateway in cloud</h2></div>
+            <div class="card-body">
 
-</body>
-</html>
+            </div>
+        </div>
+        <div class="card" id="cloudRootCert">
+            <div class="card-header"><h2>2. Create PKI cert</h2></div>
+            <div class="card-body">
+                <ol>
+                    <li>
+                        Create root PKI cert
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>CertStoreLocation:</th>
+                                    <td>Cert:\CurrentUser\My</td>
+                                </tr>
+                                <tr>
+                                    <th>Subject:</th>
+                                    <td>CN=LteP2SRootCert</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="card" id="vpnClientCfg">
+                            <div class="card-header"><h2>Get root cert for cloud</h2></div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><code>$cert = (Get-ChildItem -Path 'Cert:\CurrentUser\My') | Where-Object { $_.Subject -eq 'CN=LteP2SRootCert' } | Select-Object -First 1</code></li>
+                                    <li><code>$cert = New-SelfSignedCertificate -Subject 'CN=LteP2SRootCert' -FriendlyName 'LTE P2S Azure Root Cert' -Type Custom -KeySpec Signature -KeyExportPolicy Exportable -CertStoreLocation 'Cert:\CurrentUser\My' -HashAlgorithm sha256 -KeyLength 2048 -KeyUsage CertSign -KeyUsageProperty Sign</code></li>
+                                    <li><code>New-SelfSignedCertificate -Type Custom -DnsName P2SChildCert -KeySpec Signature -Subject "CN=$([System.Environment]::MachineName)-P2SChildCert" -KeyExportPolicy Exportable -HashAlgorithm 'sha256' -KeyLength 2048  -CertStoreLocation 'Cert:\CurrentUser\My' -Signer $cert -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2")</code></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="card" id="vpnClientCfg">
+            <div class="card-header"><h2>4. Configure VPN client</h2></div>
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header"><h1>References</h1></div>
+    <div class="card-body">
+        <ol>
+            <li>
+                <a href="https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-3.0.0" target="_blank">
+                    Install the Azure PowerShell module
+                </a>
+            </li>
+            <li>
+                <a href="https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-point-to-site-classic-azure-portal" target="_blank">
+                    Configure a Point-to-Site connection by using certificateauthentication (classic)
+                </a>
+            </li>
+        </ol>
+    </div>
+</div>
