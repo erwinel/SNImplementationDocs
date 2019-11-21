@@ -3352,7 +3352,7 @@ namespace pageManager {
                     return;
 
                 svc._currentRoute = current;
-                let routeInfo: NavRouteInfo | undefined = this.getRouteInfoById(current.name);
+                let routeInfo: NavRouteInfo | undefined = svc.getRouteInfoById(current.name);
                 if (typeof routeInfo !== 'undefined')
                     svc.setCurrentRoute(routeInfo);
             });
