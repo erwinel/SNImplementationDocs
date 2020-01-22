@@ -1,4 +1,19 @@
 namespace sn {
+    export namespace notificationMessageService {
+        export enum NotificationMessageType {
+            error,
+            info
+        }
+        export class Service {
+            constructor(public $log: ng.ILogService) {
+
+            }
+            addNotificationMessage(message: string, heading: string, type: NotificationMessageType) {
+
+            }
+        }
+    }
+
     export interface GlideElement {
         /**
          * Gets the object label.

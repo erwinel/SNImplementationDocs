@@ -1,109 +1,337 @@
-<div class="card">
-    <div class="card-header"><h1>Connecting Local Workstation to Azure Machine</h1></div>
-    <div class="card-body">
-        <h2>Overview</h2>
-        <ol>
-            <li><a href="#azConnect">Connect to Azure</a></li>
-            <li><a href="#vpnGatewayCfg">Create VPN gateway in cloud</a></li>
-            <li><a href="#cloudRootCert">Create PKI cert</a></li>
-            <li><a href="#vpnClientCfg">Configure VPN client</a></li>
-        </ol>
-        <div class="card" id="azConnect">
-            <div class="card-header"><h2>Connect to Azure</h2></div>
-            <div class="card-body">
-                <ol>
-                    https://www.servicenow.com/now-at-work/washington-dc/creatorcon.html
-                    <li>Open PowerShell with admin privileges.</li>
-                    <li>
-                        Check if Azure Module is installed
-                        <div>PowerShell Command: <code>Get-InstalledModule -Name Az</code></div>
-                        <div>
-                            If it is installed, you'll see a response similar to:<pre><code>Version    Name                                Repository           Description
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="app:pageId" content="Index" />
+    <title>Example - example-services-usage-production</title>
+    <link data-require="bootstrap@4.1.3" data-semver="4.1.3" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+    <script data-require="bootstrap@4.1.3" data-semver="4.1.3" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script data-require="jquery@3.2.1" data-semver="3.2.1" src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <script src="//code.angularjs.org/snapshot/angular.min.js"></script>
+    <script src="script.js"></script>
+</head>
+
+<body ng-app="azureDevApp">
+    <div class="card" ng-controller="mainContentController">
+        <div class="card-header">
+            <h1 class="card-title mb-0">
+                <button class="btn btn-light" ng-click="cardVisibility.showTestEnvSetup($event)">
+                    Setting up Azure test environment
+                </button>
+            </h1>
+        </div>
+        <div class="card-body" ng-show="cardVisibility.testEnvSetup">
+            Disclosure: This has been adapted from documentation found from various online sources. See <a href="#" ng-click="cardVisibility.showTestEnvSetup($event)">References</a> for more information.
+            <div class="card" id="resourcePlanning">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">
+                        <button class="btn btn-light" ng-click="cardVisibility.showResourcePlanning($event)">
+                            1. Resource Configuration Planning
+                        </button>
+                    </h2>
+                </div>
+                <div class="card-body" ng-show="cardVisibility.resourcePlanning">
+                    The text you enter here will appear in other sections of this document where this configuration information is referenced.
+                    <div class="form-group">
+                        <label for="vnetNameTextBox">VNet Name</label>
+                        <input type="text" class="form-control" id="vnetNameTextBox" aria-describedby="vnetNameHelp" placeholder="Enter resource group name" ng-model="vnetName" />
+                        <small id="vnetNameHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="addressSpaceTextBox">Address space</label>
+                        <input type="text" class="form-control" id="addressSpaceTextBox" aria-describedby="addressSpaceHelp" placeholder="Enter a valid IP address range" ng-model="addressSpace" />
+                        <small id="addressSpaceHelp" class="form-text text-muted">You can <a href="https://mxtoolbox.com/subnetcalculator.aspx" target="_blank">click here to open an Online IP Subnet Calculator</a>.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="subnetNameTextBox">Subnet name</label>
+                        <input type="text" class="form-control" id="subnetNameTextBox" aria-describedby="subnetNameHelp" ng-model="subnetName" />
+                        <small id="subnetNameHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="subnetAddressRangeTextBox">Subnet address range</label>
+                        <input type="text" class="form-control" id="subnetAddressRangeTextBox" aria-describedby="subnetAddressRangeHelp" placeholder="Enter a valid IP address range" ng-model="subnetAddressRange" />
+                        <small id="subnetAddressRangeHelp" class="form-text text-muted">You can <a href="https://mxtoolbox.com/subnetcalculator.aspx" target="_blank">click here to open an Online IP Subnet Calculator</a>.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="azSubscriptionTextBox">Azure Subscription</label>
+                        <input type="text" class="form-control" id="azSubscriptionTextBox" aria-describedby="azSubscriptionHelp" ng-model="azSubscription" />
+                        <small id="azSubscriptionHelp" class="form-text text-muted">If you have more than one subscription, verify that you are using the correct one.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="resourceGroupNameTextBox">Resource Group</label>
+                        <input type="text" class="form-control" id="resourceGroupNameTextBox" aria-describedby="resourceGroupNameHelp" placeholder="Enter resource group name" ng-model="resourceGroupName" />
+                        <small id="resourceGroupNameHelp" class="form-text text-muted">
+                            It is good practice to create a new resource group for this purpose. This will allow you to perform bulk management fo all the resources contained within, without affecting any of your
+                            other Azure resources.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="azLocationTextBox">Azure Location</label>
+                        <input type="text" class="form-control" id="azLocationTextBox" aria-describedby="azLocationHelp" ng-model="azLocation" />
+                        <small id="azLocationHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="gatewaySubnetTextBox">Gateway Subnet</label>
+                        <input type="text" class="form-control" id="gatewaySubnetTextBox" aria-describedby="gatewaySubnetHelp" ng-model="gatewaySubnet" />
+                        <small id="gatewaySubnetHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="gatewayNameTextBox">Virtual network gateway name</label>
+                        <input type="text" class="form-control" id="gatewayNameTextBox" aria-describedby="gatewayNameHelp" ng-model="gatewayName" />
+                        <small id="gatewayNameHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="gatewaySkuTextBox">Virtual network gateway SKU</label>
+                        <input type="text" class="form-control" id="gatewaySkuTextBox" aria-describedby="gatewaySkuHelp" ng-model="gatewaySku" />
+                        <small id="gatewaySkuHelp" class="form-text text-muted">
+                            For more information about gateway SKUs,
+                            see <a href="https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-gateway-settings#gwsku">Gateway SKUs</a>.
+                        </small>
+                    </div>
+                    <!--Gateway type: VPN-->
+                    <!--VPN type: Route-based-->
+                    <div class="form-group">
+                        <label for="publicIpAddrNameTextBox">Public IP address name</label>
+                        <input type="text" class="form-control" id="publicIpAddrNameTextBox" aria-describedby="publicIpAddrNameHelp" ng-model="publicIpAddrName" />
+                        <small id="publicIpAddrNameHelp" class="form-text text-muted"></small>
+                    </div>
+                    <!--Connection type: Point-to-site-->
+                    <div class="form-group">
+                        <label for="clientAddrPoolTextBox">Client address pool</label>
+                        <input type="text" class="form-control" id="clientAddrPoolTextBox" aria-describedby="clientAddrPoolHelp" placeholder="Enter a valid IP address range" ng-model="clientAddrPool" />
+                        <small id="clientAddrPoolHelp" class="form-text text-muted">
+                            VPN clients that connect to the VNet using this Point-to-Site connection receive an IP address from the client address pool.
+                            You can <a href="https://mxtoolbox.com/subnetcalculator.aspx" target="_blank">click here to open an Online IP Subnet Calculator</a>.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="rootCertPrefixTextBox">PKI Certificate name prefix</label>
+                        <input type="text" class="form-control" id="rootCertPrefixTextBox" aria-describedby="rootCertPrefixHelp" ng-model="rootCertPrefix" />
+                        <small id="rootCertPrefixHelp" class="form-text text-muted">Root and child certificates name will start with this.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="rootCertSuffixTextBox">Root PKI Certificate suffix</label>
+                        <input type="text" class="form-control" id="rootCertSuffixTextBox" aria-describedby="rootCertSuffixHelp" ng-model="rootCertSuffix" />
+                        <small id="rootCertSuffixHelp" class="form-text text-muted">Cert Name = <kbd>{{rootCertPrefix}}{{rootCertSuffix}}</kbd></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCertSuffixTextBox">Client PKI Certificate suffix</label>
+                        <input type="text" class="form-control" id="clientCertSuffixTextBox" aria-describedby="clientCertSuffixHelp" ng-model="clientCertSuffix" />
+                    </div>
+                    <div class="form-group">
+                        <label for="firstClientCertCertSuffixTextBox">First Child PKI Certificate suffix append</label>
+                        <input type="text" class="form-control" id="firstClientCertCertSuffixTextBox" aria-describedby="firstClientCertCertSuffixHelp" ng-model="firstClientCertCertSuffix" />
+                        <small id="firstClientCertCertSuffixHelp" class="form-text text-muted">Cert Name = <kbd>{{rootCertPrefix}}{{clientCertSuffix}}{{firstClientCertCertSuffix}}</kbd></small>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">
+                        <button class="btn btn-light" ng-click="cardVisibility.showCreateVirtualNetwork($event)">
+                            2. Create a virtual network
+                        </button>
+                    </h2>
+                </div>
+                <div class="card-body" ng-show="cardVisibility.createVirtualNetwork">
+                    <ol>
+                        <li>On the Azure portal menu or from the Home page, and select <samp>Create a resource</samp>. The <samp>New</samp> page opens.</li>
+                        <li>Search for <samp>Virtual Network</samp> and select it.</li>
+                        <li>
+                            On the <samp>Create virtual network</samp> page, configure the VNet settings as follows:
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="vnetName2TextBox">Name</label>
+                                        <input type="text" class="form-control" id="vnetName2TextBox" ng-model="vnetName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addressSpace2TextBox">Address Space</label>
+                                        <input type="text" class="form-control" id="addressSpace2TextBox" ng-model="addressSpace" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="azSubscription2TextBox">Subscription</label>
+                                        <input type="text" class="form-control" id="azSubscription2TextBox" ng-model="azSubscription" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="resourceGroupName2TextBox">Resource Group</label>
+                                        <input type="text" class="form-control" id="resourceGroupName2TextBox" ng-model="resourceGroupName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="azLocation2TextBox">Location</label>
+                                        <input type="text" class="form-control" id="azLocation2TextBox" ng-model="azLocation" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title mb-0">Subnet</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="subnetName2TextBox">Name</label>
+                                        <input type="text" class="form-control" id="subnetName2TextBox" ng-model="subnetName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subnetAddressRange2TextBox">Address Range</label>
+                                        <input type="text" class="form-control" id="subnetAddressRange2TextBox" ng-model="subnetAddressRange" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">
+                        <button class="btn btn-light" ng-click="cardVisibility.showCreateGateway($event)">
+                            3. Create a virtual network gateway
+                        </button>
+                    </h2>
+                </div>
+                <div class="card-body" ng-show="cardVisibility.createGateway">
+                    <ol>
+                        <li>On the Azure portal menu or from the Home page, and select <samp>Create a resource</samp>. The <samp>New</samp> page opens.</li>
+                        <li>Search for <samp>Virtual Network Gateway</samp> and select it.</li>
+                        <li>
+                            On the <samp>Create virtual network gateway</samp> page, configure the gateway settings as follows:
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="azSubscription2TextBox">Subscription</label>
+                                        <input type="text" class="form-control" id="azSubscription2TextBox" ng-model="azSubscription" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gatewayName2TextBox">Name</label>
+                                        <input type="text" class="form-control" id="gatewayName2TextBox" ng-model="gatewayName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="azLocation3TextBox">Region</label>
+                                        <input type="text" class="form-control" id="azLocation3TextBox" ng-model="azLocation" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gatewayTypeTextBox">Gateway Type</label>
+                                        <input type="text" class="form-control" id="gatewayTypeTextBox" value="VPN" readonly="readonly" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="vpnTypeTextBox">VPN Type</label>
+                                        <input type="text" class="form-control" id="vpnTypeTextBox" value="Route-Based" readonly="readonly" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gatewaySku2TextBox">SKU</label>
+                                        <input type="text" class="form-control" id="gatewaySku2TextBox" ng-model="gatewaySku" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title mb-0">Virtual Network</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="vnetName3TextBox">Virtual Network</label>
+                                        <input type="text" class="form-control" id="vnetName3TextBox" ng-model="vnetName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="publicIpAddrName2TextBox">Public IP Address (Create new)</label>
+                                        <input type="text" class="form-control" id="publicIpAddrName2TextBox" ng-model="publicIpAddrName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="activeActiveModeTextBox">Active-Active mode</label>
+                                        <input type="text" class="form-control" id="gatewayTypeTextBox" value="(unselected)" readonly="readonly" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="configureBgpAsnTextBox">Configure BGP ASN</label>
+                                        <input type="text" class="form-control" id="configureBgpAsnTextBox" value="(unselected)" readonly="readonly" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">
+                        <button class="btn btn-light" ng-click="cardVisibility.showGenerateCerts($event)">
+                            4. Generate Certificates
+                        </button>
+                    </h2>
+                </div>
+                <div class="card-body" ng-show="cardVisibility.generateCerts">
+                    <ol>
+                        <li>Open a local Windows PowerShell console with elevated privileges. This won't work using the shell in the cloud.</li>
+                        <li>
+                            Use the following example to create the self-signed root certificate:
+                            <textarea ng-model="generateRootCertCode" readonly="readonly" cols="120" rows="4"></textarea>
+                        </li>
+                        <li>
+                            In the same PowerShell session as the previous step, use the following example to create the first client certificate:
+                            <textarea ng-model="generateClientCertCode" readonly="readonly" cols="120" rows="5"></textarea>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card" id="azConnect">
+                <div class="card-header"><h2>Connect to Azure</h2></div>
+                <div class="card-body">
+                    <ol>
+                        <li>Open PowerShell with admin privileges.</li>
+                        <li>
+                            Check if Azure Module is installed
+                            <div>PowerShell Command: <code>Get-InstalledModule -Name Az</code></div>
+                            <div>
+                                If it is installed, you'll see a response similar to:<pre><code>Version    Name                                Repository           Description
 -------    ----                                ----------           -----------
 3.0.0      Az                                  PSGallery            Microsoft Azure PowerShell - Cmdlets to manage resources in Azure. This module is compatible with WindowsPowerShel...</code></pre>
-                        </div>
-                        <div>
-                            If it is not installed, you'll see a response that is similar to:<pre><code style="color:red">PackageManagement\Get-Package : No match was found for the specified search criteria and module names 'Az'.
+                            </div>
+                            <div>
+                                If it is not installed, you'll see a response that is similar to:<pre><code style="color:red">PackageManagement\Get-Package : No match was found for the specified search criteria and module names 'Az'.
 At C:\Program Files\WindowsPowerShell\Modules\PowerShellGet\1.0.0.1\PSModule.psm1:2253 char:9
 +         PackageManagement\Get-Package @PSBoundParameters | Microsoft. ...
 +         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     + CategoryInfo          : ObjectNotFound: (Microsoft.Power...lets.GetPackage:GetPackage) [Get-Package], Exception
     + FullyQualifiedErrorId : NoMatchFound,Microsoft.PowerShell.PackageManagement.Cmdlets.GetPackage</code></pre>
-                        </div>
-                    </li>
-                    <li>
-                        If not installed already, install Azure PowerShell Module:
-                        <div>PowerShell Command: <code>Install-Module -Name Az -AllowClobber -Scope AllUsers</code></div>
-                        Otherwise, import the Azure PowerShell Module:
-                        <div>PowerShell Command: <code>Import-Module -Name 'Az'</code></div>
-                    </li>
-                    <li>
-                        Connect to Azure
-                        <div>PowerShell Command: <code>Connect-AzAccount</code></div>
-                    </li>
-                </ol>
-            </div>
-        </div>
-        <div class="card" id="vpnGatewayCfg">
-            <div class="card-header"><h2>1. Create VPN gateway in cloud</h2></div>
-            <div class="card-body">
-
-            </div>
-        </div>
-        <div class="card" id="cloudRootCert">
-            <div class="card-header"><h2>2. Create PKI cert</h2></div>
-            <div class="card-body">
-                <ol>
-                    <li>
-                        Create root PKI cert
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>CertStoreLocation:</th>
-                                    <td>Cert:\CurrentUser\My</td>
-                                </tr>
-                                <tr>
-                                    <th>Subject:</th>
-                                    <td>CN=LteP2SRootCert</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="card" id="vpnClientCfg">
-                            <div class="card-header"><h2>Get root cert for cloud</h2></div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><code>$cert = (Get-ChildItem -Path 'Cert:\CurrentUser\My') | Where-Object { $_.Subject -eq 'CN=LteP2SRootCert' } | Select-Object -First 1</code></li>
-                                    <li><code>$cert = New-SelfSignedCertificate -Subject 'CN=LteP2SRootCert' -FriendlyName 'LTE P2S Azure Root Cert' -Type Custom -KeySpec Signature -KeyExportPolicy Exportable -CertStoreLocation 'Cert:\CurrentUser\My' -HashAlgorithm sha256 -KeyLength 2048 -KeyUsage CertSign -KeyUsageProperty Sign</code></li>
-                                    <li><code>New-SelfSignedCertificate -Type Custom -DnsName P2SChildCert -KeySpec Signature -Subject "CN=$([System.Environment]::MachineName)-P2SChildCert" -KeyExportPolicy Exportable -HashAlgorithm 'sha256' -KeyLength 2048  -CertStoreLocation 'Cert:\CurrentUser\My' -Signer $cert -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2")</code></li>
-                                </ul>
                             </div>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-        </div>
-        <div class="card" id="vpnClientCfg">
-            <div class="card-header"><h2>4. Configure VPN client</h2></div>
-            <div class="card-body">
-
+                        </li>
+                        <li>
+                            If not installed already, install Azure PowerShell Module:
+                            <div>PowerShell Command: <code>Install-Module -Name Az -AllowClobber -Scope AllUsers</code></div>
+                            Otherwise, import the Azure PowerShell Module:
+                            <div>PowerShell Command: <code>Import-Module -Name 'Az'</code></div>
+                        </li>
+                        <li>
+                            Connect to Azure
+                            <div>PowerShell Command: <code>Connect-AzAccount</code></div>
+                        </li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="card">
-    <div class="card-header"><h1>References</h1></div>
-    <div class="card-body">
-        <ol>
-            <li>
-                <a href="https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-3.0.0" target="_blank">
-                    Install the Azure PowerShell module
-                </a>
-            </li>
-            <li>
-                <a href="https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-point-to-site-classic-azure-portal" target="_blank">
-                    Configure a Point-to-Site connection by using certificateauthentication (classic)
-                </a>
-            </li>
-        </ol>
+    <div class="card">
+        <h1 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="cardVisibility.showReferences($event)">
+                References
+            </button>
+        </h1>
+        <div class="card-header"><h1>References</h1></div>
+        <div class="card-body" ng-show="cardVisibility.references">
+            <ol>
+                <li>
+                    <a href="https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-3.0.0" target="_blank">
+                        Install the Azure PowerShell module
+                    </a>
+                </li>
+                <li>
+                    <a href="https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-point-to-site-classic-azure-portal" target="_blank">
+                        Configure a Point-to-Site connection by using certificateauthentication (classic)
+                    </a>
+                </li>
+            </ol>
+        </div>
     </div>
-</div>
+</body>
+</html>

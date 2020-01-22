@@ -1,6 +1,6 @@
 var generateTypeScriptFromTable;
 (function (generateTypeScriptFromTable) {
-    var targetTableName = 'task';
+    var targetTableName = 'sys_portal_preferences';
     var TableClassInfo = (function () {
         var jsTypeMapping = {
             "integer": { className: "GlideElementNumeric", shouldAnnotate: false }, "decimal": { className: "GlideElementNumeric", shouldAnnotate: true }, "float": { className: "GlideElementNumeric", shouldAnnotate: true },

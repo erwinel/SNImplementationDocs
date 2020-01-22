@@ -944,6 +944,7 @@
     <Content Include="index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="index-obsolete.html" />
     <Content Include="InitialConfig.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2069,12 +2070,15 @@
     <TypeScriptCompile Include="App\commonServiceNowDefinitions.ts" />
     <TypeScriptCompile Include="App\ImageIndex.ts" />
     <TypeScriptCompile Include="App\IncidentManagement.ts" />
+    <TypeScriptCompile Include="App\mainApp.ts" />
+    <TypeScriptCompile Include="App\UriTester.ts" />
     <TypeScriptCompile Include="Scripts\typings\bootstrap-table\index.d.ts" />
     <TypeScriptCompile Include="App\Snippets.ts" />
     <TypeScriptCompile Include="App\sys.ts" />
     <TypeScriptCompile Include="App\regexTester.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="App\uriBuilder.ts" />
+    <TypeScriptCompile Include="Template\Pages\Dev\script.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

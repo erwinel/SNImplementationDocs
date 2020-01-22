@@ -2,9 +2,18 @@
 /// <reference path="../Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
-/// <reference path="app.ts" />
+/// <reference path="mainApp.ts" />
 
 namespace accordionGroup {
+    export const DIRECTIVE_NAME_ACCORDION_GROUP = 'accordionGroup';
+    export const DIRECTIVE_NAME_ACCORDION_GROUP_TOGGLE_ON_CLICK = 'accordionGroupToggleOnClick';
+    export const DIRECTIVE_NAME_ACCORDION_GROUP_CONTENT_ITEM = 'accordionGroupContentItem';
+    export const DIRECTIVE_NAME_ACCORDION_GROUP_TOGGLE_BUTTON = 'accordionGroupToggleButton';
+    export const DIRECTIVE_NAME_ACCORDION_GROUP_BUTTON_TEXT = 'accordionGroupButtonText';
+    export const DIRECTIVE_NAME_ACCORDION_GROUP_BUTTON_EXPANDED = 'accordionGroupButtonExpanded';
+    export const DIRECTIVE_NAME_ACCORDION_GROUP_BUTTON_COLLAPSED = 'accordionGroupButtonCollapsed';
+    export const DIRECTIVE_NAME_ACCORDION_GROUP_BUTTON_IMAGE = 'accordionGroupButtonImage';
+
     interface IShowHideCallback { (show: boolean, state?: any): void; }
 
     // #region <accordion-group></accordion-group>
@@ -17,6 +26,8 @@ namespace accordionGroup {
     }
 
     class AccordionGroupController implements ng.IController {
+        readonly [Symbol.toStringTag]: string = DIRECTIVE_NAME_ACCORDION_GROUP + "Controller";
+
         private _state: IAccordionGroupItemState[] = [];
         private _current: string | undefined = undefined;
 
@@ -115,7 +126,7 @@ namespace accordionGroup {
         $onInit(): void { }
     }
 
-    app.appModule.directive("accordionGroup", () => <ng.IDirective>{
+    mainApp.mainAppModule.directive(DIRECTIVE_NAME_ACCORDION_GROUP, () => <ng.IDirective>{
         restrict: "E",
         controller: ["$scope", AccordionGroupController]
     });
@@ -139,8 +150,8 @@ namespace accordionGroup {
         instanceAttributes.$addClass("cursor-pointer");
     }
 
-    app.appModule.directive("accordionGroupToggleOnClick", () => <ng.IDirective>{
-        require: "^^accordionGroup",
+    mainApp.mainAppModule.directive(DIRECTIVE_NAME_ACCORDION_GROUP_TOGGLE_ON_CLICK, () => <ng.IDirective>{
+        require: "^^" + DIRECTIVE_NAME_ACCORDION_GROUP,
         restrict: "A",
         transclude: true,
         template: '<ng-transclude></ng-transclude>',
@@ -173,8 +184,8 @@ namespace accordionGroup {
         element.on("$destory", () => controller.remove(id));
     }
 
-    app.appModule.directive("accordionGroupContentItem", () => <ng.IDirective>{
-        require: "^^accordionGroup",
+    mainApp.mainAppModule.directive(DIRECTIVE_NAME_ACCORDION_GROUP_CONTENT_ITEM, () => <ng.IDirective>{
+        require: "^^" + DIRECTIVE_NAME_ACCORDION_GROUP,
         restrict: "A",
         transclude: true,
         template: '<ng-transclude></ng-transclude>',
@@ -240,10 +251,10 @@ namespace accordionGroup {
         element.on("$destory", () => controller.remove(id));
     }
 
-    app.appModule.directive("accordionGroupToggleButton", () => <ng.IDirective>{
+    mainApp.mainAppModule.directive(DIRECTIVE_NAME_ACCORDION_GROUP_TOGGLE_BUTTON, () => <ng.IDirective>{
         restrict: "E",
         transclude: true,
-        require: "^^accordionGroup",
+        require: "^^" + DIRECTIVE_NAME_ACCORDION_GROUP,
         scope: { itemId: "@" },
         link: AccordionGroupToggleButtonLink,
         template: '<button onclick="return false;" ng-transclude></button>'
@@ -295,8 +306,8 @@ namespace accordionGroup {
         scope.$watch("isShown", onShownCanged);
     }
 
-    app.appModule.directive("accordionGroupButtonText", () => <ng.IDirective>{
-        require: "^^accordionGroupToggleButton",
+    mainApp.mainAppModule.directive(DIRECTIVE_NAME_ACCORDION_GROUP_BUTTON_TEXT, () => <ng.IDirective>{
+        require: "^^" + DIRECTIVE_NAME_ACCORDION_GROUP_TOGGLE_BUTTON,
         restrict: "E",
         link: AccordionGroupButtonTextLink,
         template: '<span></span>'
@@ -317,8 +328,8 @@ namespace accordionGroup {
         scope.$watch("isShown", onShownCanged);
     }
 
-    app.appModule.directive("accordionGroupButtonExpanded", () => <ng.IDirective>{
-        require: "^^accordionGroupToggleButton",
+    mainApp.mainAppModule.directive(DIRECTIVE_NAME_ACCORDION_GROUP_BUTTON_EXPANDED, () => <ng.IDirective>{
+        require: "^^" + DIRECTIVE_NAME_ACCORDION_GROUP_TOGGLE_BUTTON,
         restrict: "E",
         transclude: true,
         template: '<ng-transclude></ng-transclude>',
@@ -339,9 +350,8 @@ namespace accordionGroup {
         onShownCanged(scope.isShown);
         scope.$watch("isShown", onShownCanged);
     }
-
-    app.appModule.directive("accordionGroupButtonCollapsed", () => <ng.IDirective>{
-        require: "^^accordionGroupToggleButton",
+    mainApp.mainAppModule.directive(DIRECTIVE_NAME_ACCORDION_GROUP_BUTTON_COLLAPSED, () => <ng.IDirective>{
+        require: "^^" + DIRECTIVE_NAME_ACCORDION_GROUP_TOGGLE_BUTTON,
         restrict: "E",
         transclude: true,
         template: '<ng-transclude></ng-transclude>',
@@ -408,8 +418,8 @@ namespace accordionGroup {
         scope.$watch("isShown", onShownCanged);
     }
 
-    app.appModule.directive("accordionGroupButtonImage", () => <ng.IDirective>{
-        require: "^^accordionGroupToggleButton",
+    mainApp.mainAppModule.directive(DIRECTIVE_NAME_ACCORDION_GROUP_BUTTON_IMAGE, () => <ng.IDirective>{
+        require: "^^" + DIRECTIVE_NAME_ACCORDION_GROUP_TOGGLE_BUTTON,
         restrict: "E",
         link: AccordionGroupButtonImageLink,
         template: '<img />'

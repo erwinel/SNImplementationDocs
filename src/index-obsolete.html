@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org">
+<head>
+    <meta name="viewport" content="width=1024, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="utf-8" />
+    <meta name="app:pageId" content="Home" />
+    <title>ServiceNow Implementation and Maintenance</title>
+    <script>
+        //<![CDATA[
+        var url = new URL(document.location.href);
+        url.hash = "";
+        url.search = "";
+        var segments = url.pathname.split("/");
+        var i = segments.length - 1;
+        if (i > 1 && segments[i - 1].length == 0) {
+            i--;
+            segments.pop();
+        }
+        if (segments[i].match(/\.html?$/i))
+            segments.pop();
+        url.pathname = (segments[i].length > 0) ? segments.join("/") + "/" : segments.join("/");
+        document.write('<base href="' + url.href + '" />');
+                    //]]>
+    </script>
+    <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
+    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="lib/angular.js/angular.js"></script>
+    <script type="text/javascript" src="lib/angular.js/angular-route.js"></script>
+    <script type="text/javascript" src="App/sys.js"></script>
+    <script type="text/javascript" src="App/app.js"></script>
+    <script type="text/javascript" src="App/IncidentManagement.js"></script>
+</head>
+<body ng-app="app" ng-controller="mainContentController">
+    <header class="container-fluid p-1">
+        <h1>{{ pageTitle }}</h1>
+        <h2 ng-show="showSubtitle">{{ subTitle }}</h2>
+        <nav class="container-fluid navbar navbar-expand-sm p-1 mr-auto">
+            <ul class="navbar-nav">
+                <li ng-repeat="i in pageTopNavItems" ng-class="i.linkItemCss"><a ng-href="{{i.href}}" ng-class="i.anchorCss" ng-click="i.click($event)">{{i.title}}</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <section ng-class="mainSectionClass"><ng-view></ng-view></section>
+            <aside class="container-fluid col-4 col-lg-3" ng-show="showNavAsideElement">
+                <div class="container-fluid" ng-show="showSideNavBreadcrumbs">
+                    <div class="d-inline p-2 flex-nowrap" ng-repeat="i in sideNavBreadcrumbItems">
+                        <span ng-show="$index!=0">&rArr;</span>
+                        <a ng-href="{{i.href}}" ng-click="i.click($event)" class="btn btn-outline-secondary" role="button">{{ i.title }}</a>
+                    </div>
+                </div>
+                <div class="card" ng-show="showSideNavItems">
+                    <div class="card-header" ng-show="showSideNavHeading"><h4>{{sideNavHeading}}</h4></div>
+                    <div class="card-body">
+                        <ul class="nav flex-column">
+                            <li class="nav-item" ng-repeat="i in precedingSideNavItems" ng-class="i.linkItemCss"><a ng-href="{{i.href}}" ng-class="i.anchorCss" ng-click="i.click($event)">{{i.title}}</a></li>
+                            <li class="nav-item" ng-show="showCurrentItem">
+                                <a ng-href="#" ng-click="currentNavItem.click($event)" ng-class="currentNavItem.anchorCss">{{ currentNavItem.title }}</a>
+                                <ul class="nav flex-column" ng-show="showNestedChildNav">
+                                    <li class="nav-item" ng-repeat="i in nestedChildNavItems" ng-class="i.linkItemCss"><a ng-href="{{i.href}}" ng-class="i.anchorCss" ng-click="i.click($event)">{{i.title}}</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" ng-repeat="i in followingSideNavItems" ng-class="i.linkItemCss"><a ng-href="{{i.href}}" ng-class="i.anchorCss" ng-click="i.click($event)">{{i.title}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+</body>
+</html>

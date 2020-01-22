@@ -1,5 +1,21 @@
 var sn;
 (function (sn) {
+    let notificationMessageService;
+    (function (notificationMessageService) {
+        let NotificationMessageType;
+        (function (NotificationMessageType) {
+            NotificationMessageType[NotificationMessageType["error"] = 0] = "error";
+            NotificationMessageType[NotificationMessageType["info"] = 1] = "info";
+        })(NotificationMessageType = notificationMessageService.NotificationMessageType || (notificationMessageService.NotificationMessageType = {}));
+        class Service {
+            constructor($log) {
+                this.$log = $log;
+            }
+            addNotificationMessage(message, heading, type) {
+            }
+        }
+        notificationMessageService.Service = Service;
+    })(notificationMessageService = sn.notificationMessageService || (sn.notificationMessageService = {}));
     class Emulated_GlideSession {
         constructor(_isInteractive, _isLoggedIn) {
             this._isInteractive = _isInteractive;

@@ -8,6 +8,14 @@
 type Mandatory<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
 
 namespace pageManager {
+    window.console.log("Entering pageManager");
+
+    export const DEFAULT_PAGE_TITLE = 'ServiceNow Implementation and Maintenance';
+    export const CONTROLLER_NAME_MAIN_CONTENT = 'mainContentController';
+    export const CONTROLLER_NAME_DEFAULT_PAGE = 'defaultPageController';
+    export const SERVICE_NAME_PAGE_MANAGER = 'pageManager';
+    export const PROVIDER_NAME_PAGE_MANAGER = SERVICE_NAME_PAGE_MANAGER + 'Provider';
+
     /**
      * Prefix for hash portion of navigation URI strings.
      * @export
@@ -23,12 +31,6 @@ namespace pageManager {
      * @type {"#!"}
      */
     export const NAV_PREFIX = '#!';
-
-    export const DEFAULT_PAGE_TITLE = 'ServiceNow Implementation and Maintenance';
-    export const CONTROLLER_NAME_MAIN_CONTENT = 'mainContentController';
-    export const CONTROLLER_NAME_DEFAULT_PAGE = 'defaultPageController';
-    export const SERVICE_NAME_PAGE_MANAGER = 'pageManager';
-    export const PROVIDER_NAME_PAGE_MANAGER = SERVICE_NAME_PAGE_MANAGER + 'Provider';
 
     /**
      * Handles W3C DOM event.
@@ -106,115 +108,14 @@ namespace pageManager {
          */
         setupParametersDialogVisible: boolean;
     }
-    export interface INavigationScope {
-        /**
-         * Navigation menu items to be displayed horizontally above the content.
-         * @type {ReadonlyArray<NavMenuItem>}
-         * @memberof IDirectiveScope
-         */
-        pageTopNavItems: ReadonlyArray<NavMenuItem>;
-        /**
-         * Ancestor navigation menu items to be displayed in the secondary navigation menu.
-         *
-         * @type {ReadonlyArray<NavMenuItem>}
-         * @memberof IDirectiveScope
-         */
-        sideNavBreadcrumbItems: ReadonlyArray<NavMenuItem>;
-        /**
-         * Indicates whether ancestor navigation menu items are to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showSideNavBreadcrumbs: boolean;
-        /**
-         * Navigation menu items within the secondary navigation menu, exclusing any that represents the current page or sibling items following the one that represents the current page.
-         *
-         * @type {ReadonlyArray<NavMenuItem>}
-         * @memberof IDirectiveScope
-         */
-        precedingSideNavItems: ReadonlyArray<NavMenuItem>;
-
-        /**
-         * Navigation menu item representing the current page.
-         *
-         * @type {NavMenuItem}
-         * @memberof IDirectiveScope
-         */
-        currentNavItem?: NavMenuItem;
-        /**
-         * Indicates whether navigation menu item representing the current page is to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showCurrentItem: boolean;
-        /**
-         * Navigation menu items within the secondary navigation menu, exclusing any that represents the current page or sibling items following the one that represents the current page.
-         *
-         * @type {ReadonlyArray<NavMenuItem>}
-         * @memberof IDirectiveScope
-         */
-        nestedChildNavItems: ReadonlyArray<NavMenuItem>;
-        /**
-         * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showNestedChildNav: boolean;
-        /**
-         * Navigation menu items within the secondary navigation menu that follow the item representing the current page.
-         *
-         * @type {ReadonlyArray<NavMenuItem>}
-         * @memberof IDirectiveScope
-         */
-        followingSideNavItems: ReadonlyArray<NavMenuItem>;
-
-        // TODO: Make obsolete
-        /**
-         * Indicates whether the child/sibling navigation menu items are to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showFollowingSideNav: boolean;
-        /**
-         * Heading text for the secondary navigation menu.
-         *
-         * @type {string}
-         * @memberof IDirectiveScope
-         */
-        sideNavHeading: string;
-        /**
-         * Indicates whether a heading is to be displayed in the secondary navigation menu.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showSideNavHeading: boolean;
-        /**
-         * Indicates whether the secondary navigation menu is to be displayed.
-         *
-         * @type {boolean}
-         * @memberof IDirectiveScope
-         */
-        showNavAsideElement: boolean;
-        /**
-         * CSS class names for the main content section.
-         *
-         * @type {Readonly<string[]>}
-         * @memberof IDirectiveScope
-         */
-        mainSectionClass: Readonly<string[]>;
-    }
+    
     /**
      * Defines the scope object for the main application controller.
      * @export
      * @interface IMainContentControllerScope
      * @extends {ng.IScope}
      */
-    export interface IMainContentControllerScope extends IPageTitleScope, IAppSettingsScope, INavigationScope, ng.IScope {
+    export interface IMainContentControllerScope extends IPageTitleScope, IAppSettingsScope, ng.IScope {
     }
     /**
      * The main application controller.
@@ -231,19 +132,23 @@ namespace pageManager {
          * @param {PageTitleService} pageTitleService
          * @memberof MainContentController
          */
-        constructor(private readonly $scope: IMainContentControllerScope, pageManager: Service) {
+        constructor(private readonly $scope: IMainContentControllerScope, pageManager: Service, $log: ng.ILogService) {
+            $log.info("Entering pageManager.MainContentController.constructor($scope, pageManagere, $log)");
             const ctrl: MainContentController = this;
             pageManager.setScope($scope);
+            $log.info("Exiting pageManager.MainContentController.constructor($scope, pageManagere, $log)");
         }
         $doCheck(): void { }
         static getControllerInjectable(): ng.Injectable<ng.IControllerConstructor> {
-            return ['$scope', 'pageManager', MainContentController];
+            window.console.log("Called: pageManager.MainContentController.getControllerInjectable()");
+            return ['$scope', 'pageManager', '$log', MainContentController];
         }
     }
 
     export interface IDefaultPageControllerScope extends ng.IScope {
 
     }
+
     /**
      * Controller for static pages.
      * @export
@@ -252,13 +157,17 @@ namespace pageManager {
      */
     export class DefaultPageController implements ng.IController {
         readonly [Symbol.toStringTag]: string = CONTROLLER_NAME_DEFAULT_PAGE;
-        constructor(private readonly $scope: IDefaultPageControllerScope, pageManager: Service) {
+        constructor(private readonly $scope: IDefaultPageControllerScope, pageManager: Service, $log: ng.ILogService) {
+            $log.info("Called pageManager.DefaultPageController.constructor($scope, pageManagere, $log)");
         }
         $doCheck(): void { }
         static getControllerInjectable(): ng.Injectable<ng.IControllerConstructor> {
-            return ['$scope', 'pageManager', DefaultPageController];
+            window.console.log("called pageManager.DefaultPageController.getControllerInjectable()");
+            return ['$scope', 'pageManager', '$log', DefaultPageController];
         }
     }
+
+    interface ISuccess { (event: ng.IAngularEvent, current: ng.route.ICurrentRoute): void; }
 
     /**
      * Service which provides page-related information and tracks and updates the current app page title.
@@ -268,30 +177,39 @@ namespace pageManager {
     export class Service {
         private _pageTitle = DEFAULT_PAGE_TITLE;
         private _pageSubTitle = '';
-        private _mainScope: IPageTitleScope & INavigationScope;
+        private _mainScope: IPageTitleScope;
         private _currentRouteInfo: PageRouteInfo;
         private _currentRoute: ng.route.ICurrentRoute;
         readonly [Symbol.toStringTag]: string = SERVICE_NAME_PAGE_MANAGER;
 
-        constructor($rootScope: ng.IRootScopeService, private readonly _pageRouteInfo: ReadonlyArray<NavRouteInfo>) {
+        constructor(private readonly $rootScope: ng.IRootScopeService, private readonly $log: ng.ILogService, private readonly _pageRouteInfo: ReadonlyArray<NavRouteInfo>) {
+            $log.info("Entering pageManager.Service.constructor($rootScope, $log, _pageRouteInfo)");
             const svc: Service = this;
             this.setCurrentRoute(this._pageRouteInfo[0]);
             $rootScope.$on('$routeChangeSuccess', function (event: ng.IAngularEvent, current: ng.route.ICurrentRoute): void {
-                if (typeof current.name !== 'string')
+                $log.info("Entering pageManager.Service.$rootScope.$on('$routeChangeSuccess', { (event: ng.IAngularEvent, current: " + ng.toJson({ name: current.name }) + "): void; })");
+                if (typeof current.name !== 'string') {
+                    $log.warn("Exiting pageManager.Service.$rootScope.$on('$routeChangeSuccess', { (event: ng.IAngularEvent, current: " + ng.toJson({ name: current.name }) + "): void; }) - no route name");
                     return;
-
+                }
                 svc._currentRoute = current;
                 let routeInfo: NavRouteInfo | undefined = svc.getRouteInfoById(current.name);
                 if (typeof routeInfo !== 'undefined')
                     svc.setCurrentRoute(routeInfo);
+                $log.info("Exiting pageManager.Service.$rootScope.$on('$routeChangeSuccess', { (event: ng.IAngularEvent, current: " + ng.toJson({ name: current.name }) + "): void; })");
             });
+            $log.info("Exiting pageManager.Service.constructor($rootScope, $log, _pageRouteInfo)");
         }
 
         getRouteInfoById(id: string): NavRouteInfo | undefined {
+            this.$log.info("Entering pageManager.Service.getRouteInfoById(id: " + ng.toJson(id) + ")");
             for (let i: number = 0; i < this._pageRouteInfo.length; i++) {
-                if ((<ICustomRouteMembers>this._pageRouteInfo[i]).id === id)
+                if ((<ICustomRouteMembers>this._pageRouteInfo[i]).id === id) {
+                    this.$log.info("Exiting pageManager.Service.getRouteInfoById(id: " + ng.toJson(id) + "): route found at index " + i);
                     return this._pageRouteInfo[i];
+                }
             }
+            this.$log.warn("Exiting pageManager.Service.getRouteInfoById(id: " + ng.toJson(id) + "): no route found");
         }
 
         currentPage(): PageRouteInfo { return this._currentRouteInfo; }
@@ -299,15 +217,20 @@ namespace pageManager {
         currentRoute(): ng.route.ICurrentRoute { return this._currentRoute; }
 
         private setCurrentRoute(route: NavRouteInfo): void {
-            if (Provider.isRouteRedirectInfo(route))
+            this.$log.info("Entering pageManager.Service.setCurrentRoute(route: " + ng.toJson(route, true) + ")");
+            if (Provider.isRouteRedirectInfo(route)) {
+                this.$log.info("Exiting pageManager.Service.setCurrentRoute(route: " + ng.toJson(route, true) + "): Provider.isRouteRedirectInfo(route) == true");
                 return;
+            }
             this._currentRouteInfo = route;
             if (Provider.routeInfoUsesDefaultController(route)) {
                 if (route.subTitle === 'string' && route.subTitle.length > 0)
                     this.pageTitle(route.title, route.subTitle);
                 else
                     this.pageTitle(route.title);
-            }
+                this.$log.info("Exiting pageManager.Service.setCurrentRoute(route: " + ng.toJson(route, true) + "): Using default controller");
+            } else
+                this.$log.info("Exiting pageManager.Service.setCurrentRoute(route: " + ng.toJson(route, true) + "): Using controller defined by route");
         }
 
         /**
@@ -326,6 +249,7 @@ namespace pageManager {
          */
         pageTitle(value: string, subTitle: string): string;
         pageTitle(value?: string, subTitle?: string): string {
+            this.$log.info("Entering pageManager.Service.setCurrentRoute(value: " + ng.toJson(value) + ", subTitle: " + ng.toJson(subTitle) + ")");
             if (typeof value === 'string') {
                 this._pageTitle = ((value = value.trim()).length == 0) ? DEFAULT_PAGE_TITLE : value;
                 this._pageSubTitle = (typeof subTitle === 'string') ? subTitle : '';
@@ -335,6 +259,14 @@ namespace pageManager {
                     this._mainScope.showSubtitle = this._pageSubTitle.trim().length > 0;
                 }
             }
+            this.$log.info("Exiting pageManager.Service.setCurrentRoute(value: " + ng.toJson(value) + ", subTitle: " + ng.toJson(subTitle) + "): " + ng.toJson({
+                _mainScope: {
+                    pageTitle: this._mainScope.pageTitle,
+                    subTitle: this._mainScope.subTitle,
+                    showSubtitle: this._mainScope.showSubtitle
+                },
+                "return": this._pageTitle
+            }, true));
             return this._pageTitle;
         }
 
@@ -350,13 +282,24 @@ namespace pageManager {
          * @param {IPageTitleScope & INavigationScope} scope - The scope of the main application controller.
          * @memberof PageLocationService
          */
-        setScope(scope: IPageTitleScope & INavigationScope): void {
-            if (typeof scope !== 'object' || scope === null)
+        setScope(scope: IPageTitleScope): void {
+            this.$log.info("Entering: pageManager.Service.setScope(IPageTitleScope)");
+            if (typeof scope !== 'object' || scope === null) {
+                this.$log.warn("Exiting: pageManager.Service.setScope(scope: " + ng.toJson(scope) + "): invalid scope ogbject");
                 return;
+            }
             (this._mainScope = scope).pageTitle = this._pageTitle;
             scope.showSubtitle = (scope.subTitle = this._pageSubTitle).trim().length > 0;
+            this.$log.info("Exiting pageManager.Service.setScope(IPageTitleScope): " + ng.toJson({
+                scope: {
+                    pageTitle: scope.pageTitle,
+                    subTitle: scope.subTitle,
+                    showSubtitle: scope.showSubtitle
+                }
+            }, true));
         }
     }
+
     export interface ICustomRouteMembers {
         route: string;
         id?: string;
@@ -374,113 +317,19 @@ namespace pageManager {
     export type PageRouteInfo = Mandatory<RouteTemplateUrl, 'id'> | Mandatory<RouteTemplateString, 'id'> | Mandatory<RouteTemplateUrlDefaultController, 'id'> |
         Mandatory<RouteTemplateStringDefaultController, 'id'>;
     export type NavRouteInfo = PageRouteInfo | RouteRedirectInfo;
+
     export class Provider implements ng.IServiceProvider {
+        private _pageRouteInfo: ReadonlyArray<RouteTemplateUrl | RouteTemplateString | RouteTemplateUrlDefaultController | RouteTemplateStringDefaultController | RouteRedirectInfo>;
         readonly [Symbol.toStringTag]: string = PROVIDER_NAME_PAGE_MANAGER;
-        private readonly _pageRouteInfo: ReadonlyArray<RouteTemplateUrl | RouteTemplateString | RouteTemplateUrlDefaultController | RouteTemplateStringDefaultController | RouteRedirectInfo> = [
-            {
-                templateUrl: 'Template/Pages/Home.htm',
-                route: '/home',
-                title: DEFAULT_PAGE_TITLE,
-                linkTitle: "Home"
-            },
-            {
-                id: 'implementation',
-                templateUrl: 'Template/Pages/Implementation/Index.htm',
-                route: '/implementation',
-                title: 'ServiceNow Implementation Notes',
-                linkTitle: 'Implementation Notes'
-            },
-            {
-                parentId: 'implementation',
-                templateUrl: 'Template/Pages/Implementation/ServiceCatalog.htm',
-                route: '/implementation/serviceCatalog',
-                title: 'ServiceNow Implementation Notes',
-                subTitle: 'Service Catalog',
-                linkTitle: 'Service Catalog'
-            },
-            {
-                parentId: 'implementation',
-                templateUrl: 'Template/Pages/Implementation/Incident.htm',
-                route: '/implementation/incident',
-                controller: incidentManagment.CONTROLLER_NAME_INCIDENT_MGMT,
-                controllerAs: 'incidentManagment',
-                linkTitle: 'Incident Management'
-            },
-            {
-                parentId: 'implementation',
-                templateUrl: 'Template/Pages/Implementation/Change.htm',
-                route: '/implementation/change',
-                title: 'ServiceNow Implementation Notes',
-                subTitle: 'Change Management',
-                linkTitle: 'Change Management'
-            },
-            {
-                parentId: 'implementation',
-                templateUrl: 'Template/Pages/Implementation/Security.htm',
-                route: '/implementation/security',
-                title: 'ServiceNow Implementation Notes',
-                subTitle: 'Security Operations',
-                linkTitle: 'Security Operations'
-            },
-            {
-                templateUrl: 'Template/Pages/InitialConfig.htm',
-                route: '/initialConfig',
-                title: 'Initial Configuration Instructions',
-                linkTitle: 'Initial Config'
-            },
-            {
-                id: 'dev',
-                templateUrl: 'Template/Pages/Dev/Index.htm',
-                route: '/dev',
-                title: 'Development Resources',
-                linkTitle: 'Dev Resources'
-            },
-            {
-                parentId: 'dev',
-                templateUrl: 'Template/Pages/Dev/Notes.htm',
-                route: '/dev/notes',
-                title: 'Development Resources',
-                subTitle: 'Development Notes',
-                linkTitle: 'Notes'
-            },
-            {
-                parentId: 'dev',
-                templateUrl: 'Template/Pages/Dev/Git.htm',
-                route: '/dev/git',
-                title: 'Development Resources',
-                subTitle: 'Git Notes',
-                linkTitle: 'Git'
-            },
-            {
-                parentId: 'dev',
-                templateUrl: 'Template/Pages/Dev/Azure.htm',
-                route: '/dev/azure',
-                title: 'Development Resources',
-                subTitle: 'Azure Notes',
-                linkTitle: 'Azure'
-            },
-            {
-                parentId: 'dev',
-                templateUrl: 'Template/Pages/Dev/Snippets.htm',
-                route: '/dev/snippets',
-                title: 'Development Resources',
-                subTitle: 'Code Snippets',
-                linkTitle: 'Snippets'
-            },
-            {
-                parentId: 'dev',
-                templateUrl: 'Template/Pages/Dev/SiteDesign.htm',
-                route: '/dev/siteDesign',
-                title: 'Development Resources',
-                subTitle: "Documentation Website Design Notes",
-                linkTitle: "Site Design"
-            },
-            { route: '/', redirectTo: "/home" }
-        ];
-        get $get(): ['$rootScope', ($rootScope: ng.IRootScopeService) => Service] {
+        constructor() {
+            window.console.log("Called pageManager.Provider.constructor()");
+        }
+        get $get(): ['$rootScope', '$log', ($rootScope: ng.IRootScopeService, $log: ng.ILogService) => Service] {
+            window.console.log("Called pageManager.Provider.$get()");
             let provider: Provider = this;
-            return ['$rootScope', function pageManagerFactory($rootScope: ng.IRootScopeService): Service {
-                return new Service($rootScope, provider.getRouteInfo());
+            return ['$rootScope', '$log', function pageManagerFactory($rootScope: ng.IRootScopeService, $log: ng.ILogService): Service {
+                window.console.log("Called pageManager.Provider.$get()->pageManagerFactory($rootScope: ng.IRootScopeService, $log: ng.ILogService)");
+                return new Service($rootScope, $log, provider.getRouteInfo());
             }];
         }
         private getRouteInfo(): ReadonlyArray<NavRouteInfo> {
@@ -507,9 +356,11 @@ namespace pageManager {
         static routeInfoUsesDefaultController(routeInfo: NavRouteInfo): routeInfo is Exclude<PageRouteInfo, RouteTemplateString | RouteTemplateUrl> {
             return typeof routeInfo === "object" && routeInfo !== null && typeof (<RouteTemplateUrlDefaultController>routeInfo).title === "string";
         }
-        ConfigureRoutes($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider): void {
+        ConfigureRoutes($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, routes: (RouteTemplateUrl | RouteTemplateString | RouteTemplateUrlDefaultController | RouteTemplateStringDefaultController | RouteRedirectInfo)[]): void {
+            window.console.log("Entering pageManager.Provider.ConfigureRoutes(ng.route.IRouteProvider, ng.ILocationProvider, routes: " + ng.toJson(routes, true) + ")");
+            this._pageRouteInfo = routes;
             $locationProvider.hashPrefix(HASH_PREFIX);
-            this.getRouteInfo().forEach(function (value: NavRouteInfo): void {
+            routes.forEach(function (value: NavRouteInfo): void {
                 let routeDef: ng.route.IRoute;
                 if (Provider.isRouteRedirectInfo(value))
                     routeDef = { redirectTo: value.redirectTo };
@@ -535,26 +386,130 @@ namespace pageManager {
                 }
                 $routeProvider.when(value.route, routeDef);
             });
+            window.console.log("Exiting pageManager.Provider.ConfigureRoutes(ng.route.IRouteProvider, ng.ILocationProvider, (RouteTemplateUrl | RouteTemplateString | RouteTemplateUrlDefaultController | RouteTemplateStringDefaultController | RouteRedirectInfo)[])");
         }
     }
+    window.console.log("Exiting pageManager");
 }
 
 /**
- * The main application namespace
+ * The main application namespace.
  * @namespace
  */
 namespace app {
+    window.console.log("Entering app");
     /**
      * The main module for this app.
      * @export
      * @constant {ng.IModule}
      */
-    export const appModule: ng.IModule = angular.module("app", [])
+    export const appModule: ng.IModule = angular.module("app", ['ngRoute'])
         .provider(pageManager.SERVICE_NAME_PAGE_MANAGER, pageManager.Provider)
         .config(['$locationProvider', '$routeProvider', 'pageManagerProvider',
             function ($locationProvider: ng.ILocationProvider, $routeProvider: ng.route.IRouteProvider, pageManagerProvider: pageManager.Provider) {
-                pageManagerProvider.ConfigureRoutes($routeProvider, $locationProvider);
-                window.alert('Called config');
+                window.console.log("Entering app.config()");
+                pageManagerProvider.ConfigureRoutes($routeProvider, $locationProvider, [
+                    {
+                        templateUrl: 'Template/Pages/Home.htm',
+                        route: '/home',
+                        title: pageManager.DEFAULT_PAGE_TITLE,
+                        linkTitle: "Home"
+                    },
+                    {
+                        id: 'implementation',
+                        templateUrl: 'Template/Pages/Implementation/Index.htm',
+                        route: '/implementation',
+                        title: 'ServiceNow Implementation Notes',
+                        linkTitle: 'Implementation Notes'
+                    },
+                    {
+                        parentId: 'implementation',
+                        templateUrl: 'Template/Pages/Implementation/ServiceCatalog.htm',
+                        route: '/implementation/serviceCatalog',
+                        title: 'ServiceNow Implementation Notes',
+                        subTitle: 'Service Catalog',
+                        linkTitle: 'Service Catalog'
+                    },
+                    {
+                        parentId: 'implementation',
+                        templateUrl: 'Template/Pages/Implementation/Incident.htm',
+                        route: '/implementation/incident',
+                        controller: incidentManagment.CONTROLLER_NAME_INCIDENT_MGMT,
+                        controllerAs: 'incidentManagment',
+                        linkTitle: 'Incident Management'
+                    },
+                    {
+                        parentId: 'implementation',
+                        templateUrl: 'Template/Pages/Implementation/Change.htm',
+                        route: '/implementation/change',
+                        title: 'ServiceNow Implementation Notes',
+                        subTitle: 'Change Management',
+                        linkTitle: 'Change Management'
+                    },
+                    {
+                        parentId: 'implementation',
+                        templateUrl: 'Template/Pages/Implementation/Security.htm',
+                        route: '/implementation/security',
+                        title: 'ServiceNow Implementation Notes',
+                        subTitle: 'Security Operations',
+                        linkTitle: 'Security Operations'
+                    },
+                    {
+                        templateUrl: 'Template/Pages/InitialConfig.htm',
+                        route: '/initialConfig',
+                        title: 'Initial Configuration Instructions',
+                        linkTitle: 'Initial Config'
+                    },
+                    {
+                        id: 'dev',
+                        templateUrl: 'Template/Pages/Dev/Index.htm',
+                        route: '/dev',
+                        title: 'Development Resources',
+                        linkTitle: 'Dev Resources'
+                    },
+                    {
+                        parentId: 'dev',
+                        templateUrl: 'Template/Pages/Dev/Notes.htm',
+                        route: '/dev/notes',
+                        title: 'Development Resources',
+                        subTitle: 'Development Notes',
+                        linkTitle: 'Notes'
+                    },
+                    {
+                        parentId: 'dev',
+                        templateUrl: 'Template/Pages/Dev/Git.htm',
+                        route: '/dev/git',
+                        title: 'Development Resources',
+                        subTitle: 'Git Notes',
+                        linkTitle: 'Git'
+                    },
+                    {
+                        parentId: 'dev',
+                        templateUrl: 'Template/Pages/Dev/Azure.htm',
+                        route: '/dev/azure',
+                        title: 'Development Resources',
+                        subTitle: 'Azure Notes',
+                        linkTitle: 'Azure'
+                    },
+                    {
+                        parentId: 'dev',
+                        templateUrl: 'Template/Pages/Dev/Snippets.htm',
+                        route: '/dev/snippets',
+                        title: 'Development Resources',
+                        subTitle: 'Code Snippets',
+                        linkTitle: 'Snippets'
+                    },
+                    {
+                        parentId: 'dev',
+                        templateUrl: 'Template/Pages/Dev/SiteDesign.htm',
+                        route: '/dev/siteDesign',
+                        title: 'Development Resources',
+                        subTitle: "Documentation Website Design Notes",
+                        linkTitle: "Site Design"
+                    },
+                    { route: '/', redirectTo: "/home" }
+                ]);
+                window.console.log('Exiting  app.config()');
             }])
         .controller(pageManager.CONTROLLER_NAME_MAIN_CONTENT, pageManager.MainContentController.getControllerInjectable())
         .controller(pageManager.CONTROLLER_NAME_DEFAULT_PAGE, pageManager.DefaultPageController.getControllerInjectable());
@@ -1524,8 +1479,7 @@ namespace app {
                 // TODO: Implement QueryParameters constructor(Uri, *).
 
             }
-
-                // TODO: Implement QueryParameters constructor(*, relative).
+            // TODO: Implement QueryParameters constructor(*, relative).
         }
     }
 
@@ -1536,4 +1490,6 @@ namespace app {
     appModule.factory("uriBuilderService", ["$rootScope", UriBuilderService]);
 
     // #endregion
+
+    window.console.log("Exiting app");
 }

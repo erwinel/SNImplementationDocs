@@ -1505,6 +1505,10 @@ declare abstract class GlideSystem {
      */
     base64Decode(source: string): string;
 
+    dateDiff(startDate: string, endDate: string, numericValue?: false): string;
+    dateDiff(startDate: string, endDate: string, numericValue: true): number;
+    dateDiff(startDate: string, endDate: string, numericValue?: boolean): any;
+
     /**
      * Queues an event for the event manager.
      * @param {string} name Name of the event being queued.

@@ -21,7 +21,7 @@
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
-    <TypeScriptToolsVersion>3.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
     <EnableTypeScript>true</EnableTypeScript>
     <StartWebBrowser>false</StartWebBrowser>
   </PropertyGroup>
@@ -66,6 +66,9 @@
     <Content Include="Events\army.sc_req_item.no.fulfillment_group\sysevent_register.xml" />
     <Content Include="Events\army.sc_req_item.received\Notification\message_html.html" />
     <Content Include="Events\army.sc_req_item.received\sysevent_register.xml" />
+    <Content Include="Mail Scripts\Page1.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Variable Sets\generic_it_service_request\item_option_new_list.xml" />
     <Content Include="Variable Sets\generic_it_service_request\item_option_new_set.xml" />
     <Content Include="Variable Sets\hardware_request\item_option_new_set.xml" />
@@ -102,6 +105,7 @@
     <TypeScriptCompile Include="Events\army.sc_req_item.fulfill_order\Notification\army_sc_req_item_fulfill_order.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="forceCatalogPortalPageToUpdateSet.ts" />
     <TypeScriptCompile Include="generateTypeScriptFromTable.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -111,6 +115,7 @@
     <TypeScriptCompile Include="Events\army.generic.request.route\army_sc_req_item_no_fulfillment_group.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Mail Scripts\army_task_group_notify_nouserassigned.ts" />
     <TypeScriptCompile Include="normalizeRoleList.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -180,6 +185,7 @@
     <Folder Include="Events\army.sc_req_item.backordered\" />
     <Folder Include="Events\army.sc_req_item.received\" />
     <Folder Include="Events\army.sc_req_item.received\Notification\" />
+    <Folder Include="Mail Scripts\" />
     <Folder Include="UI Actions\" />
     <Folder Include="Variable Sets\" />
     <Folder Include="Variable Sets\generic_it_service_request\" />
