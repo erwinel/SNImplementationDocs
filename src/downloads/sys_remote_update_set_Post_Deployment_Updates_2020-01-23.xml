@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2020-01-23 15:45:19">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description>Changing location field types, fixing UI policies</description>
+<inserted/>
+<name>Post Deployment Updates 2020-01-23</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date>2020-01-23 15:44:24</release_date>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>e2d9089ddb260010683b300f7c96195e</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>0a2d4851db660010683b300f7c9619d8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_action_1adb4811db660010683b300f7c9619c1</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action"><sys_ui_policy_action action="INSERT_OR_UPDATE"><cleared>false</cleared><disabled>true</disabled><field>closed_at</field><mandatory>ignore</mandatory><sys_class_name>sys_ui_policy_action</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2020-01-23 15:39:47</sys_created_on><sys_id>1adb4811db660010683b300f7c9619c1</sys_id><sys_mod_count>0</sys_mod_count><sys_name>closed_at</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_policy_action_1adb4811db660010683b300f7c9619c1</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2020-01-23 15:39:47</sys_updated_on><table>task</table><ui_policy display_value="Make number, opened and closed fields read-only">7eea88dddb260010683b300f7c9619a6</ui_policy><visible>ignore</visible></sys_ui_policy_action></record_update>]]></payload>
+<payload_hash>-638820381</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>162d4851db660010683b300f7c9619da</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd30f37fd0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table>task</table>
+<target_name>closed_at</target_name>
+<type>UI Policy Action</type>
+<update_domain>global</update_domain>
+<update_guid>45eb0cdd18260010156f1c32e539a67a</update_guid>
+<update_guid_history>45eb0cdd18260010156f1c32e539a67a:-638820381</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sc_cat_item_9af8556fdbddb300683b300f7c961995</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sc_cat_item"&gt;&lt;sc_cat_item action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;availability&gt;on_both&lt;/availability&gt;&lt;billable&gt;false&lt;/billable&gt;&lt;category display_value="Move / Setup Equipment"&gt;2639a1b3dbd9f300683b300f7c96197d&lt;/category&gt;&lt;cost&gt;0&lt;/cost&gt;&lt;custom_cart/&gt;&lt;delivery_plan/&gt;&lt;delivery_plan_script/&gt;&lt;delivery_time&gt;1970-01-03 00:00:00&lt;/delivery_time&gt;&lt;description&gt;&lt;![CDATA[&lt;p&gt;Use this form to request the relocation and/ or setup of computer equipment.&lt;/p&gt;]]&gt;&lt;/description&gt;&lt;entitlement_script/&gt;&lt;group display_value="Service Desk" name="Service Desk"&gt;d625dccec0a8016700a222a0f7900d06&lt;/group&gt;&lt;hide_sp&gt;false&lt;/hide_sp&gt;&lt;icon&gt;c47159b3db99f300683b300f7c9619d4&lt;/icon&gt;&lt;ignore_price&gt;true&lt;/ignore_price&gt;&lt;image/&gt;&lt;list_price&gt;0&lt;/list_price&gt;&lt;location/&gt;&lt;meta/&gt;&lt;mobile_hide_price&gt;false&lt;/mobile_hide_price&gt;&lt;mobile_picture/&gt;&lt;mobile_picture_type&gt;use_desktop_picture&lt;/mobile_picture_type&gt;&lt;model/&gt;&lt;name&gt;Move / Setup Equipment&lt;/name&gt;&lt;no_cart&gt;false&lt;/no_cart&gt;&lt;no_order&gt;false&lt;/no_order&gt;&lt;no_order_now&gt;false&lt;/no_order_now&gt;&lt;no_proceed_checkout&gt;false&lt;/no_proceed_checkout&gt;&lt;no_quantity&gt;false&lt;/no_quantity&gt;&lt;no_search&gt;false&lt;/no_search&gt;&lt;omit_price&gt;false&lt;/omit_price&gt;&lt;order&gt;0&lt;/order&gt;&lt;ordered_item_link/&gt;&lt;picture&gt;ba366dffdb99f300683b300f7c9619c3&lt;/picture&gt;&lt;preview&gt;JavaScript: popupOpenStandard("com.glideapp.servicecatalog_cat_item_view.do?v=1&amp;amp;sysparm_id=9af8556fdbddb300683b300f7c961995&amp;amp;sysparm_preview=true", "summary");&lt;/preview&gt;&lt;price&gt;0&lt;/price&gt;&lt;recurring_frequency/&gt;&lt;recurring_price&gt;0&lt;/recurring_price&gt;&lt;roles/&gt;&lt;sc_catalogs&gt;e0d08b13c3330100c8b837659bba8fb4&lt;/sc_catalogs&gt;&lt;sc_ic_item_staging/&gt;&lt;sc_ic_version/&gt;&lt;short_description&gt;Computer equipment reloation/ setup request&lt;/short_description&gt;&lt;show_variable_help_on_load&gt;false&lt;/show_variable_help_on_load&gt;&lt;start_closed&gt;false&lt;/start_closed&gt;&lt;sys_class_name&gt;sc_cat_item&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-05-14 21:35:15&lt;/sys_created_on&gt;&lt;sys_id&gt;9af8556fdbddb300683b300f7c961995&lt;/sys_id&gt;&lt;sys_mod_count&gt;13&lt;/sys_mod_count&gt;&lt;sys_name&gt;Move / Setup Equipment&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sc_cat_item_9af8556fdbddb300683b300f7c961995&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-01-23 15:33:25&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;type&gt;item&lt;/type&gt;&lt;use_sc_layout&gt;true&lt;/use_sc_layout&gt;&lt;vendor/&gt;&lt;visible_bundle&gt;true&lt;/visible_bundle&gt;&lt;visible_guide&gt;true&lt;/visible_guide&gt;&lt;visible_standalone&gt;true&lt;/visible_standalone&gt;&lt;workflow display_value="Service Catalog Item Request"&gt;0287f2c64a36232700820846b1f8bdce&lt;/workflow&gt;&lt;/sc_cat_item&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=9af8556fdbddb300683b300f7c961995"/&gt;&lt;fx_price action="delete_multiple" query="id=9af8556fdbddb300683b300f7c961995"/&gt;&lt;fx_price action="INSERT_OR_UPDATE"&gt;&lt;amount&gt;0&lt;/amount&gt;&lt;currency display_value="USD"&gt;USD&lt;/currency&gt;&lt;field&gt;price&lt;/field&gt;&lt;id&gt;9af8556fdbddb300683b300f7c961995&lt;/id&gt;&lt;parent/&gt;&lt;reference_amount&gt;0&lt;/reference_amount&gt;&lt;reference_currency display_value="USD"&gt;USD&lt;/reference_currency&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-05-14 21:35:15&lt;/sys_created_on&gt;&lt;sys_id&gt;ff69556fdbddb300683b300f7c96199d&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-05-14 21:35:15&lt;/sys_updated_on&gt;&lt;table&gt;sc_cat_item&lt;/table&gt;&lt;type&gt;calculated&lt;/type&gt;&lt;/fx_price&gt;&lt;fx_price action="INSERT_OR_UPDATE"&gt;&lt;amount&gt;0&lt;/amount&gt;&lt;currency display_value="USD"&gt;USD&lt;/currency&gt;&lt;field&gt;recurring_price&lt;/field&gt;&lt;id&gt;9af8556fdbddb300683b300f7c961995&lt;/id&gt;&lt;parent/&gt;&lt;reference_amount&gt;0&lt;/reference_amount&gt;&lt;reference_currency display_value="USD"&gt;USD&lt;/reference_currency&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-05-14 21:35:15&lt;/sys_created_on&gt;&lt;sys_id&gt;7769556fdbddb300683b300f7c96199f&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-05-14 21:35:15&lt;/sys_updated_on&gt;&lt;table&gt;sc_cat_item&lt;/table&gt;&lt;type&gt;calculated&lt;/type&gt;&lt;/fx_price&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-423891563</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>1a2d4851db660010683b300f7c9619d9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd30964ca0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table/>
+<target_name>Move / Setup Equipment</target_name>
+<type>Catalog Item</type>
+<update_domain>global</update_domain>
+<update_guid>7f6acc9d0a260010a0fdcaf78c2fd706</update_guid>
+<update_guid_history>7f6acc9d0a260010a0fdcaf78c2fd706:-423891563,48e4cab7a91df3001cb639ebec63c6db:-926999062,2f94c6b7561df300ea19d9288e4f095a:-1595454683,bfb20af3841df3009af3b2de495fc0ff:1905468896,002ee1b747d9f300add632521e570e27:-926999062,161da1778fd9f300b40c9d2a0b1310cd:-1595454683,45ca61b3bbd9f30018d1a9795b11ed29:-926999062,30caedb345d9f300ad6fd4cb43f3d1a1:-1225018704,5959e1b345d9f3008553c30f8d1620de:1393871253,1327a933d2d9f3007f2a6b18ad2adba4:-1587165062,c336edff3899f300a9ceef0698d58b7c:-225917416,32366dffef99f30012d965f4ccfb79c8:-831754699,507159b3cc99f300b8805c465756a9fe:213117950,c47159b39c99f3000828bc37f3916dd9:320612504,8c8721ab1311f3008ce8576a50085e9a:381898072,f369996f98ddb30000084a40fd4b2b62:650457462</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_381b15efdbddb300683b300f7c961911</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Move / Setup Equipment">9af8556fdbddb300683b300f7c961995</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value/><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field/><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>true</mandatory><map_to_field>false</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>new_location</name><order>600</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>New Location</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table/><reference>cmn_location</reference><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-05-14 21:43:18</sys_created_on><sys_id>381b15efdbddb300683b300f7c961911</sys_id><sys_mod_count>6</sys_mod_count><sys_name>New Location</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_381b15efdbddb300683b300f7c961911</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2020-01-23 15:33:02</sys_updated_on><table/><tooltip/><type>6</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=381b15efdbddb300683b300f7c961911"/><fx_price action="delete_multiple" query="id=381b15efdbddb300683b300f7c961911"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>381b15efdbddb300683b300f7c961911</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-05-14 21:43:18</sys_created_on><sys_id>2d4b55afdbddb300683b300f7c96193b</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-05-14 21:43:18</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>381b15efdbddb300683b300f7c961911</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-05-14 21:43:18</sys_created_on><sys_id>e14b55afdbddb300683b300f7c96193b</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-05-14 21:43:18</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>-1942751435</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>4e2d4851db660010683b300f7c9619d8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd3090b410000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table/>
+<target_name>New Location</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>965a40ddfd260010df031564921f8ea3</update_guid>
+<update_guid_history>965a40ddfd260010df031564921f8ea3:-1942751435,f403ad677a11f300b54db68dc47f6d0c:-549823049,9742a567d611f30061a4212099fb2cea:-928820811,f90f5d632311f3000883064b8687b955:18673594,1e4c55234b11f30054d6b8a0f09e8a2d:-1569345944,192cd9ef32ddb300edad9d0af253fdc5:-549823049,e94b95efc6ddb300003a9d2e748c0e7e:-1423875765</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_7eea88dddb260010683b300f7c9619a6</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_policy"&gt;&lt;sys_ui_policy action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;conditions/&gt;&lt;description/&gt;&lt;global&gt;true&lt;/global&gt;&lt;inherit&gt;false&lt;/inherit&gt;&lt;isolate_script&gt;true&lt;/isolate_script&gt;&lt;model_id/&gt;&lt;model_table/&gt;&lt;on_load&gt;true&lt;/on_load&gt;&lt;order&gt;100&lt;/order&gt;&lt;reverse_if_false&gt;false&lt;/reverse_if_false&gt;&lt;run_scripts&gt;false&lt;/run_scripts&gt;&lt;script_false&gt;&lt;![CDATA[function onCondition() {
+
+}]]&gt;&lt;/script_false&gt;&lt;script_true&gt;&lt;![CDATA[function onCondition() {
+
+}]]&gt;&lt;/script_true&gt;&lt;set_values/&gt;&lt;short_description&gt;Make number, opened and closed fields read-only&lt;/short_description&gt;&lt;sys_class_name&gt;sys_ui_policy&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-01-23 15:36:11&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;7eea88dddb260010683b300f7c9619a6&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;Make number, opened and closed fields read-only&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_policy_7eea88dddb260010683b300f7c9619a6&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-01-23 15:39:27&lt;/sys_updated_on&gt;&lt;table&gt;task&lt;/table&gt;&lt;ui_type&gt;0&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_ui_policy&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1829712148</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>522d4851db660010683b300f7c9619da</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd30ee8b20000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table>task</table>
+<target_name>Make number, opened and closed fields read-only</target_name>
+<type>UI Policy</type>
+<update_domain>global</update_domain>
+<update_guid>c0dbc411a1660010b10c1902811feced</update_guid>
+<update_guid_history>c0dbc411a1660010b10c1902811feced:1829712148,e0bbc4ddca2600102f77d008d590eb32:299280500,241b8cddf82600102452a4f9b4adb026:197272262</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>item_option_new_b47a19afdbddb300683b300f7c961948</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="item_option_new"><item_option_new action="INSERT_OR_UPDATE"><active>true</active><attributes/><cat_item display_value="Move / Setup Equipment">9af8556fdbddb300683b300f7c961995</cat_item><category/><choice_direction>down</choice_direction><choice_field/><choice_table/><create_roles/><default_html_value/><default_value/><delete_roles/><delivery_plan/><description/><display_title>false</display_title><do_not_select_first>false</do_not_select_first><dynamic_default_value/><dynamic_ref_qual/><example_text/><field/><global>false</global><help_tag>More information</help_tag><help_text/><include_none>false</include_none><instructions/><layout>normal</layout><list_table/><lookup_label/><lookup_price/><lookup_table/><lookup_unique>false</lookup_unique><lookup_value/><macro/><mandatory>true</mandatory><map_to_field>false</map_to_field><mask_use_confirmation>false</mask_use_confirmation><mask_use_encryption>false</mask_use_encryption><name>current_location</name><order>500</order><price_if_checked>0</price_if_checked><pricing_implications>false</pricing_implications><question_text>Current Location</question_text><read_roles/><rec_lookup_price/><rec_price_if_checked>0</rec_price_if_checked><record/><record_producer_table/><reference>cmn_location</reference><reference_qual/><reference_qual_condition/><scale_max>5</scale_max><scale_min>0</scale_min><show_help>false</show_help><show_help_on_load>false</show_help_on_load><sp_widget/><summary_macro/><sys_class_name>item_option_new</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-05-14 21:40:36</sys_created_on><sys_id>b47a19afdbddb300683b300f7c961948</sys_id><sys_mod_count>5</sys_mod_count><sys_name>Current Location</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>item_option_new_b47a19afdbddb300683b300f7c961948</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2020-01-23 15:32:10</sys_updated_on><table/><tooltip/><type>6</type><ui_page/><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><variable_name/><variable_set/><variable_width/><visibility>1</visibility><visible_bundle>true</visible_bundle><visible_guide>true</visible_guide><visible_standalone>true</visible_standalone><visible_summary>true</visible_summary><write_roles/></item_option_new><sys_translated_text action="delete_multiple" query="documentkey=b47a19afdbddb300683b300f7c961948"/><fx_price action="delete_multiple" query="id=b47a19afdbddb300683b300f7c961948"/><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>price_if_checked</field><id>b47a19afdbddb300683b300f7c961948</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-05-14 21:40:36</sys_created_on><sys_id>86aadd6fdbddb300683b300f7c9619ee</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-05-14 21:40:36</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price><fx_price action="INSERT_OR_UPDATE"><amount>0</amount><currency display_value="USD">USD</currency><field>rec_price_if_checked</field><id>b47a19afdbddb300683b300f7c961948</id><parent/><reference_amount>0</reference_amount><reference_currency display_value="USD">USD</reference_currency><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-05-14 21:40:36</sys_created_on><sys_id>4eaadd6fdbddb300683b300f7c9619ed</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-05-14 21:40:36</sys_updated_on><table>item_option_new</table><type>calculated</type></fx_price></record_update>]]></payload>
+<payload_hash>-324871041</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>562d4851db660010683b300f7c9619d9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd308418a0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table/>
+<target_name>Current Location</target_name>
+<type>Variable</type>
+<update_domain>global</update_domain>
+<update_guid>b92a489d3126001077e2796121a449c7</update_guid>
+<update_guid_history>b92a489d3126001077e2796121a449c7:-324871041,d003e1a71911f30081f47a210c92041a:1068057345,fb626d679711f30012544d92797c35e1:1381325055,f03269675711f3006dc5c4a135b4f524:-1243908095,a71cd123da11f3003c9e4844c29f976d:1224691200,86aad9af43ddb300a190e68fed331950:1941820118</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_action_72bbc411db660010683b300f7c961919</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action"><sys_ui_policy_action action="INSERT_OR_UPDATE"><cleared>false</cleared><disabled>true</disabled><field>opened_at</field><mandatory>ignore</mandatory><sys_class_name>sys_ui_policy_action</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2020-01-23 15:39:19</sys_created_on><sys_id>72bbc411db660010683b300f7c961919</sys_id><sys_mod_count>0</sys_mod_count><sys_name>opened_at</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_policy_action_72bbc411db660010683b300f7c961919</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2020-01-23 15:39:19</sys_updated_on><table>task</table><ui_policy display_value="Make number, opend and closed fields read-only">7eea88dddb260010683b300f7c9619a6</ui_policy><visible>ignore</visible></sys_ui_policy_action></record_update>]]></payload>
+<payload_hash>1518292380</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>5e2d4851db660010683b300f7c9619da</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd30ec92d0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table>task</table>
+<target_name>opened_at</target_name>
+<type>UI Policy Action</type>
+<update_domain>global</update_domain>
+<update_guid>9ecbc41121660010f455f29a4f4f6fe9</update_guid>
+<update_guid_history>9ecbc41121660010f455f29a4f4f6fe9:1518292380</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_action_2a1bccdddb260010683b300f7c96193f</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action"><sys_ui_policy_action action="INSERT_OR_UPDATE"><cleared>false</cleared><disabled>true</disabled><field>number</field><mandatory>ignore</mandatory><sys_class_name>sys_ui_policy_action</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2020-01-23 15:38:32</sys_created_on><sys_id>2a1bccdddb260010683b300f7c96193f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>number</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_policy_action_2a1bccdddb260010683b300f7c96193f</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2020-01-23 15:38:32</sys_updated_on><table>task</table><ui_policy display_value="Make number field read-only">7eea88dddb260010683b300f7c9619a6</ui_policy><visible>ignore</visible></sys_ui_policy_action></record_update>]]></payload>
+<payload_hash>-409802290</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>9a2d4851db660010683b300f7c9619da</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd30e11700000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table>task</table>
+<target_name>number</target_name>
+<type>UI Policy Action</type>
+<update_domain>global</update_domain>
+<update_guid>f29b80dd29260010a01af16cecc9e1f8</update_guid>
+<update_guid_history>f29b80dd29260010a01af16cecc9e1f8:-409802290</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_153c0051db660010683b300f7c9619d1</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_policy"&gt;&lt;sys_ui_policy action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;conditions/&gt;&lt;description/&gt;&lt;global&gt;true&lt;/global&gt;&lt;inherit&gt;false&lt;/inherit&gt;&lt;isolate_script&gt;true&lt;/isolate_script&gt;&lt;model_id/&gt;&lt;model_table/&gt;&lt;on_load&gt;true&lt;/on_load&gt;&lt;order&gt;100&lt;/order&gt;&lt;reverse_if_false&gt;true&lt;/reverse_if_false&gt;&lt;run_scripts&gt;false&lt;/run_scripts&gt;&lt;script_false&gt;&lt;![CDATA[function onCondition() {
+
+}]]&gt;&lt;/script_false&gt;&lt;script_true&gt;&lt;![CDATA[function onCondition() {
+
+}]]&gt;&lt;/script_true&gt;&lt;set_values/&gt;&lt;short_description&gt;Make VIP field read-only (set via business rule)&lt;/short_description&gt;&lt;sys_class_name&gt;sys_ui_policy&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-01-23 15:41:31&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;153c0051db660010683b300f7c9619d1&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Make VIP field read-only (set via business rule)&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_policy_153c0051db660010683b300f7c9619d1&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-01-23 15:41:31&lt;/sys_updated_on&gt;&lt;table&gt;incident&lt;/table&gt;&lt;ui_type&gt;0&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_ui_policy&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-537585054</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>9e2d4851db660010683b300f7c9619d9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd310cf9e0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table>incident</table>
+<target_name>Make VIP field read-only (set via business rule)</target_name>
+<type>UI Policy</type>
+<update_domain>global</update_domain>
+<update_guid>ee4c8c1186660010f2936fa81ef9ce0f</update_guid>
+<update_guid_history>ee4c8c1186660010f2936fa81ef9ce0f:-537585054</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_action_245c8051db660010683b300f7c9619c3</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action"><sys_ui_policy_action action="INSERT_OR_UPDATE"><cleared>false</cleared><disabled>true</disabled><field>u_vip_priority</field><mandatory>ignore</mandatory><sys_class_name>sys_ui_policy_action</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2020-01-23 15:41:57</sys_created_on><sys_id>245c8051db660010683b300f7c9619c3</sys_id><sys_mod_count>0</sys_mod_count><sys_name>u_vip_priority</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_policy_action_245c8051db660010683b300f7c9619c3</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2020-01-23 15:41:57</sys_updated_on><table>incident</table><ui_policy display_value="Make VIP field read-only (set via business rule)">153c0051db660010683b300f7c9619d1</ui_policy><visible>ignore</visible></sys_ui_policy_action></record_update>]]></payload>
+<payload_hash>-92809026</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>d62d4851db660010683b300f7c9619da</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd31133f50000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table>incident</table>
+<target_name>u_vip_priority</target_name>
+<type>UI Policy Action</type>
+<update_domain>global</update_domain>
+<update_guid>7c6c00517e660010df2a7e3fe47280d6</update_guid>
+<update_guid_history>7c6c00517e660010df2a7e3fe47280d6:-92809026</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sysevent_email_action_56ae47dfc611227501b04310882ac2ab</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sysevent_email_action"&gt;&lt;sysevent_email_action action="INSERT_OR_UPDATE"&gt;&lt;action_insert&gt;true&lt;/action_insert&gt;&lt;action_update&gt;true&lt;/action_update&gt;&lt;active&gt;true&lt;/active&gt;&lt;advanced_condition/&gt;&lt;affected_field_on_event/&gt;&lt;category display_value="IT Service Management" name="IT Service Management"&gt;b69d02137f232200ee2e108c3ffa9142&lt;/category&gt;&lt;collection&gt;incident&lt;/collection&gt;&lt;condition table="incident"&gt;assigned_toISEMPTY^assignment_groupVALCHANGES^assignment_groupISNOTEMPTY^EQ&lt;item endquery="false" field="assigned_to" goto="false" newquery="false" operator="ISEMPTY" or="false" value=""/&gt;&lt;item endquery="false" field="assignment_group" goto="false" newquery="false" operator="VALCHANGES" or="false" value=""/&gt;&lt;item endquery="false" field="assignment_group" goto="false" newquery="false" operator="ISNOTEMPTY" or="false" value=""/&gt;&lt;item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/&gt;&lt;/condition&gt;&lt;content_type&gt;text/html&lt;/content_type&gt;&lt;default_interval/&gt;&lt;description/&gt;&lt;digest_from/&gt;&lt;digest_html/&gt;&lt;digest_reply_to/&gt;&lt;digest_separator_html/&gt;&lt;digest_separator_text/&gt;&lt;digest_subject/&gt;&lt;digest_template/&gt;&lt;digest_text/&gt;&lt;digestable&gt;false&lt;/digestable&gt;&lt;event_name&gt;incident.assigned.to.group&lt;/event_name&gt;&lt;event_parm_1&gt;false&lt;/event_parm_1&gt;&lt;event_parm_2&gt;false&lt;/event_parm_2&gt;&lt;exclude_delegates&gt;false&lt;/exclude_delegates&gt;&lt;force_delivery&gt;false&lt;/force_delivery&gt;&lt;from/&gt;&lt;generation_type&gt;engine&lt;/generation_type&gt;&lt;importance/&gt;&lt;include_attachments&gt;false&lt;/include_attachments&gt;&lt;item&gt;event.parm1&lt;/item&gt;&lt;item_table/&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;message/&gt;&lt;message_html&gt;&lt;![CDATA[&lt;div&gt;${mail_script:incident_body_header}&lt;/div&gt;
+&lt;div&gt;${mail_script:incident_assigned_to}&lt;/div&gt;
+&lt;div&gt;${mail_script:incident_additional_details}&lt;/div&gt;
+&lt;div&gt;${mail_script:incident_take_me_to_the_incident}&lt;/div&gt;]]&gt;&lt;/message_html&gt;&lt;message_list&gt;bd40c70253020200601fa3fc9ec58777&lt;/message_list&gt;&lt;message_text/&gt;&lt;name&gt;Incident assigned to my group&lt;/name&gt;&lt;omit_watermark&gt;false&lt;/omit_watermark&gt;&lt;order/&gt;&lt;push_message_only&gt;false&lt;/push_message_only&gt;&lt;recipient_fields&gt;assignment_group&lt;/recipient_fields&gt;&lt;recipient_groups/&gt;&lt;recipient_users/&gt;&lt;reply_to/&gt;&lt;send_self&gt;false&lt;/send_self&gt;&lt;sms_alternate/&gt;&lt;style/&gt;&lt;subject&gt;Incident ${number} has been assigned to group ${assignment_group}&lt;/subject&gt;&lt;subscribable&gt;false&lt;/subscribable&gt;&lt;sys_class_name&gt;sysevent_email_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;glide.maint&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2006-02-11 01:16:35&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;56ae47dfc611227501b04310882ac2ab&lt;/sys_id&gt;&lt;sys_mod_count&gt;16&lt;/sys_mod_count&gt;&lt;sys_name&gt;Incident assigned to my group&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Mobile UI" source="com.glide.ui.m"&gt;bcf8c417db003300b53f341f7c96199e&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_email_action_56ae47dfc611227501b04310882ac2ab&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-01-23 15:43:15&lt;/sys_updated_on&gt;&lt;sys_version&gt;2&lt;/sys_version&gt;&lt;template display_value="Unsubscribe and Preferences Helvetica"&gt;d465111f3b4b2200c869c2c703efc47c&lt;/template&gt;&lt;type&gt;email&lt;/type&gt;&lt;weight&gt;50&lt;/weight&gt;&lt;/sysevent_email_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>328204932</payload_hash>
+<remote_update_set display_value="Post Deployment Updates 2020-01-23">0a2d4851db660010683b300f7c9619d8</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-23 15:45:19</sys_created_on>
+<sys_id>da2d4851db660010683b300f7c9619d9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fd31263bf0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-23 15:45:19</sys_updated_on>
+<table>incident</table>
+<target_name>Incident assigned to my group</target_name>
+<type>Notification</type>
+<update_domain>global</update_domain>
+<update_guid>77acc451e66600101f174e33f06c4553</update_guid>
+<update_guid_history>77acc451e66600101f174e33f06c4553:328204932,7facc451986600107471d1fb5d2aea51:-369334357</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>
