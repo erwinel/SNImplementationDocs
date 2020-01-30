@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2019-12-03 15:05:00">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description>Mandates that a task-based records must be assigned to an individual before it can be closed and generates an email report every day of task-based records that are open and not assigned to an individual.</description>
+<inserted/>
+<name>Task Policy Update 2019-11-22</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date>2019-12-03 15:02:12</release_date>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>23b77819dbdd4010b53f341f7c9619c9</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-12-03 15:04:59</sys_created_on>
+<sys_id>0edad93cdba9c810683b300f7c9619f9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-12-03 15:04:59</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sysevent_email_action_25bcf517dbecc810683b300f7c961953</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sysevent_email_action"&gt;&lt;sysevent_email_action action="INSERT_OR_UPDATE"&gt;&lt;action_insert&gt;false&lt;/action_insert&gt;&lt;action_update&gt;false&lt;/action_update&gt;&lt;active&gt;true&lt;/active&gt;&lt;advanced_condition/&gt;&lt;affected_field_on_event/&gt;&lt;category display_value="Service Catalog" name="Service Catalog"&gt;be9d02137f232200ee2e108c3ffa9155&lt;/category&gt;&lt;collection&gt;sc_req_item&lt;/collection&gt;&lt;condition/&gt;&lt;content_type&gt;text/html&lt;/content_type&gt;&lt;default_interval/&gt;&lt;description/&gt;&lt;digest_from/&gt;&lt;digest_html/&gt;&lt;digest_reply_to/&gt;&lt;digest_separator_html&gt;&lt;![CDATA[&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;]]&gt;&lt;/digest_separator_html&gt;&lt;digest_separator_text&gt;&lt;![CDATA[\n--------------------------------------------------------------------------------\n]]&gt;&lt;/digest_separator_text&gt;&lt;digest_subject/&gt;&lt;digest_template/&gt;&lt;digest_text/&gt;&lt;digestable&gt;false&lt;/digestable&gt;&lt;event_name&gt;army.sc_req_item.received&lt;/event_name&gt;&lt;event_parm_1&gt;false&lt;/event_parm_1&gt;&lt;event_parm_2&gt;false&lt;/event_parm_2&gt;&lt;exclude_delegates&gt;false&lt;/exclude_delegates&gt;&lt;force_delivery&gt;false&lt;/force_delivery&gt;&lt;from/&gt;&lt;generation_type&gt;event&lt;/generation_type&gt;&lt;importance/&gt;&lt;include_attachments&gt;false&lt;/include_attachments&gt;&lt;item&gt;event.parm1&lt;/item&gt;&lt;item_table/&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;message/&gt;&lt;message_html&gt;&lt;![CDATA[&lt;p&gt;The following item has been received and will soon be scheduled for delivery and/or deployment:&lt;/p&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th style="text-align: right;" scope="row"&gt;Description:&lt;/th&gt;
+&lt;td&gt;${short_description}&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th style="text-align: right;" scope="row"&gt;Number:&lt;/th&gt;
+&lt;td&gt;${URI_REF}&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th style="text-align: right;" scope="row"&gt;Catalog Item:&lt;/th&gt;
+&lt;td&gt;${cat_item.URI_REF}&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th style="text-align: right;" scope="row"&gt;Quantity:&lt;/th&gt;
+&lt;td&gt;${quantity}&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;]]&gt;&lt;/message_html&gt;&lt;message_list/&gt;&lt;message_text/&gt;&lt;name&gt;Notify Request Item Received&lt;/name&gt;&lt;omit_watermark&gt;false&lt;/omit_watermark&gt;&lt;order&gt;100&lt;/order&gt;&lt;push_message_only&gt;false&lt;/push_message_only&gt;&lt;recipient_fields&gt;request.requested_for,request.opened_by&lt;/recipient_fields&gt;&lt;recipient_groups/&gt;&lt;recipient_users/&gt;&lt;reply_to/&gt;&lt;send_self&gt;true&lt;/send_self&gt;&lt;sms_alternate/&gt;&lt;style/&gt;&lt;subject&gt;Request Item Backorder Received: ${short_description}&lt;/subject&gt;&lt;subscribable&gt;false&lt;/subscribable&gt;&lt;sys_class_name&gt;sysevent_email_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-10-22 18:54:58&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;25bcf517dbecc810683b300f7c961953&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Notify Request Item Received&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_email_action_25bcf517dbecc810683b300f7c961953&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-11-22 19:07:23&lt;/sys_updated_on&gt;&lt;sys_version&gt;2&lt;/sys_version&gt;&lt;template display_value="Unsubscribe and Preferences Helvetica"&gt;d465111f3b4b2200c869c2c703efc47c&lt;/template&gt;&lt;type&gt;email&lt;/type&gt;&lt;weight&gt;0&lt;/weight&gt;&lt;/sysevent_email_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-912257134</payload_hash>
+<remote_update_set display_value="Task Policy Update 2019-11-22">0edad93cdba9c810683b300f7c9619f9</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-12-03 15:04:59</sys_created_on>
+<sys_id>02dad93cdba9c810683b300f7c9619fa</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16e948301610000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-12-03 15:04:59</sys_updated_on>
+<table>sc_req_item</table>
+<target_name>Notify Request Item Received</target_name>
+<type>Notification</type>
+<update_domain>global</update_domain>
+<update_guid>e5d865990b5180107605868f2431df06</update_guid>
+<update_guid_history>e5d865990b5180107605868f2431df06:-912257134,65bcf517d9ecc810c24056810c252154:-1106418631</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_email_c057ed19db518010b53f341f7c961985</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_email"&gt;&lt;sys_script_email action="INSERT_OR_UPDATE"&gt;&lt;name&gt;army_task_group_notify_nouserassigned&lt;/name&gt;&lt;new_lines_to_html&gt;false&lt;/new_lines_to_html&gt;&lt;script&gt;&lt;![CDATA[(function runMailScript(/* GlideRecord */ current, /* TemplatePrinter */ template, /* Optional EmailOutbound */ email, /* Optional GlideRecord */ email_action, /* Optional GlideRecord */ event) {
+        var sys_id = "" + current.sys_id;
+        var taskCountsByType = JSON.parse(event.parm2);
+        function escHtml(value) {
+            return (gs.nil(value)) ? "" : ((typeof value === 'string') ? value : "" + value).replace('&amp;', '&amp;amp;').replace('&lt;', '&amp;lt;').replace('&gt;', '&amp;gt;');
+        }
+        function printTableRow(heading) {
+            var value = [];
+            for (var _i = 1; _i &lt; arguments.length; _i++) {
+                value[_i - 1] = arguments[_i];
+            }
+            template.print('&lt;tr&gt;&lt;th scope="row" style="text-align:right"&gt;' + escHtml(heading) + ':&lt;/th&gt;');
+            for (var i = 0; i &lt; value.length; i++)
+                template.print('&lt;td&gt;' + escHtml(value[i]) + '&lt;/td&gt;');
+            template.print('&lt;/tr&gt;');
+        }
+        var totalTaskCount = 0;
+        var totalVipCount = 0;
+        var oldestCreate = new GlideDateTime();
+        var oldestUpdate = new GlideDateTime();
+        var n;
+        for (n in taskCountsByType) {
+            totalTaskCount += taskCountsByType[n].count;
+            totalVipCount += taskCountsByType[n].vipCount;
+            var d = new GlideDateTime(taskCountsByType[n].oldestCreate);
+            if (oldestCreate.compareTo(d) &gt; 0)
+                oldestCreate = d;
+            d = new GlideDateTime(taskCountsByType[n].oldestUpdate);
+            if (oldestUpdate.compareTo(d) &gt; 0)
+                oldestUpdate = d;
+        }
+        template.print('&lt;h2&gt;Summary Open Record Counts for ' + escHtml(current.getDisplayValue()) + '&lt;/h2&gt;&lt;table&gt;');
+        printTableRow('Total Open VIP Records', totalVipCount);
+        printTableRow('Total Open Records', totalTaskCount);
+        printTableRow('Oldest Open Record', oldestCreate);
+        printTableRow('Oldest Record Update', oldestUpdate);
+        template.print('&lt;/table&gt;&lt;h2&gt;Open Record Counts by Type&lt;/h2&gt;&lt;table&gt;&lt;tr&gt;&lt;th scope="col"&gt;Type&lt;/th&gt;&lt;th scope="col"&gt;VIP&lt;/th&gt;&lt;th scope="col"&gt;Total&lt;/th&gt;&lt;th scope="col"&gt;Oldest Record&lt;/th&gt;&lt;th scope="col"&gt;Oldest Update&lt;/th&gt;&lt;/tr&gt;');
+        for (n in taskCountsByType)
+            printTableRow(taskCountsByType[n].type, taskCountsByType[n].vipCount, taskCountsByType[n].count, taskCountsByType[n].oldestCreate, taskCountsByType[n].oldestUpdate);
+        template.print('&lt;/table&gt;');
+    })(current, template, email, email_action, event);]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_email&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-11-22 19:04:49&lt;/sys_created_on&gt;&lt;sys_id&gt;c057ed19db518010b53f341f7c961985&lt;/sys_id&gt;&lt;sys_mod_count&gt;7&lt;/sys_mod_count&gt;&lt;sys_name&gt;army_task_group_notify_nouserassigned&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_email_c057ed19db518010b53f341f7c961985&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-12-02 20:01:23&lt;/sys_updated_on&gt;&lt;/sys_script_email&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1237751720</payload_hash>
+<remote_update_set display_value="Task Policy Update 2019-11-22">0edad93cdba9c810683b300f7c9619f9</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-12-03 15:04:59</sys_created_on>
+<sys_id>0edad93cdba9c810683b300f7c9619fa</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16ec83408a60000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-12-03 15:04:59</sys_updated_on>
+<table/>
+<target_name>army_task_group_notify_nouserassigned</target_name>
+<type>Email Script</type>
+<update_domain>global</update_domain>
+<update_guid>8e1555e894a188109ad83ff8c9a7a263</update_guid>
+<update_guid_history>8e1555e894a188109ad83ff8c9a7a263:1237751720,8014d128bfa18810d83bdc0613080ed2:1619865140,504019e444a18810368d137b153fc818:-1285731981,858b4de0d4a18810fc6f20329387c08b:257913203,caa46abef69d4410dd2ae81a023c9cba:360259439,5ac36ebaa59d44103183345b17f5b011:-1907310916,d570f99d1e5180109bf2e22036e85256:718390264,4848e59dc11180100181d07ddc9022ed:1503028002</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_9c597c59dbdd4010b53f341f7c961954</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;false&lt;/action_delete&gt;&lt;action_insert&gt;false&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;true&lt;/action_update&gt;&lt;active&gt;true&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;task&lt;/collection&gt;&lt;condition&gt;!(current.assigned_to.changes() || current.assignment_group.changes())&lt;/condition&gt;&lt;description&gt;If the task-based record is not assigned, assignments have not changed, the task caller (indicents) is not the current user and the "requested for" (requests) does not match the current user, then an error message is displayed prompting the user to set the assignment field.&lt;/description&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition table="task"&gt;stateNOT IN3,4,7,8,9,6^assigned_toISEMPTY^EQ&lt;item endquery="false" field="state" goto="false" newquery="false" operator="NOT IN" or="false" value="3,4,7,8,9,6"/&gt;&lt;item endquery="false" field="assigned_to" goto="false" newquery="false" operator="ISEMPTY" or="false" value=""/&gt;&lt;item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/&gt;&lt;/filter_condition&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;Unassigned Task Work Warning&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[(function executeRule(current, previous /*null when async*/) {
+	var userId = gs.getUserID();
+	if ((gs.nil(current.caller_id)) ? ((gs.nil(current.request) || gs.nil(current.request.requested_for)) ? !(gs.nil(current.requested_for) || current.requested_for == userId) : current.request.requested_for != userId) : current.caller_id != userId)
+		gs.addErrorMessage(current.getClassDisplayValue() + ' records should be assigned to an individual before any work is done &lt;small style="font-style:italic"&gt;(This alert alone did prevent your changes from being saved. Refer to other displayed messages if they are shown)&lt;/small&gt;.');
+})(current, previous);]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-11-22 15:43:23&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;9c597c59dbdd4010b53f341f7c961954&lt;/sys_id&gt;&lt;sys_mod_count&gt;8&lt;/sys_mod_count&gt;&lt;sys_name&gt;Unassigned Task Work Warning&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_9c597c59dbdd4010b53f341f7c961954&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-11-22 16:13:38&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;after&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=9c597c59dbdd4010b53f341f7c961954"/&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-2116027204</payload_hash>
+<remote_update_set display_value="Task Policy Update 2019-11-22">0edad93cdba9c810683b300f7c9619f9</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-12-03 15:04:59</sys_created_on>
+<sys_id>4adad93cdba9c810683b300f7c9619fa</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16e93e3ed560000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-12-03 15:04:59</sys_updated_on>
+<table>task</table>
+<target_name>Unassigned Task Work Warning</target_name>
+<type>Business Rule</type>
+<update_domain>global</update_domain>
+<update_guid>981145ddebdd401043f96b9b562e1dd8</update_guid>
+<update_guid_history>981145ddebdd401043f96b9b562e1dd8:-2116027204,419ff09d7ddd40102cff7d49244e6cb2:1211664807,374f709dbbdd40101cb9e40262ed7162:-379193174,137eb05d28dd401020bc4643c1e15499:-1130732278,8a0e705ddfdd4010797b40a9b7a531e4:1112710336,117db41dfddd4010f6588a735d1901a1:809785156,9b6ab49975dd4010e3270938737b44c4:1543625417,8e3af4995ddd4010c136c930b9334bb6:-1499992678,d52ab4997cdd4010d7063530955a748d:41992622</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_ff38fc19dbdd4010b53f341f7c9619d7</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_policy"&gt;&lt;sys_ui_policy action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;conditions table="task"&gt;stateIN3,4,7,8,5,9,6^EQ&lt;item endquery="false" field="state" goto="false" newquery="false" operator="IN" or="false" value="3,4,7,8,5,9,6"/&gt;&lt;item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/&gt;&lt;/conditions&gt;&lt;description/&gt;&lt;global&gt;true&lt;/global&gt;&lt;inherit&gt;false&lt;/inherit&gt;&lt;isolate_script&gt;true&lt;/isolate_script&gt;&lt;model_id/&gt;&lt;model_table/&gt;&lt;on_load&gt;true&lt;/on_load&gt;&lt;order&gt;100&lt;/order&gt;&lt;reverse_if_false&gt;false&lt;/reverse_if_false&gt;&lt;run_scripts&gt;false&lt;/run_scripts&gt;&lt;script_false&gt;&lt;![CDATA[function onCondition() {
+
+}]]&gt;&lt;/script_false&gt;&lt;script_true&gt;&lt;![CDATA[function onCondition() {
+
+}]]&gt;&lt;/script_true&gt;&lt;set_values/&gt;&lt;short_description&gt;Require User Assignment Upon Close&lt;/short_description&gt;&lt;sys_class_name&gt;sys_ui_policy&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-11-22 15:36:59&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;ff38fc19dbdd4010b53f341f7c9619d7&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Require User Assignment Upon Close&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_policy_ff38fc19dbdd4010b53f341f7c9619d7&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-11-22 15:38:15&lt;/sys_updated_on&gt;&lt;table&gt;task&lt;/table&gt;&lt;ui_type&gt;0&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_ui_policy&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-700697884</payload_hash>
+<remote_update_set display_value="Task Policy Update 2019-11-22">0edad93cdba9c810683b300f7c9619f9</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-12-03 15:04:59</sys_created_on>
+<sys_id>82dad93cdba9c810683b300f7c9619fb</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16e93c387150000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-12-03 15:04:59</sys_updated_on>
+<table>task</table>
+<target_name>Require User Assignment Upon Close</target_name>
+<type>UI Policy</type>
+<update_domain>global</update_domain>
+<update_guid>0af874598edd40101c9e7135a9ec8038</update_guid>
+<update_guid_history>0af874598edd40101c9e7135a9ec8038:-700697884,e3a8fc55bddd4010e4befd6d8158447e:-746192065</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sysevent_register_2bc359d9db118010b53f341f7c9619eb</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register"><sysevent_register action="INSERT_OR_UPDATE"><caller_access/><description>Occurs when a group has one or more open task-based items that are not assigned to an individual.</description><event_name>army.sys_user_group.task_unassigned</event_name><fired_by>Scheduled Script "Daily Unassigned Group Task Notification"</fired_by><queue/><suffix/><sys_class_name>sysevent_register</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-11-22 17:37:56</sys_created_on><sys_id>2bc359d9db118010b53f341f7c9619eb</sys_id><sys_mod_count>1</sys_mod_count><sys_name>army.sys_user_group.task_unassigned</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sysevent_register_2bc359d9db118010b53f341f7c9619eb</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-11-22 17:38:16</sys_updated_on><table>sys_user_group</table></sysevent_register></record_update>]]></payload>
+<payload_hash>149345939</payload_hash>
+<remote_update_set display_value="Task Policy Update 2019-11-22">0edad93cdba9c810683b300f7c9619f9</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-12-03 15:04:59</sys_created_on>
+<sys_id>86dad93cdba9c810683b300f7c9619fa</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16e943168b90000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-12-03 15:04:59</sys_updated_on>
+<table>sys_user_group</table>
+<target_name>army.sys_user_group.task_unassigned</target_name>
+<type>Event Registration</type>
+<update_domain>global</update_domain>
+<update_guid>8074ddd95b1180101b49e3bc89e0a5b7</update_guid>
+<update_guid_history>8074ddd95b1180101b49e3bc89e0a5b7:149345939,9354d159d51180107fa8a721d35782a9:-547811130</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sysevent_email_action_b3896d99db518010b53f341f7c96191c</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sysevent_email_action"&gt;&lt;sysevent_email_action action="INSERT_OR_UPDATE"&gt;&lt;action_insert&gt;false&lt;/action_insert&gt;&lt;action_update&gt;false&lt;/action_update&gt;&lt;active&gt;true&lt;/active&gt;&lt;advanced_condition/&gt;&lt;affected_field_on_event/&gt;&lt;category display_value="Assessment" name="Assessment"&gt;a69d02137f232200ee2e108c3ffa9124&lt;/category&gt;&lt;collection&gt;sys_user_group&lt;/collection&gt;&lt;condition/&gt;&lt;content_type&gt;text/html&lt;/content_type&gt;&lt;default_interval/&gt;&lt;description/&gt;&lt;digest_from/&gt;&lt;digest_html/&gt;&lt;digest_reply_to/&gt;&lt;digest_separator_html&gt;&lt;![CDATA[&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;]]&gt;&lt;/digest_separator_html&gt;&lt;digest_separator_text&gt;&lt;![CDATA[\n--------------------------------------------------------------------------------\n]]&gt;&lt;/digest_separator_text&gt;&lt;digest_subject/&gt;&lt;digest_template/&gt;&lt;digest_text/&gt;&lt;digestable&gt;false&lt;/digestable&gt;&lt;event_name&gt;army.sys_user_group.task_unassigned&lt;/event_name&gt;&lt;event_parm_1&gt;true&lt;/event_parm_1&gt;&lt;event_parm_2&gt;false&lt;/event_parm_2&gt;&lt;exclude_delegates&gt;false&lt;/exclude_delegates&gt;&lt;force_delivery&gt;false&lt;/force_delivery&gt;&lt;from/&gt;&lt;generation_type&gt;event&lt;/generation_type&gt;&lt;importance&gt;high&lt;/importance&gt;&lt;include_attachments&gt;false&lt;/include_attachments&gt;&lt;item&gt;event.parm1&lt;/item&gt;&lt;item_table/&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;message/&gt;&lt;message_html&gt;&lt;![CDATA[&lt;p&gt;${mail_script:army_task_group_notify_nouserassigned}&lt;/p&gt;]]&gt;&lt;/message_html&gt;&lt;message_list/&gt;&lt;message_text/&gt;&lt;name&gt;Notify Group Task Not Assigned To User&lt;/name&gt;&lt;omit_watermark&gt;false&lt;/omit_watermark&gt;&lt;order&gt;100&lt;/order&gt;&lt;push_message_only&gt;false&lt;/push_message_only&gt;&lt;recipient_fields/&gt;&lt;recipient_groups/&gt;&lt;recipient_users/&gt;&lt;reply_to/&gt;&lt;send_self&gt;true&lt;/send_self&gt;&lt;sms_alternate/&gt;&lt;style/&gt;&lt;subject&gt;Unassigned task summary for group ${name}&lt;/subject&gt;&lt;subscribable&gt;false&lt;/subscribable&gt;&lt;sys_class_name&gt;sysevent_email_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-11-22 19:11:33&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;b3896d99db518010b53f341f7c96191c&lt;/sys_id&gt;&lt;sys_mod_count&gt;5&lt;/sys_mod_count&gt;&lt;sys_name&gt;Notify Group Task Not Assigned To User&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_email_action_b3896d99db518010b53f341f7c96191c&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-12-02 20:09:43&lt;/sys_updated_on&gt;&lt;sys_version&gt;2&lt;/sys_version&gt;&lt;template display_value="Unsubscribe and Preferences Helvetica"&gt;d465111f3b4b2200c869c2c703efc47c&lt;/template&gt;&lt;type&gt;email&lt;/type&gt;&lt;weight&gt;0&lt;/weight&gt;&lt;/sysevent_email_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-596244759</payload_hash>
+<remote_update_set display_value="Task Policy Update 2019-11-22">0edad93cdba9c810683b300f7c9619f9</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-12-03 15:04:59</sys_created_on>
+<sys_id>c2dad93cdba9c810683b300f7c9619fa</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16ec83ba9730000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-12-03 15:04:59</sys_updated_on>
+<table>sys_user_group</table>
+<target_name>Notify Group Task Not Assigned To User</target_name>
+<type>Notification</type>
+<update_domain>global</update_domain>
+<update_guid>0c0795e847a1881016f609d2906537f7</update_guid>
+<update_guid_history>0c0795e847a1881016f609d2906537f7:-596244759,eb4151288ba18810ccc0a8f6d1b3f7b8:-514559749,2c7099e4d2a188106ed4accfcbac380d:-596244759,9c3c2d1d0c518010a7f03be266ea006c:-95137111,0daa21d949518010979056237f095603:1494987987,76c96d59e75180101f9cb07fea219762:-1857571795</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_policy_action_12b87459dbdd4010b53f341f7c9619d9</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action"><sys_ui_policy_action action="INSERT_OR_UPDATE"><cleared>false</cleared><disabled>ignore</disabled><field>assigned_to</field><mandatory>true</mandatory><sys_class_name>sys_ui_policy_action</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-11-22 15:37:33</sys_created_on><sys_id>12b87459dbdd4010b53f341f7c9619d9</sys_id><sys_mod_count>0</sys_mod_count><sys_name>assigned_to</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_policy_action_12b87459dbdd4010b53f341f7c9619d9</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-11-22 15:37:33</sys_updated_on><table>task</table><ui_policy display_value="Require User Assignment Upon Close">ff38fc19dbdd4010b53f341f7c9619d7</ui_policy><visible>ignore</visible></sys_ui_policy_action></record_update>]]></payload>
+<payload_hash>-79205501</payload_hash>
+<remote_update_set display_value="Task Policy Update 2019-11-22">0edad93cdba9c810683b300f7c9619f9</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-12-03 15:04:59</sys_created_on>
+<sys_id>cedad93cdba9c810683b300f7c9619fa</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16e93c2e4980000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-12-03 15:04:59</sys_updated_on>
+<table>task</table>
+<target_name>assigned_to</target_name>
+<type>UI Policy Action</type>
+<update_domain>global</update_domain>
+<update_guid>77c8fc192ddd4010ad9f28510673ccf9</update_guid>
+<update_guid_history>77c8fc192ddd4010ad9f28510673ccf9:-79205501</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>

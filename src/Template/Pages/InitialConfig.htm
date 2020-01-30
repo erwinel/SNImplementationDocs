@@ -35,18 +35,19 @@
                     <li>Navigate to <sn-nav-link path-nodes="System Update Sets/Retrieved Update Sets" href="/sys_remote_update_set_list.do?sysparm_fixed_query=sys_class_name%3Dsys_remote_update_set" to-nav="true"></sn-nav-link>.</li>
                     <li>
                         Click on <a:config-link base="sn" href="/upload.do?sysparm_referring_url=sys_remote_update_set_list.do%3Fsysparm_fixed_query%3Dsys_class_name%3Dsys_remote_update_set&sysparm_target=sys_remote_update_set" to-nav="true"><kbd>Import Update Set from XML</kbd></a:config-link>
-                        and upload the <a href="downloads/sys_remote_update_set_Initial_Update_Set_Stage_1.xml" target="_blank">sys_remote_update_set_Initial_Update_Set_Stage_1.xml</a> file in the
-                        <var class="targetName">downloads</var> folder of this documentation
+                        and upload the <a href="downloads/sys_remote_update_set/setup/stage_1/Initial_Update_Set_1.xml" target="_blank">Initial_Update_Set_1.xml</a> file in the
+                        <var class="targetName">downloads/sys_remote_update_set/setup/stage_1</var> folder of this documentation.
                     </li>
-                    <li><var class="targetName">Preview</var> and <var class="targetName">Commit</var> the loaded update set to prepare the ServiceNow instance.</li>
+                    <li>Preview and commit the update set, which will be named <var class="targetName">Initial Update Set Stage 1 V1</var>, to prepare the ServiceNow instance.</li>
                 </ol>
             </div>
             <div class="card">
                 <div class="card-header p-1"><h3 class="card-title mb-0">Unclass Only</h3></div>
                 <div class="card-body">
                     <div class="detail">
-                        Load and apply the <a href="downloads/sys_remote_update_set_Unclass_Setup_Stage_1.xml" target="_blank">sys_remote_update_set_Unclass_Setup_Stage_1.xml</a> File in the
-                        <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
+                        Load and apply the <a href="downloads/sys_remote_update_set/setup/stage_1/Unclass_Setup_1.xml" target="_blank">Unclass_Setup_1.xml</a> File in the
+                        <var class="targetName">downloads/sys_remote_update_set/setup/stage_1</var> folder of this documentation to apply the <var class="targetName">Unclass Setup Stage 1</var> update set,
+                        which prepares the ServiceNow instance for unclass deveopment.
                     </div>
                 </div>
             </div>
@@ -228,11 +229,39 @@
         <div class="card-body" accordion-group-content-item="serviceCatalog">
             <div class="detail">
                 Navigate to <sn-nav-link path-nodes="System Update Sets/Retrieved Update Sets" href="/sys_remote_update_set_list.do?sysparm_fixed_query=sys_class_name%3Dsys_remote_update_set" to-nav="true"></sn-nav-link>,
-                then load and apply the update sets from the
-                <a href="downloads/sys_remote_update_set_Initial_Update_Set_Stage_2.xml" target="_blank">sys_remote_update_set_Initial_Update_Set_Stage_2.xml</a>,
-                <a href="downloads/sys_remote_update_set_Security_Incident_Setup" target="_blank">sys_remote_update_set_Security_Incident_Setup.xml</a>,
-                <a href="downloads/sys_remote_update_set_EmailConfig_CabWorkbench" target="_blank">sys_remote_update_set_EmailConfig_CabWorkbench.xml</a> and
-                <a href="downloads/sys_remote_update_set_EmailConfig_TargetedCommunications" target="_blank">sys_remote_update_set_EmailConfig_TargetedCommunications.xml</a>
+                then load and apply the following update sets from the <var class="targetName">downloads/sys_remote_update_set/setup/stage_2</var> folder of this documentation:
+                <table class="table table-striped fieldsGrid">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">File Name</th>
+                            <th scope="col">Application</th>
+                            <th scope="col">Update Set Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="downloads/sys_remote_update_set/setup/stage_2/Initial_Update_Set_2.xml" target="_blank">Initial_Update_Set_2.xml</a></td>
+                            <td>Global</td>
+                            <td>Initial Update Set Stage 2 V1</td>
+                        </tr>
+                        <tr>
+                            <td><a href="downloads/sys_remote_update_set/setup/stage_2/Security_Incident_Setup" target="_blank">Security_Incident_Setup.xml</a></td>
+                            <td>Security Incident</td>
+                            <td>Security Incident Setup V1</td>
+                        </tr>
+                        <tr>
+                            <td><a href="downloads/sys_remote_update_set/setup/stage_2/EmailConfig_CabWorkbench" target="_blank">EmailConfig_CabWorkbench.xml</a></td>
+                            <td>Change Management - CAB Workbench</td>
+                            <td>Email Config</td>
+                        </tr>
+                        <tr>
+                            <td><a href="downloads/sys_remote_update_set/setup/stage_2/EmailConfig_TargetedCommunications" target="_blank">EmailConfig_TargetedCommunications.xml</a></td>
+                            <td>Targeted Communications</td>
+                            <td>Email Config</td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 files within the <var class="targetName">downloads</var> folder of this documentation by performing the following steps for each:
                 <ol>
                     <li>

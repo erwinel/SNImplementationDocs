@@ -106,6 +106,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="forceCatalogPortalPageToUpdateSet.ts" />
+    <TypeScriptCompile Include="forceGroupsToUpdateSet.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="generateTypeScriptFromTable.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

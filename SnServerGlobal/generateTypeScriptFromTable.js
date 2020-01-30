@@ -1,6 +1,6 @@
 var generateTypeScriptFromTable;
 (function (generateTypeScriptFromTable) {
-    var targetTableName = 'sys_portal_preferences';
+    var targetTableName = 'task';
     var TableClassInfo = (function () {
         var jsTypeMapping = {
             "integer": { className: "GlideElementNumeric", shouldAnnotate: false }, "decimal": { className: "GlideElementNumeric", shouldAnnotate: true }, "float": { className: "GlideElementNumeric", shouldAnnotate: true },
@@ -77,7 +77,7 @@ var generateTypeScriptFromTable;
             if (x.choices.length > 1) {
                 var arrX = sortChoices(x.choices);
                 var arrY = sortChoices(y.choices);
-                for (var i = 0; i < arrX.length; i++)
+                for (var i_1 = 0; i_1 < arrX.length; i_1++)
                     if (!areChoicesEqual(arrX[0], arrY[0]))
                         return false;
             }
@@ -190,12 +190,12 @@ var generateTypeScriptFromTable;
                         result[n] = (isInheritedField(super_class[n])) ? super_class[n] : toInheritedField(super_class[n], item.super_class);
                 }
             else {
-                var r = {};
+                var r_1 = {};
                 for (var n in result) {
                     if (typeof rootFields[n] === "undefined" || !areFieldsEqual(rootFields[n], result[n], result[n].choices.length == 0))
-                        r[n] = result[n];
+                        r_1[n] = result[n];
                 }
-                return r;
+                return r_1;
             }
             return result;
         }

@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2020-01-14 20:40:16">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description>Removes "Force To Update Set" actions that were only needed during dev.</description>
+<inserted/>
+<name>Dev Cleanup 2020-01-14</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date>2020-01-14 20:39:31</release_date>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>44897a9adb1a8c50683b300f7c9619e6</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:15</sys_created_on>
+<sys_id>325af69adb1a8c50683b300f7c9619df</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:15</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_281789e8db743300b53f341f7c9619d3</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forcePortalToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-04-10 16:02:41&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;281789e8db743300b53f341f7c9619d3&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_281789e8db743300b53f341f7c9619d3&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:15:15&lt;/sys_updated_on&gt;&lt;table&gt;sys_portal&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-1086182996</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>325af69adb1a8c50683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69e3f0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>sys_portal</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>afb9b2da731a8c50ee449c18353f33cb</update_guid>
+<update_guid_history>afb9b2da731a8c50ee449c18353f33cb:-1086182996,97c6088480f84c1045bbf7bc5cc60c8f:-1343674592,184709e82774330020b620bc2b41bbdf:-662341691</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_8f553cc8db7c4c10683b300f7c9619af</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 21:39:15</sys_created_on><sys_id>8f553cc8db7c4c10683b300f7c9619af</sys_id><sys_mod_count>0</sys_mod_count><sys_name>.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">96553cc8db7c4c10683b300f7c9619ab</sys_ui_action><sys_update_name>sys_ui_action_role_8f553cc8db7c4c10683b300f7c9619af</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 21:39:15</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>1127737203</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>325af69adb1a8c50683b300f7c9619e3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a1c90000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>73b9f2da6a1a8c50fb67381fa147bf1c</update_guid>
+<update_guid_history>73b9f2da6a1a8c50fb67381fa147bf1c:1127737203,d77574c8677c4c104016c8c0dddd80b0:-1499859353</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_bc278c84dbf84c10683b300f7c96192e</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:16:54</sys_created_on><sys_id>bc278c84dbf84c10683b300f7c96192e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Force To Update Set.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">7cb48c04dbf84c10683b300f7c961989</sys_ui_action><sys_update_name>sys_ui_action_role_bc278c84dbf84c10683b300f7c96192e</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:16:54</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>-683418007</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>325afadadb1a8c50683b300f7c9619e8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a1120000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>Force To Update Set.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>2fb9f2dad41a8c50cf1e3633c73c6112</update_guid>
+<update_guid_history>2fb9f2dad41a8c50cf1e3633c73c6112:-683418007,af270c849ff84c10922c8f7bc58d6f71:441802674</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_4026c044dbf84c10683b300f7c961991</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:13:49</sys_created_on><sys_id>4026c044dbf84c10683b300f7c961991</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Force to Update Set.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">0a7d8decdb743300b53f341f7c961991</sys_ui_action><sys_update_name>sys_ui_action_role_4026c044dbf84c10683b300f7c961991</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:13:49</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>1917744194</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>365af69adb1a8c50683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69c200000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>Force to Update Set.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>97b9b2dae41a8c50680755b3130595b5</update_guid>
+<update_guid_history>97b9b2dae41a8c50680755b3130595b5:1917744194,92764c041af84c10499cfada8c7aea8b:-2007820885</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_d6946360db35f700683b300f7c96192f</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forceUserGroupToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments&gt;Forces user group to the current update set.&lt;/comments&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-05-30 20:34:45&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;d6946360db35f700683b300f7c96192f&lt;/sys_id&gt;&lt;sys_mod_count&gt;5&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_d6946360db35f700683b300f7c96192f&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:18:45&lt;/sys_updated_on&gt;&lt;table&gt;sys_user_group&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-1338792875</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>3a5af69adb1a8c50683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a3a60000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>sys_user_group</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>b3b9f2dad41a8c50aef9b020917c1a45</update_guid>
+<update_guid_history>b3b9f2dad41a8c50aef9b020917c1a45:-1338792875,aa9704c47bf84c101d33362c84d80335:32004961,f167c4c411f84c10fe34fd24f1a71b1f:2100722465,add9c5aaa994401020f1004b825be39d:1911828922,42f86fe01235f700d6c608d8706d062b:683774202,89d7ebe08c35f7007ca34b38edb73176:-512075812,61056768c4f1f700d2a353f833eef20c:-1693562246</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_7cb48c04dbf84c10683b300f7c961989</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forceBusinessUnitToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-10-24 18:06:47&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;7cb48c04dbf84c10683b300f7c961989&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_7cb48c04dbf84c10683b300f7c961989&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:18:39&lt;/sys_updated_on&gt;&lt;table&gt;business_unit&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-1057831337</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>3e5af69adb1a8c50683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a15d0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>business_unit</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>e7b9f2dae41a8c50dd3af62a67972116</update_guid>
+<update_guid_history>e7b9f2dae41a8c50dd3af62a67972116:-1057831337,899744c44bf84c10fd32f928ad40623d:1897900899,e7270c848ff84c10e5e2fec2ead32874:-944860253,97d48c04bcf84c10e6a55d115929d78f:2133619099</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_1f0700c4dbf84c10683b300f7c9619ee</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:16:34</sys_created_on><sys_id>1f0700c4dbf84c10683b300f7c9619ee</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Force To Update Set.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">5735ab60db35f700683b300f7c96197b</sys_ui_action><sys_update_name>sys_ui_action_role_1f0700c4dbf84c10683b300f7c9619ee</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:16:34</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>428770522</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>725af69adb1a8c50683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a0440000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>Force To Update Set.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>e7b9f2da241a8c50d5e2527b0ebfb909</update_guid>
+<update_guid_history>e7b9f2da241a8c50d5e2527b0ebfb909:428770522,e21700c448f84c10aad05eba1f177bf1:1553991203</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_0a7d8decdb743300b53f341f7c961991</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forcePortalPrefToUpdate Set&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-04-10 16:30:28&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;0a7d8decdb743300b53f341f7c961991&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_0a7d8decdb743300b53f341f7c961991&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:14:19&lt;/sys_updated_on&gt;&lt;table&gt;sys_portal_preferences&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1253052716</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:15</sys_created_on>
+<sys_id>765af69adb1a8c50683b300f7c9619df</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69c870000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:15</sys_updated_on>
+<table>sys_portal_preferences</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>d3b9b2da501a8c507a8855c4a4e1adb9</update_guid>
+<update_guid_history>d3b9b2da501a8c507a8855c4a4e1adb9:1253052716,6596c48471f84c10ac4dbc203dc38176:962406968,1e764c0420f84c10add8a66ed5a34e8d:-566721928,679d0dec95743300d419b42240a19ea5:-1695153925</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_b3efb33fdba84c10683b300f7c961959</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forceUserToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-10-24 17:48:24&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;b3efb33fdba84c10683b300f7c961959&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_b3efb33fdba84c10683b300f7c961959&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:18:42&lt;/sys_updated_on&gt;&lt;table&gt;sys_user&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>917382604</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>765af69adb1a8c50683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a3350000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>sys_user</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>7fb9f2da831a8c50c3b5b33a2fbbaf3e</update_guid>
+<update_guid_history>7fb9f2da831a8c50c3b5b33a2fbbaf3e:917382604,f997c4c4d3f84c10d5ab258277bfc4b4:-1498022592,674704c45ff84c10145f1fe82429142c:-1073287936,47e4880402f84c10afdd2d136c45264e:-985525855,cea044004af84c1053ab7bbc0b65f274:167517077</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_5735ab60db35f700683b300f7c96197b</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forceGroupRoleToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-05-30 20:36:27&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;5735ab60db35f700683b300f7c96197b&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_5735ab60db35f700683b300f7c96197b&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:18:36&lt;/sys_updated_on&gt;&lt;table&gt;sys_group_has_role&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1660242338</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>7a5af69adb1a8c50683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a0a70000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>sys_group_has_role</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>a3b9f2da651a8c507866b2fb0f4b570d</update_guid>
+<update_guid_history>a3b9f2da651a8c507866b2fb0f4b570d:1660242338,109748c4b2f84c10a06a0813b1e83dee:-1149428818,6e1700c4a9f84c106e6ff2d62bf720f3:-1623893138,7bd9af24c035f7004aa04518154981ed:-1146752367,5e6523e81af1f7008b4ae031390f5b26:1290606784</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_a73780c4dbf84c10683b300f7c9619fd</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:17:27</sys_created_on><sys_id>a73780c4dbf84c10683b300f7c9619fd</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Force To Update Set.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">b3efb33fdba84c10683b300f7c961959</sys_ui_action><sys_update_name>sys_ui_action_role_a73780c4dbf84c10683b300f7c9619fd</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:17:27</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>1271148920</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>7a5af69adb1a8c50683b300f7c9619e3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a2f60000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>Force To Update Set.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>b3b9f2dabd1a8c505c01a9818bce023b</update_guid>
+<update_guid_history>b3b9f2dabd1a8c505c01a9818bce023b:1271148920,eb4704c496f84c10fc0bbdbdc8a8ba29:-1898597695</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_24584808dbf84c10683b300f7c9619e3</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forceDepartmentToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-10-24 18:22:28&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;24584808dbf84c10683b300f7c9619e3&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_24584808dbf84c10683b300f7c9619e3&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:22:28&lt;/sys_updated_on&gt;&lt;table&gt;cmn_department&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-958778077</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>7e5af69adb1a8c50683b300f7c9619df</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69d600000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>cmn_department</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>5bb9b2dad81a8c50ee44a28ad2ca2dc2</update_guid>
+<update_guid_history>5bb9b2dad81a8c50ee44a28ad2ca2dc2:-958778077,8d784408cef84c10b0ca43a6d2a0b99d:-2110357865</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_64b60884dbf84c10683b300f7c9619ae</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:15:15</sys_created_on><sys_id>64b60884dbf84c10683b300f7c9619ae</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Force to Update Set.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">281789e8db743300b53f341f7c9619d3</sys_ui_action><sys_update_name>sys_ui_action_role_64b60884dbf84c10683b300f7c9619ae</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:15:15</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>-1441107757</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>7e5af69adb1a8c50683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69df60000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>Force to Update Set.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>e3b9b2da501a8c509ebc6f05b31131c8</update_guid>
+<update_guid_history>e3b9b2da501a8c509ebc6f05b31131c8:-1441107757,dbc60884c2f84c106ad2636a5cb9b18c:-1071705540</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_a26bcc0cdbf84c10683b300f7c961973</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forceLocationToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-10-24 18:36:15&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;a26bcc0cdbf84c10683b300f7c961973&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_a26bcc0cdbf84c10683b300f7c961973&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:36:15&lt;/sys_updated_on&gt;&lt;table&gt;cmn_location&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1606440579</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>b25af69adb1a8c50683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a2970000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>3bb9f2dabd1a8c5028b2936ff5b7cd35</update_guid>
+<update_guid_history>3bb9f2dabd1a8c5028b2936ff5b7cd35:1606440579,839b0c0c0ef84c10cdf13e176fd57c59:-2130478601</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_50af3ca4db743300b53f341f7c9619cd</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;ForcePortalPageToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-04-10 15:30:24&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;50af3ca4db743300b53f341f7c9619cd&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_50af3ca4db743300b53f341f7c9619cd&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:16:13&lt;/sys_updated_on&gt;&lt;table&gt;sys_portal_page&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-2111610029</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>b65af69adb1a8c50683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69fb10000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>sys_portal_page</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>6fb9f2da771a8c50353d3c4763dac703</update_guid>
+<update_guid_history>6fb9f2da771a8c50353d3c4763dac703:-2111610029,51078484aef84c107e0b8f415a56fc88:844122207,a3dffca439743300e1494e5a94f6c505:-1024789320</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_9ef6c484dbf84c10683b300f7c9619a4</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:16:13</sys_created_on><sys_id>9ef6c484dbf84c10683b300f7c9619a4</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Force to Update Set.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">50af3ca4db743300b53f341f7c9619cd</sys_ui_action><sys_update_name>sys_ui_action_role_9ef6c484dbf84c10683b300f7c9619a4</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:16:13</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>-1995426882</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>b65af69adb1a8c50683b300f7c9619e3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69f570000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>Force to Update Set.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>6fb9b2da271a8c50badd918ca958fcda</update_guid>
+<update_guid_history>6fb9b2da271a8c50badd918ca958fcda:-1995426882,d507848415f84c10f801b802a8e2e685:-1626024665</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_636bcc0cdbf84c10683b300f7c961977</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:36:15</sys_created_on><sys_id>636bcc0cdbf84c10683b300f7c961977</sys_id><sys_mod_count>0</sys_mod_count><sys_name>.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">a26bcc0cdbf84c10683b300f7c961973</sys_ui_action><sys_update_name>sys_ui_action_role_636bcc0cdbf84c10683b300f7c961977</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:36:15</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>-1377681564</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>ba5af69adb1a8c50683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a25f0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>7fb9f2da861a8c50b1e008c338df0031</update_guid>
+<update_guid_history>7fb9f2da861a8c50b1e008c338df0031:-1377681564,079b0c0c08f84c101eee494538ab0c57:289689176</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_f7e6cf06db62bb40683b300f7c961933</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;form_section_force_to_update_set&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition&gt;hasRole('admin') &amp;amp;&amp;amp; !current.IsNewRecord()&lt;/condition&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[// Commit any changes to the record and reload the form
+current.update();
+action.setRedirectURL(current);
+// Push the update into the current update set
+var um = new GlideUpdateManager2();
+um.saveRecord(current);
+
+// Query for the current update set to display info message
+var setID = gs.getPreference('sys_update_set');
+var gr = new GlideRecord('sys_update_set');
+gr.get(setID);
+
+// Display info message and reload the form
+gs.addInfoMessage('Record included in &lt;a href="sys_update_set.do?sys_id=' + setID + '"&gt;' + us.name + '&lt;/a&gt; update set.');]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-07-11 17:02:13&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;f7e6cf06db62bb40683b300f7c961933&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_f7e6cf06db62bb40683b300f7c961933&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-07-11 17:02:13&lt;/sys_updated_on&gt;&lt;table&gt;sys_ui_form_section&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-280388929</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>be5af69adb1a8c50683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a48f0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>sys_ui_form_section</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>3fb9f2da4d1a8c50b607ba82e86cc954</update_guid>
+<update_guid_history>3fb9f2da4d1a8c50b607ba82e86cc954:-280388929,f127cb064a62bb40a0bade5e90e8b135:-2068766669</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_4ce38cc0dbf84c10683b300f7c9619df</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forceCompanyToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-10-24 18:04:37&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;4ce38cc0dbf84c10683b300f7c9619df&lt;/sys_id&gt;&lt;sys_mod_count&gt;5&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_4ce38cc0dbf84c10683b300f7c9619df&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:18:32&lt;/sys_updated_on&gt;&lt;table&gt;core_company&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>807220570</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>f25af69adb1a8c50683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69ecd0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>core_company</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>e3b9b2da4b1a8c50b387f4feb6ff55d5</update_guid>
+<update_guid_history>e3b9b2da4b1a8c50b387f4feb6ff55d5:807220570,178704c479f84c108b6258748da72560:686674790,27e64c8463f84c104924dd4f4dd59f22:1287709478,4de68c4455f84c107a43c947ad6f74e6:494641945,9ae44044cbf84c10b535aa028422a410:-394355596,f37488046ff84c1017b387f898c7122b:1817889684,ef54c4042ef84c104ff1ec5ce0546198:-1579479423</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_91580808dbf84c10683b300f7c96199b</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:22:28</sys_created_on><sys_id>91580808dbf84c10683b300f7c96199b</sys_id><sys_mod_count>0</sys_mod_count><sys_name>.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">24584808dbf84c10683b300f7c9619e3</sys_ui_action><sys_update_name>sys_ui_action_role_91580808dbf84c10683b300f7c96199b</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:22:28</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>-1001191247</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>f25af69adb1a8c50683b300f7c9619e3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69d1b0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>9fb9b2da5d1a8c504e56c0d27386d8be</update_guid>
+<update_guid_history>9fb9b2da5d1a8c504e56c0d27386d8be:-1001191247,0178440885f84c10be8795bf7634829c:666179493</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_e5f388c0dbf84c10683b300f7c961929</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:04:37</sys_created_on><sys_id>e5f388c0dbf84c10683b300f7c961929</sys_id><sys_mod_count>0</sys_mod_count><sys_name>.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">4ce38cc0dbf84c10683b300f7c9619df</sys_ui_action><sys_update_name>sys_ui_action_role_e5f388c0dbf84c10683b300f7c961929</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:04:37</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>1400298905</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>f25afadadb1a8c50683b300f7c9619e8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c69e9a0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>2bb9b2da011a8c50988a19aac21842d1</update_guid>
+<update_guid_history>2bb9b2da011a8c50988a19aac21842d1:1400298905,ef54c40403f84c103b39f4833fbbb096:-1227297651</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_551b480cdbf84c10683b300f7c9619df</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="DELETE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2019-10-24 18:34:21</sys_created_on><sys_id>551b480cdbf84c10683b300f7c9619df</sys_id><sys_mod_count>0</sys_mod_count><sys_name>.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">e41b480cdbf84c10683b300f7c9619db</sys_ui_action><sys_update_name>sys_ui_action_role_551b480cdbf84c10683b300f7c9619df</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2019-10-24 18:34:21</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>-1325920101</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>f65af69adb1a8c50683b300f7c9619e2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a4050000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table/>
+<target_name>.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>3fb9f2dae71a8c5081f325319fcc6d4a</update_guid>
+<update_guid_history>3fb9f2dae71a8c5081f325319fcc6d4a:-1325920101,7a2bc40ca4f84c1043f893ac17753c7a:341450639</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_e41b480cdbf84c10683b300f7c9619db</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forceBuildingToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-10-24 18:34:21&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;e41b480cdbf84c10683b300f7c9619db&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_e41b480cdbf84c10683b300f7c9619db&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 18:34:21&lt;/sys_updated_on&gt;&lt;table&gt;cmn_building&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-797058013</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>fa5af69adb1a8c50683b300f7c9619e1</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a4340000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>cmn_building</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>f7b9f2da851a8c50462b70439932b64e</update_guid>
+<update_guid_history>f7b9f2da851a8c50462b70439932b64e:-797058013,f62bc40cfbf84c10c0a2c9efabb7e47c:-239009897</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>DELETE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_96553cc8db7c4c10683b300f7c9619ab</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="DELETE"&gt;&lt;action_name&gt;forceUserGrMemberToUpdateSet&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;false&lt;/client&gt;&lt;client_script_v2/&gt;&lt;comments/&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Force to Update Set&lt;/name&gt;&lt;onclick/&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function () {
+    current.update();
+    action.setRedirectURL(current);
+    var um = new GlideUpdateManager2();
+    um.saveRecord(current);
+    var sys_id = gs.getUser().getPreference("sys_update_set");
+    var gr = new GlideRecord("sys_update_set");
+    gr.get(sys_id);
+    gs.addInfoMessage("Record " + JSON.stringify(gr.getDisplayValue()) + " included in &lt;a href=\"sys_update_set.do?sys_id=" + sys_id + "\"&gt;" + gr.name + "&lt;/a&gt; update set.");
+})();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2019-10-24 21:39:15&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;96553cc8db7c4c10683b300f7c9619ab&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Force to Update Set&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_96553cc8db7c4c10683b300f7c9619ab&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-10-24 21:39:15&lt;/sys_updated_on&gt;&lt;table&gt;sys_user_grmember&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-1560071737</payload_hash>
+<remote_update_set display_value="Dev Cleanup 2020-01-14">325af69adb1a8c50683b300f7c9619df</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-14 20:40:16</sys_created_on>
+<sys_id>fe5af69adb1a8c50683b300f7c9619e0</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16fa5c6a2030000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-14 20:40:16</sys_updated_on>
+<table>sys_user_grmember</table>
+<target_name>Force to Update Set</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>f3b9f2dac41a8c50a27eaea10822ce2c</update_guid>
+<update_guid_history>f3b9f2dac41a8c50a27eaea10822ce2c:-1560071737,577574c8be7c4c1017f8b9f5503122b2:-119623469</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>

@@ -106,16 +106,23 @@
     <Content Include="DevResources.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="downloads\logo_service-now.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="downloads\sys_remote_update_set_EmailConfig_CabWorkbench.xml" />
-    <Content Include="downloads\sys_remote_update_set_EmailConfig_TargetedCommunications.xml" />
-    <Content Include="downloads\sys_remote_update_set_Initial_Update_Set_Stage_1.xml" />
-    <Content Include="downloads\sys_remote_update_set_Initial_Update_Set_Stage_2.xml" />
-    <Content Include="downloads\sys_remote_update_set_Security_Incident_Setup.xml" />
-    <Content Include="downloads\sys_remote_update_set_Unclass_Setup_Stage_1.xml" />
+    <Content Include="downloads\Logo\logo_service-now.png" />
+    <Content Include="downloads\sys_remote_update_set\patches\Dev_Cleanup_2020-01-14.xml" />
+    <Content Include="downloads\sys_remote_update_set\patches\Post_Deployment_Updates_2020-01-23.xml" />
+    <Content Include="downloads\sys_remote_update_set\patches\Service_Catalog_Page_Refresh_2020-01-14.xml" />
+    <Content Include="downloads\sys_remote_update_set\patches\Task_Policy_Update_2019-11-22.xml" />
+    <Content Include="downloads\sys_remote_update_set\patches\Technical_Catalog_Portal_Page_Refresh_2020-01-21.xml" />
+    <Content Include="downloads\sys_remote_update_set\patches\UAT_Patch_2019-09-17.xml" />
+    <Content Include="downloads\sys_remote_update_set\patches\UAT_Patch_2019-10-22.xml" />
+    <Content Include="downloads\sys_remote_update_set\patches\Unclass_Setup_Stage_1_Patch_2019-10-24.xml" />
+    <Content Include="downloads\sys_remote_update_set\setup\stage_2\EmailConfig_CabWorkbench.xml" />
+    <Content Include="downloads\sys_remote_update_set\setup\stage_2\EmailConfig_TargetedCommunications.xml" />
+    <Content Include="downloads\sys_remote_update_set\setup\stage_1\Initial_Update_Set_1.xml" />
+    <Content Include="downloads\sys_remote_update_set\setup\stage_2\Initial_Update_Set_2.xml" />
+    <Content Include="downloads\sys_remote_update_set\setup\stage_2\Security_Incident_Setup.xml" />
+    <Content Include="downloads\sys_remote_update_set\setup\stage_1\Unclass_Setup_1.xml" />
     <Content Include="downloads\uatstats.txt" />
+    <Content Include="downloads\sys_remote_update_set\3rdParty\[WS] Xplore Developer Toolkit - 4.7.xml" />
     <Content Include="images\adminSetup\DeveloperSettings.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2085,7 +2092,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="doc\" />
-    <Folder Include="downloads\Logo\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
