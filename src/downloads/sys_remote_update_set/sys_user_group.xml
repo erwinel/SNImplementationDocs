@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2020-02-10 23:00:50">
+<sys_user_group action="INSERT_OR_UPDATE">
+<active>true</active>
+<average_daily_fte/>
+<cost_center display_value=""/>
+<default_assignee display_value=""/>
+<description>ServiceNow group for anything in Business Applications that is non-specific.</description>
+<email/>
+<exclude_manager>false</exclude_manager>
+<hourly_rate>0</hourly_rate>
+<include_members>false</include_members>
+<manager display_value=""/>
+<name>Business Apps</name>
+<parent display_value=""/>
+<points>0</points>
+<roles/>
+<source/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-30 18:37:32</sys_created_on>
+<sys_id>53080fd04d5200103f9c254b50fdbbc8</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-30 18:40:23</sys_updated_on>
+<type>1cb8ab9bff500200158bffffffffff62</type>
+<vendors/>
+</sys_user_group>
+<sys_user_group action="INSERT_OR_UPDATE">
+<active>true</active>
+<average_daily_fte/>
+<cost_center display_value=""/>
+<default_assignee display_value=""/>
+<description>Members of this group handle all UNIX issues.</description>
+<email/>
+<exclude_manager>false</exclude_manager>
+<hourly_rate>0</hourly_rate>
+<include_members>false</include_members>
+<manager display_value=""/>
+<name>Unix</name>
+<parent display_value="Business Apps" name="Business Apps">53080fd04d5200103f9c254b50fdbbc8</parent>
+<points>0</points>
+<roles/>
+<source/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2020-01-30 18:37:32</sys_created_on>
+<sys_id>9bb099a1696a0010ad1dfc1c7bcf307b</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-30 18:40:23</sys_updated_on>
+<type>1cb8ab9bff500200158bffffffffff62</type>
+<vendors/>
+</sys_user_group>
+<sys_user_group action="INSERT_OR_UPDATE">
+<active>true</active>
+<average_daily_fte/>
+<cost_center display_value=""/>
+<default_assignee display_value=""/>
+<description/>
+<email/>
+<exclude_manager>false</exclude_manager>
+<hourly_rate>0</hourly_rate>
+<include_members>false</include_members>
+<manager display_value=""/>
+<name>SharePoint Admins</name>
+<parent display_value=""/>
+<points>0</points>
+<roles/>
+<source/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-24 21:49:50</sys_created_on>
+<sys_id>09d7bc4cdb7c4c10683b300f7c96192d</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-10-24 21:49:50</sys_updated_on>
+<type>1cb8ab9bff500200158bffffffffff62</type>
+<vendors/>
+</sys_user_group>
+<sys_user_group action="INSERT_OR_UPDATE">
+<active>true</active>
+<average_daily_fte/>
+<cost_center display_value=""/>
+<default_assignee display_value=""/>
+<description/>
+<email/>
+<exclude_manager>false</exclude_manager>
+<hourly_rate>0</hourly_rate>
+<include_members>false</include_members>
+<manager display_value=""/>
+<name>Demand Management</name>
+<parent display_value=""/>
+<points>0</points>
+<roles/>
+<source/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-10-24 19:29:41</sys_created_on>
+<sys_id>c2b7588cdbf84c10683b300f7c9619a3</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-30 18:16:18</sys_updated_on>
+<type>1cb8ab9bff500200158bffffffffff62</type>
+<vendors/>
+</sys_user_group>
+<sys_user_group action="INSERT_OR_UPDATE">
+<active>true</active>
+<average_daily_fte/>
+<cost_center display_value=""/>
+<default_assignee display_value=""/>
+<description/>
+<email/>
+<exclude_manager>false</exclude_manager>
+<hourly_rate>0</hourly_rate>
+<include_members>false</include_members>
+<manager display_value=""/>
+<name>ITIL Team Managers</name>
+<parent display_value=""/>
+<points>0</points>
+<roles/>
+<source/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-05-30 16:15:22</sys_created_on>
+<sys_id>7179aee4db71f700683b300f7c9619ea</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-05-30 16:16:25</sys_updated_on>
+<type>1cb8ab9bff500200158bffffffffff62</type>
+<vendors/>
+</sys_user_group>
+<sys_user_group action="INSERT_OR_UPDATE">
+<active>true</active>
+<average_daily_fte/>
+<cost_center display_value=""/>
+<default_assignee display_value=""/>
+<description>This group contains people who are responsible for managing the service portfolio.</description>
+<email/>
+<exclude_manager>false</exclude_manager>
+<hourly_rate>0</hourly_rate>
+<include_members>false</include_members>
+<manager display_value="Dean Daghita">1409860edbdc3300b53f341f7c961959</manager>
+<name>Service Portfolio Managers</name>
+<parent display_value=""/>
+<points>0</points>
+<roles/>
+<source/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-04-16 15:07:30</sys_created_on>
+<sys_id>e9a33b92dbbc3700b53f341f7c96190f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-04-16 15:07:30</sys_updated_on>
+<type>1cb8ab9bff500200158bffffffffff62,74af88c6c611227d0066386e74dc853d,1bff3b1493030200ea933007f67ffb6d</type>
+<vendors/>
+</sys_user_group>
+<sys_user_group action="INSERT_OR_UPDATE">
+<active>true</active>
+<average_daily_fte/>
+<cost_center display_value=""/>
+<default_assignee display_value=""/>
+<description>Administrative assignment group  for ServiceNow processes.</description>
+<email/>
+<exclude_manager>false</exclude_manager>
+<hourly_rate>0</hourly_rate>
+<include_members>false</include_members>
+<manager display_value="Jonathan Lee">0cb7860edbdc3300b53f341f7c961954</manager>
+<name>ServiceNow Administrators</name>
+<parent display_value=""/>
+<points>0</points>
+<roles/>
+<source/>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-04-16 14:52:45</sys_created_on>
+<sys_id>5d903b12dbbc3700b53f341f7c961990</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2020-01-30 18:08:35</sys_updated_on>
+<type>1cb8ab9bff500200158bffffffffff62</type>
+<vendors/>
+</sys_user_group>
+<sys_user_group action="INSERT_OR_UPDATE">
+<active>true</active>
+<average_daily_fte/>
+<cost_center display_value=""/>
+<default_assignee display_value=""/>
+<description>ServiceNow Team</description>
+<email>dean.daghita@cmdss.com</email>
+<exclude_manager>false</exclude_manager>
+<hourly_rate>0</hourly_rate>
+<include_members>false</include_members>
+<manager display_value="Dave Steele">717d06cedbdc3300b53f341f7c9619ac</manager>
+<name>Developer</name>
+<parent display_value=""/>
+<points>0</points>
+<roles/>
+<source/>
+<sys_created_by>daves</sys_created_by>
+<sys_created_on>2019-04-10 19:07:54</sys_created_on>
+<sys_id>1e91fda0db383300683b300f7c961934</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>daves</sys_updated_by>
+<sys_updated_on>2019-04-10 19:11:28</sys_updated_on>
+<type>1bff3b1493030200ea933007f67ffb6d</type>
+<vendors/>
+</sys_user_group>
+<sys_user_group action="INSERT_OR_UPDATE">
+<active>true</active>
+<average_daily_fte/>
+<cost_center display_value=""/>
+<default_assignee display_value=""/>
+<description>Agile test group</description>
+<email/>
+<exclude_manager>false</exclude_manager>
+<hourly_rate>0</hourly_rate>
+<include_members>false</include_members>
+<manager display_value="Dave Steele">717d06cedbdc3300b53f341f7c9619ac</manager>
+<name>Projects Team</name>
+<parent display_value=""/>
+<points>0</points>
+<roles/>
+<source/>
+<sys_created_by>daves</sys_created_by>
+<sys_created_on>2019-04-05 19:40:47</sys_created_on>
+<sys_id>a0294007dbe83f00b53f341f7c961987</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>daves</sys_updated_by>
+<sys_updated_on>2019-12-17 18:57:59</sys_updated_on>
+<type>1bff3b1493030200ea933007f67ffb6d</type>
+<vendors/>
+</sys_user_group>
+</unload>
