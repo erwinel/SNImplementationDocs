@@ -2,3 +2,27 @@
 	path = gh-pages
 	url = https://github.com/erwinel/erwinel.github.io
 	branch = master
+[submodule "ServiceNowApps/x_44813_svc_cat"]
+	path = ServiceNowApps/x_44813_svc_cat
+	url = https://github.com/erwinel/x_44813_svc_cat.git
+[submodule "ServiceNowApps/x_44813_usasoc_cst"]
+	path = ServiceNowApps/x_44813_usasoc_cst
+	url = https://github.com/erwinel/x_44813_usasoc_cst.git
+[submodule "ServiceNowApps/x_44813_util"]
+	path = ServiceNowApps/x_44813_util
+	url = https://github.com/erwinel/x_44813_util.git
+[submodule "ServiceNowApps/x_44813_dev_ts_hlp"]
+	path = ServiceNowApps/x_44813_dev_ts_hlp
+	url = https://github.com/erwinel/x_44813_dev_ts_hlp.git
+[submodule "ServiceNowApps/x_44813_media_svcs"]
+	path = ServiceNowApps/x_44813_media_svcs
+	url = https://github.com/erwinel/x_44813_media_svcs.git
+[submodule "ServiceNowApps/x_44813_phys_net_network"]
+	path = ServiceNowApps/x_44813_phys_net_network
+	url = https://github.com/erwinel/x_44813_phys_net_network.git
+[submodule "ServiceNowApps/x_44813_grpnamereg"]
+	path = ServiceNowApps/x_44813_grpnamereg
+	url = https://github.com/erwinel/x_44813_grpnamereg.git
+[submodule "ServiceNowApps/x_44813_sec_clsif"]
+	path = ServiceNowApps/x_44813_sec_clsif
+	url = https://github.com/erwinel/x_44813_sec_clsif.git
