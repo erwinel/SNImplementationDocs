@@ -3,7 +3,7 @@
 // Array of IDs for plugins that should be activated.
 var pluginIds: string[] = [
     "com.glide.quiz_designer",
-    "com.glide.ui.list_v3",
+    "com.glide.ui.list_v3_components",
     "com.glide.web_service_provider_v2",
     "com.glideapp.live_feed_v2",
     "com.glideapp.report_statreports",
