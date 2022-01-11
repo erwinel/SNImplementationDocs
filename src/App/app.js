@@ -2363,7 +2363,7 @@ var pageManager;
                 if (typeof current.name !== 'string')
                     return;
                 svc._currentRoute = current;
-                let routeInfo = this.getRouteInfoById(current.name);
+                let routeInfo = svc.getRouteInfoById(current.name);
                 if (typeof routeInfo !== 'undefined')
                     svc.setCurrentRoute(routeInfo);
             });
